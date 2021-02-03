@@ -15,20 +15,20 @@ From your targeted local directory, as the project root / À partir de votre ré
    cd <your local project directory>
    git clone https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git
    
-   #In Visual Studio Code
+   #In Visual Studio Code  
    open project
 
-   #In Visual Studio Code terminal
+   #In Visual Studio Code terminal  
    npm install
    npm run build
    npm run start
 
-   #To test in Android device, you need to open the project in Android Studio and run the application
+   #To test in Android device, you need to open the project in Android Studio and run the application  
    npm cap add android
    npm cap copy
    npm cap open android
 
-   #To test in iphone device, you need to open the project in Xcode and run the application
+   #To test in iphone device, you need to open the project in Xcode and run the application  
    npm cap add ios
    npm cap copy
    npm cap open ios
