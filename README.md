@@ -30,9 +30,10 @@ From your targeted local directory, as the project root / À partir de votre ré
 
    ## To test in iphone device, you need to open the project in Xcode and run the application  
    npm cap add ios  
-   npm cap copy
-   npm cap open ios
-   
+   npm cap copy  
+   npm cap open ios  
+
+
 
 
 
