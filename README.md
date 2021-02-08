@@ -24,13 +24,13 @@ From your targeted local directory, as the project root / À partir de votre ré
    npm run start  
 
    ## To test in Android device, you need to open the project in Android Studio and run the application  
-   npm cap add android
+   npm cap add android  
    npm run build   
    npm cap copy  
    npm cap open android  
 
    ## To test in iphone device, you need to open the project in Xcode and run the application  
-   npm cap add ios
+   npm cap add ios  
    npm run build   
    npm cap copy  
    npm cap open ios  
