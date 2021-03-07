@@ -23,7 +23,7 @@ const Supplements = () => {
           <h2><b>Suppléments</b></h2>
         </IonLabel>
         <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV3")}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("")}/>
       </IonItem>
       <div id="myDIV3">
         <IonItem>     

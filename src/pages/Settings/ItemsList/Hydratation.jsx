@@ -7,7 +7,6 @@ import * as firebase from 'firebase'
 import '../../../pages/Tab1.css';
 
 const Hydratation = (props) => {
-  
   const [dailyTarget, setDailyTarget] = useState(props.hydratation.dailyTarget);
 
   // update state on prop change
@@ -51,12 +50,11 @@ const Hydratation = (props) => {
 
       {/* Détails hydratation */}
       <div id="myDIV1">
-      <div classna="flex-container">
         <IonItem className="descripItem">     
           <IonRow>
             <IonCol size="1">
               <IonIcon  className="target" icon={star}/></IonCol>
-            <IonCol size="2">
+            <IonCol size="3">
               <IonLabel className = 'description'><h3>Description</h3></IonLabel></IonCol>
             <IonCol size="2" >
               <IonLabel className = 'taillePortion'><h3>Taille</h3></IonLabel>
@@ -64,7 +62,7 @@ const Hydratation = (props) => {
             <IonCol size="2" >
               <IonLabel className = 'uniteMesure'><h3>Unité</h3></IonLabel>
             </IonCol>
-            <IonCol size="5" >
+            <IonCol size="4" >
               <div className="triangle">
                 <div className="triangleText1"><b>Gras</b></div>
                 <div className="triangleText2"><b>Prot</b></div>
@@ -86,7 +84,7 @@ const Hydratation = (props) => {
             <IonCol size="2">
               <IonInput id = 'cibleQtte' type = "number" name="value" value={dailyTarget.value} onIonChange={handleDailyTargetChange}></IonInput>  
             </IonCol>
-            <select id="materialSelect" name="unit" value={dailyTarget.unit} onChange={handleDailyTargetChange}>
+            <select id="materialSelectCibleQuot" name="unit" value={dailyTarget.unit} onChange={handleDailyTargetChange}>
               <option value="-1"></option>
               <option value="gr">gr</option>
               <option value="oz">oz</option>
@@ -97,8 +95,7 @@ const Hydratation = (props) => {
           </IonItem>
         </IonRadioGroup>  
       </div>
-    </div>    
-  </div>           
+    </div>            
   );
 }
 export default Hydratation;

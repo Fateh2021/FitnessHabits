@@ -41,22 +41,21 @@ const NourriProteines = (props) => {
       {/* Entête proteines */}
       <IonItem className="divTitre22">
         <IonAvatar slot="start">
-          <img src="/assets/proteines.jpg" alt=""/>
+          <img src="/assets/Proteines.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>proteines</b></h2>
+          <h2><b>Proteines</b></h2>
         </IonLabel>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV3")} />
       </IonItem>
 
       {/* Détails proteines */}
       <div id="myDIV3">
-      <div classna="flex-container">
-        <IonItem className="descripItem">     
+      <IonItem className="descripItem">     
           <IonRow>
             <IonCol size="1">
               <IonIcon  className="target" icon={star}/></IonCol>
-            <IonCol size="2">
+            <IonCol size="3">
               <IonLabel className = 'description'><h3>Description</h3></IonLabel></IonCol>
             <IonCol size="2" >
               <IonLabel className = 'taillePortion'><h3>Taille</h3></IonLabel>
@@ -64,7 +63,7 @@ const NourriProteines = (props) => {
             <IonCol size="2" >
               <IonLabel className = 'uniteMesure'><h3>Unité</h3></IonLabel>
             </IonCol>
-            <IonCol size="5" >
+            <IonCol size="4" >
               <div className="triangle">
                 <div className="triangleText1"><b>Gras</b></div>
                 <div className="triangleText2"><b>Prot</b></div>
@@ -85,9 +84,9 @@ const NourriProteines = (props) => {
             <IonCol size="1"></IonCol>
             <IonLabel className = 'cibleTitle'><h3>Cible quotidienne</h3></IonLabel> 
             <IonCol size="2">
-              <IonInput id = 'cibleQtte' name="value" value={dailyTarget.value} onIonChange={handleDailyTargetChange}></IonInput>  
+              <IonInput id = 'cibleQtte' type= 'number' name="value" value={dailyTarget.value} onIonChange={handleDailyTargetChange}></IonInput>  
             </IonCol>
-            <select id="materialSelect" name="unit" value={dailyTarget.unit} onChange={handleDailyTargetChange}>
+            <select id="materialSelectCibleQuot" name="unit" value={dailyTarget.unit} onChange={handleDailyTargetChange}>
               <option value="-1"></option>
               <option value="gr">gr</option>
               <option value="oz">oz</option>
@@ -98,8 +97,7 @@ const NourriProteines = (props) => {
           </IonItem>
         </IonRadioGroup>  
       </div>
-    </div>    
-  </div>           
+    </div>             
   );
 }
 export default NourriProteines;

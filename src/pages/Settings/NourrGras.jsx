@@ -40,7 +40,7 @@ const GrasItem = (props) => {
             <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
@@ -53,16 +53,16 @@ const GrasItem = (props) => {
             </select>
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            
       </div>
@@ -73,6 +73,7 @@ const NourrGras = (props) => {
 
   const [gras, setGras] = useState(props.gras);
   const [grasToEdit, setGrasToEdit] = useState(undefined);
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
   
   // update state on prop change
@@ -80,20 +81,38 @@ const NourrGras = (props) => {
     setGras(props.gras);
   }, [props.gras])
 
-  const updateFavorisStatus = (event, index) => {
+  const updateFavorisStatus = (event, index, item) => {
     event.stopPropagation();
+    // var array = [...gras];
+    // if(event.target.style.color === ''){
+    //   event.target.style.color = '#d18a17';
+    //   array[index].favoris = true;   
+    // } else {
+    //   event.target.style.color = '';
+    //   array[index].favoris = false;
+    // }
+    // setGras(array);
+
+    // // update the cache and persist in DB
+    // updateCacheAndBD(array);
     var array = [...gras];
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
-      array[index].favoris = true;   
+      array[index].favoris = true;
+      console.log("array::"+JSON.stringify(array[index]));
+
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.gras.grass.unshift(array[index]);
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard); 
     } else {
       event.target.style.color = '';
-      array[index].favoris = false;
+      array[index].favoris = false;      
     }
-    setGras(array);
-
-    // update the cache and persist in DB
+    setGras (array);
     updateCacheAndBD(array);
+    
   }
 
   const deleteItem = (item) => {
@@ -142,6 +161,11 @@ const NourrGras = (props) => {
     console.log("Verif de settings..."+JSON.stringify(settings));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('settings/'+userUID).update(settings);
+    // firebase.database().ref('settings/'+userUID+'/gras').once("value", (snapshot) => {
+    //   const sets = snapshot.val();
+    //   console.log("testttt gras database"+ JSON.stringify(sets));
+    // });
+
   }
 
   const updateCacheAndBD = (gras) => {

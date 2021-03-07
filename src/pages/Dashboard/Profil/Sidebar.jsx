@@ -15,7 +15,7 @@ const Sidebar = (props) => {
         gender: ""
       });
 
-    // load the current profile from the local storage id it exists, otherwise load it from the DB
+    // load the current profile from the local storage if it exists, otherwise load it from the DB
     useEffect(() => {
         const localProfile = localStorage['profile'];
         if (localProfile) {
@@ -54,9 +54,11 @@ const Sidebar = (props) => {
             // clear the localstorage
             localStorage.clear();
             // Sign-out successful.
-            window.location.href='/intro' 
+            // window.location.href='/login' 
+            window.location.replace('/login') 
           }).catch(function(error) {
             // An error happened.
+            console.log(error)
           });
     }
 
@@ -119,7 +121,7 @@ const Sidebar = (props) => {
 
                     <IonItemDivider color='warning' className = 'profilText'><h2>Taille</h2></IonItemDivider>
                     <IonItem>
-                    <IonInput className = 'inputProfilText' type='text' name="size" value={profile.size} onIonChange={handleInputChange} placeholder="Centimètres" clearInput></IonInput>
+                    <IonInput className = 'inputProfilText' type='number' name="size" value={profile.size} onIonChange={handleInputChange} placeholder="Centimètres" clearInput></IonInput>
                     </IonItem>
 
                     <IonItemDivider className = 'profilText'><h2>Sexe</h2></IonItemDivider>

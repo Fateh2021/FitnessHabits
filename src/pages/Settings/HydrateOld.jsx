@@ -1,9 +1,8 @@
 import { IonIcon, IonLabel, IonCol, IonItem, IonButton, IonInput} from '@ionic/react';
-import { star, trash, addCircle, removeCircle } from 'ionicons/icons';
+import { star, trash, create,addCircle } from 'ionicons/icons';
 import React, {useState, useEffect} from 'react';
 import uuid from 'react-uuid';
 import * as firebase from 'firebase'
-
 
 const HydrateItem = (props) => {
 
@@ -16,7 +15,8 @@ const HydrateItem = (props) => {
     glucide:props.item ? props.item.glucide : 0, 
     fibre:props.item ? props.item.fibre : 0, 
     gras:props.item ? props.item.gras : 0, 
-    unit: props.item ? props.item.unit : ''
+    unit: props.item ? props.item.unit : '',
+    consumption: props.item ? props.item.consumption:0
   });
 
   const handleChange = event => {
@@ -37,11 +37,11 @@ const HydrateItem = (props) => {
           <IonCol size="1">
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
-          <IonCol size="2">
+          <IonCol size="3">
             <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
@@ -54,18 +54,18 @@ const HydrateItem = (props) => {
             </select>
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
-        </IonItem>        
+        </IonItem>            
       </div>
   );
 }
@@ -75,51 +75,47 @@ const Hydrate = (props) => {
   const [hydrates, setHydrates] = useState(props.hydrates);
   const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
 
-  const [text, setText] = useState();
-  const [countA, setCountA] = useState(0);
-  const [countB, setCountB] = useState(0);
-
-  const count1 = ()=>{
-    setCountA(countA + 1);
-    }
-    
-    const count2 = ()=>{
-      if (countA>=1){
-      setCountA(countA - 1);
-      }
-    }
-    
-    const count3 = ()=>{
-    setCountB(countB + 1);
-    }
-    
-    const count4 = ()=>{
-    if (countB>=1){
-      setCountB(countB - 1);
-      }
-    }
-  
   // update state on prop change
   useEffect(() => {
     setHydrates(props.hydrates);
   }, [props.hydrates])
 
-  const updateFavorisStatus = (event, index) => {
+  const updateFavorisStatus = (event, index, item) => {
+    console.log("fa9oooo::::::::")
     event.stopPropagation();
     var array = [...hydrates];
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
-      array[index].favoris = true;   
+      array[item].favoris = true;
+
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.hydratation.hydrates.unshift(array[item]);
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+      //console.log("Dashboard Hydratation ::::"+ JSON.stringify(dashboard))
+      // console.log("hydrate ind :::::" +dashboard.hydratation.hydrates[index].id);
+      // console.log("hydrate array :::::" + JSON.stringify(dashboard.hydratation.hydrates));      
     } else {
+      // const index = array.findIndex((e) => e.id === item.id);
       event.target.style.color = '';
-      array[index].favoris = false;
+      array[item].favoris = false;      
+      // console.log("index :::::" + array[index].id)
+
+      // const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      // console.log("hydrate ind :::::" +dashboard.hydratation.hydrates[index].id);  
+      // dashboard.hydratation.hydrates.splice(  index.id, 1);
+      // localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      // const userUID = localStorage.getItem('userUid');
+      // firebase.database().ref('dashboard/'+userUID).update(dashboard);
+      // console.log("hydrate array :::::" + JSON.stringify(dashboard.hydratation.hydrates));
     }
     setHydrates (array);
     // update the cache and persist in DB
     updateCacheAndBD(array);
   }
-
 
   const closeItemContainer = () => {
     setHydrateToEdit(undefined);
@@ -137,9 +133,10 @@ const Hydrate = (props) => {
   }
 
   const deleteItem = (item) => {
-    console.log("delete Item::"+JSON.stringify(item))
+    console.log("save Item::"+JSON.stringify(item))
     var array = [...hydrates];
     const index = array.findIndex((e) => e.id === item.id);
+        console.log("index :::::" + array[item].id)
     index === -1 ? array.splice(item, 1): array[index] = item;
     setHydrates (array);
     closeItemContainer();
@@ -161,33 +158,45 @@ const Hydrate = (props) => {
   }
 
   const updateCacheAndBD = (hydrates) => {
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.hydratation.hydrates= hydrates;
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    settings.hydratation.hydrates= hydrates;
+    localStorage.setItem('settings', JSON.stringify(settings));
     const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID).update(dashboard);
+    firebase.database().ref('settings/'+userUID).update(settings);
   }
 
   return (
-    
     <div> 
       <div className="divHyd">
         <div className="sett">
           { hydrates.map((hydra, index) => (      
             <IonItem className="divTitre11" key={hydra.id}>
               <IonCol size="1">
+                <IonIcon className='starFavoris' onClick={(e) => updateFavorisStatus(e,index)} icon={star} style={hydra.favoris ? {color:"#d18a17"} :{}}></IonIcon>
               </IonCol>
+              <IonCol size="3">
               <IonLabel className="nameDscrip"><h2><b>{hydra.name}</b></h2></IonLabel>
-      
-              <IonCol size="6" >
-              <IonInput className='inputTextActivities' value={countA} placeholder="______" onIonChange={""}></IonInput>  
-            </IonCol>
-              <IonButton className="trashButton" color="danger" size="small" onClick={()=>count2()}>
-                <IonIcon  icon={removeCircle} />
+              </IonCol>
+              <IonCol size="1">
+              <IonLabel className="unitDescrip"><h2><b>{hydra.qtte}</b></h2></IonLabel>
+              </IonCol>
+              <select id="materialSelect" value={hydra.unit} disabled="disabled">
+                <option value="-1"></option>
+                <option value="gr">gr</option>
+                <option value="oz">oz</option>
+                <option value="ml">ml</option>
+                <option value="tasse">tasse</option>
+                <option value="unite">unité</option>
+              </select>
+              <IonButton className='editButton' color="danger" size="small" onClick={() => openEditItemContainer(index)}>
+                <IonIcon  icon={create} />
               </IonButton>
-              <IonButton className='editButton' color="danger" size="small" onClick={()=>count1()}>
-                <IonIcon  icon={addCircle} />
-              </IonButton>
+              <div className="triangle1">
+                <div className="triangleText1-1"><b>{hydra.gras}</b></div>
+                <div className="triangleText2-2"><b>{hydra.proteine}</b></div>
+                <div className="triangleText3-3"><b>{hydra.fibre}</b></div>
+                <div className="triangleText4-4"><b>{hydra.glucide}</b></div>         
+              </div>
               <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
                 <IonIcon  icon={trash} />
               </IonButton>
@@ -200,8 +209,8 @@ const Hydrate = (props) => {
         <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
         <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
       </div>
-      {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(item) => saveItem(item)}/>}   
-    </div>
+      {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(item) => saveItem(item)}/>}
+    </div> 
   );
 }
 export default Hydrate;

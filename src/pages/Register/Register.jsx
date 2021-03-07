@@ -10,11 +10,9 @@ const Register= () => {
     const [username, setUsername]= useState('')
     const [password, setPassword]= useState('')
     const [cPassword, setCPassword] = useState('')
-    const [busy, setBusy]= useState(false)
     
     async function register(){
         // Validation 
-        setBusy(true)
         if(password !== cPassword){
             return toast('Passwords do not match')
         }
@@ -28,14 +26,13 @@ const Register= () => {
         if (res){   
           window.location.href='/dashboard'
         }
-        setBusy(false)
     }
 
     async function registerUser (username, password){
 
       const email=username+'@fithab.com'
       try{
-          const res = await firebase.auth().createUserWithEmailAndPassword
+          await firebase.auth().createUserWithEmailAndPassword
           (email, password)
           toast(email)
           return true

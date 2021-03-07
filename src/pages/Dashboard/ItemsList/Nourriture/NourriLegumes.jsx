@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol} from '@ionic/react';
-import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
+import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonButton} from '@ionic/react';
+import { arrowDropdownCircle, addCircle, star, removeCircle, trash} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import * as firebase from 'firebase'
 
-import '../../../pages/Tab1.css';
+import '../../../Tab1.css'
 
-const HydrateItem = (props) => {
+const LegumeItem = (props) => {
 
   const [item, setItem] = useState({
     id: props.item ? props.item.id : uuid(),
@@ -69,14 +69,14 @@ const HydrateItem = (props) => {
   );
 }
 
-//---- Hydratation ---------
-const Hydratation = (props) => {
-  const [dailyTarget, setDailyTarget] = useState(props.hydrate.dailyTarget);
-  const [hydrate, setHydrate] = useState(props.hydrate);
-  const [hydrates, setHydrates] = useState(props.hydrate.hydrates);
+const NourriLegumes = (props) => {
+  
+  const [dailyTarget, setDailyTarget] = useState(props.legume.dailyTarget);
+  const [legume, setLegume] = useState(props.legume);
+  const [legumes, setLegumes] = useState(props.legumes);
   const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
   const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
-  const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
+  const [legumeToEdit, setLegumesToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
 
   const accor = (divId) => {
@@ -84,6 +84,7 @@ const Hydratation = (props) => {
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
+    console.log("legumes::::" + JSON.stringify (props.Legume))
   }
 
   useEffect(() => {
@@ -91,36 +92,36 @@ const Hydratation = (props) => {
   }, [props.currentDate])
 
   useEffect(() => {
-    setDailyTarget(props.hydrate.dailyTarget);
-  }, [props.hydrate.dailyTarget])
+    setDailyTarget(props.legume.dailyTarget);
+  }, [props.legume.dailyTarget])
 
   useEffect(() => {
     setGlobalConsumption(props.globalConsumption);
   }, [props.globalConsumption])
 
   useEffect(()=>{
-    setHydrate(props.hydrate)
-  }, [props.hydrate])
+    setLegume(props.legume)
+  }, [props.legume])
 
   useEffect(()=>{
-    setHydrates(props.hydrate.hydrates)
-  }, [props.hydrate.hydrates])
+    setLegumes(props.legumes)
+  }, [props.legumes])
 
   const DailyConsumptionIncrement = (item)=>{  
-    var array = [...hydrates];
+    var array = [...legumes];
     const index = array.findIndex((event) => event.id === item.id);  
     index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
     array[item].consumption += 1;
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.hydratation.dailyTarget.globalConsumption = totalConsumption();
+    dashboard.legumes.dailyTarget.globalConsumption = totalConsumption();
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
   const DailyConsumptionDecrement = (item)=>{  
-    var array = [...hydrates];
+    var array = [...legumes];
     const index = array.findIndex((event) => event.id === item.id);  
     index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
     if (array[item].consumption >=1){
@@ -128,14 +129,14 @@ const Hydratation = (props) => {
     };
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.hydratation.dailyTarget.globalConsumption = totalConsumption();
+    dashboard.legumes.dailyTarget.globalConsumption = totalConsumption();
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
   const totalConsumption = ()=>{
-    var array = [...hydrates];
+    var array = [...legumes];
     var sum = 0;
     var consumption = 0;
     for (var i = 0; i < array.length; i++ ){
@@ -147,76 +148,79 @@ const Hydratation = (props) => {
   }
 
   const deleteItem = (item) => {
-    var array = [...hydrates];
+    var array = [...legumes];
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
     index === -1 ? array.splice(item, 1): array[item] = item;
-    setHydrates(array)
+    setLegumes(array);  
     for (var i = 0; i < array.length; i++ ){
       consumption = array[i].consumption;
       sum += consumption; 
     }
     setGlobalConsumption(sum);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.hydratation.hydrates = array;
-    dashboard.hydratation.dailyTarget.globalConsumption = sum;    
+    dashboard.legumes.legumes = array;
+    dashboard.legumes.dailyTarget.globalConsumption = sum;    
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
-    // updateCacheAndBD(array);
+    updateCacheAndBD(array);
   }
 
   const saveItem = (item) => {
-    var array = [...hydrates];
+    var array = [...legumes];
     const index = array.findIndex((e) => e.id === item.id);
     index === -1 ? array.unshift(item): array[index] = item;
-    setHydrates (array);
+    setLegumes (array);
     closeItemContainer();
     updateCacheAndBD(array);
   }
 
-  const updateCacheAndBD = (hydrates) => {
+  const updateCacheAndBD = (legumes) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.hydratation.hydrates= hydrates;
-    setHydrates(hydrates)
+    dashboard.legumes.legumes= legumes;
+    setLegumes(legumes)
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
   const closeItemContainer = () => {
-    setHydrateToEdit(undefined);
+    setLegumesToEdit(undefined);
     setItemContainerDisplayStatus(false);
   }
 
   const openAddItemContainer = () => {
-    setHydrateToEdit(undefined);
+    setLegumesToEdit(undefined);
     setItemContainerDisplayStatus(true);
   }
-  
+ 
   return (
     <div>
-      <IonItem className="divTitre1">
-        <IonAvatar slot="start"><img src="/assets/Hydratation.jpeg" alt=""/></IonAvatar>
-        <IonLabel><h2><b>Hydratation</b></h2></IonLabel>
-        <IonInput className='inputTextGly' value = {globalConsumption} readonly></IonInput> 
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV1")} />
-      </IonItem>
-      <div id="myDIV1">
-        <div> 
-          <div className="divHyd">
+      <IonItem className="divTitre22">
+        <IonAvatar slot="start">
+        <img src="/assets/Legumes.jpg" alt=""/>
+        </IonAvatar>
+        <IonLabel>
+          <h2><b>Legumes et Fruits</b></h2>
+        </IonLabel>
+        <IonInput className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV4")}/>
+      </IonItem> 
+      <div id="myDIV4">
+      <div className="divHyd">
             <div className="sett">
-              { hydrates.map((hydra, index) => (      
-                <IonItem className="divTitre11" key={hydra.id}>
+              { legumes.map((leg, index) => (      
+                <IonItem className="divTitre11" key={leg.id}>
                   <IonCol size="1">
                   </IonCol>
-                  <IonLabel className="nameDscripDashboard"><h2><b>{hydra.name}</b></h2></IonLabel>      
+                  <IonLabel className="nameDscripDashboard"><h2><b>{leg.name}</b></h2></IonLabel>      
                   <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(index)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
-                    <IonInput className='inputTextDashboard' value = {hydra.consumption} readonly></IonInput>  
+                    <IonInput className='inputTextDashboard' value = {leg.consumption} readonly></IonInput>  
                   </IonCol>
                   <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(index)}>
                     <IonIcon  icon={addCircle} />
@@ -229,14 +233,13 @@ const Hydratation = (props) => {
               } 
             </div>
           </div>
-          <div className="ajoutBotton">    
-            <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
-            <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
-          </div>
-          {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(item) => saveItem(item)}/>}   
+        <div className="ajoutBotton">    
+          <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
+          <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
         </div>
-      </div>
-    </div>             
+        {itemContainerDisplayStatus && <LegumeItem close={closeItemContainer} item={legumeToEdit} save={(item) => saveItem(item)}/>}        
+      </div> 
+      </div>       
   );
 }
-export default Hydratation;
+export default NourriLegumes;

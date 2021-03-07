@@ -15,7 +15,8 @@ const AlcoolItem = (props) => {
       glucide:props.item ? props.item.glucide : 0, 
       fibre:props.item ? props.item.fibre : 0, 
       gras:props.item ? props.item.gras : 0, 
-      unit: props.item ? props.item.unit : ''
+      unit: props.item ? props.item.unit : '',
+      consumption: props.item ? props.item.consumption:0
   });
 
   const handleChange = event => {
@@ -40,7 +41,7 @@ const AlcoolItem = (props) => {
             <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
@@ -53,16 +54,16 @@ const AlcoolItem = (props) => {
             </select>
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            
       </div>
@@ -74,25 +75,44 @@ const Alcool = (props) => {
   const [alcools, setAlcools] = useState(props.alcools);
   const [alcoolsToEdit, setAlcoolsToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
-  
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
+
   // update state on prop change
   useEffect(() => {
     setAlcools(props.alcools);
   }, [props.alcools])
 
-  const updateFavorisStatus = (event, index) => {
+  const updateFavorisStatus = (event, item, index) => {
+    // event.stopPropagation();
+    // var array = [...alcools];
+    // if(event.target.style.color === ''){
+    //   event.target.style.color = '#d18a17';
+    //   array[index].favoris = true;   
+    // } else {
+    //   event.target.style.color = '';
+    //   array[index].favoris = false;
+    // }
+    // setAlcools(array);
+
+    // // update the cache and persist in DB
+    // updateCacheAndBD(array);
     event.stopPropagation();
     var array = [...alcools];
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
-      array[index].favoris = true;   
+      array[item].favoris = true;
+      console.log("array::"+JSON.stringify(array[item]));
+
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.alcool.alcools.unshift(array[item]);
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard); 
     } else {
       event.target.style.color = '';
-      array[index].favoris = false;
+      array[item].favoris = false;      
     }
-    setAlcools(array);
-
-    // update the cache and persist in DB
+    setAlcools (array);
     updateCacheAndBD(array);
   }
 
@@ -149,7 +169,7 @@ const Alcool = (props) => {
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('settings/'+userUID).update(settings);
   }
-
+  
   return (
     <div> 
       <div className="divHyd">

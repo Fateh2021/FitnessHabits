@@ -18,7 +18,7 @@ const LogIn = (props) => {
           toast('Authentification reussi!');
           props.history.push('/dashboard');
         }catch(error){
-          toast('Erreur d\'authentification. L\'identifiant et/ou le mot passe sont invalide!', 4000)
+          toast('Erreur d\'authentification. L\'identifiant et/ou le mot passe sont invalides !', 4000)
         }
         setBusy(false)
     }

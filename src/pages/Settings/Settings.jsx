@@ -5,7 +5,7 @@ import { IonList,IonTabBar, IonGrid, IonTabButton, IonRow, IonCol, IonHeader, Io
 import { save, home, arrowDropleftCircle, arrowDropdownCircle, globe} from 'ionicons/icons';
 import Hydratation from './ItemsList/Hydratation'
 import BoissonAlcool from './ItemsList/BoissonAlcool' 
-import NourriGras from './ItemsList/Nourriture/NourriGras'
+import NourriGras from './ItemsList/Nourriture/NourriGras' 
 import NourriLegumes from './ItemsList/Nourriture/NourriLegumes'
 import NourriProteines from './ItemsList/Nourriture/NourriProteines'
 import NourriCereales from './ItemsList/Nourriture/NourriCereales'
@@ -89,15 +89,21 @@ const Settings =(props) =>{
           console.log("Loading Settings From DB...");
           firebase.database().ref('settings/'+userUID)
           .once("value", (snapshot) => {
-              const sets = snapshot.val();
-              console.log("settings ::"+JSON.stringify(sets));
-              if (sets) {
-                const updatedSets = addMissingSettings(sets);
-                localStorage.setItem('settings', JSON.stringify(updatedSets));
-                setSettings(updatedSets);
-              } else {
-                localStorage.setItem('settings', JSON.stringify(settings));
-              }              
+            const sets = snapshot.val();
+            console.log("settings ::"+JSON.stringify(sets));
+            if (sets) {
+              if(!(sets.hydratation.hydrates)){
+                sets.hydratation.hydrates = [];
+              }
+              if(!(sets.alcool.alcools)){
+                sets.alcool.alcools=[]
+              }
+              const updatedSets = addMissingSettings(sets);
+              localStorage.setItem('settings', JSON.stringify(updatedSets));
+              setSettings(updatedSets);
+            } else {
+              localStorage.setItem('settings', JSON.stringify(settings));
+            }              
           });
       }
   }, []);

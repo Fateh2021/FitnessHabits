@@ -1,32 +1,79 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
+import * as firebase from 'firebase'
 import { IonLabel, IonItem, IonAvatar} from '@ionic/react';
 
 import '../../../pages/Tab1.css';
 
-const Toilettes = () => {
+const Toilettes = (props) => {
 
-  const [text, setText] = useState();
-  const [countA, setCountA] = useState(0);
-  const [countB, setCountB] = useState(0);
+  const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
+  const [urine, setUrine] = useState(props.toilettes.urine);
+  const [feces, setFeces] = useState(props.toilettes.feces);
 
-  const count1 = ()=>{
-    setCountA(countA + 1);
-  }
-    
-  const count2 = ()=>{
-    if (countA>=1){
-    setCountA(countA - 1);
-    }
-  }
-    
-  const count3 = ()=>{
-  setCountB(countB + 1);
-  }
+  useEffect(() => {
+    setCurrentDate(props.currentDate);
+  }, [props.currentDate])
+
+  useEffect(() => {
+    setUrine(props.toilettes.urine);
+  }, [props.toilettes.urine])
+
+  useEffect(() => {
+    setFeces(props.toilettes.feces);
+  }, [props.toilettes.feces])
   
-  const count4 = ()=>{
-  if (countB>=1){
-    setCountB(countB - 1);
-    }
+  const handleChangeUrineAdd = () => { 
+    setUrine(urine+1);
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    dashboard.toilettes.urine= urine+1;
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  const handleChangeUrineMin = () => { 
+    if (urine>=1){
+      setUrine(urine - 1);
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.toilettes.urine= urine-1;
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    } else if (urine ===0){
+      setUrine (0);
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.toilettes.urine= 0;
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    }   
+  }
+
+  const handleChangeFecesAdd = () => { 
+    setFeces(feces+1);
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    dashboard.toilettes.feces= feces+1;
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  const handleChangeFecesMin = () => { 
+    if (feces>=1){
+      setFeces(feces - 1);
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.toilettes.feces= feces-1;
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    } else if (feces ===0){
+      setFeces (0);
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.toilettes.feces= 0;
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    }   
   }
   
   return (
@@ -37,15 +84,15 @@ const Toilettes = () => {
         <IonLabel>
           <h2><b>Toilettes</b></h2>
         </IonLabel>
-        {/* <div className="Toilette01"></div> */}
-        <button className="toiletButton1" onClick={()=>count4()}>-</button>
-        <div className="divToilet1">{countB}</div>
-        <button className="toiletButton1" onClick={()=>count3()}>+</button>
+        {/* urine*/}
+        <button className="toiletButton1" onClick={ handleChangeUrineMin}>-</button>
+        <div className="divToilet1">{urine}</div>
+        <button className="toiletButton1" onClick={ handleChangeUrineAdd}>+</button>
         <div className="separateDiv"></div> 
-        <button className="toiletButton2" onClick={()=>count2()}>-</button>
-        <div className="divToilet2" >{countA}</div>
-        <button className="toiletButton2" onClick={()=>count1()} >+</button>
-        {/* <div className="Toilette02"></div> */}
+        {/* feces */}
+        <button className="toiletButton2" onClick={ handleChangeFecesMin}>-</button>
+        <div className="divToilet2" >{feces}</div>
+        <button className="toiletButton2" onClick={ handleChangeFecesAdd} >+</button>
       </IonItem>
     </div> 
   );

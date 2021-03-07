@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { IonIcon, IonLabel} from "@ionic/react";
-import {globe, menu, person} from 'ionicons/icons';
+import {globe, menu} from 'ionicons/icons';
 
 const Toggle = (props) => {
     return(

@@ -60,7 +60,7 @@ border-width: 1px;
   border-right-color: #589051;
   border-bottom-color: rgb(202, 154, 23);
   position: relative;
-  margin-left: 20px;
+  margin-left: 5px;
 }
 
 .triangle1{
@@ -82,14 +82,14 @@ border-width: 1px;
   position: absolute;
   top: 3px;
   bottom:0px;
-  right: -18px;
+  right: -6px;
   font-size: 13px;
   color: #fcf8f8;
 }
 .triangleText2{
   position: absolute;
   top: -21px;
-  right: -12px;
+  right: -6px;
   font-size: 13px;
   color: #fcf8f8;
   }
@@ -97,7 +97,7 @@ border-width: 1px;
   position: absolute;
   top: -9px;
   bottom: -8px;
-  left:22px;
+  left:35px;
   font-size: 13px;
   color: #fcf8f8;
   }
@@ -105,7 +105,7 @@ border-width: 1px;
   position: absolute;
   top: -9px;
   bottom: 0;
-  right: 15px;
+  right: 30px;
   font-size: 13px;
   color: #fcf8f8;
   }
@@ -160,8 +160,17 @@ border-width: 1px;
   right: 8px; */
   color: #fcf8f8;
   font-size: 10px;
-
   }
+
+.nameDscripDashboard{
+  margin-left: -17px;
+}
+
+.nameDscripDashboard h2{
+  font-size: 15px;
+  color: #000000;
+}
+
 .nameDscrip{
   margin-left: -17px;
 }
@@ -313,8 +322,8 @@ color: #ffffff;
  }
 
  .datePicker {
-  margin-left: 20px; 
-  padding-left: 10px; 
+  margin-left: 11px; 
+  padding-left: 15px; 
   padding-right: 10px;
   background-color: #f7e8ca;
   /* border-left: 0px solid #f7e8ca; */
@@ -373,10 +382,11 @@ color: #ffffff;
  
  #materialSelectSupp{
   margin-top: 0px;
- margin-right: 10px;
+  margin-right: 10px;
 }
 
  #materialSelect{
+  padding: 1px;
   margin-right: -3px;
   margin-left: 3px;
   width: 35px;
@@ -384,11 +394,31 @@ color: #ffffff;
   font-weight: bold;
  }
 
+ #materialSelectCibleQuot{
+  padding: 1px;
+  /* margin-right: -3px;
+  margin-left: 3px; */
+  width: 60px;
+  font-size: 13px;
+  font-weight: bold;
+ }
+
+ #materialSelectAddHyd{
+  padding: 1px;
+  margin-right: 18px;
+  margin-left: -20px;
+  width: 60px;
+  font-size: 13px;
+  font-weight: bold;
+ }
+ 
  #PopUpUnitSelect{
   margin-top: 0px;
-  margin-left: -16px;
-  width: 40px;
+  margin-left: -28px;
+  padding: 0px;
+  width: 60px;
  }
+
  .ajoutBotton{
    width: 100%;
    padding-top: 4px;
@@ -399,11 +429,8 @@ color: #ffffff;
 
  .joggingTitle{
   font-size:16px;
-  padding-left: 10px;
-  margin-bottom: 0px;
   font-stretch: semi-condensed;
-  margin-top: 3px;
-  margin-right: 10px;
+  margin-top: 6px;
   color: #000000;
   text-align: center;
  }
@@ -422,19 +449,19 @@ color: #ffffff;
 
  .cibleTitle h3{
   font-size:16px;
-  padding-left: 10px;
+  padding-left: 0px;
   margin-bottom: 0px;
   font-stretch: semi-condensed;
   font-weight: bold;
   margin-top: 3px;
-  margin-right: 10px;
+  margin-right: 4px;
   color: #000000;
 }
 
 .description h3{
   font-size:12px;
   font-weight: bolder;
-  margin-top: 5px;
+  margin-top: 5px; 
   font-stretch: semi-condensed;
 }
 
@@ -470,10 +497,10 @@ color: #ffffff;
 
 .taillePortionSupp h3{
   font-size:14px;
- padding-left: 20px;
- margin-left: -20px;
- font-stretch: semi-condensed;
- text-align: center;
+  padding-left: 20px;
+  margin-left: -20px;
+  font-stretch: semi-condensed;
+  text-align: center;
 }
 
 .uniteMesureSupp h3{
@@ -506,7 +533,8 @@ color: #ffffff;
 .uniteMesure h3{
   font-size:12px;
   font-weight: bolder;
-  margin-right: 30px;
+  margin-right: 0px;
+  margin-top: 5px;
   font-stretch: semi-condensed;
   text-align: center;
 }
@@ -514,16 +542,25 @@ color: #ffffff;
 .taillePortion h3{
   font-size:12px;
   font-weight: bolder;
-  margin-right: 60px;
-  margin-left: 20px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-top: 5px;
   font-stretch: semi-condensed;
   text-align: center;
 }
 
 .divAddText{
   font-size: 10px;
+  margin-right: 20px;
   /* font-weight: bold; */
 }
+
+.divAddTextNut{
+
+  font-size: 10px;
+  text-align: center;
+}
+
  .labelSettings header h3 .IonItem{
   font-size:18px
 }
@@ -761,8 +798,13 @@ color: #ffffff;
  padding-top: 4px;
  padding-left: 50px;
  font-stretch: semi-condensed;
-
 }
+
+.joggingTitle h3{
+  font-size:16px;
+ font-weight: bold;
+}
+
 
 #divPopUp1{
   position: relative;
@@ -855,6 +897,11 @@ color: #ffffff;
 .editButton{
   margin-left: 10px;
   margin-right: 14px;
+}
+
+.AddButtonHydr{
+  margin-left: -20px;
+  margin-right: 60px;
 }
 
 #divPopUp2{
@@ -1392,11 +1439,21 @@ height: 58%;
   margin-left: 300px;
  }
 
- .inputTextActivities{
-  padding-left: 3px;
+ .inputTextDashboard{
   font-weight: bold;
   font-size: small;
  }
+
+ .inputTextActivities{
+  font-weight: bold;
+  font-size: small;
+  text-align: center;
+
+  /* text-align:center; */
+ }
+  .buttonActivities{
+    width: 7px;
+  }
 
  .unitActivities {
 
@@ -1404,13 +1461,27 @@ height: 58%;
 
  }
 
+ .inputTextNourDasboard{
+  width: 80%;
+  height: 60%;
+  background-color: #e7dcdc;
+  right: 30px;
+  border-radius: 5px;
+ }
+
  .inputTextGly{
-  width: 100%;
-  font-size: medium;
-  font-weight: bold;
+  width: 80%;
+  height: 60%;
   background-color: #e7dcdc;
   right: 60px;
   border-radius: 5px;
+ }
+
+ .inputTextGly h3{
+  font-size:large;
+  font-weight: bold;
+  text-align: center;
+  color: #463f3f;
  }
 
  /* .inputTextHyd {
@@ -1767,9 +1838,26 @@ h2{
 }
 
 .divAdd {
-  top: 20px;
-  left: 15px;
+  top: 5px;
+  left: 13px;
+  width: 330px;
   --ion-background-color:#eed996;
+}
+
+.colNutProteinesHyd {
+  background-color:  brown;
+}
+
+.colNutGlucidesHyd {
+  background-color:  #db4e3e;
+}
+
+.colNutFibresHyd {
+  background-color:  #589051;
+}
+
+.colNutGrasHyd {
+  background-color: rgb(202, 154, 23);
 }
 
 .divTitre1 {
@@ -1897,7 +1985,7 @@ h2{
   overflow: hidden;
 }
 .activitieCheck{
-  padding-top: 0px;
+  padding-top: 5px;
 }
 
 .eauItem{

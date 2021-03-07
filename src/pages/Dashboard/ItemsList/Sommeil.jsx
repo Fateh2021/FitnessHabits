@@ -1,10 +1,16 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
+import * as firebase from 'firebase'
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
 import {arrowDropdownCircle} from 'ionicons/icons';
 
 import '../../Tab1.css';
 
-const Sommeil = () => {
+const Sommeil = (props) => {
+
+  const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
+  const [heure, setHeure] = useState(props.heures);
+  const [minute, setMinute] = useState(props.minutes);
+  const [sommeil, setSommeil] = useState (props.sommeil);
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
@@ -13,42 +19,74 @@ const Sommeil = () => {
     }   
   }
   
-  return (
+  useEffect(() => {
+    setCurrentDate(props.currentDate);
+  }, [props.currentDate])
 
+  useEffect(() => {
+    setHeure(props.heures);
+  }, [props.heures])
+
+  useEffect(() => {
+    setMinute(props.minutes);
+  }, [props.minutes])
+
+  useEffect(() => {
+    setSommeil(props.sommeil);
+  }, [props.sommeil])
+
+  const handleChangeHeure = event => {
+    const activitiesHeure = event.target.value;
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    dashboard.sommeil.heure= activitiesHeure;
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    setHeure(activitiesHeure);
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  const handleChangeMinute = event => {
+    const activitiesMinute = event.target.value;
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    dashboard.sommeil.minute = activitiesMinute;
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    setMinute(activitiesMinute);
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  return (
     <div>
       <IonItem className="divTitre7">
         <IonAvatar slot="start">
           <img src="/assets/Sommeil3.png" alt=""/>
         </IonAvatar>
         <IonLabel><h2><b>Sommeil</b></h2></IonLabel>
-        <IonInput className='inputTextGly' color="danger" placeholder="" onIonChange={""}><b className="buttonTime">{""}</b></IonInput>
+        <IonInput className='inputTextGly' value={heure+":"+minute} readonly></IonInput>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV7")}/>
-      </IonItem>
+        </IonItem>
         <div id="myDIV7">
-          <IonItem>
+          <IonItem>     
             <IonRow>
-              <IonCol size="4">
+              <IonCol size="2">
                 <IonLabel className = 'joggingTitle'><h3>Durée</h3></IonLabel>
               </IonCol>
-              <IonCol size="5" >
-                <IonInput className='inputTextActivities' color="danger" value={""} placeholder="______" onIonChange={""}></IonInput>  
+              <IonCol size="2" >
+                <IonInput className='inputTextActivities' type= "number" value={heure} onIonChange={handleChangeHeure}></IonInput>  
               </IonCol>
-            </IonRow>        
-            <IonRow>
-              <IonCol className="activitieCheck" size="6" >
-                {/* <IonCheckbox  onIonChange={e => (setUnity('Heure'), setChecked(e.detail.checked))}/> */}
-                <IonButton color="light" onClick={""}>Heure</IonButton> 
+              <IonCol className="activitieCheck" size="3" >
+                <IonButton classname = "buttonActivities" color="light" onClick={""}>HH</IonButton> 
               </IonCol>
-              <IonCol className="activitieCheck"  size="6" >
-              <IonButton color="light" onClick={""}>Minute</IonButton> 
-                {/* <IonCheckbox onIonChange={e => (setUnity('Minute'), setChecked2(e.detail.checked!), setChecked(!checked))}/> */}
-                {/* <IonCheckbox checked={checked} onIonChange={e => setChecked(e.detail.checked)}/> */}
+              <IonCol size="2" >
+                <IonInput className='inputTextActivities' type= "number"  value={minute} onIonChange={handleChangeMinute}></IonInput>  
+              </IonCol>
+              <IonCol className="activitieCheck"  size="3" >
+                <IonButton classname = "buttonActivities" color="light" onClick={""}>Min</IonButton> 
               </IonCol>
             </IonRow>
-            </IonItem>
+          </IonItem>
         </div>
     </div>  
-
   );
 }
 export default Sommeil;

@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import {IonGrid, IonCol, IonRow, IonTabButton, IonIcon} from '@ionic/react';
 import "react-datepicker/dist/react-datepicker.css";
 import { arrowDropleftCircle, arrowDroprightCircle } from 'ionicons/icons';
 import '../Tab1.css';
+import { stringify } from 'querystring';
 
 const DateTime = (props) => {
-
+  
+  const [day, setDay] = useState(new Date());
+  const [dateday, setDateday] = useState(day);
+  
+  //String date = datepicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   const [currentDate, setCurrentDate] = useState({startDate: new Date()});
-
-  const handleChange = (date)  => { 
-    setCurrentDate({startDate: date})
-  }
+  const [currentDateStr, setCurrentDateStr] = useState({currentDate});
 
   const nextDay = () => {
     const localDate = currentDate.startDate.setDate(currentDate.startDate.getDate() + 1);
     setCurrentDate({startDate: new Date(localDate)});
+    //console.log("currentDateStr :::: "+ currentDate.toISOString());
+    setDay (new Date (localDate));
+    setDateday (new Date (localDate));
+    //setDateday (new Date (currentDate));
+    //console.log("currentDateStr :::: "+ day.getDate());
+    console.log("currentDateStr :::: "+ dateday);
+    // console.log("currentDateStr :::: "+ dateyear);
+    //console.log("currentDateStr :::: "+ localDate.toISOString());
   }
 
   const prevDay = () => {
@@ -42,7 +52,7 @@ const DateTime = (props) => {
                 // timeFormat="HH:mm"
                 // timeIntervals={1}
                 // timeCaption="time"
-                dateFormat="MM-d-yyyy"/> {/* <button className="btn btn-primary">Show Date</button> */}
+                dateFormat="MM-dd-yyyy"/> {/* <button className="btn btn-primary">Show Date</button> */}
                 {/* <DatePicker
                   required
                   selected={this.state.startDate}

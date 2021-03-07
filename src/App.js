@@ -38,7 +38,7 @@ const RoutingSystem= () => {
             <Route path="/register" component={Register}/>
             <Route path="/settings" component={Settings}/>
             <Route path="/intro" component={Intro} exact={true}/> 
-            <Route path="" render={() => <Redirect to="/intro" />} exact={true} />
+            <Route path="/" render={() => <Redirect to="/intro" />} exact={true} />
           </IonRouterOutlet>
       </IonReactRouter>
     </IonApp> 
@@ -46,21 +46,24 @@ const RoutingSystem= () => {
 }
 
 const App= () => {
-  const [busy, setBusy] = useState(true)
+  // const [busy, setBusy] = useState(true);
+  const [user, setUser] = useState(getCurrentUser());
 
   useEffect(() =>{
+
+    setUser(user);
     getCurrentUser().then(user =>{
       if(user){  
         // i'm logged in
         //window.location.href='/dashboard'
-        window.history.replaceState({}, '', '/dashboard')    
+        window.history.replaceState({}, '', '/dashboard');   
       }else{
        // window.location.href='/'
         window.history.replaceState({}, '', '/')
       }
-      setBusy(false)
+      // setBusy(false)
     })
-  },[])
+  },[user])
     // return <IonApp className="fondIntro">{busy ? <IonSpinner/> : <RoutingSystem/>}</IonApp>
      return <IonApp className="fondIntro">{<RoutingSystem/>}</IonApp>
 }

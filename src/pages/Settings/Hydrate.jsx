@@ -15,7 +15,8 @@ const HydrateItem = (props) => {
     glucide:props.item ? props.item.glucide : 0, 
     fibre:props.item ? props.item.fibre : 0, 
     gras:props.item ? props.item.gras : 0, 
-    unit: props.item ? props.item.unit : ''
+    unit: props.item ? props.item.unit : '',
+    consumption: props.item ? props.item.consumption:0
   });
 
   const handleChange = event => {
@@ -36,11 +37,11 @@ const HydrateItem = (props) => {
           <IonCol size="1">
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
-          <IonCol size="2">
+          <IonCol size="3">
             <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
@@ -53,16 +54,16 @@ const HydrateItem = (props) => {
             </select>
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            
       </div>
@@ -71,47 +72,41 @@ const HydrateItem = (props) => {
 
 const Hydrate = (props) => {
 
-  const [hydraDash, setHydraDash] = useState();
-
   const [hydrates, setHydrates] = useState(props.hydrates);
   const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
-  
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
+
   // update state on prop change
   useEffect(() => {
     setHydrates(props.hydrates);
   }, [props.hydrates])
 
-  const updateFavorisStatus = (event, index) => {
+  const updateFavorisStatus = (event, index, item) => {
     event.stopPropagation();
     var array = [...hydrates];
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
       array[index].favoris = true;
-      
-      // const index = array.findIndex((e) => e.id === item.id);
-      
+      console.log("array::"+JSON.stringify(array[index]));    
       const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      // var k = dashboard.hydratation.hydrates.length;
+      // for (var i = 0; i<k; i++){
+      //   let el = dashboard.hydratation.hydrates[i].name;
+      //   if (el!==array[index].name){
+      //     console.log("Duplication");
+      //   }        
+      // }
+      // console.log("array::"+ dashboard.hydratation.hydrates.length);
       dashboard.hydratation.hydrates.unshift(array[index]);
-      setHydraDash (array);
       localStorage.setItem('dashboard', JSON.stringify(dashboard));
       const userUID = localStorage.getItem('userUid');
-      firebase.database().ref('dashboard/'+userUID).update(dashboard);
-
-      console.log("Dashboard Hydratation ::::"+ JSON.stringify(dashboard))
-      
+      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard); 
     } else {
       event.target.style.color = '';
-      array[index].favoris = false;
-      
-      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-      dashboard.hydratation.hydrates.splice(array[index], 1);
-      localStorage.setItem('dashboard', JSON.stringify(dashboard));
-      const userUID = localStorage.getItem('userUid');
-      firebase.database().ref('dashboard/'+userUID).update(dashboard);
+      array[index].favoris = false;      
     }
     setHydrates (array);
-    // update the cache and persist in DB
     updateCacheAndBD(array);
   }
 
@@ -134,7 +129,8 @@ const Hydrate = (props) => {
     console.log("save Item::"+JSON.stringify(item))
     var array = [...hydrates];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[index] = item;
+    console.log("index :::::" + array[item].id)
+    index === -1 ? array.splice(item, 1): array[item] = item;
     setHydrates (array);
     closeItemContainer();
 
