@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { IonItem, IonIcon, IonLabel, IonAvatar} from '@ionic/react';
 import { arrowDropdownCircle,} from 'ionicons/icons';
-// import uuid from 'react-uuid';
+import * as firebase from 'firebase'
 
 import '../../../pages/Tab1.css';
 
@@ -14,7 +14,27 @@ const accor = (divId) => {
     
   }
 
-const FormatDate = () => {
+const FormatDate = (props) => {
+
+  const [dateFormat, setDateFormat] = useState(props.dateFormat);
+
+  // update state on prop change
+  useEffect(() => {
+    setDateFormat(props.dateFormat);
+  }, [props.dateFormat])
+
+  const handleDateFormatChanged = event => {
+    const userUID = localStorage.getItem('userUid');
+    const { value } = event.target;
+    setDateFormat(value);
+    // update the cache and persist in DB
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    settings.dateFormat = value;
+    localStorage.setItem('settings', JSON.stringify(settings));
+    console.log("handleDateFormatChanged -- updatedDateFormat ::"+ value);
+    console.log("handleDateFormatChanged -- settings ::"+JSON.stringify(settings));
+    firebase.database().ref('settings/'+userUID).update(settings);
+  };
 
   return (
     <div>
@@ -36,13 +56,13 @@ const FormatDate = () => {
           {/* todo: load l'instruction selon la langue from DB ? */}
           <span>Sélectionnez un format de date</span>
             {/* todo: load les options selon la langue from DB ? */}                     
-            <select id="materialSelectFormatDate">
-            <option value="-1"></option>
-            <option value="0">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
-            <option value="1">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
-            <option value="2">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
-            <option value="3">AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
-            <option value="4">JJ-mmm-AAAA (Français avec mois lettré) - 16-fev-2021</option>
+            <select id="materialSelectFormatDate" name="dateFormat" value={dateFormat} onChange={handleDateFormatChanged}>
+            <option value=""></option>
+            <option value="MM-JJ-AAAA">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
+            <option value="JJ-MM-AAAA">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
+            <option value="AAAA-MM-JJ">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
+            <option value="AAAA-mmm-JJ">AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
+            <option value="JJ-mmm-AAAA">JJ-mmm-AAAA (Français avec mois lettré) - 16-fev-2021</option>
           </select>   
         </div>
       </div>
