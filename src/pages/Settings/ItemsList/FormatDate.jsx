@@ -34,7 +34,7 @@ const FormatDate = () => {
       <div>
         <div id="myDIV10">
           {/* todo: load l'instruction selon la langue from DB ? */}
-          <span>Sélectionnez un format de dates</span>
+          <span>Sélectionnez un format de date</span>
             {/* todo: load les options selon la langue from DB ? */}                     
             <select id="materialSelectFormatDate">
             <option value="-1"></option>
