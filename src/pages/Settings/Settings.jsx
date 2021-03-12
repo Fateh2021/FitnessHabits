@@ -176,6 +176,11 @@ const Settings =(props) =>{
 
       }
 
+      if(!settings.dateFormat)
+      {
+        settings.dateFormat = ""
+      }
+
     return settings;
   }
 
