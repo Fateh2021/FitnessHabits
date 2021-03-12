@@ -58,11 +58,11 @@ const FormatDate = (props) => {
             {/* todo: load les options selon la langue from DB ? */}                     
             <select id="materialSelectFormatDate" name="dateFormat" value={dateFormat} onChange={handleDateFormatChanged}>
             <option value=""></option>
-            <option value="MM-JJ-AAAA">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
-            <option value="JJ-MM-AAAA">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
-            <option value="AAAA-MM-JJ">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
-            <option value="AAAA-mmm-JJ">AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
-            <option value="JJ-mmm-AAAA">JJ-mmm-AAAA (Français avec mois lettré) - 16-fev-2021</option>
+            <option value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
+            <option value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
+            <option value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
+            <option value="yyyy-LLL-dd">AAAA-LLL-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
+            <option value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) - 16-fev-2021</option>
           </select>   
         </div>
       </div>
