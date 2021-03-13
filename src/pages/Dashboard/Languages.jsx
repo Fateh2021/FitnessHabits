@@ -1,13 +1,15 @@
 import * as firebase from 'firebase'
-import React from 'react';
+import React, { useState } from 'react';
 import {
     IonTabBar, IonTabButton, IonHeader, IonIcon,
-    IonLabel, IonFooter, IonContent, IonPage, IonItem, IonRadioGroup, IonRadio
+    IonLabel, IonFooter, IonContent, IonPage, IonItem, IonRadioGroup, IonRadio, IonListHeader
 } from '@ionic/react';
 import { home, arrowDropleftCircle, globe, settings } from 'ionicons/icons';
 import '../Tab1.css';
 
-const Languages = (props) => {
+export const Languages = (props) => {
+    var userLanguage = "fr"
+    const [selected, setSelected] = useState(userLanguage);
     return (
         <IonPage>
             <IonHeader>
@@ -15,17 +17,21 @@ const Languages = (props) => {
                     <IonTabButton tab="" href="/dashboard">
                         <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />
                     </IonTabButton>
-                    <IonTabButton tab="menu" href="/sidbar">
-                        <IonLabel className="headerTitle">Choisir la langue</IonLabel>
+                    <IonTabButton tab="menu">
+                        <IonLabel className="headerTitle">Langue</IonLabel>
                     </IonTabButton>
                     <IonTabButton tab="settings" href="/languages">
-                        <IonIcon className="targetProfil " icon={globe} />
+                        <IonIcon className="targetProfil "/>
                     </IonTabButton>
                 </IonTabBar>
             </IonHeader>
 
             <IonContent>
-                <IonRadioGroup >
+                <IonRadioGroup value={selected} onIonChange={e => setSelected(e.detail.value) }>
+                    <IonListHeader>
+                        <IonLabel className="headerTitle">Choisir la langue de l'application</IonLabel>
+                    </IonListHeader>
+
                     <IonItem>
                         <IonLabel>English</IonLabel>
                         <IonRadio slot="start" value="en" />
