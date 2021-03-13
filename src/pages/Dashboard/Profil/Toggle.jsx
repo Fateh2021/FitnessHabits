@@ -17,7 +17,7 @@ const Toggle = (props) => {
                     </IonLabel>                
                 </div>
                 <div className="grid-item">
-                    <a className="buttonHeaderDash">
+                    <a className="buttonHeaderDash" href="/languages">
                         <IonIcon className="targetProfil"  icon={globe}/>
                     </a>
                 </div>

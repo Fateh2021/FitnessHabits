@@ -6,7 +6,8 @@ import LogIn from './pages/Login/LogIn';
 import Register from './pages/Register/Register';
 import Intro from './pages/Intro/Intro';
 import Dashboard from './pages/Dashboard/Dashboard'
-import Settings from './pages/Settings/Settings'
+import Settings from './pages/Settings/Settings';
+import Languages from './pages/Dashboard/Languages';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -39,6 +40,7 @@ const RoutingSystem= () => {
             <Route path="/settings" component={Settings}/>
             <Route path="/intro" component={Intro} exact={true}/> 
             <Route path="/" render={() => <Redirect to="/intro" />} exact={true} />
+            <Route path="/languages" component={Languages} />
           </IonRouterOutlet>
       </IonReactRouter>
     </IonApp> 
