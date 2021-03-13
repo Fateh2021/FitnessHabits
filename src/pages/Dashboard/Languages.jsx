@@ -1,7 +1,7 @@
 import * as firebase from 'firebase'
 import React, { useState } from 'react';
 import {
-    IonTabBar, IonTabButton, IonHeader, IonIcon,
+    IonTabBar, IonTabButton, IonHeader, IonIcon, IonAvatar,
     IonLabel, IonFooter, IonContent, IonPage, IonItem, IonRadioGroup, IonRadio, IonListHeader
 } from '@ionic/react';
 import { home, arrowDropleftCircle, globe, settings } from 'ionicons/icons';
@@ -33,17 +33,32 @@ export const Languages = (props) => {
                     </IonListHeader>
 
                     <IonItem>
-                        <IonLabel>English</IonLabel>
+                        <IonLabel>
+                            <IonAvatar>
+                                <img src="/assets/flags/flag_UK_square-128.png" alt=""/>
+                            </IonAvatar>
+                            <span>English</span>
+                        </IonLabel>
                         <IonRadio slot="start" value="en" />
                     </IonItem>
 
                     <IonItem>
-                        <IonLabel>Español</IonLabel>
+                        <IonLabel>
+                            <IonAvatar>
+                                <img src="/assets/flags/flag_spain_square-128.png" alt=""/>
+                            </IonAvatar>
+                            <span>Español</span>
+                        </IonLabel>
                         <IonRadio slot="start" value="es" />
                     </IonItem>
 
                     <IonItem>
-                        <IonLabel>Français</IonLabel>
+                        <IonLabel>
+                            <IonAvatar>
+                                <img src="/assets/flags/flag_france_square-128.png" alt=""/>
+                            </IonAvatar>
+                            <span>Français</span>
+                        </IonLabel>
                         <IonRadio slot="start" value="fr" />
                     </IonItem>
                 </IonRadioGroup>
