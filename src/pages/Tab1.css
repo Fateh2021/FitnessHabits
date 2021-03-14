@@ -1,10 +1,3 @@
-/* CSS GEFRAL pour l'image qui representera l'arrière plan*/
-#img {
-    z-index: 0;
-    tab-index: 0;
-    height:350%;
-    position: absolute;
-}
 .or-format {
     text-align: center;
 }
@@ -1413,7 +1406,7 @@ border-width: 1px; */
 }
 
 .fondIntro{
-background-color: #ffffff;
+    background-image: linear-gradient(#0072ff,#00c6ff);
 }
 
 .logoSideBar{
@@ -1422,8 +1415,8 @@ background-color: #ffffff;
 }
 
 .logoIntro{
-  margin-top: 30px;
-  margin-left: 0px;
+    margin-top: 30px;
+    margin-left: 0px;
 }
 
 .profilText h2{

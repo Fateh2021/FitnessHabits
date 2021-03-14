@@ -42,8 +42,7 @@ const LogIn = (props) => {
     }
 
     return (
-      <IonPage>
-          <img id="img" src="/assets/backgroundColor.png" alt=""/>
+      <IonPage className="fondIntro">
         <IonGrid>
           <IonRow className="">
             <IonCol>
@@ -74,10 +73,10 @@ const LogIn = (props) => {
         <IonRow className="">
           <IonCol>
             <IonLoading message="Veuillez patienter.." duration={0} isOpen={busy} />   
-            <IonItem>  
+            <IonItem color="transparent">
               <IonInput placeholder="Nom d'utilisateur?" onIonChange={(e) => setUsername(e.target.value)}/>
             </IonItem>
-            <IonItem>
+            <IonItem color="transparent">
               <IonInput type="password" placeholder="Mot de passe?" onIonChange={(e) => setPassword(e.target.value)}/>
             </IonItem>         
             <IonButton className="login-button-left" onClick={login}>Se connecter</IonButton>
