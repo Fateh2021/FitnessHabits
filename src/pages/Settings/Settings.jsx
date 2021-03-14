@@ -10,7 +10,6 @@ import NourriLegumes from './ItemsList/Nourriture/NourriLegumes'
 import NourriProteines from './ItemsList/Nourriture/NourriProteines'
 import NourriCereales from './ItemsList/Nourriture/NourriCereales'
 import Supplements from './ItemsList/Supplements'
-import FormatDate from './ItemsList/FormatDate'
 import DefaultSettings from './DefaultSettings'
 
 import '../Tab1.css';
@@ -230,8 +229,7 @@ const Settings =(props) =>{
           
         </div>
         <Supplements/>  
-        <BoissonAlcool alcool={settings.alcool}/>    
-        <FormatDate dateFormat={settings.dateFormat}/>      
+        <BoissonAlcool alcool={settings.alcool}/>
         </IonList>                                                 
       </IonContent>
   
