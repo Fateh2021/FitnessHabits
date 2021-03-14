@@ -21,7 +21,7 @@ function obtenirFormatDb(userUID) {
   return new Promise((resolve) => {
     firebase
       .database()
-      .ref("settings/" + userUID + "/dateFormat")
+      .ref("profiles/" + userUID + "/dateFormat")
       .once("value", (snapshot) => {
         const sets = snapshot.val();
         if (sets) {

@@ -12,7 +12,8 @@ const Sidebar = (props) => {
         pseudo: "",
         email: "",
         size: "",
-        gender: ""
+        gender: "",
+        dateFormat: ""
       });
 
     // load the current profile from the local storage if it exists, otherwise load it from the DB
@@ -44,9 +45,10 @@ const Sidebar = (props) => {
             "pseudo": profile.pseudo,
             "email": profile.email,
             "size": profile.size,
-            "gender": profile.gender
+            "gender": profile.gender,
+            "dateFormat": profile.dateFormat == null ? "" : profile.dateFormat
           }
-        )
+        );
       };
 
     const signOutUser = () => {
@@ -128,6 +130,15 @@ const Sidebar = (props) => {
                     <IonItem>
                     <IonInput className = 'inputProfilText' type= 'text' name="gender" value={profile.gender} onIonChange={handleInputChange} placeholder="Genre" clearInput></IonInput>
                     </IonItem>
+
+                    <IonItemDivider className = 'profilText'><h2>Format de date</h2></IonItemDivider>
+                    <select id="materialSelectFormatDate" name="dateFormat" value={profile.dateFormat} onChange={handleInputChange}>
+                        <option value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
+                        <option value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
+                        <option value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
+                        <option value="yyyy-LLL-dd">AAAA-LLL-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
+                        <option value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) - 16-fev-2021</option>
+                    </select>
 
                     <IonItemDivider color='warning' className = 'profilText'></IonItemDivider>
                 
