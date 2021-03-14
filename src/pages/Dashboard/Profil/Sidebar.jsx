@@ -2,7 +2,7 @@ import * as firebase from 'firebase'
 import "firebase/auth";
 import "firebase/firestore";
 import React, {useState, useEffect} from "react"
-import { IonList, IonGrid, IonRow, IonCol, IonHeader, IonIcon, IonInput, IonLabel, IonContent, IonItemDivider, IonItem, IonSelect, IonSelectOption} from "@ionic/react";
+import { IonList, IonGrid, IonRow, IonCol, IonHeader, IonIcon, IonInput, IonLabel, IonContent, IonItemDivider, IonItem} from "@ionic/react";
 import { arrowRoundBack, logOut } from "ionicons/icons";
 import { TakePicture } from "../../TakePicture/TakePicture"
 
@@ -136,13 +136,13 @@ const Sidebar = (props) => {
                     </IonItem>
  
                     <IonItemDivider className = 'profilText'><h2>Format de date</h2></IonItemDivider>
-                    <IonSelect interfaceOptions={customPopoverOptions} interface="popover" name="dateFormat" okText="Ok" cancelText="Fermer" value={profile.dateFormat} onIonChange={handleInputChange}>
-                        <IonSelectOption value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</IonSelectOption>
-                        <IonSelectOption value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</IonSelectOption>
-                        <IonSelectOption value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</IonSelectOption>
-                        <IonSelectOption value="yyyy-LLL-dd">AAAA-LLL-JJ (International dont le mois est lettré) ex: 2021-fev-16</IonSelectOption>
-                        <IonSelectOption value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) - 16-fev-2021</IonSelectOption>
-                    </IonSelect>
+                    <select name="dateFormat" value={profile.dateFormat} onChange={handleInputChange}>
+                        <option value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
+                        <option value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
+                        <option value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
+                        <option value="yyyy-LLL-dd">AAAA-LLL-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
+                        <option value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) - 16-fev-2021</option>
+                    </select>
 
                     <IonItemDivider color='warning' className = 'profilText'></IonItemDivider>
                 

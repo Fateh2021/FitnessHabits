@@ -43,7 +43,6 @@ const Dashboard = (props) => {
   }
 
   const sidebarCloseHandler = () => {
-    console.log("sidebar closed");
     FormatDate(currentDate.startDate).then(dt => {
       setFormatedCurrentDate(dt);
     });
