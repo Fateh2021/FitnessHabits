@@ -173,7 +173,6 @@ const Settings =(props) =>{
 
       }
 
-
     return settings;
   }
 
