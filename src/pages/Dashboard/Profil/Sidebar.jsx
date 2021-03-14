@@ -142,7 +142,7 @@ const Sidebar = (props) => {
                         <option value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
                         <option value="yyyy-LLL-dd">AAAA-LLL-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
                         <option value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) - 16-fev-2021</option>
-                    </select>
+                    </select> 
 
                     <IonItemDivider color='warning' className = 'profilText'></IonItemDivider>
                 
