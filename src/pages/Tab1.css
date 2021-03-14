@@ -11,6 +11,10 @@
   background: #e22525;
 }
 
+.date-format-popover .popover-content{
+  width: 50%;
+}
+
 .divImgSett{
  margin-top: 18px;
 padding: 2px;

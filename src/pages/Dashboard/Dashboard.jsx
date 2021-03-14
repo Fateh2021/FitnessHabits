@@ -42,6 +42,13 @@ const Dashboard = (props) => {
     }
   }
 
+  const sidebarCloseHandler = () => {
+    console.log("sidebar closed");
+    FormatDate(currentDate.startDate).then(dt => {
+      setFormatedCurrentDate(dt);
+    });
+}
+
   const [dashboard, setDashboard] = useState({
     hydratation: {
         dailyTarget:{
@@ -252,7 +259,7 @@ const Dashboard = (props) => {
 
   return (
     <IonPage>            
-      <Profil> </Profil>        
+      <Profil close={sidebarCloseHandler}> </Profil>        
       <IonContent >
         <div className="datePickerPage" >   
       <IonGrid>
@@ -263,7 +270,7 @@ const Dashboard = (props) => {
             </IonTabButton> 
           </IonCol>
           <IonCol></IonCol>
-          <IonCol>
+          <IonCol style={{textAlign: 'center'}}>
           <IonLabel className="datePicker">{ formatedCurrentDate}</IonLabel>
           </IonCol>
           <IonCol></IonCol>
