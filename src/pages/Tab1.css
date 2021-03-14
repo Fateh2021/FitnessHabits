@@ -385,10 +385,6 @@ color: #ffffff;
   margin-right: 10px;
 }
 
-#materialSelectFormatDate{
-  margin-left: 10px;
-}
-
  #materialSelect{
   padding: 1px;
   margin-right: -3px;
@@ -1787,13 +1783,6 @@ body {
   width: 100%;
   padding: 5px 0;
   text-align: center;
-  background-color: #eed996;
-  display: none;
-}
-#myDIV10{
-  width: 100%;
-  padding: 5px;
-  text-align: left;
   background-color: #eed996;
   display: none;
 }

@@ -73,8 +73,6 @@ const Settings =(props) =>{
         },
         cereales:DefaultSettings.cereales
       },
-
-      dateFormat : ''
   });
 
   // load the current settings from the local storage if it exists, otherwise load it from the DB
@@ -175,10 +173,6 @@ const Settings =(props) =>{
 
       }
 
-      if(!settings.dateFormat)
-      {
-        settings.dateFormat = ""
-      }
 
     return settings;
   }
@@ -229,7 +223,7 @@ const Settings =(props) =>{
           
         </div>
         <Supplements/>  
-        <BoissonAlcool alcool={settings.alcool}/>
+        <BoissonAlcool alcool={settings.alcool}/>         
         </IonList>                                                 
       </IonContent>
   
