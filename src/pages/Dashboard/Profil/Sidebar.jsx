@@ -136,12 +136,12 @@ const Sidebar = (props) => {
                     </IonItem>
  
                     <IonItemDivider className = 'profilText'><h2>Format de date</h2></IonItemDivider>
-                    <IonSelect interfaceOptions={customPopoverOptions} interface="popover" name="dateFormat" okText="Ok" cancelText="Fermer" value={profile.dateFormat} onIonChange={handleInputChange}>
+                    <IonSelect interfaceOptions={customPopoverOptions} interface="popover" name="dateFormat" value={profile.dateFormat} onIonChange={handleInputChange}>
                         <IonSelectOption value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</IonSelectOption>
                         <IonSelectOption value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</IonSelectOption>
                         <IonSelectOption value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</IonSelectOption>
                         <IonSelectOption value="yyyy-LLL-dd">AAAA-LLL-JJ (International dont le mois est lettré) ex: 2021-fev-16</IonSelectOption>
-                        <IonSelectOption value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) - 16-fev-2021</IonSelectOption>
+                        <IonSelectOption value="dd-LLL-yyyy">JJ-LLL-AAAA (Français avec mois lettré) ex: 16-fev-2021</IonSelectOption>
                     </IonSelect>
 
                     <IonItemDivider color='warning' className = 'profilText'></IonItemDivider>
