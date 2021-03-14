@@ -1,3 +1,47 @@
+/* CSS GEFRAL pour l'image qui representera l'arrière plan*/
+#img {
+    z-index: 0;
+    tab-index: 0;
+    height:350%;
+    position: absolute;
+}
+
+.google-facebook-logo-left {
+    background-color: transparent;
+    float: left;
+    size: 200px;
+    column-width: fill-available;
+
+}
+
+.google-facebook-button-right {
+    background-color: transparent;
+    float: right;
+    width: 305px;
+    height: 40px;
+    column-width: fill-available;
+}
+
+.login-button-left {
+    background-color: transparent;
+    float: left;
+
+}
+.register-button-right {
+    background-color: transparent;
+    float: right;
+}
+
+.row-facebook-google-format  {
+    align-items: center;
+    justify-content: space-between;
+}
+.or-format  {
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
 .welcome-card img {
   /* max-height: 35vh; */
   margin-left: auto;
