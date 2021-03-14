@@ -32,34 +32,34 @@ export const Languages = (props) => {
                         <IonLabel className="headerTitle">Choisir la langue de l'application</IonLabel>
                     </IonListHeader>
 
-                    <IonItem>
-                        <IonLabel>
-                            <IonAvatar>
-                                <img src="/assets/flags/flag_UK_square-128.png" alt=""/>
+                    <IonItem class="flexCenter">
+                        <IonLabel class="flexCenter">
+                            <IonAvatar class="flexCenter">
+                                <img class="langueFlag" src="/assets/flags/flag_UK_square-128.png" alt=""/>
                             </IonAvatar>
-                            <span>English</span>
+                            <span class="langueName">English</span>
                         </IonLabel>
-                        <IonRadio slot="start" value="en" />
+                        <IonRadio class="order-3" slot="start" value="en" />
                     </IonItem>
 
-                    <IonItem>
-                        <IonLabel>
-                            <IonAvatar>
-                                <img src="/assets/flags/flag_spain_square-128.png" alt=""/>
+                    <IonItem class="flexCenter">
+                        <IonLabel class="flexCenter">
+                            <IonAvatar class="flexCenter">
+                                <img class="langueFlag" src="/assets/flags/flag_spain_square-128.png" alt=""/>
                             </IonAvatar>
-                            <span>Español</span>
+                            <span class="langueName">Español</span>
                         </IonLabel>
-                        <IonRadio slot="start" value="es" />
+                        <IonRadio class="order-3" slot="start" value="es" />
                     </IonItem>
 
-                    <IonItem>
-                        <IonLabel>
-                            <IonAvatar>
-                                <img src="/assets/flags/flag_france_square-128.png" alt=""/>
+                    <IonItem class="flexCenter">
+                        <IonLabel class="flexCenter">
+                            <IonAvatar class="flexCenter">
+                                <img class="langueFlag" src="/assets/flags/flag_france_square-128.png" alt=""/>
                             </IonAvatar>
-                            <span>Français</span>
+                            <span class="langueName">Français</span>
                         </IonLabel>
-                        <IonRadio slot="start" value="fr" />
+                        <IonRadio class="order-3" slot="start" value="fr" />
                     </IonItem>
                 </IonRadioGroup>
             </IonContent>
