@@ -26,6 +26,21 @@ const LogIn = (props) => {
         setBusy(false)
     }
 
+    /*GEFRAL: fonction permettant de se connecter avec un compte Google */
+    async function googleSignIn(){
+        setBusy(true);
+        try{
+            await signInWithGoogle();
+            localStorage.setItem('userUid', firebase.auth().currentUser.uid);
+            toast('Authentification Google reussi!');
+            props.history.push('/dashboard');
+
+        }catch(error){
+            toast('Erreur d\'authentification Google!', 4000)
+        }
+        setBusy(false)
+    }
+
     return (
       <IonPage>
           <img id="img" src="/assets/backgroundColor.png" alt=""/>
@@ -39,30 +54,23 @@ const LogIn = (props) => {
             <IonCol>
             </IonCol>
           </IonRow>
-            <IonRow class="row-facebook-google-format">
-                <IonCol>
-                    <IonIcon class="google-facebook-logo-left" size="large" icon={logoGoogle}/>
-                </IonCol>
-                <IonCol >
-                    <IonButton color="dark" class="google-facebook-button-right" onClick={login} >
+
+            <IonRow>
+                <IonCol size="12" >
+                    <IonButton expand="full" color="dark" onClick={googleSignIn} >
+                        <IonIcon className="icon-google-format" icon={logoGoogle}/>
                         Se connecter via google
                         <IonIcon icon={arrowForward}/>
                     </IonButton>
-                </IonCol>
-            </IonRow>
-            <IonRow class="rowAlign">
-                <IonCol>
-                    <IonIcon class="google-facebook-logo-left" size="large" icon={logoFacebook}/>
-                </IonCol>
-                <IonCol>
-                    <IonButton color="dark" class="google-facebook-button-right" onClick={login}>
+                    <IonButton expand="full" color="dark" onClick={login}>
+                        <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
                         Se connecter via Facebook
                         <IonIcon icon={arrowForward}/>
                     </IonButton>
                 </IonCol>
+                <IonCol class="or-format">OU</IonCol>
             </IonRow>
 
-            <IonRow class="rowAlignOr">OU</IonRow>
         <IonRow className="">
           <IonCol>
             <IonLoading message="Veuillez patienter.." duration={0} isOpen={busy} />   
@@ -72,8 +80,8 @@ const LogIn = (props) => {
             <IonItem>
               <IonInput type="password" placeholder="Mot de passe?" onIonChange={(e) => setPassword(e.target.value)}/>
             </IonItem>         
-            <IonButton onClick={login}>Se connecter</IonButton>
-            <IonButton color="secondary" href="/register">Nouveau, s'enregistrer</IonButton>                  
+            <IonButton className="login-button-left" onClick={login}>Se connecter</IonButton>
+            <IonButton className="register-button-right" color="secondary" href="/register">Nouveau, s'enregistrer</IonButton>
           </IonCol>
         </IonRow>
       </IonGrid>       

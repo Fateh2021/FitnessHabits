@@ -5,41 +5,32 @@
     height:350%;
     position: absolute;
 }
-
-.google-facebook-logo-left {
-    background-color: transparent;
-    float: left;
-    size: 200px;
-    column-width: fill-available;
-
+.or-format {
+    text-align: center;
+}
+.icon-facebook-format {
+    font-size: 32px;
+    padding-right: 10%;
+    color: white;
+    text-shadow: black;
 }
 
-.google-facebook-button-right {
-    background-color: transparent;
-    float: right;
-    width: 305px;
-    height: 40px;
-    column-width: fill-available;
+.icon-google-format {
+    padding-right: 10%;
+    margin-right: 6%;
+    position: relative;
+    font-size: 32px;
+    color: white;
+    text-shadow: black;
 }
 
-.login-button-left {
-    background-color: transparent;
-    float: left;
-
-}
 .register-button-right {
-    background-color: transparent;
+    width: 62%;
     float: right;
 }
-
-.row-facebook-google-format  {
-    align-items: center;
-    justify-content: space-between;
-}
-.or-format  {
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.login-button-left {
+    width: 35%;
+    float: left;
 }
 
 .welcome-card img {
