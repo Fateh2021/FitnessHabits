@@ -56,14 +56,17 @@ const LogIn = (props) => {
 
             <IonRow>
                 <IonCol size="12" >
+                    {/*
+                     <IonButton expand="full" color="dark" onClick={login}>
+                        <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
+                        Se connecter via Facebook
+                        <IonIcon icon={arrowForward}/>
+                    </IonButton>
+                     */}
+
                     <IonButton expand="full" color="dark" onClick={googleSignIn} >
                         <IonIcon className="icon-google-format" icon={logoGoogle}/>
                         Se connecter via google
-                        <IonIcon icon={arrowForward}/>
-                    </IonButton>
-                    <IonButton expand="full" color="dark" onClick={login}>
-                        <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
-                        Se connecter via Facebook
                         <IonIcon icon={arrowForward}/>
                     </IonButton>
                 </IonCol>
