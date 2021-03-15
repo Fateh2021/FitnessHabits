@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import * as firebase from 'firebase'
-import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon} from '@ionic/react';
+import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon } from '@ionic/react';
+import ConfigurationPoids from "../../Poids/configuration";
 
 import '../../../pages/Tab1.css';
 
-const Glycemie = (props) => {
+const Poids = (props) => {
 
-  const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
+  const [currentDate, setCurrentDate] = useState({ startDate: props.currentDate });
   const [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   const [poids, setPoids] = useState(props.poids);
 
@@ -29,20 +30,25 @@ const Glycemie = (props) => {
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     setDailyPoids(dailPoids);
     const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  const handleRouteToConfigurationPoids = () => {
+    console.log(window.location.href);
+    window.location.href = '/configurationPoids';
   }
 
   return (
     <div>
-           <IonItem className="divTitre9">
-        <IonAvatar slot="start">
-          <img src="/assets/Poids.jpg" alt=""/>
+      <IonItem className="divTitre9">
+        <IonAvatar slot="start" onClick={handleRouteToConfigurationPoids}>
+          <img src="/assets/Poids.jpg" alt="" />
         </IonAvatar>
         <IonLabel><h2 color="warinig"><b>Poids</b></h2></IonLabel>
-        <IonInput className='inputTextGly' type="number" value = {dailyPoids} onIonChange={handleChange}><h3></h3> </IonInput> 
-        <IonIcon className="arrowDashItem"/>
-    </IonItem>
-    </div>   
+        <IonInput className='inputTextGly' type="number" value={dailyPoids} onIonChange={handleChange}> </IonInput>
+        <IonIcon className="arrowDashItem" />
+      </IonItem>
+    </div>
   );
 }
-export default Glycemie;
+export default Poids;
