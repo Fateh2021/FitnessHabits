@@ -8,6 +8,7 @@ import Intro from './pages/Intro/Intro';
 import Dashboard from './pages/Dashboard/Dashboard'
 import Settings from './pages/Settings/Settings'
 import ConfigurationPoids from './pages/Poids/configuration';
+import ConfigurationNotification from './pages/Poids/configurationNotification';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,6 +41,7 @@ const RoutingSystem = () => {
           <Route path="/settings" component={Settings} />
           <Route path="/intro" component={Intro} exact={true} />
           <Route path="/configurationPoids" component={ConfigurationPoids} />
+          <Route path="/configurationNotification" component={ConfigurationNotification} />
           <Route path="/" render={() => <Redirect to="/intro" />} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>

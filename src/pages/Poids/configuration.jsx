@@ -11,6 +11,11 @@ const ConfigurationPoids = (props) => {
   const [notification, setNotification] = useState(notificationObject);
 
   const jourNotification = notification.jours.map((value, index) => <IonLabel color="primary">{value}</IonLabel>);
+
+  const handleRouterPageConfigNotification = () => {
+    window.location.href = '/configurationNotification';
+  }
+
   return (
     <ion-app>
       <IonHeader>
@@ -61,7 +66,7 @@ const ConfigurationPoids = (props) => {
             </IonRow>
           </IonGrid>
         </IonCard>
-        <IonCard>
+        <IonCard onClick={handleRouterPageConfigNotification}>
           <IonCardContent>
             <IonList>
               <IonListHeader lines="inset">
