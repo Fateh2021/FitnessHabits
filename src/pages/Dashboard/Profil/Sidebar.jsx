@@ -68,6 +68,13 @@ const Sidebar = (props) => {
         props.close()
     }
 
+    /* GEFRAL: ici on récupère les données de l'utilisateur */
+    let user = firebase.auth().currentUser;
+    let name, email;
+    if (user != null) {
+        name = user.displayName;
+        email = user.email;
+    }
     return (
         <div className={sidebarClass}>
             <IonHeader className="sideBarHeader">
@@ -75,7 +82,7 @@ const Sidebar = (props) => {
                     <IonRow >
                         <TakePicture/>
                         <IonCol size="5">
-                            <IonInput className='userNameProfil' value="" readonly color="danger"><h3>{profile.pseudo}</h3></IonInput>
+                            <IonInput className='userNameProfil' value="" readonly color="danger"><h3>{name}</h3></IonInput>
                         </IonCol>
                         <IonCol size="1.5">
                             <button id="close" className="sideBarButton" color="danger" onClick={(e) => closeHandler(e)}> 
@@ -111,12 +118,12 @@ const Sidebar = (props) => {
                 <IonList>
                     <IonItemDivider color='warning' className = 'profilText'><h2>Pseudo</h2></IonItemDivider>
                     <IonItem>
-                    <IonInput className = 'inputProfilText' type='text' name="pseudo" value={profile.pseudo} onIonChange={handleInputChange} placeholder="Nom" clearInput ></IonInput>
+                    <IonInput className = 'inputProfilText' type='text' name="pseudo" value={name} onIonChange={handleInputChange} placeholder="Nom" clearInput ></IonInput>
                     </IonItem>
 
                     <IonItemDivider color='warning' className = 'profilText'><h2>Email</h2></IonItemDivider>
                     <IonItem>
-                    <IonInput className = 'inputProfilText' type='url' name="email" value={profile.email} onIonChange={handleInputChange} placeholder="URL" clearInput></IonInput>
+                    <IonInput className = 'inputProfilText' type='url' name="email" value={email} onIonChange={handleInputChange} placeholder="URL" clearInput></IonInput>
                     </IonItem>
 
                     <IonItemDivider color='warning' className = 'profilText'><h2>Taille</h2></IonItemDivider>
