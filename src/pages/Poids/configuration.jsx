@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-// import { arrowDropleftCircle } from 'ionicons/icons';
 import { IonSelectOption, IonSelect, IonToggle, IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonHeader, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonList, IonListHeader, IonItem, IonLabel, IonTitle, IonGrid, IonCol } from '@ionic/react';
-// import { calendar, personCircle, map, informationCircle } from 'ionicons/icons';
 import './configuration.css';
 import notificationObject from './notificationObject';
 
@@ -11,6 +9,8 @@ const ConfigurationPoids = (props) => {
   // const [checked, setChecked] = useState(false);
   const [unite, setUnite] = useState("KG");
   const [notification, setNotification] = useState(notificationObject);
+
+  const jourNotification = notification.jours.map((value, index) => <IonLabel color="primary">{value}</IonLabel>);
   return (
     <ion-app>
       <IonHeader>
@@ -68,25 +68,13 @@ const ConfigurationPoids = (props) => {
                 <IonLabel>Notification {notification.index}</IonLabel>
                 <IonToggle checked={notification.actif} onIonChange={e => setNotification({ ...notification, actif: e.target.value })} />
               </IonListHeader>
-              <IonItem lines="none">
+              <IonItem lines="full">
                 <IonLabel color="primary">
-                  <h3>I got you babe</h3>
+                  <h3>{notification.temps}</h3>
                 </IonLabel>
               </IonItem>
               <IonItem lines="none">
-                <IonLabel color="primary">
-                  <h3>I got you babe</h3>
-                </IonLabel>
-              </IonItem>
-              <IonItem lines="none">
-                <IonLabel color="primary">
-                  <h3>I got you babe</h3>
-                </IonLabel>
-              </IonItem>
-              <IonItem lines="none">
-                <IonLabel color="primary">
-                  <h3>I got you babe</h3>
-                </IonLabel>
+                {jourNotification}
               </IonItem>
             </IonList>
           </IonCardContent>
@@ -104,12 +92,6 @@ const ConfigurationPoids = (props) => {
           </IonGrid>
         </IonCard>
       </ion-content>
-
-      {/* <ion-footer>*/}
-      {/*  <ion-toolbar>*/}
-      {/*    <ion-title color="tertiary">Notification du Poids</ion-title>*/}
-      {/*  </ion-toolbar>*/}
-      {/*</ion-footer>*/}
     </ion-app>
   )
 }
