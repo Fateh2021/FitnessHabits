@@ -18,7 +18,7 @@ const InitialisationPoids = (props) => {
               <IonLabel slot="start">Unité</IonLabel>
               <IonSelect slot="end" value={unite} placeholder="Select One" onIonChange={e => setUnite(e.target.value)}>
                 <IonSelectOption value="female">KG</IonSelectOption>
-                <IonSelectOption value="male">PG</IonSelectOption>
+                <IonSelectOption value="male">LB</IonSelectOption>
               </IonSelect>
             </IonItem>
             <IonItem>

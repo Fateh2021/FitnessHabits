@@ -20,20 +20,6 @@ const ConfigurationPoids = (props) => {
     <ion-app>
       <HeaderPoids url="/dashboard" />
       <ion-content class="ion-padding" overflow-scroll="true">
-        {/* <InitialisationPoids />
-        <ConfigurationNotificationCarteListe listeNotificationObject={listNotification} />
-        <IonCard>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <IonButton shape="round" expand="block">Supprimer</IonButton>
-              </IonCol>
-              <IonCol>
-                <IonButton shape="round" expand="block" onClick={handleAjouterNotificationOnClick}>Ajouter</IonButton>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCard> */}
         <ion-tabs>
           <ion-tab tab="Initialisation">
             <InitialisationPoids />
