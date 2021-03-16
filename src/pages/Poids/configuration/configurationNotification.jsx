@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonItem, IonLabel, IonGrid, IonCol } from '@ionic/react';
+import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonItem, IonLabel, IonGrid, IonCol, IonCard } from '@ionic/react';
 import './configurationNotification.css';
 
 import HeaderPoids from "./header";
 
 // const listeButtonColors = ["primary", "primary", "primary", "primary", "primary", "primary", "primary"]
+
+const handleRouterPageConfigNotification = () => {
+    window.location.href = '/configurationPoids';
+}
 
 const ConfigurationNotification = (props) => {
     const [titre, setrTitre] = useState("Titre de notification");
@@ -63,6 +67,18 @@ const ConfigurationNotification = (props) => {
                         </IonGrid>
                     </IonItem>
                 </IonItemGroup>
+                <IonCard>
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol size="6">
+                                <IonButton shape="round" expand="block">reset</IonButton>
+                            </IonCol>
+                            <IonCol size="6">
+                                <IonButton shape="round" expand="block" onClick={handleRouterPageConfigNotification}>confirm</IonButton>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                </IonCard>
             </ion-content>
         </ion-app>
         // <div>
