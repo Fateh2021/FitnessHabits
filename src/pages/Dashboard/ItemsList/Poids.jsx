@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import * as firebase from 'firebase'
 import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon } from '@ionic/react';
-import ConfigurationPoids from "../../Poids/configuration";
 
 import '../../../pages/Tab1.css';
 

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-date-picker';
-import { IonSelectOption, IonSelect, IonToggle, IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonHeader, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonList, IonListHeader, IonItem, IonLabel, IonTitle, IonGrid, IonCol } from '@ionic/react';
+import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonItem, IonLabel, IonGrid, IonCol } from '@ionic/react';
 import './configurationNotification.css';
 
-const listeButtonColors = ["primary", "primary", "primary", "primary", "primary", "primary", "primary"]
+import HeaderPoids from "./header";
+
+// const listeButtonColors = ["primary", "primary", "primary", "primary", "primary", "primary", "primary"]
 
 const ConfigurationNotification = (props) => {
     const [titre, setrTitre] = useState("Titre de notification");
@@ -15,17 +16,7 @@ const ConfigurationNotification = (props) => {
     }
     return (
         <ion-app>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonBackButton defaultHref="/dashboard" />
-                    </IonButtons>
-                    <IonTitle>
-                        Configuration
-                    </IonTitle>
-                </IonToolbar>
-            </IonHeader>
-
+            <HeaderPoids url="/dashboard" />
             <ion-content class="ion-padding">
                 <IonItemGroup>
                     <IonItemDivider>

@@ -2,3 +2,7 @@ ion-select {
   width: 100%;
   justify-content: center;
 }
+
+.scroll{
+height: 100% !important;
+}

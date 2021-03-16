@@ -7,8 +7,8 @@ import Register from './pages/Register/Register';
 import Intro from './pages/Intro/Intro';
 import Dashboard from './pages/Dashboard/Dashboard'
 import Settings from './pages/Settings/Settings'
-import ConfigurationPoids from './pages/Poids/configuration';
-import ConfigurationNotification from './pages/Poids/configurationNotification';
+import ConfigurationPoids from './pages/Poids/configuration/configuration';
+import ConfigurationNotification from './pages/Poids/configuration/configurationNotification';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
