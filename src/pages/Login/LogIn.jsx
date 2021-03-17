@@ -30,9 +30,9 @@ const LogIn = (props) => {
     async function googleSignIn(){
         setBusy(true);
         try{
-            await signInWithGoogle();
-            localStorage.setItem('userUid', firebase.auth().currentUser.uid);
-            toast('Authentification Google reussi!');
+            let res = await signInWithGoogle();
+            localStorage.setItem('userUid', res.user.uid);
+            toast('Authentification Google réussie!');
             props.history.push('/dashboard');
 
         }catch(error){
