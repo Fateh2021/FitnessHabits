@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonItem, IonLabel, IonGrid, IonCol, IonCard } from '@ionic/react';
-import './configurationNotification.css';
 
 import HeaderPoids from "./header";
 
@@ -41,25 +40,25 @@ const ConfigurationNotification = (props) => {
                         <IonGrid>
                             <IonRow>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Dim</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round" >Di</IonButton>
                                 </IonCol>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Lun</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round">Lu</IonButton>
                                 </IonCol>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Mar</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round">Ma</IonButton>
                                 </IonCol>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Mer</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round">Me</IonButton>
                                 </IonCol>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Jeu</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round">Je</IonButton>
                                 </IonCol>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Ven</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round">Ve</IonButton>
                                 </IonCol>
                                 <IonCol size="auto">
-                                    <IonButton class="dayButton" size="small" shape="round">Sam</IonButton>
+                                    <IonButton class="dayButton" size="small" shape="round">Sa</IonButton>
                                 </IonCol>
                             </IonRow>
                         </IonGrid>

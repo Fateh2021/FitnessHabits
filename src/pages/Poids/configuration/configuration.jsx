@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { IonCard, IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
-import './configuration.css';
 import HeaderPoids from "./header";
 import InitialisationPoids from "./Initialisation";
 import ConfigurationNotificationCarteListe from "./configurationNotificationCarteListe";
 import notificationObject from './notificationObject';
-
-var divStyle = { width: "500px", height: "500px" };
 
 const ConfigurationPoids = (props) => {
   const [listNotification, setListNotification] = useState([]);
@@ -42,7 +39,7 @@ const ConfigurationPoids = (props) => {
 
           <ion-tab-bar slot="bottom" >
             <ion-tab-button tab="Initialisation">
-              <ion-label>Initialisation</ion-label>
+              <ion-label>Paramètre</ion-label>
             </ion-tab-button>
             <ion-tab-button tab="Notification">
               <ion-label>Notification</ion-label>

@@ -12,7 +12,7 @@ const InitialisationPoids = (props) => {
         <IonCardContent>
           <IonItemGroup>
             <IonItemDivider>
-              <IonLabel>Initialisation</IonLabel>
+              <IonLabel>Paramètre</IonLabel>
             </IonItemDivider>
             <IonItem>
               <IonLabel slot="start">Unité</IonLabel>
