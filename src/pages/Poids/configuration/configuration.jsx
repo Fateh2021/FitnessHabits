@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { IonCard, IonGrid, IonRow, IonCol, IonButton, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge, IonFooter } from '@ionic/react';
+import React, { useState } from 'react';
+import { IonCard, IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
 import './configuration.css';
 import HeaderPoids from "./header";
 import InitialisationPoids from "./Initialisation";

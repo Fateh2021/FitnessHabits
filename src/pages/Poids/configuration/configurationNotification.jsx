@@ -4,8 +4,6 @@ import './configurationNotification.css';
 
 import HeaderPoids from "./header";
 
-// const listeButtonColors = ["primary", "primary", "primary", "primary", "primary", "primary", "primary"]
-
 const handleRouterPageConfigNotification = () => {
     window.location.href = '/configurationPoids';
 }
@@ -71,10 +69,10 @@ const ConfigurationNotification = (props) => {
                     <IonGrid>
                         <IonRow>
                             <IonCol size="6">
-                                <IonButton shape="round" expand="block">reset</IonButton>
+                                <IonButton shape="round" expand="block">REINITIALISER</IonButton>
                             </IonCol>
                             <IonCol size="6">
-                                <IonButton shape="round" expand="block" onClick={handleRouterPageConfigNotification}>confirm</IonButton>
+                                <IonButton shape="round" expand="block" onClick={handleRouterPageConfigNotification}>CONFIRMER</IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>

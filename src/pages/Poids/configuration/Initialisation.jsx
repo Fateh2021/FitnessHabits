@@ -36,10 +36,10 @@ const InitialisationPoids = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol size="6">
-              <IonButton shape="round" expand="block">reset</IonButton>
+              <IonButton shape="round" expand="block">REINITIALISER</IonButton>
             </IonCol>
             <IonCol size="6">
-              <IonButton shape="round" expand="block">confirm</IonButton>
+              <IonButton shape="round" expand="block">CONFIRMER</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>

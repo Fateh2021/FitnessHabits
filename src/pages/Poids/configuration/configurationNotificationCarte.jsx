@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { IonToggle, IonRow, IonButton, IonCard, IonCardContent, IonList, IonListHeader, IonItem, IonLabel, IonGrid, IonCol } from '@ionic/react';
+import { IonToggle, IonCard, IonCardContent, IonList, IonListHeader, IonItem, IonLabel } from '@ionic/react';
 
 const handleRouterPageConfigNotification = () => {
   window.location.href = '/configurationNotification';

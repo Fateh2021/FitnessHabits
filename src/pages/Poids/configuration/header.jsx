@@ -8,7 +8,7 @@ const HeaderPoids = ({ url }) => {
                     <IonBackButton defaultHref={url} />
                 </IonButtons>
                 <IonTitle>
-                    Configuration
+                    Poids
                     </IonTitle>
             </IonToolbar>
         </IonHeader>
