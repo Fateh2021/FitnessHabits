@@ -14,21 +14,23 @@ const InitialisationPoids = (props) => {
             <IonItemDivider>
               <IonLabel>Paramètre</IonLabel>
             </IonItemDivider>
-            <IonItem>
+            <IonItemDivider>
               <IonLabel slot="start">Unité</IonLabel>
-              <IonSelect slot="end" value={unite} placeholder="Select One" onIonChange={e => setUnite(e.target.value)}>
+              {/* <IonSelect slot="end" value={unite} placeholder="Select One" onIonChange={e => setUnite(e.target.value)}>
                 <IonSelectOption value="female">KG</IonSelectOption>
                 <IonSelectOption value="male">LB</IonSelectOption>
-              </IonSelect>
-            </IonItem>
-            <IonItem>
+              </IonSelect> */}
+              <IonButton class="dayButton" size="small" shape="round" >KG</IonButton>
+              <IonButton class="dayButton" size="small" shape="round" >LBS</IonButton>
+            </IonItemDivider>
+            <IonItemDivider>
               <IonLabel slot="start">Poids initial</IonLabel>
               <IonInput slot="end" value={poidsInitial} onChange={e => setPoidsInitial(e.target.value)}></IonInput>
-            </IonItem>
-            <IonItem>
+            </IonItemDivider>
+            <IonItemDivider>
               <IonLabel slot="start">Poids ciblé</IonLabel>
               <IonInput slot="end" value={poidsCible} onChange={e => setPoidsCible(e.target.value)}></IonInput>
-            </IonItem>
+            </IonItemDivider>
           </IonItemGroup>
         </IonCardContent>
       </IonCard>
