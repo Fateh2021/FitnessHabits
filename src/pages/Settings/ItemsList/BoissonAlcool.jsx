@@ -18,6 +18,7 @@ const BoissonAlcool = (props) => {
     defineGender().then(() =>{
       setDailyTarget(props.alcool.dailyTarget); 
       setLimitConsom(props.alcool.limitConsom);
+      console.log(props.alcool.limitConsom)
     });
   }, [props.alcool.dailyTarget, props.alcool.limitConsom])
 
@@ -57,7 +58,24 @@ const BoissonAlcool = (props) => {
     } 
     setLimitConsom(updatedLimitConsom);
     const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.limitConsom= updatedLimitConsom;
+    settings.alcool.limitConsom = updatedLimitConsom;
+    localStorage.setItem('settings', JSON.stringify(settings));
+    console.log("handleDailyTargetChange -- updatedDailyTarget ::"+JSON.stringify(updatedLimitConsom));
+    console.log("handleDailyTargetChange -- settings ::"+JSON.stringify(settings));
+    firebase.database().ref('settings/'+userUID).update(settings);
+  };
+
+  const handleOnLimitConsom = event => {
+    console.log("ONLIMITCONSOM");
+    const userUID = localStorage.getItem('userUid');
+    const { name, value } = event.target;
+    const updatedLimitConsom = { ...limitConsom, [name]: value ? value : (name === 'value') ? 0 : '' };
+    setLimitConsom({ ...limitConsom, [name]: value});
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    settings.alcool.limitConsom = updatedLimitConsom;
+    localStorage.setItem('settings', JSON.stringify(settings));
+    console.log("handleDailyTargetChange -- updatedDailyTarget ::"+JSON.stringify(updatedLimitConsom));
+    console.log("handleDailyTargetChange -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 
@@ -152,7 +170,7 @@ const BoissonAlcool = (props) => {
           <IonItem>
             <IonCol size="2"></IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom' disabled={limitConsom.educAlcool} value={limitConsom.dailyTarget}></IonInput>
+              <IonInput type='number' min='0' className='inputConsom' name="dailyTarget" onIonChange={handleOnLimitConsom} disabled={limitConsom.educAlcool} value={limitConsom.dailyTarget}></IonInput>
             </IonCol>
             <IonCol size="2">
               <IonLabel position="fixed">par jour</IonLabel>
@@ -161,7 +179,7 @@ const BoissonAlcool = (props) => {
           <IonItem>
             <IonCol size="2"></IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom' disabled={limitConsom.educAlcool} value={limitConsom.weeklyTarget}></IonInput>
+              <IonInput type='number' min='0' className='inputConsom' name="weeklyTarget" onIonChange={handleOnLimitConsom} disabled={limitConsom.educAlcool} value={limitConsom.weeklyTarget}></IonInput>
             </IonCol>
             <IonCol size="2">
               <IonLabel position="fixed">par semaine</IonLabel>
@@ -173,7 +191,7 @@ const BoissonAlcool = (props) => {
               <IonLabel position="fixed">Maximum</IonLabel>
             </IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom' value={limitConsom.sobrietyDays}></IonInput>
+              <IonInput type='number' min='0' className='inputConsom' name="sobrietyDays" onIonChange={handleOnLimitConsom} value={limitConsom.sobrietyDays}></IonInput>
             </IonCol>
             <IonCol size="4">
               <IonLabel position="fixed">jours par</IonLabel>
@@ -183,7 +201,7 @@ const BoissonAlcool = (props) => {
           <IonItem>
             <IonCol size='1'></IonCol>
             <IonCol size='1'>
-              <IonCheckbox onIonChange={handleOnEducAlcool} value={limitConsom.educAlcool}></IonCheckbox>
+              <IonCheckbox onIonChange={handleOnEducAlcool} checked={limitConsom.educAlcool} value={limitConsom.educAlcool}></IonCheckbox>
             </IonCol>
             <IonCol size='4'>
               <IonLabel>Utiliser les recommandations d'Educ'alcool</IonLabel>
