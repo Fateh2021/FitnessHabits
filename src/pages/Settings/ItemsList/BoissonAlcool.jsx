@@ -11,11 +11,14 @@ const BoissonAlcool = (props) => {
   
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
+  const [gender, setGender] = useState("");
  
   // update state on prop change
   useEffect(() => {
-    setDailyTarget(props.alcool.dailyTarget); 
-    setLimitConsom(props.alcool.limitConsom);
+    defineGender().then(() =>{
+      setDailyTarget(props.alcool.dailyTarget); 
+      setLimitConsom(props.alcool.limitConsom);
+    });
   }, [props.alcool.dailyTarget, props.alcool.limitConsom])
 
   const accor = (divId) => {
@@ -41,20 +44,44 @@ const BoissonAlcool = (props) => {
 
   const handleOnEducAlcool = event => {
     const userUID = localStorage.getItem('userUid');
-    let updatedLimitConsom = limitConsom;
-    updatedLimitConsom.educAlcool = event.detail.checked;
+    const updatedLimitConsom = { ...limitConsom, "educAlcool": event.detail.checked };
+    if(event.detail.checked){
+      if(gender == "H")
+      {
+        updatedLimitConsom.dailyTarget = 3;
+        updatedLimitConsom.weeklyTarget = 15;
+      } else {
+        updatedLimitConsom.dailyTarget = 2;
+        updatedLimitConsom.weeklyTarget = 10;
+      }
+    } 
     setLimitConsom(updatedLimitConsom);
-    console.log(limitConsom);
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.limitConsom= updatedLimitConsom;
     firebase.database().ref('settings/'+userUID).update(settings);
-    if(event.detail.checked){
-        // Définir les valeurs par défaut d'éducalcool
-        // Désactiver les input
-    } else {
-        // Activer les input
-    }
-  }
+  };
+
+  const defineGender = async () => {
+    return new Promise(resolve => {
+      const localProfile = localStorage['profile'];
+      if (localProfile) {
+          setGender(JSON.parse(localProfile).gender)
+          resolve();
+      } else {
+          const userUID = localStorage.getItem('userUid');
+          console.log("Loading Profile From DB...");
+          firebase.database().ref('profiles/'+userUID)
+          .once("value", (snapshot) => {
+              const prof = snapshot.val();
+              if (prof) {
+                  localStorage.setItem('profile', JSON.stringify(prof));
+                  setGender(prof.gender);
+                  resolve();
+              }               
+          });
+      }
+    });
+  };
 
   return (
     <div>
@@ -125,7 +152,7 @@ const BoissonAlcool = (props) => {
           <IonItem>
             <IonCol size="2"></IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom'></IonInput>
+              <IonInput type='number' min='0' className='inputConsom' disabled={limitConsom.educAlcool} value={limitConsom.dailyTarget}></IonInput>
             </IonCol>
             <IonCol size="2">
               <IonLabel position="fixed">par jour</IonLabel>
@@ -134,7 +161,7 @@ const BoissonAlcool = (props) => {
           <IonItem>
             <IonCol size="2"></IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom' disabled={limitConsom.educAlcool}></IonInput>
+              <IonInput type='number' min='0' className='inputConsom' disabled={limitConsom.educAlcool} value={limitConsom.weeklyTarget}></IonInput>
             </IonCol>
             <IonCol size="2">
               <IonLabel position="fixed">par semaine</IonLabel>
@@ -146,7 +173,7 @@ const BoissonAlcool = (props) => {
               <IonLabel position="fixed">Maximum</IonLabel>
             </IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom'></IonInput>
+              <IonInput type='number' min='0' className='inputConsom' value={limitConsom.sobrietyDays}></IonInput>
             </IonCol>
             <IonCol size="4">
               <IonLabel position="fixed">jours par</IonLabel>
@@ -156,7 +183,7 @@ const BoissonAlcool = (props) => {
           <IonItem>
             <IonCol size='1'></IonCol>
             <IonCol size='1'>
-              <IonCheckbox onIonChange={handleOnEducAlcool}></IonCheckbox>
+              <IonCheckbox onIonChange={handleOnEducAlcool} value={limitConsom.educAlcool}></IonCheckbox>
             </IonCol>
             <IonCol size='4'>
               <IonLabel>Utiliser les recommandations d'Educ'alcool</IonLabel>
