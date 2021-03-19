@@ -18,7 +18,6 @@ const BoissonAlcool = (props) => {
     defineGender().then(() =>{
       setDailyTarget(props.alcool.dailyTarget); 
       setLimitConsom(props.alcool.limitConsom);
-      console.log(props.alcool.limitConsom)
     });
   }, [props.alcool.dailyTarget, props.alcool.limitConsom])
 
@@ -66,7 +65,6 @@ const BoissonAlcool = (props) => {
   };
 
   const handleOnLimitConsom = event => {
-    console.log("ONLIMITCONSOM");
     const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
     const updatedLimitConsom = { ...limitConsom, [name]: value ? value : (name === 'value') ? 0 : '' };
