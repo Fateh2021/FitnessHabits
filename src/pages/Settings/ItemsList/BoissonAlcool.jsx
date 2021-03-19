@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar} from '@ionic/react';
+import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonContent, IonTitle, IonItemGroup, IonCheckbox} from '@ionic/react';
 import { arrowDropdownCircle, star} from 'ionicons/icons';
 import Alcool from '../Alcool'
 import * as firebase from 'firebase'
@@ -10,11 +10,13 @@ import '../../../pages/Tab1.css';
 const BoissonAlcool = (props) => {
   
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
-
+  const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
+ 
   // update state on prop change
   useEffect(() => {
-    setDailyTarget(props.alcool.dailyTarget);
-  }, [props.alcool.dailyTarget])
+    setDailyTarget(props.alcool.dailyTarget); 
+    setLimitConsom(props.alcool.limitConsom);
+  }, [props.alcool.dailyTarget, props.alcool.limitConsom])
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
@@ -36,6 +38,23 @@ const BoissonAlcool = (props) => {
     console.log("handleDailyTargetChange -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
+
+  const handleOnEducAlcool = event => {
+    const userUID = localStorage.getItem('userUid');
+    let updatedLimitConsom = limitConsom;
+    updatedLimitConsom.educAlcool = event.detail.checked;
+    setLimitConsom(updatedLimitConsom);
+    console.log(limitConsom);
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    settings.alcool.limitConsom= updatedLimitConsom;
+    firebase.database().ref('settings/'+userUID).update(settings);
+    if(event.detail.checked){
+        // Définir les valeurs par défaut d'éducalcool
+        // Désactiver les input
+    } else {
+        // Activer les input
+    }
+  }
 
   return (
     <div>
@@ -95,7 +114,55 @@ const BoissonAlcool = (props) => {
               <option value="unite">unité</option>
             </select>
           </IonItem>
-        </IonRadioGroup>  
+        </IonRadioGroup>
+
+        {/* Limites de consommations*/}
+        <IonItemGroup className="limiteConsom">
+          <IonItem>
+            <IonCol size="1"></IonCol>
+            <IonLabel className='cibleTitle'><h3>Limites de consommations</h3></IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonCol size="2"></IonCol>
+            <IonCol size="1">
+              <IonInput type='number' min='0' className='inputConsom'></IonInput>
+            </IonCol>
+            <IonCol size="2">
+              <IonLabel position="fixed">par jour</IonLabel>
+            </IonCol>
+          </IonItem>
+          <IonItem>
+            <IonCol size="2"></IonCol>
+            <IonCol size="1">
+              <IonInput type='number' min='0' className='inputConsom' disabled={limitConsom.educAlcool}></IonInput>
+            </IonCol>
+            <IonCol size="2">
+              <IonLabel position="fixed">par semaine</IonLabel>
+            </IonCol>
+          </IonItem>
+          <IonItem>
+            <IonCol size="1"></IonCol>
+            <IonCol size="1">
+              <IonLabel position="fixed">Maximum</IonLabel>
+            </IonCol>
+            <IonCol size="1">
+              <IonInput type='number' min='0' className='inputConsom'></IonInput>
+            </IonCol>
+            <IonCol size="4">
+              <IonLabel position="fixed">jours par</IonLabel>
+              <IonLabel position="fixed">semaine</IonLabel>
+            </IonCol>
+          </IonItem>
+          <IonItem>
+            <IonCol size='1'></IonCol>
+            <IonCol size='1'>
+              <IonCheckbox onIonChange={handleOnEducAlcool}></IonCheckbox>
+            </IonCol>
+            <IonCol size='4'>
+              <IonLabel>Utiliser les recommandations d'Educ'alcool</IonLabel>
+            </IonCol>
+          </IonItem>
+        </IonItemGroup>
       </div>
     </div>            
   );
