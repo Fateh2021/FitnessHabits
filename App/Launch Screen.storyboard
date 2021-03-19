@@ -16,10 +16,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background.png" translatesAutoresizingMaskIntoConstraints="NO" id="udN-Jf-VK9">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="udN-Jf-VK9">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreenLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="2fr-w8-VtU">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="2fr-w8-VtU">
                                 <rect key="frame" x="94" y="399" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="eTR-Af-Efu"/>
@@ -45,7 +45,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Background.png" width="2048" height="2732"/>
-        <image name="SplashScreenLogo.png" width="442" height="78"/>
+        <image name="Background" width="2048" height="2732"/>
+        <image name="SplashScreenLogo" width="442" height="78"/>
     </resources>
 </document>
