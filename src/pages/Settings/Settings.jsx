@@ -39,8 +39,10 @@ const Settings =(props) =>{
         value:0,
         unit:''
       },
+      notifications :{
+        active: false
+      },
       limitConsom: {
-        notifications: false,
         educAlcool: true,
         weeklyTarget: 0,
         dailyTarget: 0,
@@ -133,8 +135,10 @@ const Settings =(props) =>{
           value:0,
           unit:''
         },
+        notifications :{
+          active: false
+        },
         limitConsom : {
-          notifications: false,
           educAlcool: true,
           weeklyTarget: 0,
           dailyTarget: 0,

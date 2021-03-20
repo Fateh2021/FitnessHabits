@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonContent, IonTitle, IonItemGroup, IonCheckbox} from '@ionic/react';
+import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonContent, IonTitle, IonToggle, IonItemGroup, IonCheckbox} from '@ionic/react';
 import { arrowDropdownCircle, star} from 'ionicons/icons';
 import Alcool from '../Alcool'
 import * as firebase from 'firebase'
@@ -9,23 +9,38 @@ import '../../../pages/Tab1.css';
 
 const BoissonAlcool = (props) => {
   
+  const [notifications, setNotifications] = useState(props.alcool.notifications);
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
   const [gender, setGender] = useState("");
  
   // update state on prop change
   useEffect(() => {
+    setNotifications(props.alcool.notifications);
     defineGender().then(() =>{
       setDailyTarget(props.alcool.dailyTarget); 
       setLimitConsom(props.alcool.limitConsom);
     });
-  }, [props.alcool.dailyTarget, props.alcool.limitConsom])
+  }, [props.alcool.dailyTarget, props.alcool.limitConsom, props.alcool.notifications])
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
+  }
+
+  const handleOnNotifications = event => {
+    const userUID = localStorage.getItem('userUid');
+    const updatedNotifications = { ...notifications, "active": event.detail.checked };
+    setNotifications(updatedNotifications);
+    // update the cache and persist in DB
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    settings.alcool.notifications = updatedNotifications;
+    localStorage.setItem('settings', JSON.stringify(settings));
+    console.log("handleOnNotifications -- updatedNotifications ::"+JSON.stringify(updatedNotifications));
+    console.log("handleOnNotifications -- settings ::"+JSON.stringify(settings));
+    firebase.database().ref('settings/'+userUID).update(settings);
   }
 
   const handleDailyTargetChange = event => {
@@ -59,8 +74,8 @@ const BoissonAlcool = (props) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.limitConsom = updatedLimitConsom;
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("handleDailyTargetChange -- updatedDailyTarget ::"+JSON.stringify(updatedLimitConsom));
-    console.log("handleDailyTargetChange -- settings ::"+JSON.stringify(settings));
+    console.log("handleOnEducAlcool -- updatedLimitConsom ::"+JSON.stringify(updatedLimitConsom));
+    console.log("handleOnEducAlcool -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 
@@ -72,8 +87,8 @@ const BoissonAlcool = (props) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.limitConsom = updatedLimitConsom;
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("handleDailyTargetChange -- updatedDailyTarget ::"+JSON.stringify(updatedLimitConsom));
-    console.log("handleDailyTargetChange -- settings ::"+JSON.stringify(settings));
+    console.log("handleOnLimitConsom -- updatedLimitConsom ::"+JSON.stringify(updatedLimitConsom));
+    console.log("handleOnLimitConsom -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 
@@ -159,11 +174,22 @@ const BoissonAlcool = (props) => {
           </IonItem>
         </IonRadioGroup>
 
+        {/* Activer les notifications*/}
+        <IonItemGroup className="notifHeader">
+          <IonItem>
+            <IonCol size="1"></IonCol>
+            <IonCol size="2" className="notifHeader"><IonLabel>Activer les notifications</IonLabel></IonCol>
+            <IonCol size='0.88'></IonCol>
+            <IonCol size='1'><IonToggle color="dark" name="notifications" onIonChange={handleOnNotifications} checked={notifications.active} /></IonCol>
+          </IonItem>
+        </IonItemGroup>
+
         {/* Limites de consommations*/}
-        <IonItemGroup className="limiteConsom">
+        <IonItemGroup className="limiteConsom" hidden={!notifications.active}>
           <IonItem>
             <IonCol size="1"></IonCol>
             <IonLabel className='cibleTitle'><h3>Limites de consommations</h3></IonLabel>
+            
           </IonItem>
           <IonItem>
             <IonCol size="2"></IonCol>
