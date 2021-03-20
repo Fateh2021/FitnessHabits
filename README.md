@@ -1,8 +1,8 @@
 # Welcome to the FinessHabits project / Bienvenue au projet FitnessHabits
 
-#### 1- Cloner la branche `7-icône-splash-screen` du projet fitnesshabits:  
+#### 1- Cloner le projet fitnesshabits:  
 ```
-   git clone --single-branch --branch 7-icône-splash-screen https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git fithab
+   git clone https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git fithab
 ```
 
 #### 2- Entrer dans le répertoire `fithab`
