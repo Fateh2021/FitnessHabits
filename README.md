@@ -1,39 +1,44 @@
 # Welcome to the FinessHabits project / Bienvenue au projet FitnessHabits
 
-## Tools required to develop or evolve this software / Outils requis pour développer ou évoluer ce logiciel
+#### 1- Cloner la branche `7-icône-splash-screen` du projet fitnesshabits:  
+```
+   git clone --single-branch --branch 7-icône-splash-screen https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git fithab
+```
 
-On your personal computer, you need to install the following: / Sur votre ordinateur personnel, vous devez installer les outils suivants:
+#### 2- Entrer dans le repertoire `fithab`
 
-- [Git client / Client Git](https://git-scm.com/downloads)
-- [NodeJS](https://nodejs.org/en/download/)
-- [JavaScript ES6](https://www.npmjs.com/package/es6)
+#### 3- Entrer les commandes:
+```
+   $ npm install
+   $ npm run build  
+```
 
-## Clone the FitnessHabits software / Clôner le logiciel FitnessHabits
+#### 4- Créer les dossiers `ios` et `android` avec:
+```
+   $ npx cap add android 
+   $ npx cap add ios      
+```
 
-From your targeted local directory, as the project root / À partir de votre répertoire local, racine du projet:
+#### 5.1- Pour Android:
+```
+   1- Supprimer le fichier 'fithab/android/app/src/main'. 
+   2- Ajouter le fichier 'fithab/main', dans 'fithab/android/app/src'.  
+   3- Entrer 'npx cap open android' pour ouvrir Android Studio
+   4- Compiler le code et tester dans un simulateur.  
+```
 
-   cd <your local project directory>
-   git clone https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git
-   
-   ## In Visual Studio Code  
-   open project  
+#### 5.2- Pour iOS:
+```
+   1- Supprimer le fichier 'fithab/ios/App/App'.  
+   2- Ajouter le fichier 'fithab/App', dans 'fithab/ios/App'.  
+   3- Ouvrire xcode avec 'npx cap open ios'.  
 
-   ## In Visual Studio Code terminal  
-   npm install  
-   npm run build  
-   npm run start  
-
-   ## To test in Android device, you need to open the project in Android Studio and run the application  
-   npx cap add android  
-   npx run build   
-   npx cap copy  
-   npx cap open android  
-
-   ## To test in iphone device, you need to open the project in Xcode and run the application  
-   npx cap add ios  
-   npx run build   
-   npx cap copy  
-   npx cap open ios  
+   4. Dans Xcode:
+      1- Supprimer le fichier 'App/App/LaunchScreen.storyboard'.
+      2- Faire un drag and drop du fichier 'fithab/ios/App/App/LaunchScreen.storyboard' dans le dossier 'App/App' dans Xcode.
+      3- Un pop-up apparait, clicker sur 'finish' pour accepter le changement.  
+      4- Compiler le code et tester dans un simulateur.  
+```
 
 
 
