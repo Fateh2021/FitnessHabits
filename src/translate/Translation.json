@@ -1,0 +1,12 @@
+{
+   "LANG_CHOOSE_LANG":{
+      "en":"Please choose your language",
+      "es":"Por favor, elija su idioma",
+      "fr":"Veuillez choisir votre langue"
+   },
+   "LANG_TITLE":{
+      "en":"Language",
+      "es":"Lengua",
+      "fr":"Langue"
+   }
+}

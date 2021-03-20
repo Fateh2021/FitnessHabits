@@ -8,8 +8,14 @@ import { home, arrowDropleftCircle, globe, settings } from 'ionicons/icons';
 import '../Tab1.css';
 
 export const Languages = (props) => {
-    var userLanguage = "fr"
-    const [selected, setSelected] = useState(userLanguage);
+    var ul = require('../../translate/Translator');
+    const [selected, setSelected] = useState(ul.getLang());
+
+    const set = (e) => {
+        ul.setLang(e.detail.value);        
+        setSelected(e.detail.value);
+    };
+
     return (
         <IonPage>
             <IonHeader>
@@ -18,7 +24,7 @@ export const Languages = (props) => {
                         <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />
                     </IonTabButton>
                     <IonTabButton tab="menu">
-                        <IonLabel className="headerTitle">Langue</IonLabel>
+                        <IonLabel className="headerTitle">{ul.getText("LANG_TITLE")}</IonLabel>
                     </IonTabButton>
                     <IonTabButton tab="settings" href="/languages">
                         <IonIcon className="targetProfil "/>
@@ -27,9 +33,9 @@ export const Languages = (props) => {
             </IonHeader>
 
             <IonContent>
-                <IonRadioGroup value={selected} onIonChange={e => setSelected(e.detail.value) }>
+                <IonRadioGroup value={selected} onIonChange={e => set(e) }>
                     <IonListHeader>
-                        <IonLabel className="headerTitle">Choisir la langue de l'application</IonLabel>
+                        <IonLabel className="headerTitle">{ul.getText("LANG_CHOOSE_LANG")}</IonLabel>
                     </IonListHeader>
 
                     <IonItem class="flexCenter">
