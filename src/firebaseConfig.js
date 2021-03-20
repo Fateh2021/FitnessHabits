@@ -14,6 +14,12 @@ const config={
 
 firebase.initializeApp(config)
 
+/*Config authentification Google par l'équipe GEFRAL*/
+export const auth = firebase.auth();
+const providerGoogle = new firebase.auth.GoogleAuthProvider();
+providerGoogle.setCustomParameters({ prompt: 'select_account' });
+export const signInWithGoogle = () => auth.signInWithPopup(providerGoogle);
+
 export function getCurrentUser() {        
     return new Promise((resolve, reject) => {
         const unsubscribe = firebase.auth().onAuthStateChanged(function(user) {

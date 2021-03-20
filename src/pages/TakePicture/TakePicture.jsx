@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // import { Plugins, CameraResultType } from '@capacitor/core';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { aperture } from 'ionicons/icons';
+import * as firebase from "firebase";// import ajouté par GEFRAL
 
 import { Plugins, CameraResultType } from '@capacitor/core';
 
@@ -87,7 +88,17 @@ export class TakePicture extends Component {
   }
   
   render() {
-    const { photo } = this.state;
+    let { photo } = this.state;
+    /*GEFRAL: Dans le cas où l'utilisateur se connecte avec Google ou Facebook,
+    sa photo de profil de son compte utilisé pour la connexion est automatique ajouté à son profil
+    */
+    if (!photo){ //
+      const user = firebase.auth().currentUser;
+      if (user != null) {
+        photo = user.photoURL;//on récupère la photo de profil de son compte google
+      }
+    }
+
     return (       
       <div>
         <button className="sideBarButtonCamera" onClick={() => this.takePicture()} color="danger">
