@@ -188,8 +188,7 @@ const BoissonAlcool = (props) => {
         <IonItemGroup className="limiteConsom" hidden={!notifications.active}>
           <IonItem>
             <IonCol size="1"></IonCol>
-            <IonLabel className='cibleTitle'><h3>Limites de consommations</h3></IonLabel>
-            
+            <IonLabel className='cibleTitle'><h3>Limites de consommations</h3></IonLabel> 
           </IonItem>
           <IonItem>
             <IonCol size="2"></IonCol>
@@ -230,6 +229,12 @@ const BoissonAlcool = (props) => {
             <IonCol size='4'>
               <IonLabel>Utiliser les recommandations d'Educ'alcool</IonLabel>
             </IonCol>
+          </IonItem>
+          <IonItem>
+            <IonCol size="2.69"> 
+              <ion-label position="float">Message de notification :</ion-label>
+            </IonCol>
+            <ion-textarea id="message_notif" clear-on-edit="true" class="messagenotif"></ion-textarea>
           </IonItem>
         </IonItemGroup>
       </div>

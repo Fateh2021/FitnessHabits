@@ -2046,3 +2046,11 @@ h2{
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
+
+.messagenotif {
+  background-color: #cac086;
+  block-size:58% ;
+  position: center;
+  line-height: 30%;
+
+}
