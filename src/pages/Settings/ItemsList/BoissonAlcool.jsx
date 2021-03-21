@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonContent, IonTitle, IonToggle, IonItemGroup, IonCheckbox} from '@ionic/react';
+import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonContent, IonTitle, IonToggle, IonItemGroup, IonCheckbox, IonTextarea} from '@ionic/react';
 import { arrowDropdownCircle, star} from 'ionicons/icons';
 import Alcool from '../Alcool'
 import * as firebase from 'firebase'
@@ -79,7 +79,7 @@ const BoissonAlcool = (props) => {
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 
-  const handleOnLimitConsom = event => {
+  const handleOnLimitConsom = event => {console.log("change!!!");
     const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
     const updatedLimitConsom = { ...limitConsom, [name]: value ? value : (name === 'value') ? 0 : '' };
@@ -234,7 +234,7 @@ const BoissonAlcool = (props) => {
             <IonCol size="2.69"> 
               <ion-label position="float">Message de notification :</ion-label>
             </IonCol>
-            <ion-textarea id="message_notif" clear-on-edit="true" class="messagenotif"></ion-textarea>
+            <IonTextarea id="message_notif" clear-on-edit="true" class="messagenotif" name="notificationMessage" onIonChange={handleOnLimitConsom} value={limitConsom.notificationMessage}></IonTextarea>
           </IonItem>
         </IonItemGroup>
       </div>
