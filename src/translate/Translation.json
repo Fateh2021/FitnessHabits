@@ -41,8 +41,8 @@
       "fr":"Notification d'hydratation"
    },
    "HYD_TEXT_NOTIF":{
-      "en":"It's time to drink your",
-      "es":"Es hora de beber su consumo de",
+      "en":"It's time to drink because it's",
+      "es":"Es hora de beber su consumo de las",
       "fr":"Il est temps de boire votre consommation de"
    },
    "HYD_BUTTON_CANCEL":{
