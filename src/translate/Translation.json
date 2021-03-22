@@ -11,83 +11,83 @@
    }, 
    //Hydratation
    "HYD_TITLE_TARGET":{
-      "en":"",
-      "es":"",
-      "fr": "Cible quotidienne"
+      "en":"Daily target",
+      "es":"Objetivo diario",
+      "fr":"Cible quotidienne"
    },
    "HYD_ALERT_GT_3000_P1":{
-      "en":"",
-      "es":"",
+      "en":"Be careful, it is advisable not to exceed",
+      "es":"¡Cuidado, es recomendable de no exceder",
       "fr":"Attention, il est conseillé de ne pas dépasser"
    },
    "HYD_ALERT_GT_3000_P2":{
-      "en":"",
-      "es":"",
-      "fr":"d'eau par jour!"
+      "en":"of water per day!",
+      "es":"de agua por día!",
+      "fr":"d'eau par jour !"
    },
    "HYD_BUTTON_CONFIRM_2":{
-      "en":"",
-      "es":"",
+      "en":"I confirm",
+      "es":"Confirmo",
       "fr":"Je confirme"
    },
    "HYD_TEXT_COUNT":{
-      "en":"",
-      "es":"",
+      "en":"Consumptions",
+      "es":"Consumos",
       "fr":"Consommations"
    },
    "HYD_TITLE_NOTIF":{
-      "en":"",
-      "es":"",
+      "en":"Hydration notification",
+      "es":"Notificación de hidratación",
       "fr":"Notification d'hydratation"
    },
    "HYD_TEXT_NOTIF":{
-      "en":"",
-      "es":"",
+      "en":"It's time to drink your",
+      "es":"Es hora de beber su consumo de",
       "fr":"Il est temps de boire votre consommation de"
    },
    "HYD_BUTTON_CANCEL":{
-      "en":"",
-      "es":"",
+      "en":"Ignore",
+      "es":"Ignorar",
       "fr":"Ignorer"
    },
    "HYD_BUTTON_CONFIRM_1":{
-      "en":"",
-      "es":"",
+      "en":"Confirm",
+      "es":"Confirmar",
       "fr":"Confirmer"
    },
    "HYD_BUTTON_ADD_DRINK":{
-      "en":"",
-      "es":"",
+      "en":"+ Beverage",
+      "es":"+ Bebida",
       "fr":"+ Breuvage"
    },
    "HYD_BUTTON_ADD_NOTIF":{
-      "en":"",
-      "es":"",
+      "en":"+ Notification time",
+      "es":"+ Hora de notificación",
       "fr":"+ Heure de notification"
    },
    "HYD_UNITS_GR":{
-      "en":"",
-      "es":"",
+      "en":"grams",
+      "es":"gramos",
       "fr":"gramme"
    },
    "HYD_UNIT_OZ":{
-      "en":"",
-      "es":"",
+      "en":"ounce",
+      "es":"onza",
       "fr":"once"
    },
    "HYD_UNIT_ML":{
-      "en":"",
-      "es":"",
+      "en":"mililitre",
+      "es":"mililitro",
       "fr":"millilitre"
    },
    "HYD_UNIT_TASSE":{
-      "en":"",
-      "es":"",
+      "en":"cup",
+      "es":"taza",
       "fr":"tasse"
    },
    "HYD_UNIT_TEXT":{
-      "en":"",
-      "es":"",
+      "en":"unit",
+      "es":"unidad",
       "fr":"unité"
    }
 }
