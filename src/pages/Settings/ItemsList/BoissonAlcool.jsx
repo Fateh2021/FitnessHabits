@@ -214,7 +214,7 @@ const BoissonAlcool = (props) => {
               <IonLabel position="fixed">Maximum</IonLabel>
             </IonCol>
             <IonCol size="1">
-              <IonInput type='number' min='0' className='inputConsom' name="sobrietyDays" onIonChange={handleOnLimitConsom} value={limitConsom.sobrietyDays}></IonInput>
+              <IonInput type='number' min='0' max='7' className='inputConsom' name="sobrietyDays" onIonChange={handleOnLimitConsom} value={limitConsom.sobrietyDays}></IonInput>
             </IonCol>
             <IonCol size="4">
               <IonLabel position="fixed">jours par</IonLabel>

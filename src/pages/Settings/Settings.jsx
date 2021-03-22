@@ -47,7 +47,7 @@ const Settings =(props) =>{
         weeklyTarget: 0,
         dailyTarget: 0,
         sobrietyDays: 7,
-        notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite |. C'est juste un rappel..."
+        notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
       },
       alcools:DefaultSettings.alcools
     },
@@ -143,7 +143,7 @@ const Settings =(props) =>{
           weeklyTarget: 0,
           dailyTarget: 0,
           sobrietyDays: 7,
-          notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite |. C'est juste un rappel..."
+          notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
         },
         alcools:DefaultSettings.alcools
       };

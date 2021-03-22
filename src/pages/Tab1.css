@@ -745,7 +745,7 @@ color: #ffffff;
 }
 
 .notifHeader{
-  --ion-background-color: #FFE436;
+  --ion-background-color: rgb(231, 165, 79);
   padding: 0;
   margin: 0;
 }
@@ -754,7 +754,6 @@ color: #ffffff;
   padding: 0;
   margin: 5px 0;
   --ion-background-color:#eed996;
-  border: 2px solid #FFE436;
 }
 .inputConsom{
   font-size:16px;
