@@ -1,4 +1,4 @@
-{
+{ //Langue
    "LANG_CHOOSE_LANG":{
       "en":"Please choose your language",
       "es":"Por favor, elija su idioma",
@@ -8,5 +8,86 @@
       "en":"Language",
       "es":"Lengua",
       "fr":"Langue"
+   }, 
+   //Hydratation
+   "HYD_TITLE_TARGET":{
+      "en":"",
+      "es":"",
+      "fr": "Cible quotidienne"
+   },
+   "HYD_ALERT_GT_3000_P1":{
+      "en":"",
+      "es":"",
+      "fr":"Attention, il est conseillé de ne pas dépasser"
+   },
+   "HYD_ALERT_GT_3000_P2":{
+      "en":"",
+      "es":"",
+      "fr":"d'eau par jour!"
+   },
+   "HYD_BUTTON_CONFIRM_2":{
+      "en":"",
+      "es":"",
+      "fr":"Je confirme"
+   },
+   "HYD_TEXT_COUNT":{
+      "en":"",
+      "es":"",
+      "fr":"Consommations"
+   },
+   "HYD_TITLE_NOTIF":{
+      "en":"",
+      "es":"",
+      "fr":"Notification d'hydratation"
+   },
+   "HYD_TEXT_NOTIF":{
+      "en":"",
+      "es":"",
+      "fr":"Il est temps de boire votre consommation de"
+   },
+   "HYD_BUTTON_CANCEL":{
+      "en":"",
+      "es":"",
+      "fr":"Ignorer"
+   },
+   "HYD_BUTTON_CONFIRM_1":{
+      "en":"",
+      "es":"",
+      "fr":"Confirmer"
+   },
+   "HYD_BUTTON_ADD_DRINK":{
+      "en":"",
+      "es":"",
+      "fr":"+ Breuvage"
+   },
+   "HYD_BUTTON_ADD_NOTIF":{
+      "en":"",
+      "es":"",
+      "fr":"+ Heure de notification"
+   },
+   "HYD_UNITS_GR":{
+      "en":"",
+      "es":"",
+      "fr":"gramme"
+   },
+   "HYD_UNIT_OZ":{
+      "en":"",
+      "es":"",
+      "fr":"once"
+   },
+   "HYD_UNIT_ML":{
+      "en":"",
+      "es":"",
+      "fr":"millilitre"
+   },
+   "HYD_UNIT_TASSE":{
+      "en":"",
+      "es":"",
+      "fr":"tasse"
+   },
+   "HYD_UNIT_TEXT":{
+      "en":"",
+      "es":"",
+      "fr":"unité"
    }
 }
