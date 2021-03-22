@@ -223,7 +223,7 @@ const BoissonAlcool = (props) => {
           </IonItem>
           <IonItem>
             <IonCol size='1'></IonCol>
-            <IonCol size='1'>
+            <IonCol size='2'>
               <IonCheckbox onIonChange={handleOnEducAlcool} checked={limitConsom.educAlcool} value={limitConsom.educAlcool}></IonCheckbox>
             </IonCol>
             <IonCol size='4'>
@@ -231,8 +231,9 @@ const BoissonAlcool = (props) => {
             </IonCol>
           </IonItem>
           <IonItem>
-            <IonCol size="2.69"> 
-              <ion-label position="float">Message de notification :</ion-label>
+            <IonCol size='1'></IonCol>
+            <IonCol size="2"> 
+              <ion-label>Message de notification</ion-label>
             </IonCol>
             <IonTextarea id="message_notif" clear-on-edit="true" class="messagenotif" name="notificationMessage" onIonChange={handleOnLimitConsom} value={limitConsom.notificationMessage}></IonTextarea>
           </IonItem>
