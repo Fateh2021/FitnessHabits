@@ -20,6 +20,7 @@ import Sommeil from "./ItemsList/Sommeil";
 import Alcool from "./ItemsList/Alcool";
 import Poids from "./ItemsList/Poids"
 import DefaultDashboard from './DefaultDashboard'
+import FormatDate from '../../DateUtils'
 
 import '../Tab1.css';
 
@@ -27,6 +28,7 @@ const Dashboard = (props) => {
   const [showAlert6, setShowAlert6] = useState(false);
   const [toDay, setToDaye] = useState({startDate: new Date()});
   const [currentDate, setCurrentDate] = useState({startDate: new Date()});
+  const [formatedCurrentDate, setFormatedCurrentDate] = useState("");
   const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateString("fr-FR", {
     year: "numeric",
     month: "numeric",
@@ -39,6 +41,12 @@ const Dashboard = (props) => {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
   }
+
+  const sidebarCloseHandler = () => {
+    FormatDate(currentDate.startDate).then(dt => {
+      setFormatedCurrentDate(dt);
+    });
+}
 
   const [dashboard, setDashboard] = useState({
     hydratation: {
@@ -214,6 +222,9 @@ const Dashboard = (props) => {
     useEffect(() => {
       const localDashboard = localStorage['dashboard'];
       console.log("Loading Dashboard test..."+JSON.stringify(dashboard));
+      FormatDate(currentDate.startDate).then(dt => {
+        setFormatedCurrentDate(dt);
+      });
       if (localDashboard) {
         const sets = addMissingDashboard(JSON.parse(localDashboard));
         localStorage.setItem('dashboard', JSON.stringify(sets));
@@ -247,7 +258,7 @@ const Dashboard = (props) => {
 
   return (
     <IonPage>            
-      <Profil> </Profil>        
+      <Profil close={sidebarCloseHandler}> </Profil>        
       <IonContent >
         <div className="datePickerPage" >   
       <IonGrid>
@@ -258,11 +269,8 @@ const Dashboard = (props) => {
             </IonTabButton> 
           </IonCol>
           <IonCol></IonCol>
-          <IonCol>
-            <DatePicker className="datePicker"
-              selected={ currentDate.startDate}
-              dateFormat="MM-dd-yyyy"
-              readOnly/> 
+          <IonCol style={{textAlign: 'center'}}>
+          <IonLabel className="datePicker">{ formatedCurrentDate}</IonLabel>
           </IonCol>
           <IonCol></IonCol>
           <IonCol size="2">

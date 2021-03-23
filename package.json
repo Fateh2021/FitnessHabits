@@ -23,6 +23,7 @@
     "chart.js": "^2.9.3",
     "firebase": "^7.17.1",
     "ionicons": "^4.6.3",
+    "luxon": "^1.26.0",
     "react": "^16.13.1",
     "react-calendar": "^2.19.2",
     "react-chartjs-2": "^2.10.0",
