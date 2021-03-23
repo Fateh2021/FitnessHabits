@@ -1,3 +1,31 @@
+.or-format {
+    text-align: center;
+}
+.icon-facebook-format {
+    font-size: 32px;
+    padding-right: 10%;
+    color: white;
+    text-shadow: black;
+}
+
+.icon-google-format {
+    padding-right: 10%;
+    margin-right: 6%;
+    position: relative;
+    font-size: 32px;
+    color: white;
+    text-shadow: black;
+}
+
+.register-button-right {
+    width: 62%;
+    float: right;
+}
+.login-button-left {
+    width: 35%;
+    float: left;
+}
+
 .welcome-card img {
   /* max-height: 35vh; */
   margin-left: auto;
@@ -9,6 +37,10 @@
 
 .Collapsible__contentOuter{
   background: #e22525;
+}
+
+.date-format-popover .popover-content{
+  width: 50%;
 }
 
 .divImgSett{
@@ -1378,7 +1410,7 @@ border-width: 1px; */
 }
 
 .fondIntro{
-background-color: #ffffff;
+    background-image: linear-gradient(#0072ff,#00c6ff);
 }
 
 .logoSideBar{
@@ -1387,8 +1419,8 @@ background-color: #ffffff;
 }
 
 .logoIntro{
-  margin-top: 30px;
-  margin-left: 0px;
+    margin-top: 30px;
+    margin-left: 0px;
 }
 
 .profilText h2{

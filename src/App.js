@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import Settings from './pages/Settings/Settings'
 import ConfigurationPoids from './pages/Poids/configuration/configuration';
 import ConfigurationNotification from './pages/Poids/configuration/configurationNotification';
+import { Settings as LuxonSettings } from "luxon";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -52,6 +53,10 @@ const RoutingSystem = () => {
 const App = () => {
   // const [busy, setBusy] = useState(true);
   const [user, setUser] = useState(getCurrentUser());
+
+  // TODO Décommenter pour démontrer changement de langue
+  LuxonSettings.defaultLocale = "fr";
+  // LuxonSettings.defaultLocale = "en";
 
   useEffect(() => {
 

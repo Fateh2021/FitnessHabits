@@ -9,6 +9,7 @@ const Profil = (props) => {
     }
     const sidebarCloseHandler = () => {
         setSidebarOpen(false);
+        props.close();
     }
 
     let sidebar = sidebarOpen ? <Sidebar close={sidebarCloseHandler} sidebarClass="sidebar"/> : '';

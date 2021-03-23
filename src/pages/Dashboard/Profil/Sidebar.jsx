@@ -12,9 +12,14 @@ const Sidebar = (props) => {
         pseudo: "",
         email: "",
         size: "",
-        gender: ""
+        gender: "",
+        dateFormat: ""
       });
 
+      const customPopoverOptions = {
+        cssClass: 'date-format-popover'
+      };
+      
     // load the current profile from the local storage if it exists, otherwise load it from the DB
     useEffect(() => {
         const localProfile = localStorage['profile'];
@@ -41,12 +46,13 @@ const Sidebar = (props) => {
         setProfile({ ...profile, [name]: value ? value : "" });
         localStorage.setItem('profile', JSON.stringify(updatedProfile));
         firebase.database().ref('profiles/'+userUID).update({
-            "pseudo": profile.pseudo,
-            "email": profile.email,
-            "size": profile.size,
-            "gender": profile.gender
+            "pseudo": updatedProfile.pseudo,
+            "email": updatedProfile.email,
+            "size": updatedProfile.size,
+            "gender": updatedProfile.gender,
+            "dateFormat": updatedProfile.dateFormat == null ? "" : updatedProfile.dateFormat
           }
-        )
+        );
       };
 
     const signOutUser = () => {
@@ -67,15 +73,27 @@ const Sidebar = (props) => {
         setSidebarClass('sidebarClose');
         props.close()
     }
-
+    /* GEFRAL: ici on récupère les données de l'utilisateur */
+    let user = firebase.auth().currentUser;
+    let pseudo;
+    let name, email;
+    if (user.displayName != null) { //dans le cas de l'authentification Google
+        name = user.displayName.split(" ")
+        pseudo = name[0]+"."+name[1];
+        email = user.email;
+    }else {//dans le cas de l'authentification normale
+        pseudo = profile.pseudo;
+        email = profile.email;
+    }
     return (
+
         <div className={sidebarClass}>
             <IonHeader className="sideBarHeader">
                 <IonGrid >
                     <IonRow >
                         <TakePicture/>
                         <IonCol size="5">
-                            <IonInput className='userNameProfil' value="" readonly color="danger"><h3>{profile.pseudo}</h3></IonInput>
+                            <IonInput className='userNameProfil' value="" readonly color="danger"><h3>{pseudo}</h3></IonInput>
                         </IonCol>
                         <IonCol size="1.5">
                             <button id="close" className="sideBarButton" color="danger" onClick={(e) => closeHandler(e)}> 
@@ -111,12 +129,12 @@ const Sidebar = (props) => {
                 <IonList>
                     <IonItemDivider color='warning' className = 'profilText'><h2>Pseudo</h2></IonItemDivider>
                     <IonItem>
-                    <IonInput className = 'inputProfilText' type='text' name="pseudo" value={profile.pseudo} onIonChange={handleInputChange} placeholder="Nom" clearInput ></IonInput>
+                    <IonInput className = 'inputProfilText' type='text' name="pseudo" value={pseudo} onIonChange={handleInputChange} placeholder="Nom" clearInput ></IonInput>
                     </IonItem>
 
                     <IonItemDivider color='warning' className = 'profilText'><h2>Email</h2></IonItemDivider>
                     <IonItem>
-                    <IonInput className = 'inputProfilText' type='url' name="email" value={profile.email} onIonChange={handleInputChange} placeholder="URL" clearInput></IonInput>
+                    <IonInput className = 'inputProfilText' type='url' name="email" value={email} onIonChange={handleInputChange} placeholder="URL" clearInput></IonInput>
                     </IonItem>
 
                     <IonItemDivider color='warning' className = 'profilText'><h2>Taille</h2></IonItemDivider>
@@ -128,6 +146,15 @@ const Sidebar = (props) => {
                     <IonItem>
                     <IonInput className = 'inputProfilText' type= 'text' name="gender" value={profile.gender} onIonChange={handleInputChange} placeholder="Genre" clearInput></IonInput>
                     </IonItem>
+ 
+                    <IonItemDivider className = 'profilText'><h2>Format de date</h2></IonItemDivider>
+                    <select name="dateFormat" value={profile.dateFormat} onChange={handleInputChange}>
+                        <option value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
+                        <option value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
+                        <option value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
+                        <option value="yyyy-LLL-dd">AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
+                        <option value="dd-LLL-yyyy">JJ-mmm-AAAA (Français avec mois lettré) ex: 16-fev-2021</option>
+                    </select> 
 
                     <IonItemDivider color='warning' className = 'profilText'></IonItemDivider>
                 

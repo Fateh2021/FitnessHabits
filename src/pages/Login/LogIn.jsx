@@ -1,8 +1,11 @@
 import * as firebase from 'firebase'
 import "firebase/auth";
 import React, { useState } from 'react';
-import { IonInput, IonGrid, IonItem, IonRow, IonCol, IonPage, IonButton, IonLoading } from '@ionic/react';
+import { IonInput, IonGrid, IonItem, IonRow, IonCol, IonPage, IonButton, IonLoading, IonIcon } from '@ionic/react';
 import { toast } from '../../Toast'
+/* les imports dont GEFRAL a besoin  */
+import { signInWithGoogle } from '../../firebaseConfig';
+import {logoFacebook,logoGoogle,arrowForward} from "ionicons/icons";
 
 const LogIn = (props) => {    
     const [username, setUsername]= useState('')
@@ -23,29 +26,64 @@ const LogIn = (props) => {
         setBusy(false)
     }
 
+    /*GEFRAL: fonction permettant de se connecter avec un compte Google */
+    async function googleSignIn(){
+        setBusy(true);
+        try{
+            let res = await signInWithGoogle();
+            localStorage.setItem('userUid', res.user.uid);
+            toast('Authentification Google réussie!');
+            props.history.push('/dashboard');
+
+        }catch(error){
+            toast('Erreur d\'authentification Google!', 4000)
+        }
+        setBusy(false)
+    }
+
     return (
       <IonPage className="fondIntro">
-        <IonGrid >
+        <IonGrid>
           <IonRow className="">
             <IonCol>
             </IonCol>
             <IonCol size="8">
-              <img className="logoIntro" src="/assets/Logo2.png" alt="" />  
+              <img className="logoIntro" src="/assets/LogoLegion.png" alt="" />
             </IonCol>
             <IonCol>
             </IonCol>
           </IonRow>
+
+            <IonRow>
+                <IonCol size="12" >
+                    {/*
+                     <IonButton expand="full" color="dark" onClick={login}>
+                        <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
+                        Se connecter via Facebook
+                        <IonIcon icon={arrowForward}/>
+                    </IonButton>
+                     */}
+
+                    <IonButton expand="full" color="dark" onClick={googleSignIn} >
+                        <IonIcon className="icon-google-format" icon={logoGoogle}/>
+                        Se connecter via google
+                        <IonIcon icon={arrowForward}/>
+                    </IonButton>
+                </IonCol>
+                <IonCol class="or-format">OU</IonCol>
+            </IonRow>
+
         <IonRow className="">
           <IonCol>
             <IonLoading message="Veuillez patienter.." duration={0} isOpen={busy} />   
-            <IonItem>  
+            <IonItem color="transparent">
               <IonInput placeholder="Nom d'utilisateur?" onIonChange={(e) => setUsername(e.target.value)}/>
             </IonItem>
-            <IonItem>
+            <IonItem color="transparent">
               <IonInput type="password" placeholder="Mot de passe?" onIonChange={(e) => setPassword(e.target.value)}/>
             </IonItem>         
-            <IonButton onClick={login}>Se connecter</IonButton>
-            <IonButton color="secondary" href="/register">Nouveau, s'enregistrer</IonButton>                  
+            <IonButton className="login-button-left" onClick={login}>Se connecter</IonButton>
+            <IonButton className="register-button-right" color="secondary" href="/register">Nouveau, s'enregistrer</IonButton>
           </IonCol>
         </IonRow>
       </IonGrid>       
