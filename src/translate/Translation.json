@@ -1,4 +1,4 @@
-{ //Langue
+{
    "LANG_CHOOSE_LANG":{
       "en":"Please choose your language",
       "es":"Por favor, elija su idioma",
@@ -9,7 +9,7 @@
       "es":"Lengua",
       "fr":"Langue"
    }, 
-   //Hydratation
+   
    "HYD_TITLE_TARGET":{
       "en":"Daily target",
       "es":"Objetivo diario",
