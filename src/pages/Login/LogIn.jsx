@@ -3,8 +3,10 @@ import "firebase/auth";
 import React, { useState } from 'react';
 import { IonInput, IonGrid, IonItem, IonRow, IonCol, IonPage, IonButton, IonLoading, IonIcon } from '@ionic/react';
 import { toast } from '../../Toast'
-/* les imports dont GEFRAL a besoin  */
+
+/* les imports de l'équipe GEFRAL */
 import { signInWithGoogle } from '../../firebaseConfig';
+import { signInWithFacebook } from '../../firebaseConfig';
 import {logoFacebook,logoGoogle,arrowForward} from "ionicons/icons";
 
 const LogIn = (props) => {    
@@ -41,6 +43,21 @@ const LogIn = (props) => {
         setBusy(false)
     }
 
+    /*GEFRAL: fonction permettant de se connecter avec un compte Facebook */
+    async function facebookSignIn(){
+        setBusy(true);
+
+        try{
+            let res = await signInWithFacebook()
+            localStorage.setItem('userUid', res.user.uid);
+            toast('Authentification Facebook réussie!' );
+            props.history.push('/dashboard');
+        }catch(error){
+            toast('Erreur d\'authentification Facebook!', 4000)
+        }
+        setBusy(false)
+    }
+
     return (
       <IonPage className="fondIntro">
         <IonGrid>
@@ -54,16 +71,14 @@ const LogIn = (props) => {
             </IonCol>
           </IonRow>
 
+            {/*Bout de code rajouté par l'équipe Gefral */}
             <IonRow>
                 <IonCol size="12" >
-                    {/*
-                     <IonButton expand="full" color="dark" onClick={login}>
+                     <IonButton expand="full" color="dark" onClick={facebookSignIn}>
                         <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
                         Se connecter via Facebook
                         <IonIcon icon={arrowForward}/>
                     </IonButton>
-                     */}
-
                     <IonButton expand="full" color="dark" onClick={googleSignIn} >
                         <IonIcon className="icon-google-format" icon={logoGoogle}/>
                         Se connecter via google
