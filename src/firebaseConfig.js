@@ -14,11 +14,15 @@ const config={
 
 firebase.initializeApp(config)
 
-/*Config authentification Google par l'équipe GEFRAL*/
+/*Config authentification Google et Facebook par l'équipe GEFRAL*/
 export const auth = firebase.auth();
 const providerGoogle = new firebase.auth.GoogleAuthProvider();
 providerGoogle.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(providerGoogle);
+const providerFacebook = new firebase.auth.FacebookAuthProvider();
+providerFacebook.setCustomParameters({ prompt: 'select_account' });
+export const signInWithFacebook = () => auth.signInWithPopup(providerFacebook);
+
 
 export function getCurrentUser() {        
     return new Promise((resolve, reject) => {
