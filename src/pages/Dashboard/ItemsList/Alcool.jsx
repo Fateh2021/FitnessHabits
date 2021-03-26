@@ -3,6 +3,8 @@ import { IonInput, IonButton, IonIcon, IonLabel, IonItem, IonAvatar, IonCol} fro
 import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import * as firebase from 'firebase'
+import DefaultSettings from '../../Settings/DefaultSettings'
+import { DateTime } from "luxon";
 
 import '../../Tab1.css';
 
@@ -180,6 +182,7 @@ const Alcool = (props) => {
     setAlcool (array);
     closeItemContainer();
     updateCacheAndBD(array);
+    checkNotifications();
   }
 
   const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
@@ -196,13 +199,19 @@ const Alcool = (props) => {
     setAlcool(alcools)
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-    console.log("props.currentDate.startDate.getDay())::::::" + props.currentDate.startDate.getDay());
-    console.log ("currentDate.startDate" + currentDate.startDate.toLocaleDateString("fr-FR", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric"
-    }))
+    firebase
+    .database()
+    .ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
+    .update(dashboard)
+    .then(() => {
+      console.log("props.currentDate.startDate.getDay())::::::" + props.currentDate.startDate.getDay());
+      console.log ("currentDate.startDate" + currentDate.startDate.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }))
+      checkNotifications();
+    });
   }
 
   const closeItemContainer = () => {
@@ -213,6 +222,85 @@ const Alcool = (props) => {
   const openAddItemContainer = () => {
     setHydrateToEdit(undefined);
     setItemContainerDisplayStatus(true);
+  }
+
+  const checkNotifications = () => {
+    // Obtenir les préférences de l'utilisateur
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('settings/' + userUID + '/alcool')
+      .once("value", (snapshot) => {
+        const sets = snapshot.val();
+        const alcoolSettings = sets ? sets : {
+          dailyTarget:{
+            value:0,
+            unit:''
+          },
+          notifications :{
+            active: false
+          }, 
+          limitConsom : {
+            educAlcool: true,
+            weeklyTarget: 0,
+            dailyTarget: 0,
+            sobrietyDays: 7,
+            notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
+          },
+          alcools:DefaultSettings.alcools
+        };
+
+        // Obtenir les consommation jusqu'au dernier lundi
+        firebase
+        .database()
+        .ref('dashboard/' + userUID)
+        .orderByKey()
+        .once("value", (snapshot) => {
+          const consommations = snapshot.val()
+          const keys = Object.keys(consommations);
+          const currentDate = new Date();
+          // Vérifier s'il respecte ses consommations journalières
+          const dailyCount = getConsumptionsCount(consommations, currentDate);
+          console.log("Objectif de consommation journalier : ", +alcoolSettings.limitConsom.dailyTarget)
+          console.log("Consommations aujourd'hui : ", dailyCount);
+          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.dailyTarget && dailyCount >= +alcoolSettings.limitConsom.dailyTarget) {
+            console.log("notification daily target");
+          }
+          
+
+          // Vérifier s'il respecte ses consommations hebdomadaires
+            // Obtenir les formats de date de la semaine
+          let weeklyCount = 0;
+          for (let i = 0; i < currentDate.getDay(); i++) {
+            const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
+            console.log(dateDiff);
+            weeklyCount += getConsumptionsCount(consommations, dateDiff)
+          }
+          console.log("Objectif de consommation hebdomadaire: ", +alcoolSettings.limitConsom.weeklyTarget);
+          console.log("Consommation cette semaine : ", weeklyCount);
+          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.weeklyTarget && weeklyCount >= +alcoolSettings.limitConsom.weeklyTarget) {
+            console.log("notification weekly target");
+          }
+          // Vérifier s'il respecte ses jours de consommation de suite 
+        });
+        
+      });
+  }
+
+  const getDbDate = (date) => {
+    return date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
+  }
+
+  const getConsumptionsCount = (consommations, date) => {
+    let count = 0;
+    const code = getDbDate(date);
+    if(consommations[code] && consommations[code].alcool && consommations[code].alcool.alcools)
+    {
+      for (const alcool of consommations[code].alcool.alcools) {
+        if(alcool.consumption) {
+          count += alcool.consumption;
+        }
+      }
+    }
+    return count;
   }
 
   return (
