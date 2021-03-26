@@ -89,5 +89,110 @@
       "en":"unit",
       "es":"unidad",
       "fr":"unité"
+   },
+   "DATE_FORMAT_SETTINGS_TITLE":{
+      "en":,
+      "es":,
+      "fr":"Format de date"
+   },
+   "DATE_FORMAT_US_UK":{
+      "en":,
+      "es":,
+      "fr":"MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021"
+   },
+   "DATE_FORMAT_FRENCH":{
+      "en":,
+      "es":,
+      "fr":"JJ-MM-AAAA (format Français) ex: 16-02-2021"
+   },
+   "DATE_FORMAT_INTERNATIONAL":{
+      "en":,
+      "es":,
+      "fr":"AAAA-MM-JJ (format International) ex: 2021-02-16"
+   },
+   "DATE_FORMAT_INTERNATIONAL_LETTERED":{
+      "en":,
+      "es":,
+      "fr":"AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16"
+   },
+   "DATE_FORMAT_FRENCH_LETTERED":{
+      "en":,
+      "es":,
+      "fr":"JJ-mmm-AAAA (Français avec mois lettré) ex: 16-fev-2021"
+   },
+   "ALCOOL_SETTINGS_ACTIVATE_NOTIF":{
+      "en":,
+      "es":,
+      "fr":"Activer les notifications"
+   },
+   "ALCOOL_SETTINGS_TITLE_CONSUMPTION":{
+      "en":,
+      "es":,
+      "fr":"Limites de consommations"
+   },
+   "ALCOOL_DAY_CONSUMPTION":{
+      "en":,
+      "es":,
+      "fr":"par jour"
+   },
+   "ALCOOL_WEEK_CONSUMPTION":{
+      "en":,
+      "es":,
+      "fr":"par semaine"
+   },
+   "ALCOOL_MAX_CONSUMPTION":{
+      "en":,
+      "es":,
+      "fr":"Maximum"
+   },
+   "ALCOOL_MAX_WEEK_CONSUMPTION":{
+      "en":,
+      "es":,
+      "fr":"jours par semaine"
+   },
+   "ALCOOL_RECOMMANDATION":{
+      "en":,
+      "es":,
+      "fr":"Utiliser les recommandations d'Educ'alcool"
+   },
+   "ALCOOL_SETTINGS_RECOMMANDATION_MESSAGE":{
+      "en":,
+      "es":,
+      "fr":"Message de notification"
+   },
+   "ALCOOL_RECOMMANDATION_EDUCALCOOL_MESSAGE":{
+      "en":,
+      "es":,
+      "fr":"Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel…"
+   },
+   "AUTH_FED_CONNECT_FB":{
+      "en":"Connect with Facebook",
+      "es":,
+      "fr":"Se connecter via Facebook"
+   },
+   "AUTH_FED_CONNECT_GOOGLE":{
+      "en":"Connect with Google",
+      "es":,
+      "fr":"Se connecter via Google"
+   },
+   "AUTH_FED_CONNECT_FB_SUCCESS":{
+      "en":"Facebook authentification succeeded!",
+      "es":,
+      "fr":"Authentification Facebook réussie !"
+   },
+   "AUTH_FED_CONNECT_GOOGLE_SUCCESS":{
+      "en":"Google authentification succeeded!",
+      "es":,
+      "fr":"Authentification Google réussie !"
+   },
+   "AUTH_FED_CONNECT_GOOGLE_ERROR":{
+      "en":"Error with Google authentification!",
+      "es":,
+      "fr":"Erreur d'authentification Google !"
+   },
+   "AUTH_FED_CONNECT_FB_ERROR":{
+      "en":"Error with Facebook authentification!",
+      "es":,
+      "fr":"Erreur d'authentification Facebook !"
    }
 }
