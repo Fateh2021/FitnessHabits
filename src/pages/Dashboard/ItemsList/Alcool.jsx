@@ -261,8 +261,8 @@ const Alcool = (props) => {
           const dailyCount = getConsumptionsCount(consommations, currentDate);
           console.log("Objectif de consommation journalier : ", +alcoolSettings.limitConsom.dailyTarget)
           console.log("Consommations aujourd'hui : ", dailyCount);
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.dailyTarget && dailyCount >= +alcoolSettings.limitConsom.dailyTarget) {
-            console.log("notification daily target");
+          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.dailyTarget && dailyCount > +alcoolSettings.limitConsom.dailyTarget) {
+            console.log("!!notification daily target");
           }
           
 
@@ -271,15 +271,30 @@ const Alcool = (props) => {
           let weeklyCount = 0;
           for (let i = 0; i < currentDate.getDay(); i++) {
             const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
-            console.log(dateDiff);
             weeklyCount += getConsumptionsCount(consommations, dateDiff)
           }
           console.log("Objectif de consommation hebdomadaire: ", +alcoolSettings.limitConsom.weeklyTarget);
           console.log("Consommation cette semaine : ", weeklyCount);
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.weeklyTarget && weeklyCount >= +alcoolSettings.limitConsom.weeklyTarget) {
-            console.log("notification weekly target");
+          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.weeklyTarget && weeklyCount > +alcoolSettings.limitConsom.weeklyTarget) {
+            console.log("!!notification weekly target");
           }
+
           // Vérifier s'il respecte ses jours de consommation de suite 
+          let streak = true;
+          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.sobrietyDays)
+          {
+            for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
+              const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
+              if(getConsumptionsCount(consommations, dateDiff) == 0) {
+                streak = false;
+                break;
+              }
+            }
+          }
+          console.log("Nombre de jours de consommation: ", +alcoolSettings.limitConsom.sobrietyDays);
+          if(streak) {
+            console.log("!!notification days streak");
+          }
         });
         
       });
