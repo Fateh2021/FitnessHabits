@@ -8,5 +8,191 @@
       "en":"Language",
       "es":"Lengua",
       "fr":"Langue"
+   }, 
+   
+   "HYD_TITLE_TARGET":{
+      "en":"Daily target",
+      "es":"Objetivo diario",
+      "fr":"Cible quotidienne"
+   },
+   "HYD_ALERT_GT_3000_P1":{
+      "en":"Be careful, it is advisable not to exceed",
+      "es":"¡Cuidado, es recomendable de no exceder",
+      "fr":"Attention, il est conseillé de ne pas dépasser"
+   },
+   "HYD_ALERT_GT_3000_P2":{
+      "en":"of water per day!",
+      "es":"de agua por día!",
+      "fr":"d'eau par jour !"
+   },
+   "HYD_BUTTON_CONFIRM_2":{
+      "en":"I confirm",
+      "es":"Confirmo",
+      "fr":"Je confirme"
+   },
+   "HYD_TEXT_COUNT":{
+      "en":"Consumptions",
+      "es":"Consumos",
+      "fr":"Consommations"
+   },
+   "HYD_TITLE_NOTIF":{
+      "en":"Hydration notification",
+      "es":"Notificación de hidratación",
+      "fr":"Notification d'hydratation"
+   },
+   "HYD_TEXT_NOTIF":{
+      "en":"It's time to drink because it's",
+      "es":"Es hora de beber su consumo de las",
+      "fr":"Il est temps de boire votre consommation de"
+   },
+   "HYD_BUTTON_CANCEL":{
+      "en":"Ignore",
+      "es":"Ignorar",
+      "fr":"Ignorer"
+   },
+   "HYD_BUTTON_CONFIRM_1":{
+      "en":"Confirm",
+      "es":"Confirmar",
+      "fr":"Confirmer"
+   },
+   "HYD_BUTTON_ADD_DRINK":{
+      "en":"+ Beverage",
+      "es":"+ Bebida",
+      "fr":"+ Breuvage"
+   },
+   "HYD_BUTTON_ADD_NOTIF":{
+      "en":"+ Notification time",
+      "es":"+ Hora de notificación",
+      "fr":"+ Heure de notification"
+   },
+   "HYD_UNITS_GR":{
+      "en":"grams",
+      "es":"gramos",
+      "fr":"gramme"
+   },
+   "HYD_UNIT_OZ":{
+      "en":"ounce",
+      "es":"onza",
+      "fr":"once"
+   },
+   "HYD_UNIT_ML":{
+      "en":"mililitre",
+      "es":"mililitro",
+      "fr":"millilitre"
+   },
+   "HYD_UNIT_TASSE":{
+      "en":"cup",
+      "es":"taza",
+      "fr":"tasse"
+   },
+   "HYD_UNIT_TEXT":{
+      "en":"unit",
+      "es":"unidad",
+      "fr":"unité"
+   },
+   "DATE_FORMAT_SETTINGS_TITLE":{
+      "en":"Date format",
+      "es":"Formato de fecha",
+      "fr":"Format de date"
+   },
+   "DATE_FORMAT_US_UK":{
+      "en":"MM-JJ-AAAA (American or English format) ex: 02-16-2021",
+      "es":"MM-JJ-AAAA (formato americano o inglés) ex: 02-16-2021",
+      "fr":"MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021"
+   },
+   "DATE_FORMAT_FRENCH":{
+      "en":"JJ-MM-AAAA (French format) ex: 16-02-2021",
+      "es":"JJ-MM-AAAA (formato Francés) ex: 16-02-2021",
+      "fr":"JJ-MM-AAAA (format Français) ex: 16-02-2021"
+   },
+   "DATE_FORMAT_INTERNATIONAL":{
+      "en":"AAAA-MM-JJ (International format) ex: 2021-02-16",
+      "es":"AAAA-MM-JJ (formato Internacional) ex: 2021-02-16",
+      "fr":"AAAA-MM-JJ (format International) ex: 2021-02-16"
+   },
+   "DATE_FORMAT_INTERNATIONAL_LETTERED":{
+      "en":"AAAA-mmm-JJ (International whose month is literate) ex: 2021-feb-16",
+      "es":"AAAA-mmm-JJ (Internacional cuyo mes es alfabetizado) ex: 2021-feb-16",
+      "fr":"AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16"
+   },
+   "DATE_FORMAT_FRENCH_LETTERED":{
+      "en":"JJ-mmm-AAAA (French with the literate month) ex: 16-feb-2021",
+      "es":"JJ-mmm-AAAA (Francés con el mes alfabetizado) ex: 16-feb-2021",
+      "fr":"JJ-mmm-AAAA (Français avec mois lettré) ex: 16-fev-2021"
+   },
+   "ALCOOL_SETTINGS_ACTIVATE_NOTIF":{
+      "en":"Activate notifications",
+      "es":"Activar notificaciones",
+      "fr":"Activer les notifications"
+   },
+   "ALCOOL_SETTINGS_TITLE_CONSUMPTION":{
+      "en":"Consumption limits",
+      "es":"Límites de consumo",
+      "fr":"Limites de consommations"
+   },
+   "ALCOOL_DAY_CONSUMPTION":{
+      "en":"per day",
+      "es":"por día",
+      "fr":"par jour"
+   },
+   "ALCOOL_WEEK_CONSUMPTION":{
+      "en":"per week",
+      "es":"por semana",
+      "fr":"par semaine"
+   },
+   "ALCOOL_MAX_CONSUMPTION":{
+      "en":"Maximum",
+      "es":"Máximo",
+      "fr":"Maximum"
+   },
+   "ALCOOL_MAX_WEEK_CONSUMPTION":{
+      "en":"days per week",
+      "es":"días por semana",
+      "fr":"jours par semaine"
+   },
+   "ALCOOL_RECOMMANDATION":{
+      "en":"Use Éduc'alcool recommendations",
+      "es":"Utilizar las recomendaciones de Éduc'alcool",
+      "fr":"Utiliser les recommandations d'Éduc'alcool"
+   },
+   "ALCOOL_SETTINGS_RECOMMANDATION_MESSAGE":{
+      "en":"Notification message",
+      "es":"Mensaje de notificación",
+      "fr":"Message de notification"
+   },
+   "ALCOOL_RECOMMANDATION_EDUCALCOOL_MESSAGE":{
+      "en":"According to Éduc'alcool's recommendations, you have just crossed the line. It's just a reminder...",
+      "es":"Según las recomendaciones de Educ'alcool, acaba de pasar el límite. Es sólo un recordatorio...",
+      "fr":"Selon les recommandations d'Éduc'alcool, vous venez de dépasser la limite. C'est juste un rappel…"
+   },
+   "AUTH_FED_CONNECT_FB":{
+      "en":"Connect with Facebook",
+      "es":"Conectarse con Facebook",
+      "fr":"Se connecter via Facebook"
+   },
+   "AUTH_FED_CONNECT_GOOGLE":{
+      "en":"Connect with Google",
+      "es":"Conectarse con Google",
+      "fr":"Se connecter via Google"
+   },
+   "AUTH_FED_CONNECT_FB_SUCCESS":{
+      "en":"Facebook authentification succeeded!",
+      "es":"¡Autenticación exitosa de Facebook!",
+      "fr":"Authentification Facebook réussie !"
+   },
+   "AUTH_FED_CONNECT_GOOGLE_SUCCESS":{
+      "en":"Google authentification succeeded!",
+      "es":"¡Autenticación exitosa de Google!",
+      "fr":"Authentification Google réussie !"
+   },
+   "AUTH_FED_CONNECT_GOOGLE_ERROR":{
+      "en":"Error with Google authentification!",
+      "es":"¡Error de autenticación de Google!",
+      "fr":"Erreur d'authentification Google !"
+   },
+   "AUTH_FED_CONNECT_FB_ERROR":{
+      "en":"Error with Facebook authentification!",
+      "es":"¡Error de autenticación de Facebook!",
+      "fr":"Erreur d'authentification Facebook !"
    }
 }
