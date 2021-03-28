@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 { 
+=======
+{
+>>>>>>> 72b4c8a743bd26b71655fc4282afcbedccc93838
    "LANG_CHOOSE_LANG":{
       "en":"Please choose your language",
       "es":"Por favor, elija su idioma",
@@ -9,7 +13,11 @@
       "es":"Lengua",
       "fr":"Langue"
    }, 
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 72b4c8a743bd26b71655fc4282afcbedccc93838
    "HYD_TITLE_TARGET":{
       "en":"Daily target",
       "es":"Objetivo diario",
@@ -89,5 +97,110 @@
       "en":"unit",
       "es":"unidad",
       "fr":"unité"
+   },
+   "DATE_FORMAT_SETTINGS_TITLE":{
+      "en":"Date format",
+      "es":"Formato de fecha",
+      "fr":"Format de date"
+   },
+   "DATE_FORMAT_US_UK":{
+      "en":"MM-JJ-AAAA (American or English format) ex: 02-16-2021",
+      "es":"MM-JJ-AAAA (formato americano o inglés) ex: 02-16-2021",
+      "fr":"MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021"
+   },
+   "DATE_FORMAT_FRENCH":{
+      "en":"JJ-MM-AAAA (French format) ex: 16-02-2021",
+      "es":"JJ-MM-AAAA (formato Francés) ex: 16-02-2021",
+      "fr":"JJ-MM-AAAA (format Français) ex: 16-02-2021"
+   },
+   "DATE_FORMAT_INTERNATIONAL":{
+      "en":"AAAA-MM-JJ (International format) ex: 2021-02-16",
+      "es":"AAAA-MM-JJ (formato Internacional) ex: 2021-02-16",
+      "fr":"AAAA-MM-JJ (format International) ex: 2021-02-16"
+   },
+   "DATE_FORMAT_INTERNATIONAL_LETTERED":{
+      "en":"AAAA-mmm-JJ (International whose month is literate) ex: 2021-feb-16",
+      "es":"AAAA-mmm-JJ (Internacional cuyo mes es alfabetizado) ex: 2021-feb-16",
+      "fr":"AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16"
+   },
+   "DATE_FORMAT_FRENCH_LETTERED":{
+      "en":"JJ-mmm-AAAA (French with the literate month) ex: 16-feb-2021",
+      "es":"JJ-mmm-AAAA (Francés con el mes alfabetizado) ex: 16-feb-2021",
+      "fr":"JJ-mmm-AAAA (Français avec mois lettré) ex: 16-fev-2021"
+   },
+   "ALCOOL_SETTINGS_ACTIVATE_NOTIF":{
+      "en":"Activate notifications",
+      "es":"Activar notificaciones",
+      "fr":"Activer les notifications"
+   },
+   "ALCOOL_SETTINGS_TITLE_CONSUMPTION":{
+      "en":"Consumption limits",
+      "es":"Límites de consumo",
+      "fr":"Limites de consommations"
+   },
+   "ALCOOL_DAY_CONSUMPTION":{
+      "en":"per day",
+      "es":"por día",
+      "fr":"par jour"
+   },
+   "ALCOOL_WEEK_CONSUMPTION":{
+      "en":"per week",
+      "es":"por semana",
+      "fr":"par semaine"
+   },
+   "ALCOOL_MAX_CONSUMPTION":{
+      "en":"Maximum",
+      "es":"Máximo",
+      "fr":"Maximum"
+   },
+   "ALCOOL_MAX_WEEK_CONSUMPTION":{
+      "en":"days per week",
+      "es":"días por semana",
+      "fr":"jours par semaine"
+   },
+   "ALCOOL_RECOMMANDATION":{
+      "en":"Use Éduc'alcool recommendations",
+      "es":"Utilizar las recomendaciones de Éduc'alcool",
+      "fr":"Utiliser les recommandations d'Éduc'alcool"
+   },
+   "ALCOOL_SETTINGS_RECOMMANDATION_MESSAGE":{
+      "en":"Notification message",
+      "es":"Mensaje de notificación",
+      "fr":"Message de notification"
+   },
+   "ALCOOL_RECOMMANDATION_EDUCALCOOL_MESSAGE":{
+      "en":"According to Éduc'alcool's recommendations, you have just crossed the line. It's just a reminder...",
+      "es":"Según las recomendaciones de Educ'alcool, acaba de pasar el límite. Es sólo un recordatorio...",
+      "fr":"Selon les recommandations d'Éduc'alcool, vous venez de dépasser la limite. C'est juste un rappel…"
+   },
+   "AUTH_FED_CONNECT_FB":{
+      "en":"Connect with Facebook",
+      "es":"Conectarse con Facebook",
+      "fr":"Se connecter via Facebook"
+   },
+   "AUTH_FED_CONNECT_GOOGLE":{
+      "en":"Connect with Google",
+      "es":"Conectarse con Google",
+      "fr":"Se connecter via Google"
+   },
+   "AUTH_FED_CONNECT_FB_SUCCESS":{
+      "en":"Facebook authentification succeeded!",
+      "es":"¡Autenticación exitosa de Facebook!",
+      "fr":"Authentification Facebook réussie !"
+   },
+   "AUTH_FED_CONNECT_GOOGLE_SUCCESS":{
+      "en":"Google authentification succeeded!",
+      "es":"¡Autenticación exitosa de Google!",
+      "fr":"Authentification Google réussie !"
+   },
+   "AUTH_FED_CONNECT_GOOGLE_ERROR":{
+      "en":"Error with Google authentification!",
+      "es":"¡Error de autenticación de Google!",
+      "fr":"Erreur d'authentification Google !"
+   },
+   "AUTH_FED_CONNECT_FB_ERROR":{
+      "en":"Error with Facebook authentification!",
+      "es":"¡Error de autenticación de Facebook!",
+      "fr":"Erreur d'authentification Facebook !"
    }
 }
