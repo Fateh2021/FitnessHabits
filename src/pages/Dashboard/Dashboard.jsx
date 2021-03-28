@@ -243,6 +243,15 @@ const Dashboard = (props) => {
           }              
         });
       }
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('settings/' + userUID).once('value', (snapshot) => {
+          const data = snapshot.val();
+          const language = data["langue"];
+          if (language) {
+            localStorage.setItem("userLanguage", language);
+          }
+
+      });  
   }, []);
 
   return (

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-{ 
-=======
 {
->>>>>>> 72b4c8a743bd26b71655fc4282afcbedccc93838
    "LANG_CHOOSE_LANG":{
       "en":"Please choose your language",
       "es":"Por favor, elija su idioma",
@@ -13,11 +9,7 @@
       "es":"Lengua",
       "fr":"Langue"
    }, 
-<<<<<<< HEAD
-
-=======
    
->>>>>>> 72b4c8a743bd26b71655fc4282afcbedccc93838
    "HYD_TITLE_TARGET":{
       "en":"Daily target",
       "es":"Objetivo diario",

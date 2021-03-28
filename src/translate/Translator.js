@@ -12,24 +12,15 @@ export function setLang(lang) {
 }
 
 export function getLang() {
-    var language = "";
-    
+    var language = "en";
     if (localStorage["userLanguage"]) {
         language = localStorage.getItem("userLanguage");
     } else {
-        const userUID = localStorage.getItem('userUid');
-        firebase.database().ref('settings/' + userUID).once('value', (snapshot) => {
-            const data = snapshot.val();
-            language = data["langue"];
-        });        
-    }
-
-    if (language == "") {
-        var lang = window.navigator.userLanguage
-            || window.navigator.language;
-        lang = lang.substring(0, 2);
-        if (supportedLanguages.includes(lang)) {
-            language = lang;
+        var locale = window.navigator.userLanguage
+                || window.navigator.language;
+        locale = locale.substring(0, 2);
+        if (supportedLanguages.includes(locale)) {
+            language = locale;
         }
     }
     return language;
