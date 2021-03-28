@@ -6,13 +6,14 @@ import {
 } from '@ionic/react';
 import { home, arrowDropleftCircle, globe, settings } from 'ionicons/icons';
 import '../Tab1.css';
+import {getLang, getText, setLang} from '../../translate/Translator.js';
 
 export const Languages = (props) => {
-    var ul = require('../../translate/Translator');
-    const [selected, setSelected] = useState(ul.getLang());
+
+    const [selected, setSelected] = useState(getLang());
 
     const set = (e) => {
-        ul.setLang(e.detail.value);        
+        setLang(e.detail.value);        
         setSelected(e.detail.value);
     };
 
@@ -24,7 +25,7 @@ export const Languages = (props) => {
                         <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />
                     </IonTabButton>
                     <IonTabButton tab="menu">
-                        <IonLabel className="headerTitle">{ul.getText("LANG_TITLE")}</IonLabel>
+                        <IonLabel className="headerTitle">{getText("LANG_TITLE")}</IonLabel>
                     </IonTabButton>
                     <IonTabButton tab="settings" href="/languages">
                         <IonIcon className="targetProfil "/>
@@ -35,7 +36,7 @@ export const Languages = (props) => {
             <IonContent>
                 <IonRadioGroup value={selected} onIonChange={e => set(e) }>
                     <IonListHeader>
-                        <IonLabel className="headerTitle">{ul.getText("LANG_CHOOSE_LANG")}</IonLabel>
+                        <IonLabel className="headerTitle">{getText("LANG_CHOOSE_LANG")}</IonLabel>
                     </IonListHeader>
 
                     <IonItem class="flexCenter">
