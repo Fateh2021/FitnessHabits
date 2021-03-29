@@ -39,6 +39,16 @@ const Settings =(props) =>{
         value:0,
         unit:''
       },
+      notifications :{
+        active: false
+      },
+      limitConsom: {
+        educAlcool: true,
+        weeklyTarget: 0,
+        dailyTarget: 0,
+        sobrietyDays: 7,
+        notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
+      },
       alcools:DefaultSettings.alcools
     },
 
@@ -124,6 +134,16 @@ const Settings =(props) =>{
         dailyTarget:{
           value:0,
           unit:''
+        },
+        notifications :{
+          active: false
+        },
+        limitConsom : {
+          educAlcool: true,
+          weeklyTarget: 0,
+          dailyTarget: 0,
+          sobrietyDays: 7,
+          notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
         },
         alcools:DefaultSettings.alcools
       };
