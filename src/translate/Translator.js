@@ -7,14 +7,16 @@ export function setLang(lang) {
     if (supportedLanguages.includes(lang)) {
         localStorage.setItem("userLanguage", lang);
         var field = { "langue": lang }
-        firebase.database().ref('settings/' + userUID).update(field);
+        firebase.database().ref('language/' + userUID).update(field);
     }
 }
 
 export function getLang() {
     var language = "en";
     if (localStorage["userLanguage"]) {
+        console.log("local");
         language = localStorage.getItem("userLanguage");
+        console.log(language);
     } else {
         var locale = window.navigator.userLanguage
                 || window.navigator.language;

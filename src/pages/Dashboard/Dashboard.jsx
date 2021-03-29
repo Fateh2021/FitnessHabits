@@ -244,7 +244,7 @@ const Dashboard = (props) => {
         });
       }
       const userUID = localStorage.getItem('userUid');
-      firebase.database().ref('settings/' + userUID).once('value', (snapshot) => {
+      firebase.database().ref('language/' + userUID).once('value', (snapshot) => {
           const data = snapshot.val();
           if (data) {
             const language = data["langue"];
