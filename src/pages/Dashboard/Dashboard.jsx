@@ -358,23 +358,7 @@ const Dashboard = (props) => {
               }
             ]}
           />
-          <IonTabBar slot="bottom" color="light">
-            <IonTabButton tab="" href="/dashboard">
-              <IonIcon color="warning" className="target" icon={home}/>
-              <IonLabel className="text"><h3>Home</h3></IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab1" href="/export">
-              <IonIcon color="warning" className="save" icon={save}/>
-              <IonLabel className="text"><h3>Exporter</h3></IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab2" href="/settings">
-              <IonIcon color="warning" className="target" icon={settings}/>
-              <IonLabel className="text"><h3>Cibler</h3></IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-            }
-          ]}
-        />
+          
         <IonTabBar slot="bottom" color="light">
           <IonTabButton tab="" href="/dashboard">
             <IonIcon color="warning" className="target" icon={home} />
@@ -389,7 +373,6 @@ const Dashboard = (props) => {
             <IonLabel className="text"><h3>Cibler</h3></IonLabel>
           </IonTabButton>
         </IonTabBar>
->>>>>>> src/pages/Dashboard/Dashboard.jsx
       </IonFooter>
     </IonPage>
   );
