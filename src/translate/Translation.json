@@ -110,7 +110,7 @@
       "fr":"AAAA-MM-JJ (format international) ex: 2021-02-16"
    },
    "DATE_FORMAT_INTERNATIONAL_LETTERED":{
-      "en":"AAAA-mmm-JJ (international whose month is literate) ex: 2021-feb-16",
+      "en":"AAAA-mmm-JJ (international with the month in letters) ex: 2021-feb-16",
       "es":"AAAA-mmm-JJ (internacional cuyo mes es alfabetizado) ex: 2021-feb-16",
       "fr":"AAAA-mmm-JJ (international dont le mois est lettré) ex: 2021-fev-16"
    },
