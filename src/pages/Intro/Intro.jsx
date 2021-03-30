@@ -8,7 +8,7 @@ const Intro = () => {
       <IonGrid >
         <IonRow >
           <IonCol size="12">        
-            <img className="logoIntro" src="/assets/Logo2.png" alt="" />   
+            <img className="logoIntro" src="/assets/LogoLegion.png" alt="" />
           </IonCol>
         </IonRow>
       </IonGrid>
