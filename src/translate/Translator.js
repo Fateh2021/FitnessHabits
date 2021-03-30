@@ -29,5 +29,8 @@ export function getLang() {
 }
 
 export function getText(key) {
+    if (dict[key][getLang()] === undefined) {
+        return "";
+    }
     return dict[key][getLang()];
 }
