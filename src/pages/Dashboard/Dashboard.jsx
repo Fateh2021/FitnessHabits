@@ -257,7 +257,19 @@ const Dashboard = (props) => {
             console.log("DB else ::::::::::::::" + JSON.stringify(localStorage));
           }
         });
-    }
+
+      }
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('language/' + userUID).once('value', (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const language = data["langue"];
+            if (language) {
+              localStorage.setItem("userLanguage", language);
+            }
+          }
+      });  
+
   }, []);
 
   return (

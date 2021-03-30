@@ -305,7 +305,7 @@ color: #ffffff;
   margin-left: -8px;
 }
 
-.targetProfil{
+.targetLanguage, .targetProfil{
   font-size: 26px;
   color: #3e554a;;
   text-shadow: black;
@@ -2078,6 +2078,21 @@ h2{
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+/** Language page **/
+.langueName {
+  padding-left:20px;
+}
+.langueFlag {
+  height: 50px;
+  width: auto;
+}
+.flexCenter {
+  display: flex!important;
+  align-items: center;
+}
+.order-3 {
+  order:3;
+}
 .messagenotif {
   background-color: #cac086;
 }

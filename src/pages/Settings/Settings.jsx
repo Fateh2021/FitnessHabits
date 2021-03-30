@@ -206,7 +206,7 @@ const Settings =(props) =>{
           <IonTabButton tab="menu" href="/sidbar">
             <IonLabel className="headerTitle">Paramètres</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="settings" >
+          <IonTabButton tab="settings" href="/languages">
             <IonIcon className="targetProfil " icon={globe}/>
           </IonTabButton>  
         </IonTabBar>           

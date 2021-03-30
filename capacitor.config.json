@@ -6,5 +6,6 @@
   "webDir": "build",
   "cordova": {},
   "build": "7",
-  "version": "2"
+  "version": "2",
+  "linuxAndroidStudioPath": "/snap/bin/android-studio"
 }
