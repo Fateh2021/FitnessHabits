@@ -28,9 +28,7 @@ const Ajout = () => {
         id: '',
         jour: [],
         heure: '',
-        notifierAvant: '',
-        active: true
-    }
+        notifierAvant: ''    }
 
     var [values, setValues] = useState(initialValues)
 
@@ -68,7 +66,7 @@ const Ajout = () => {
 
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle>Nouvelle notification de glycémie</IonTitle>
+                        <IonTitle class="titre">Nouveau horaire</IonTitle>
                     </IonToolbar>
 
                     <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">

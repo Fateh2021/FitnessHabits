@@ -1,5 +1,10 @@
 import firebaseDb from "../../firebaseConfig"
 import React, { useState, useEffect } from 'react'
+import { add, arrowBack, trash} from "ionicons/icons";
+
+import Modifier from './Modifier'
+import './style.css';
+import {toast} from '../../Toast'
 
 import {
   IonContent,
@@ -11,15 +16,13 @@ import {
   IonCardContent,
   IonIcon,
   IonFab,
-  IonFabButton
+  IonFabButton,
+  IonModal
 } from "@ionic/react";
 
-import { add, arrowBack, closeCircleOutline } from "ionicons/icons";
-import './style.css';
 
 const Initial = () => {
 
-  
   var [glycemie, setGlycemie] = useState({})
 
   // Reading from db
@@ -35,11 +38,24 @@ const Initial = () => {
     })
   }, [])
 
+  const [showModal, setShowModal] = useState(false);
+  const [currentId, setCurrentId] = useState('');
+
+  const editAction = (currentId) => {
+    setCurrentId(currentId);
+    setShowModal(true);
+  }
+
+  function supprimer(e){
+    toast("Horaire supprimer");
+    firebaseDb.database.ref('NotificationGlycemie/' + e).remove()
+  }
+
   return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Notifications glycémie</IonTitle>
+                    <IonTitle class="titre">Notifications glycémie</IonTitle>
                 </IonToolbar>
 
             <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
@@ -48,29 +64,44 @@ const Initial = () => {
                 </IonFabButton>
             </IonFab>
         </IonHeader>
+        
+        <IonModal isOpen={showModal} cssClass='my-custom-class'>
+            <IonHeader>
+                <IonToolbar>
+                    <IonTitle class="titre">Modifier horaire</IonTitle>
+                </IonToolbar>
+
+            <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
+                <IonFabButton onClick={() => {setShowModal(false)}} size="small">
+                    <IonIcon icon={arrowBack} />
+                </IonFabButton>
+            </IonFab>
+        </IonHeader>
+            <IonContent>
+              <Modifier {...({ currentId, glycemie })} />
+            </IonContent>
+        </IonModal>
 
         <IonContent>
 
           {
             Object.keys(glycemie).map(e => {
-              return <IonCard key={e}>
-                <div>
+              return <IonCard key={e} onClick={() => editAction(e)}>
                   <IonCardContent>
-
+                    <div>
                         <div class="heure" name="heure">{new Date(glycemie[e].heure).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
 
-                        <div class="contenu" name="notifierAvant">Notifier avant {new Date(glycemie[e].notifierAvant).toLocaleTimeString([], {minute:'2-digit'})} min</div>
+                        <div name="notifierAvant">Notifier avant {new Date(glycemie[e].notifierAvant).toLocaleTimeString([], {minute:'2-digit'})} min</div>
 
-                        <div class="contenu" name="jour">{glycemie[e].jour.join("  ")}</div>
-
+                        <div class="jour" name="jour">{glycemie[e].jour.join("  ")}</div>
+                    </div>
                         <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
-                            <IonFabButton class="removeButton" size="small" onClick={() => {firebaseDb.database.ref('NotificationGlycemie/' + e).remove()}} href="/glycemie">
-                                <IonIcon icon={closeCircleOutline} />
+                            <IonFabButton class="removeButton" size="small" onClick={() => supprimer(e)} href="/glycemie">
+                            <IonIcon icon={trash}/>                            
                             </IonFabButton>
                         </IonFab>
 
                   </IonCardContent>
-                </div>
 
               </IonCard>
 

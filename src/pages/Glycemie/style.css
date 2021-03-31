@@ -2,9 +2,19 @@
     top: 0px;
 }
 
+.titre{
+    text-align: center;
+}
+
+.jour{
+    font-size: medium;
+    color: black;
+}
+
 .heure{
     font-size: xx-large;
     font-weight: bold;
     color: black;
     right: 50px;
 }
+
