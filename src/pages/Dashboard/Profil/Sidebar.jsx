@@ -76,6 +76,7 @@ const Sidebar = (props) => {
         profile.pseudo=name[0]+"."+name[1];
         profile.email=user.email;
         const userUID = localStorage.getItem('userUid');
+        //Sauvegarde ou mise à jour dans la base de données firebase
         firebase.database().ref('profiles/'+userUID).update({
                 "pseudo": profile.pseudo,
                 "email": profile.email,
