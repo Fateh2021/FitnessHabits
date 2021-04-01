@@ -9,7 +9,6 @@
       "es":"Lengua",
       "fr":"Langue"
    }, 
-   
    "HYD_TITLE_TARGET":{
       "en":"Daily target",
       "es":"Objetivo diario",
@@ -66,24 +65,24 @@
       "fr":"+ Heure de notification"
    },
    "HYD_UNITS_GR":{
-      "en":"grams",
-      "es":"gramos",
-      "fr":"gramme"
+      "en":"gram(s)",
+      "es":"gramo(s)",
+      "fr":"gramme(s)"
    },
    "HYD_UNIT_OZ":{
-      "en":"ounce",
-      "es":"onza",
-      "fr":"once"
+      "en":"ounce(s)",
+      "es":"onza(s)",
+      "fr":"once(s)"
    },
    "HYD_UNIT_ML":{
-      "en":"mililitre",
-      "es":"mililitro",
-      "fr":"millilitre"
+      "en":"mililitre(s)",
+      "es":"mililitro(s)",
+      "fr":"millilitre(s)"
    },
    "HYD_UNIT_TASSE":{
-      "en":"cup",
-      "es":"taza",
-      "fr":"tasse"
+      "en":"cup(s)",
+      "es":"taza(s)",
+      "fr":"tasse(s)"
    },
    "HYD_UNIT_TEXT":{
       "en":"unit",
@@ -98,27 +97,27 @@
    "DATE_FORMAT_US_UK":{
       "en":"MM-JJ-AAAA (American or English format) ex: 02-16-2021",
       "es":"MM-JJ-AAAA (formato americano o inglés) ex: 02-16-2021",
-      "fr":"MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021"
+      "fr":"MM-JJ-AAAA (format américain ou anglais) ex: 02-16-2021"
    },
    "DATE_FORMAT_FRENCH":{
       "en":"JJ-MM-AAAA (French format) ex: 16-02-2021",
-      "es":"JJ-MM-AAAA (formato Francés) ex: 16-02-2021",
-      "fr":"JJ-MM-AAAA (format Français) ex: 16-02-2021"
+      "es":"JJ-MM-AAAA (formato francés) ex: 16-02-2021",
+      "fr":"JJ-MM-AAAA (format français) ex: 16-02-2021"
    },
    "DATE_FORMAT_INTERNATIONAL":{
-      "en":"AAAA-MM-JJ (International format) ex: 2021-02-16",
-      "es":"AAAA-MM-JJ (formato Internacional) ex: 2021-02-16",
-      "fr":"AAAA-MM-JJ (format International) ex: 2021-02-16"
+      "en":"AAAA-MM-JJ (international format) ex: 2021-02-16",
+      "es":"AAAA-MM-JJ (formato internacional) ex: 2021-02-16",
+      "fr":"AAAA-MM-JJ (format international) ex: 2021-02-16"
    },
    "DATE_FORMAT_INTERNATIONAL_LETTERED":{
-      "en":"AAAA-mmm-JJ (International whose month is literate) ex: 2021-feb-16",
-      "es":"AAAA-mmm-JJ (Internacional cuyo mes es alfabetizado) ex: 2021-feb-16",
-      "fr":"AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16"
+      "en":"AAAA-mmm-JJ (international with the month in letters) ex: 2021-feb-16",
+      "es":"AAAA-mmm-JJ (internacional cuyo mes es alfabetizado) ex: 2021-feb-16",
+      "fr":"AAAA-mmm-JJ (international dont le mois est lettré) ex: 2021-fev-16"
    },
    "DATE_FORMAT_FRENCH_LETTERED":{
-      "en":"JJ-mmm-AAAA (French with the literate month) ex: 16-feb-2021",
-      "es":"JJ-mmm-AAAA (Francés con el mes alfabetizado) ex: 16-feb-2021",
-      "fr":"JJ-mmm-AAAA (Français avec mois lettré) ex: 16-fev-2021"
+      "en":"JJ-mmm-AAAA (French with the month in letters) ex: 16-feb-2021",
+      "es":"JJ-mmm-AAAA (francés con el mes alfabetizado) ex: 16-feb-2021",
+      "fr":"JJ-mmm-AAAA (français avec mois lettré) ex: 16-fev-2021"
    },
    "ALCOOL_SETTINGS_ACTIVATE_NOTIF":{
       "en":"Activate notifications",
@@ -161,7 +160,7 @@
       "fr":"Message de notification"
    },
    "ALCOOL_RECOMMANDATION_EDUCALCOOL_MESSAGE":{
-      "en":"According to Éduc'alcool's recommendations, you have just crossed the line. It's just a reminder...",
+      "en":"According to Éduc'alcool's recommendations, you have exceeded the limit. It's just a reminder...",
       "es":"Según las recomendaciones de Educ'alcool, acaba de pasar el límite. Es sólo un recordatorio...",
       "fr":"Selon les recommandations d'Éduc'alcool, vous venez de dépasser la limite. C'est juste un rappel…"
    },
