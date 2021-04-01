@@ -389,7 +389,6 @@ const Dashboard = (props) => {
             <IonLabel className="text"><h3>Cibler</h3></IonLabel>
           </IonTabButton>
         </IonTabBar>
->>>>>>> src/pages/Dashboard/Dashboard.jsx
       </IonFooter>
     </IonPage>
   );
