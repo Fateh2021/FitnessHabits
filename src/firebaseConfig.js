@@ -12,7 +12,9 @@ const config={
     measurementId: "G-F6S5DRN5MS"
 }
 
-firebase.initializeApp(config)
+//firebase.initializeApp(config)
+
+export default firebase.initializeApp(config).database().ref();
 
 /*Config authentification Google et Facebook par l'équipe GEFRAL*/
 export const auth = firebase.auth();
@@ -22,7 +24,6 @@ export const signInWithGoogle = () => auth.signInWithPopup(providerGoogle);
 const providerFacebook = new firebase.auth.FacebookAuthProvider();
 providerFacebook.setCustomParameters({ prompt: 'select_account' });
 export const signInWithFacebook = () => auth.signInWithPopup(providerFacebook);
-
 
 export function getCurrentUser() {        
     return new Promise((resolve, reject) => {

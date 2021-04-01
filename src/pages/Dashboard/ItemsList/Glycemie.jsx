@@ -34,7 +34,7 @@ const Glycemie = (props) => {
 
   return (
     <div>
-      <IonItem className="divTitre4">
+      <IonItem className="divTitre4" href="/glycemie">
       <IonAvatar slot="start">
         <img src="/assets/Gly.jpg" alt=""/>
       </IonAvatar>
@@ -42,7 +42,6 @@ const Glycemie = (props) => {
         <h2><b>Glycémie</b></h2>
       </IonLabel>
         <IonInput className='inputTextGly' type="number" value = {dailyGlycemie} onIonChange={handleChange}></IonInput> 
-        <IonIcon className="arrowDashItem"/>
     </IonItem>
     </div>   
   );

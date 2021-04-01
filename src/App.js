@@ -12,6 +12,8 @@ import Export from './pages/Settings/Export'
 import ConfigurationPoids from './pages/Poids/configuration/configuration';
 import ConfigurationNotification from './pages/Poids/configuration/configurationNotification';
 import { Settings as LuxonSettings } from "luxon";
+import GlycemieInitial from './pages/Glycemie/Initial';
+import GlycemieAjout from './pages/Glycemie/Ajout';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -53,6 +55,8 @@ const RoutingSystem = () => {
           <Route patg="/export" component={Export}/>
           <Route path="/settings" component={Settings} />
           <Route path="/intro" component={Intro} exact={true} />
+          <Route path="/glycemie" component={GlycemieInitial} />
+          <Route path="/glycemieAjout" component={GlycemieAjout} />
           <Route path="/configurationPoids" component={ConfigurationPoids} />
           <Route path="/languages" component={Languages} />
           <Route path="/configurationNotification" component={ConfigurationNotification} />
