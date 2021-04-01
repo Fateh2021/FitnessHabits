@@ -29,7 +29,8 @@ export function getLang() {
 }
 
 export function getText(key) {
-    if (dict[key][getLang()] === undefined) {
+    if (dict === undefined || dict[key] === undefined || dict[key][getLang()] === undefined) {
+        console.error("Error in Translation.json")
         return "";
     }
     return dict[key][getLang()];
