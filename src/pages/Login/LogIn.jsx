@@ -39,7 +39,7 @@ const LogIn = (props) => {
             props.history.push('/dashboard');
 
         }catch(error){
-            toast(translate.getText("AUTH_FED_CONNECT_FB_GOOGLE"), 4000)
+            toast(translate.getText("AUTH_FED_CONNECT_GOOGLE_ERROR"), 4000)
         }
         setBusy(false)
     }
@@ -91,7 +91,7 @@ const LogIn = (props) => {
 
                 <IonRow className="">
                     <IonCol>
-                        <IonLoading message="Veuillez patienter.." duration={0} isOpen={busy} />
+                        <IonLoading message={translate.getText("WAIT")} duration={0} isOpen={busy} />
                         <IonItem color="transparent">
                             <IonInput placeholder={translate.getText("USER_NAME")} onIonChange={(e) => setUsername(e.target.value)}/>
                         </IonItem>
