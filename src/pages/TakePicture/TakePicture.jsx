@@ -1,9 +1,8 @@
 import { IonImg, IonIcon, IonAvatar } from '@ionic/react';
 import React, { Component } from 'react';
-// import { Plugins, CameraResultType } from '@capacitor/core';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { aperture } from 'ionicons/icons';
-import * as firebase from "firebase";// import ajouté par GEFRAL
+import firebase from "firebase";// import ajouté par GEFRAL
 
 import { Plugins, CameraResultType } from '@capacitor/core';
 
@@ -27,63 +26,10 @@ export class TakePicture extends Component {
       allowEditing: false,
       resultType: CameraResultType.Uri
     });
-    var imageUrl = image.path;
+    var imageUrl = image.webPath;
     this.setState({
       photo: imageUrl
     })
-    // console.log("Picture URL :::" + this.photo )
-
-    // const { Camera, Filesystem } = Plugins;
-    // const options = {
-    //   quality: 90,
-    //   allowEditing: false,
-    //   resultType: CameraResultType.Uri
-    // };
-
-    // Camera.getPhoto(options).then(
-    //   photo => {
-    //     Filesystem.readFile({
-    //       path: photo.path
-    //     }).then(
-    //       result => {
-    //         let date = new Date(),
-    //           time = date.getTime(),
-    //           fileName = time + ".jpeg";
-
-    //         Filesystem.writeFile({
-    //           data: result.data,
-    //           path: fileName,
-    //           directory: FilesystemDirectory.Data
-    //         }).then( 
-    //           () => {
-    //             Filesystem.getUri({
-    //               directory: FilesystemDirectory.Data,
-    //               path: fileName
-    //             }).then(
-    //               result => {
-    //                 let path = Capacitor.convertFileSrc(result.uri);
-    //                 console.log("Path :::::"+path);
-    //               },
-    //               err => {
-    //                 console.log(err);
-    //               }
-    //             ); 
-    //           },
-    //           err => {  
-    //             console.log(err);
-    //           }
-    //         );
-    //       },
-    //       err => { 
-    //         console.log(err);
-    //       }
-    //     );
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // );
-  
 
   }
   
@@ -109,6 +55,6 @@ export class TakePicture extends Component {
         </IonAvatar>
       </div>
     );
-  };
+  }
 }
 export default TakePicture;

@@ -1,17 +1,15 @@
 import React from "react"
 import { IonInput, IonList, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
 
-
 import './pages/Tab1.css';
 
-const Dashboard = () => {
+const Proteines = () => {
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
-    }
-    
+    }    
   }
   return (
 
@@ -52,7 +50,6 @@ const Dashboard = () => {
             </select>
           </div>          
         </IonList>    
-
   );
 }
-export default Dashboard;
+export default Proteines;

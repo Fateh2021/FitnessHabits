@@ -1,8 +1,8 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import React, {useState, useEffect}  from 'react';
 import { IonList,IonTabBar, IonGrid, IonTabButton, IonRow, IonCol, IonHeader, IonIcon,
-         IonLabel,IonFooter, IonContent, IonPage, IonAlert, IonItem, IonAvatar, IonRadioGroup, IonRadio, IonListHeader, } from '@ionic/react';
-import { save, home, arrowDropleftCircle, arrowDropdownCircle, globe, funnel } from 'ionicons/icons';
+         IonLabel,IonFooter, IonContent, IonPage, IonAlert, IonItem, IonAvatar} from '@ionic/react';
+import { save, home, arrowDropleftCircle, arrowDropdownCircle, globe } from 'ionicons/icons';
 import Hydratation from './ItemsList/Hydratation'
 import BoissonAlcool from './ItemsList/BoissonAlcool' 
 import NourriGras from './ItemsList/Nourriture/NourriGras' 
@@ -10,6 +10,7 @@ import NourriLegumes from './ItemsList/Nourriture/NourriLegumes'
 import NourriProteines from './ItemsList/Nourriture/NourriProteines'
 import NourriCereales from './ItemsList/Nourriture/NourriCereales'
 import Supplements from './ItemsList/Supplements'
+import Glycemie from './ItemsList/Glycemie'
 import DefaultSettings from './DefaultSettings'
 
 import '../Tab1.css';
@@ -87,14 +88,9 @@ const Settings =(props) =>{
   });
   
   //Variable indiquant quel mode d'exportation a été sélectionner
-  // #TODO : Construire un énum dédié
-  // 0 => PDF
-  // 1 => CSV
-  // 2 => PDF et CSV
   var exportMode = 0
   
   //Variable indiquant quels données l'utilisateur souhaite exporter
-  // #TODO : Rendre la liste adaptative en récupérant ces infos avec le profil utilisateur
   var dataSelected = ["hydratation", "alcool", "nourriture", "glycémie", "poids", "toilettes", "sommeil", "activities"]
 
   // load the current settings from the local storage if it exists, otherwise load it from the DB
@@ -104,15 +100,11 @@ const Settings =(props) =>{
         const sets = addMissingSettings(JSON.parse(localSettings));
         localStorage.setItem('settings', JSON.stringify(sets));
         setSettings(JSON.parse(localSettings));
-        //console.log("Loading Settings From localStorage..."+localStorage.getItem('settings'));
-        console.log("Loading Settings From localStorage 1st time..."+JSON.stringify(settings.gras));
       } else {
           const userUID = localStorage.getItem('userUid');
-          console.log("Loading Settings From DB...");
           firebase.database().ref('settings/'+userUID)
           .once("value", (snapshot) => {
             const sets = snapshot.val();
-            console.log("settings ::"+JSON.stringify(sets));
             if (sets) {
               if(!(sets.hydratation.hydrates)){
                 sets.hydratation.hydrates = [];
@@ -255,6 +247,7 @@ const Settings =(props) =>{
         </div>
         <Supplements/>  
         <BoissonAlcool alcool={settings.alcool}/>         
+        <Glycemie/>         
         </IonList>                                                 
       </IonContent>
   
@@ -273,7 +266,6 @@ const Settings =(props) =>{
               checked: true,
               handler: () => {
                 exportMode = 0;
-                console.log("Mode sélectionné 0");
               }
             },
             {
@@ -283,7 +275,6 @@ const Settings =(props) =>{
               value: 'value1',
               handler: () => {
                 exportMode = 1;
-                console.log("Mode sélectionné 1");
               }
             },
             {
@@ -293,7 +284,6 @@ const Settings =(props) =>{
               value: 'value2',
               handler: () => {
                 exportMode = 2;
-                console.log("Mode sélectionné 2");
               }
             }
           ]}
@@ -302,15 +292,9 @@ const Settings =(props) =>{
               text: 'Cancel',
               role: 'cancel',
               cssClass: 'secondary',
-              handler: () => {
-                console.log('Confirm Cancel');
-              }
             },
             {
               text: 'Ok',
-              handler: () => {
-                console.log('Confirm Ok');
-              }
             }
           ]}
         />
@@ -322,9 +306,8 @@ const Settings =(props) =>{
         inputs={[
           {
             name: 'check1',
-            type: 'checkbox',
-            label: 'Activités physiques',
             value: 'value5',
+            type: 'checkbox',
             checked: dataSelected.includes("activities"),
             handler: () => {
               const index = dataSelected.indexOf("activities");
@@ -333,13 +316,12 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("activities");
               }
-              console.log(dataSelected)
-            }
+            },
+            label: 'Activités physiques',
           },
           {
-            name: 'check2',
-            type: 'checkbox',
             label: 'Nourriture',
+            name: 'check2',
             value: 'value6',
             checked: dataSelected.includes("nourriture"),
             handler: () => {
@@ -349,15 +331,15 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("nourriture");
               }
-              console.log(dataSelected)
-            }
+            },
+            type: 'checkbox',
           },
           {
             name: 'check3',
             type: 'checkbox',
-            label: 'Hydratation',
-            value: 'value7',
             checked: dataSelected.includes("hydratation"),
+            label: 'Hydratation',
+            value: 'value7',          
             handler: () => {
               const index = dataSelected.indexOf("hydratation");
               if (index > -1) {
@@ -365,15 +347,14 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("hydratation");
               }
-              console.log(dataSelected)
             }
           },
           {
+            checked: dataSelected.includes("supplements"),
             name: 'check4',
-            type: 'checkbox',
             label: 'Suppléments',
             value: 'value8',
-            checked: dataSelected.includes("supplements"),
+            type: 'checkbox',
             handler: () => {
               const index = dataSelected.indexOf("supplements");
               if (index > -1) {
@@ -381,15 +362,12 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("supplements");
               }
-              console.log(dataSelected)
             }
           },
           {
             name: 'check5',
-            type: 'checkbox',
             label: 'Sommeil',
             value: 'value9',
-            checked: dataSelected.includes("sommeil"),
             handler: () => {
               const index = dataSelected.indexOf("sommeil");
               if (index > -1) {
@@ -397,15 +375,12 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("sommeil");
               }
-              console.log(dataSelected)
-            }
+            },
+            checked: dataSelected.includes("sommeil"),
+            type: 'checkbox',
           },
           {
-            name: 'check6',
-            type: 'checkbox',
-            label: 'Poids',
-            value: 'value10',
-            checked: dataSelected.includes("poids"),
+            
             handler: () => {
               const index = dataSelected.indexOf("poids");
               if (index > -1) {
@@ -413,14 +388,17 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("poids");
               }
-              console.log(dataSelected)
-            }
+            },
+            label: 'Poids',
+            type: 'checkbox',
+            checked: dataSelected.includes("poids"),
+            value: 'value10',
+            name: 'check6',
           },
           {
-            name: 'check7',
-            type: 'checkbox',
-            label: 'Glycémie',
+            
             value: 'value11',
+            name: 'check7',
             checked: dataSelected.includes("glycémie"),
             handler: () => {
               const index = dataSelected.indexOf("glycémie");
@@ -429,12 +407,13 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("glycémie");
               }
-              console.log(dataSelected)
-            }
+            },
+            label: 'Glycémie',
+            type: 'checkbox',
+           
           },
           {
             name: 'check8',
-            type: 'checkbox',
             label: 'Alcool',
             value: 'value12',
             checked: dataSelected.includes("alcool"),
@@ -445,8 +424,8 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("alcool");
               }
-              console.log(dataSelected)
-            }
+            },
+            type: 'checkbox',
           },
           {
             name: 'check9',
@@ -461,7 +440,6 @@ const Settings =(props) =>{
               } else {
                 dataSelected.push("toilettes");
               }
-              console.log(dataSelected)
             }
           }
         ]}
@@ -470,18 +448,10 @@ const Settings =(props) =>{
             text: 'Cancel',
             role: 'cancel',
             cssClass: 'secondary',
-            handler: () => {
-              console.log('Confirm Cancel');
-            }
           },
           {
             text: 'Ok',
             handler: () => {
-              dataSelected.forEach(data => {
-                console.log(data);
-              });
-              //console.log(JSON.parse(localStorage).getItem('dashboard'))[data];
-              console.log('Confirm Ok');
               setShowAlert6(true);
             }
           }

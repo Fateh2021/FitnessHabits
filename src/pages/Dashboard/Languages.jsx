@@ -1,18 +1,15 @@
-import * as firebase from 'firebase'
 import React, { useState } from 'react';
 import {
     IonTabBar, IonTabButton, IonHeader, IonIcon, IonAvatar,
     IonLabel, IonFooter, IonContent, IonPage, IonItem, IonRadioGroup, IonRadio, IonListHeader
 } from '@ionic/react';
-import { home, arrowDropleftCircle, globe, settings } from 'ionicons/icons';
+import { home, arrowDropleftCircle, settings } from 'ionicons/icons';
 import '../Tab1.css';
 import * as translate from '../../translate/Translator.js';
 
 
 export const Languages = (props) => {
-    const userUID = localStorage.getItem('userUid');
     const [selected, setSelected] = useState(translate.getLang());
-
     const set = (e) => {
         translate.setLang(e.detail.value);
         setSelected(e.detail.value);

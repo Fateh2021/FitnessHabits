@@ -1,4 +1,4 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import "firebase/auth";
 import React, { useState } from 'react';
 import { IonInput, IonGrid, IonItem, IonRow, IonCol, IonPage, IonButton, IonLoading, IonIcon } from '@ionic/react';
@@ -6,8 +6,7 @@ import { toast } from '../../Toast'
 import * as translate from '../../translate/Translator'
 
 /* les imports de l'équipe GEFRAL */
-import { signInWithGoogle } from '../../firebaseConfig';
-import { signInWithFacebook } from '../../firebaseConfig';
+import { signInWithGoogle, signInWithFacebook } from '../../firebaseConfig';
 import {logoFacebook,logoGoogle,arrowForward} from "ionicons/icons";
 
 const LogIn = (props) => {

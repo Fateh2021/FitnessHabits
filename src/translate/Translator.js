@@ -1,4 +1,4 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 const dict = require('./Translation.json');
 const supportedLanguages = ["en", "es", "fr"];
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
 import {arrowDropdownCircle} from 'ionicons/icons';
 

@@ -6,13 +6,6 @@ import '../../Tab1.css';
 
 const Supplements = () => {
 
-  const accor = (divId) => {
-    const divElt=document.getElementById(divId);
-    if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
-    }    
-  }
-
   return (
     <div>
       <IonItem className="divTitre3">
@@ -23,7 +16,7 @@ const Supplements = () => {
           <h2><b>Suppléments</b></h2>
         </IonLabel>
         <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("")}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
       </IonItem>
       <div id="myDIV3">
         <IonItem>     

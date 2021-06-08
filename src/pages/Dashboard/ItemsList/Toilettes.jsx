@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { IonLabel, IonItem, IonAvatar} from '@ionic/react';
 
 import '../../../pages/Tab1.css';

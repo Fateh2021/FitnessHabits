@@ -1,4 +1,4 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import "firebase/auth";
 
 const config={
@@ -12,9 +12,9 @@ const config={
     measurementId: "G-F6S5DRN5MS"
 }
 
-//firebase.initializeApp(config)
-
 export default firebase.initializeApp(config).database().ref();
+
+export const storage = firebase.storage();
 
 /*Config authentification Google et Facebook par l'équipe GEFRAL*/
 export const auth = firebase.auth();

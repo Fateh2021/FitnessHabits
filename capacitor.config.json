@@ -1,6 +1,6 @@
 {
-  "appId": "com.fithab.app",
-  "appName": "fithab",
+  "appId": "com.turtledev.fitnessHabit",
+  "appName": "fitnessHabit",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "build",

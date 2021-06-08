@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonButton} from '@ionic/react';
 import { arrowDropdownCircle, star, addCircle, removeCircle, trash} from 'ionicons/icons';
 import uuid from 'react-uuid';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 import '../../../Tab1.css'
 
@@ -115,6 +115,7 @@ const NourriProteines = (props) => {
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.proteines.dailyTarget.globalConsumption = totalConsumption();
+    props.parentCallbackProteines(totalConsumption());
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
@@ -152,7 +153,7 @@ const NourriProteines = (props) => {
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[item] = item;
+    array.splice(item, 1);
     setProteines(array);  
     for (var i = 0; i < array.length; i++ ){
       consumption = array[i].consumption;
@@ -161,7 +162,8 @@ const NourriProteines = (props) => {
     setGlobalConsumption(sum);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.proteines.proteines = array;
-    dashboard.proteines.dailyTarget.globalConsumption = sum;    
+    dashboard.proteines.dailyTarget.globalConsumption = sum;
+    props.parentCallbackProteines(sum);      
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
@@ -203,7 +205,7 @@ const NourriProteines = (props) => {
         <img src="/assets/Proteines.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Proteines</b></h2>
+          <h2><b>Protéines</b></h2>
         </IonLabel>
         <IonInput className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV5")}/>

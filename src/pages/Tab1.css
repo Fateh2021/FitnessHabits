@@ -1,6 +1,7 @@
 .or-format {
     text-align: center;
 }
+
 .icon-facebook-format {
     font-size: 32px;
     padding-right: 10%;
@@ -21,13 +22,13 @@
     width: 62%;
     float: right;
 }
+
 .login-button-left {
     width: 35%;
     float: left;
 }
 
 .welcome-card img {
-  /* max-height: 35vh; */
   margin-left: auto;
   margin-right: auto;
   width: 50%;
@@ -52,16 +53,16 @@ border-style: solid;
 border-color: #015871;
 border-width: 1px;
 }
+
 .sett{
   width: 100%;
   height: 225px;
   overflow-y:
   scroll;
-  
 }
+
 .ionRadio{
   position: relative;
-
 }
 
 .trashButton {
@@ -70,14 +71,13 @@ border-width: 1px;
 }
 
 .triangleAlcool{
-  border-bottom: 50px solid #db4e3e;;
+  border-bottom: 50px solid #db4e3e;
 	border-left: 50px solid transparent;
 	border-right: 50px solid transparent;
 	height: 0;
   width: 100px;
   position: relative;
   right: -20px;
-  /* border-radius: 30px; */
 }
 
 .triangle{
@@ -118,6 +118,7 @@ border-width: 1px;
   font-size: 13px;
   color: #fcf8f8;
 }
+
 .triangleText2{
   position: absolute;
   top: -21px;
@@ -125,6 +126,7 @@ border-width: 1px;
   font-size: 13px;
   color: #fcf8f8;
   }
+
   .triangleText3{
   position: absolute;
   top: -9px;
@@ -133,6 +135,7 @@ border-width: 1px;
   font-size: 13px;
   color: #fcf8f8;
   }
+
 .triangleText4{
   position: absolute;
   top: -9px;
@@ -148,48 +151,39 @@ border-width: 1px;
   position: absolute;
   padding-top: 5px;
   margin-left: -9px;
-  /* bottom:-10px;
-  right: -5px; */
   color: #fcf8f8;
   font-size: 10px;
   text-align: center;
-
 }
+
 .triangleText2-2{
   height: 6px;
   width: 20px;
   position: absolute;
   margin-top: -17px;
   margin-left: -9px;
-  /* bottom: 13px;
-  right: -5px; */
   color: #fcf8f8;
   font-size: 10px;
   text-align: center;
-
   }
-  .triangleText3-3{
-    height: 6px;
-    width: 20px;
+
+.triangleText3-3{
+  height: 6px;
+  width: 20px;
   position: absolute;
   margin-top: -8px;
   margin-left: -25px;
-  /* top: -11px;
-  bottom: -7px;
-  left:9px; */
   color: #fcf8f8;
   font-size: 10px;
   text-align: center;
-
   }
+
 .triangleText4-4{
   height: 6px;
   width: 20px;
   position: absolute;
   margin-top: -8px;
   margin-left: 13px;
-  /* top: -10px;
-  right: 8px; */
   color: #fcf8f8;
   font-size: 10px;
   }
@@ -206,33 +200,39 @@ border-width: 1px;
 .nameDscrip{
   margin-left: -17px;
 }
+
 .nameDscrip h2{
   font-size: 10.75px;
   color: #000000;
 }
+
 .unitDescrip{
   background-color: #BCC2C1;
   margin-left: -2px;
   margin-right: -2px;
 }
+
 .unitDescrip h2{
   font-size: 12px;
   color: #000000;
 }
+
 .login-image{
   position: absolute;
 }
+
 .intro {
     margin-left: auto;
     margin-right: auto;
 
     overflow: hidden;
 }
+
 .list-details{
   background-color: #558888;
 }
+
 .list img {
-  /* max-height: 35vh; */
   width: auto;
 }
 
@@ -242,7 +242,7 @@ text-shadow: black;
 color: #d66437;
 }
 
-.button-left, .button-right, .menu {
+.button-left, .button-right {
   font-size: 50px;
   color: #d66437;
   text-shadow: black;
@@ -250,6 +250,11 @@ color: #d66437;
 
 .menu {
   margin-left: 120px;
+  font-size: 50px;
+  color: #d66437;
+  text-shadow: black;
+  padding-right: 30px;
+  padding-left: 0px;
 }
 
 .time{
@@ -259,17 +264,17 @@ color: #d66437;
 .button-right {
   padding-right: 50px;
   }
-/*  */
+
 .button-left {
   padding-left: 0px;
   padding-right: 70px;  
 }
 
 .buttonHeaderDash{
-size: 50%;
-padding-bottom: 0px;
-padding-top: 2px;
-background-color: #aabb99;
+  size: 50%;
+  padding-bottom: 0px;
+  padding-top: 2px;
+  background-color: #aabb99;
 }
 
 .buttonTimeLeft{ 
@@ -288,11 +293,6 @@ color: #ffffff;
   text-shadow: black;
 }
 
-.menu {
-  padding-right: 30px;
-  padding-left: 0px;
-  }
-
 .save, .target, .settings {
   font-size: 28px;
   color: #d66437;
@@ -307,7 +307,7 @@ color: #ffffff;
 
 .targetLanguage, .targetProfil{
   font-size: 26px;
-  color: #3e554a;;
+  color: #3e554a;
   text-shadow: black;
 }
 
@@ -354,18 +354,15 @@ color: #ffffff;
  }
 
  .datePicker {
-  margin-left: 11px; 
-  padding-left: 15px; 
-  padding-right: 10px;
+  margin: -40px; 
   background-color: #f7e8ca;
-  /* border-left: 0px solid #f7e8ca; */
   width: 120px;
   font-weight: bolder;
  }
 
  .headerTitleDashboard h3{
-   padding-top: 0px;
-  font-size: 14px;
+   padding-top: 5px;
+  font-size: 18px;
   font-family: fantasy;
   font-weight: bolder;
   color:#f7e8ca;
@@ -428,8 +425,6 @@ color: #ffffff;
 
  #materialSelectCibleQuot{
   padding: 1px;
-  /* margin-right: -3px;
-  margin-left: 3px; */
   width: 60px;
   font-size: 13px;
   font-weight: bold;
@@ -457,6 +452,8 @@ color: #ffffff;
    display: inline-block; 
    vertical-align: middle;
    background-color: #fcf0c9;
+   --ion-background-color:#faf2d9;
+   height: 30px;
  }
 
  .joggingTitle{
@@ -584,7 +581,6 @@ color: #ffffff;
 .divAddText{
   font-size: 10px;
   margin-right: 20px;
-  /* font-weight: bold; */
 }
 
 .divAddTextNut{
@@ -598,15 +594,14 @@ color: #ffffff;
 }
 
 .labelSettings .IonItem{
-
   --ion-background-color:#eed996;
 }
 
 .labelSettings1{
-  /* padding-right: 20px; */
   left: -100px;
   color: #000000;
 }
+
 .labelSettings2{
   right: 216px;
   bottom: 3px;
@@ -621,15 +616,13 @@ color: #ffffff;
 
 .labelSettings2 h3{
   font-size:12px;
-
 }
 
-/* ************ */
 .labelSettings1-1-4{
-  /* padding-right: 20px; */
   left: -100px;
   color: #000000;
 }
+
 .labelSettings2-2-4{
   right: 216px;
   bottom: 5px;
@@ -645,6 +638,7 @@ color: #ffffff;
 .labelSettings2-2-4 h3{
   font-size:14px;
 }
+
 .ionRadio1-1-4{
   position: absolute;
   bottom:6px;
@@ -652,6 +646,7 @@ color: #ffffff;
   width: 1em;
   height: 1em;
 }
+
 .ionRadio2-2-4{
   position: absolute;
   bottom:6px;
@@ -659,12 +654,12 @@ color: #ffffff;
   width: 1em;
   height: 1em;
 }
-/* ************** */
+
 .labelSettings1-1-5{
-  /* padding-right: 20px; */
   left: -100px;
   color: #000000;
 }
+
 .labelSettings2-2-5{
   right: 216px;
   bottom: 5px;
@@ -680,6 +675,7 @@ color: #ffffff;
 .labelSettings2-2-5 h3{
   font-size:14px;
 }
+
 .ionRadio1-1-5{
   position: absolute;
   bottom:6px;
@@ -687,6 +683,7 @@ color: #ffffff;
   width: 1em;
   height: 1em;
 }
+
 .ionRadio2-2-5{
   position: absolute;
   bottom:6px;
@@ -695,9 +692,7 @@ color: #ffffff;
   height: 1em;
 }
 
-/* ************** */
 .labelSettings1-1-6{
-  /* padding-right: 20px; */
   left: -100px;
   color: #000000;
 }
@@ -716,6 +711,7 @@ color: #ffffff;
 .labelSettings2-2-6 h3{
   font-size:14px;
 }
+
 .ionRadio1-1-6{
   position: absolute;
   bottom:6px;
@@ -723,6 +719,7 @@ color: #ffffff;
   width: 1em;
   height: 1em;
 }
+
 .ionRadio2-2-6{
   position: absolute;
   bottom:6px;
@@ -730,8 +727,6 @@ color: #ffffff;
   width: 1em;
   height: 1em;
 }
-
-/* ************** */
 
 .labelSettings1-1 h3{
   font-size:14px;
@@ -765,10 +760,6 @@ color: #ffffff;
   color: #646464;
 }
 
-.ajoutBotton{
-  --ion-background-color:#faf2d9;
-  height: 30px;
-}
 .cibleQuotid{
   height: 45px;
   padding: 0;
@@ -787,6 +778,7 @@ color: #ffffff;
   margin: 5px 0;
   --ion-background-color:#eed996;
 }
+
 .inputConsom{
   font-size:16px;
   padding-left: 10px;
@@ -798,6 +790,7 @@ color: #ffffff;
   color: #000000;
   text-align: center;
  }
+
 .ionRadio1{
   position: absolute;
   bottom:3px;
@@ -805,6 +798,7 @@ color: #ffffff;
   width: 1em;
   height: 1em;
 }
+
 .ionRadio2{
   position: absolute;
   bottom:3px;
@@ -859,7 +853,6 @@ color: #ffffff;
   font-size:16px;
  font-weight: bold;
 }
-
 
 #divPopUp1{
   position: relative;
@@ -1401,13 +1394,12 @@ color: #ffffff;
 
  .profilTitle h3{
   font-size:20px;
- padding-top: 5px;
+  padding-top: 5px;
   font-weight: bolder;
- margin-top: 0px;
+  margin-top: 0px;
 }
 
 .divIMC{
-  /* margin-top: 18px; */
   height: 15px;
   width: 40px;
   margin: 0px;
@@ -1427,9 +1419,6 @@ color: #ffffff;
 border-radius: 10px;
 width: 100%;
 background-color: #ffffff;
-/* border-style: solid;
-border-color: #015871;
-border-width: 1px; */
 }
 
 .fondIntro{
@@ -1447,7 +1436,7 @@ border-width: 1px; */
 }
 
 .profilText h2{
-  font-size:20px;
+  font-size:18px;
  padding-top: 0px;
  font-stretch: semi-condensed;
  margin-top: 0px;
@@ -1459,12 +1448,10 @@ border-width: 1px; */
 }
 
 .contentProfil{
-/* width: 94%; */
 height: 58%;
 }
 
 .profilImage{
-  /* background-color: #f7e8ca; */
   padding-top: 30px;
   margin-left: 0px;
   width: 100%;
@@ -1489,7 +1476,6 @@ height: 58%;
   margin-left: 220px;
  }
 
-
  .removeButton1{
   margin-left: 300px;
  }
@@ -1511,9 +1497,7 @@ height: 58%;
   }
 
  .unitActivities {
-
   margin-right: 80px;
-
  }
 
  .inputTextNourDasboard{
@@ -1580,7 +1564,6 @@ height: 58%;
 }
 
 .chartBackground{
-  
   color: #778a62;
 }
 
@@ -1596,7 +1579,7 @@ height: 58%;
 .toiletButton2{
   height: 30px;
   width: 30px;
-  background-color: #e9d165;
+  background-color: #c24d0a;
   border-radius: 30%;
   padding: 10px;
 }
@@ -1620,22 +1603,6 @@ height: 58%;
 .add2, .min2{
   background-color: #7a5711;
   font-size: 20px;
-}
-
-.toiletButton1{
-  height: 30px;
-  width: 30px;
-  background-color: #f7e707;
-  border-radius: 30%;
-  padding: 10px;
-}
-
-.toiletButton2{
-  height: 30px;
-  width: 30px;
-  background-color: #c24d0a;
-  border-radius: 30%;
-  padding: 10px;
 }
 
 .divToilet1 {
@@ -1666,7 +1633,6 @@ height: 58%;
   padding-top: 4px;
   margin-left: 10px;
   margin-top: 5px;
- 
 }
 
 .sideBarButtonLogout{
@@ -1674,7 +1640,6 @@ height: 58%;
   height: 30px;
   margin-top: 50px;
   border-radius: 30%;
-  /* padding-top: 5px; */
   background-color: #f7e8ca;
   margin-right: -1px;
 }
@@ -1694,16 +1659,13 @@ height: 58%;
 
 .sidebar {
   height: 100vh;
-  /* padding-left: 20px; */
   background-color:#90a17f;
-  /* opacity: 0.8; */
   color: white;
   width: 350px;
   position: fixed;
   z-index: 200;
   left: -100%;
   animation: slide-open 0.75s forwards;
-  /* background-image: repeating-linear-gradient(45deg, #aabb99, #aabb99 0.1em, #7e9667 0.7em, #7e9667 20%); */
   background-size: 2em 2em;
   flex: 1 1 auto;
 }
@@ -1724,13 +1686,6 @@ height: 58%;
   color: white;
   width: 400px;
   position: fixed;
-  /* z-index: 200;
-  display: none; */
-  /* left: -100%; */
-  /* animation: slide-open 0.75s forwards; */
-  /* background-image: repeating-linear-gradient(45deg, #aabb99, #aabb99 0.1em, #7e9667 0.7em, #7e9667 20%); */
-  /* background-size: 2em 2em;
-  flex: 1 1 auto; */
 }
 
 .sidebar.close {
@@ -1976,8 +1931,7 @@ h2{
 .divTitre11{
   padding: 0;
   margin: 0;
-
-  --ion-background-color:#eed996;;
+  --ion-background-color:#eed996;
 }
 
 .divTitre22 {
@@ -2095,4 +2049,9 @@ h2{
 }
 .messagenotif {
   background-color: #cac086;
+}
+
+.datePickersExportation{
+  display: flex;
+  justify-content: center;
 }

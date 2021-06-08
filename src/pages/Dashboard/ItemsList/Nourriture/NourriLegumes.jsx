@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonButton} from '@ionic/react';
 import { arrowDropdownCircle, addCircle, star, removeCircle, trash} from 'ionicons/icons';
 import uuid from 'react-uuid';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 import '../../../Tab1.css'
 
@@ -115,6 +115,7 @@ const NourriLegumes = (props) => {
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.legumes.dailyTarget.globalConsumption = totalConsumption();
+    props.parentCallbackLegumes (totalConsumption());
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
@@ -152,7 +153,7 @@ const NourriLegumes = (props) => {
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[item] = item;
+    array.splice(item, 1);
     setLegumes(array);  
     for (var i = 0; i < array.length; i++ ){
       consumption = array[i].consumption;
@@ -163,6 +164,7 @@ const NourriLegumes = (props) => {
     dashboard.legumes.legumes = array;
     dashboard.legumes.dailyTarget.globalConsumption = sum;    
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    props.parentCallbackLegumes(sum);  
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
     updateCacheAndBD(array);
@@ -203,7 +205,7 @@ const NourriLegumes = (props) => {
         <img src="/assets/Legumes.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Legumes et Fruits</b></h2>
+          <h2><b>Légumes et Fruits</b></h2>
         </IonLabel>
         <IonInput className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV4")}/>

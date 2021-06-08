@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { IonGrid, IonPage, IonCol, IonButton, IonRow, IonIcon } from '@ionic/react';
 import { logIn, add } from 'ionicons/icons';
 import * as translate from "../../translate/Translator";

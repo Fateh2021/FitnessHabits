@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { IonSelectOption, IonSelect, IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent, IonItem, IonLabel, IonGrid, IonCol } from '@ionic/react';
+import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent,
+         IonLabel, IonGrid, IonCol, IonContent } from '@ionic/react';
 
-const InitialisationPoids = (props) => {
+const Initialisation = (props) => {
   const [poidsInitial, setPoidsInitial] = useState("10");
   const [poidsCible, setPoidsCible] = useState("10");
-  const [unite, setUnite] = useState("KG");
 
   return (
-    <>
+    <IonContent>
       <IonCard>
         <IonCardContent>
           <IonItemGroup>
@@ -16,10 +16,6 @@ const InitialisationPoids = (props) => {
             </IonItemDivider>
             <IonItemDivider>
               <IonLabel slot="start">Unité</IonLabel>
-              {/* <IonSelect slot="end" value={unite} placeholder="Select One" onIonChange={e => setUnite(e.target.value)}>
-                <IonSelectOption value="female">KG</IonSelectOption>
-                <IonSelectOption value="male">LB</IonSelectOption>
-              </IonSelect> */}
               <IonButton class="dayButton" size="small" shape="round" >KG</IonButton>
               <IonButton class="dayButton" size="small" shape="round" >LBS</IonButton>
             </IonItemDivider>
@@ -46,8 +42,8 @@ const InitialisationPoids = (props) => {
           </IonRow>
         </IonGrid>
       </IonCard>
-    </>
+      </IonContent>
   )
 }
 
-export default InitialisationPoids;
+export default Initialisation;

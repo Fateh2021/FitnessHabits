@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import * as firebase from "firebase";
+import firebase from 'firebase'
 
 export async function FormatDate(date) {
   return new Promise((resolve) => {

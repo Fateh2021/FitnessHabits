@@ -46,8 +46,7 @@ const Modifier = (props) => {
                 if (err)
                     console.log(err);
                 else
-                    console.log("Record edited!");
-                    window.location.href = "/glycemie"
+                    window.location.href = "/glycemie";
             }
         )
     }

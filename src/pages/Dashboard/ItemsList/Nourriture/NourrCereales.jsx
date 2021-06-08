@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonButton} from '@ionic/react';
 import { arrowDropdownCircle, addCircle, star, removeCircle, trash} from 'ionicons/icons';
 import uuid from 'react-uuid';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 import '../../../Tab1.css'
 

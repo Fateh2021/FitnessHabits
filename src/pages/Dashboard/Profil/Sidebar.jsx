@@ -1,4 +1,4 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import "firebase/auth";
 import "firebase/firestore";
 import React, {useState, useEffect} from "react"
@@ -15,10 +15,6 @@ const Sidebar = (props) => {
         gender: "",
         dateFormat: ""
       });
-
-      const customPopoverOptions = {
-        cssClass: 'date-format-popover'
-      };
       
     // load the current profile from the local storage if it exists, otherwise load it from the DB
     useEffect(() => {

@@ -2,30 +2,29 @@ import { IonIcon, IonLabel, IonCol, IonItem, IonButton, IonInput} from '@ionic/r
 import { star, trash, create, addCircle } from 'ionicons/icons';
 import React, {useState, useEffect} from 'react';
 import uuid from 'react-uuid';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 const LegumesItem = (props) => {
 
-  const [item, setItem] = useState({
-    id: props.item ? props.item.id : uuid(),
-    favoris: props.item ? props.item.favoris : false, 
-    name:props.item ? props.item.name : '', 
-    qtte:props.item ? props.item.qtte : 0, 
-    proteine:props.item ? props.item.proteine : 0, 
-    glucide:props.item ? props.item.glucide : 0, 
-    fibre:props.item ? props.item.fibre : 0, 
-    gras:props.item ? props.item.gras : 0, 
-    unit: props.item ? props.item.unit : ''
+  const [itemLegumes, setItemLegumes] = useState({
+    id: props.itemLegumes ? props.itemLegumes.id : uuid(),
+    favoris: props.itemLegumes ? props.itemLegumes.favoris : false, 
+    name:props.itemLegumes ? props.itemLegumes.name : '', 
+    qtte:props.itemLegumes ? props.itemLegumes.qtte : 0, 
+    proteine:props.itemLegumes ? props.itemLegumes.proteine : 0, 
+    glucide:props.itemLegumes ? props.itemLegumes.glucide : 0, 
+    fibre:props.itemLegumes ? props.itemLegumes.fibre : 0, 
+    gras:props.itemLegumes ? props.itemLegumes.gras : 0, 
+    unit: props.itemLegumes ? props.itemLegumes.unit : ''
   });
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setItem({ ...item, [name]: value });
+    setItemLegumes({ ...itemLegumes, [name]: value });
   }
 
   const saveChanges = () => {
-    console.log("save changes::"+JSON.stringify(item))
-    props.save(item);
+    props.save(itemLegumes);
   }
 
   return (
@@ -37,13 +36,13 @@ const LegumesItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemLegumes.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={itemLegumes.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
+            <select id="PopUpUnitSelect" name="unit" defaultValue={itemLegumes.unit} onChange={handleChange}>
               <option value="-1"></option>
               <option value="gr">gr</option>
               <option value="oz">oz</option>
@@ -53,16 +52,16 @@ const LegumesItem = (props) => {
             </select>
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={itemLegumes.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={itemLegumes.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={itemLegumes.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={itemLegumes.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            
       </div>
@@ -168,12 +167,12 @@ const NourrLegumes = (props) => {
               <IonLabel className="unitDescrip"><h2><b>{leg.qtte}</b></h2></IonLabel>
               </IonCol>
               <select id="materialSelect" value={leg.unit} disabled="disabled">
-                <option value="-1"></option>
-                <option value="gr">gr</option>
-                <option value="oz">oz</option>
-                <option value="ml">ml</option>
-                <option value="tasse">tasse</option>
-                <option value="unite">unité</option>
+                <option value4="-1"></option>
+                <option value4="gr">gr</option>
+                <option value4="oz">oz</option>
+                <option value4="ml">ml</option>
+                <option value4="tasse">tasse</option>
+                <option value4="unite">unité</option>
               </select>
               <IonButton className='editButton' color="danger" size="small" onClick={() => openEditItemContainer(index)}>
                 <IonIcon  icon={create} />
@@ -196,7 +195,7 @@ const NourrLegumes = (props) => {
         <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
         <IonIcon icon={addCircle}/><label className="labelAddItem">Legumes</label></IonButton>
       </div>
-      {itemContainerDisplayStatus && <LegumesItem close={closeItemContainer} item={legumesToEdit} save={(item) => saveItem(item)}/>}
+      {itemContainerDisplayStatus && <LegumesItem close={closeItemContainer} item={legumesToEdit} save={(itemLegumes) => saveItem(itemLegumes)}/>}
     </div> 
   );
 }

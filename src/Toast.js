@@ -1,5 +1,3 @@
-// import { IonToast } from "@ionic/react";
-
 export function toast(message, duration=2000){
 
     const toast = document.createElement('ion-toast');
@@ -8,7 +6,5 @@ export function toast(message, duration=2000){
 
     document.body.appendChild(toast);
     return toast.present();
-
 }
-
 export default toast;

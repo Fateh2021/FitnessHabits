@@ -1,34 +1,33 @@
-import React, {useState, useEffect}  from "react"
-import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
-import {arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
+import React, {useState, useEffect} from 'react';
+import { IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton} from '@ionic/react';
+import { arrowDropdownCircle, star, addCircle, removeCircle, trash} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
 
-import '../../../Tab1.css';
+import '../../../Tab1.css'
 
+const ProteinesItem = (props) => {
 
-const GrasItem = (props) => {
-
-  const [item, setItem] = useState({
-    id: props.item ? props.item.id : uuid(),
-    favoris: props.item ? props.item.favoris : false, 
-    name:props.item ? props.item.name : '', 
-    qtte:props.item ? props.item.qtte : 0, 
-    proteine:props.item ? props.item.proteine : 0, 
-    glucide:props.item ? props.item.glucide : 0, 
-    fibre:props.item ? props.item.fibre : 0, 
-    gras:props.item ? props.item.gras : 0, 
-    unit: props.item ? props.item.unit : '',
-    consumption: props.item ? props.item.consumption:0
+  const [itemDashProteines, setItemDashProteines] = useState({
+    id: props.itemDashProteines ? props.itemDashProteines.id : uuid(),
+    favoris: props.itemDashProteines ? props.itemDashProteines.favoris : false, 
+    name:props.itemDashProteines ? props.itemDashProteines.name : '', 
+    qtte:props.itemDashProteines ? props.itemDashProteines.qtte : 0, 
+    proteine:props.itemDashProteines ? props.itemDashProteines.proteine : 0, 
+    glucide:props.itemDashProteines ? props.itemDashProteines.glucide : 0, 
+    fibre:props.itemDashProteines ? props.itemDashProteines.fibre : 0, 
+    gras:props.itemDashProteines ? props.itemDashProteines.gras : 0, 
+    unit: props.itemDashProteines ? props.itemDashProteines.unit : '',
+    consumption: props.itemDashProteines ? props.item.consumption:0
   });
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setItem({ ...item, [name]: value });
+    setItemDashProteines({ ...itemDashProteines, [name]: value });
   }
 
   const saveChanges = () => {
-    props.save(item);
+    props.save(itemDashProteines);
   }
 
   return (
@@ -40,12 +39,12 @@ const GrasItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemDashProteines.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={itemDashProteines.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <select id="materialSelectAddHyd" name="unit" defaultValue={item.unit} onChange={handleChange}>
+          <select id="materialSelectAddHyd" name="unit" defaultValue={itemDashProteines.unit} onChange={handleChange}>
             <option value="-1"></option>
             <option value="gr">gr</option>
             <option value="oz">oz</option>
@@ -54,30 +53,30 @@ const GrasItem = (props) => {
             <option value="unite">unité</option>
           </select>
           <IonCol className ="colNutProteinesHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={itemDashProteines.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGlucidesHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={itemDashProteines.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutFibresHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={itemDashProteines.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGrasHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={itemDashProteines.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>        
       </div>
   );
 }
 
-const NourrGras = (props) => {
+const NourriProteines = (props) => {
 
-  const [dailyTarget, setDailyTarget] = useState(props.dailyTarget);
-  const [gras, setGras] = useState(props.gras);
-  const [grass, setGrass] = useState(props.grass);
+  const [dailyTarget, setDailyTarget] = useState(props.proteine.dailyTarget);
+  const [proteine, setProteine] = useState(props.proteine);
+  const [proteines, setProteines] = useState(props.proteines);
   const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
   const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
-  const [grasToEdit, setGrasToEdit] = useState(undefined);
+  const [proteineToEdit, setProteineToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
 
   const accor = (divId) => {
@@ -85,6 +84,7 @@ const NourrGras = (props) => {
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
+    console.log("proteines::::" + JSON.stringify (props.proteine))
   }
 
   useEffect(() => {
@@ -92,61 +92,51 @@ const NourrGras = (props) => {
   }, [props.currentDate])
 
   useEffect(() => {
-    setDailyTarget(props.dailyTarget);
-  }, [props.dailyTarget])
+    setDailyTarget(props.proteine.dailyTarget);
+  }, [props.proteine.dailyTarget])
 
   useEffect(() => {
     setGlobalConsumption(props.globalConsumption);
   }, [props.globalConsumption])
 
   useEffect(()=>{
-    setGras(props.gras)
-  }, [props.gras])
+    setProteine(props.proteine)
+  }, [props.proteine])
 
   useEffect(()=>{
-    setGrass(props.grass)
-  }, [props.grass])
+    setProteines(props.proteines)
+  }, [props.proteines])
 
   const DailyConsumptionIncrement = (item)=>{  
-    var array = [...grass];
+    var array = [...proteines];
     const index = array.findIndex((event) => event.id === item.id);  
     index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
     array[item].consumption += 1;
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.gras.dailyTarget.globalConsumption = totalConsumption();
-    //dashboard.nourriture.globalConsumption= totalConsumption();
-    ///props.parentCallback(totalConsumption());
-    props.parentCallbackGras(totalConsumption());
+    dashboard.proteines.dailyTarget.globalConsumption = totalConsumption();
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-    console.log("totalConsumption:::" + totalConsumption())
-    console.log("dashboard.gras.dailyTarget.globalConsumption):::" + dashboard.gras.dailyTarget.globalConsumption)
-    console.log("dashboard.nourriture.globalConsumption):::" + dashboard.nourriture.globalConsumption)
   }
 
-  const DailyConsumptionDecrement = (item)=>{  
-    var array = [...grass];
+  const DailyConsumptionDecrementProteines = (item)=>{  
+    var array = [...proteines];
     const index = array.findIndex((event) => event.id === item.id);  
     index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
     if (array[item].consumption >=1){
       array[item].consumption -= 1;
-    };
+    }
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.gras.dailyTarget.globalConsumption = totalConsumption();
-    props.parentCallbackGras(totalConsumption())
+    dashboard.proteines.dailyTarget.globalConsumption = totalConsumption();
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-    console.log("totalConsumption:::" + totalConsumption())
-    console.log("dashboard.gras.dailyTarget.globalConsumption):::" + dashboard.gras.dailyTarget.globalConsumption)
-    console.log("dashboard.nourriture.globalConsumption):::" + dashboard.nourriture.globalConsumption)
   }
 
   const totalConsumption = ()=>{
-    var array = [...grass];
+    var array = [...proteines];
     var sum = 0;
     var consumption = 0;
     for (var i = 0; i < array.length; i++ ){
@@ -157,89 +147,85 @@ const NourrGras = (props) => {
     return sum
   }
 
-  const deleteItem = (item) => {
-    var array = [...grass];
+  const deleteItemProteines = (item) => {
+    var array = [...proteines];
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
-    array.splice(item, 1);
-    setGrass(array);  
+    index === -1 ? array.splice(item, 1): array[item] = item;
+    setProteines(array);  
     for (var i = 0; i < array.length; i++ ){
       consumption = array[i].consumption;
       sum += consumption; 
     }
-    
     setGlobalConsumption(sum);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.gras.grass = array;
-    dashboard.gras.dailyTarget.globalConsumption = sum;
-    props.parentCallbackGras(sum);  
+    dashboard.proteines.proteines = array;
+    dashboard.proteines.dailyTarget.globalConsumption = sum;    
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
     updateCacheAndBD(array);
-    console.log("props.parentCallback :::" + dashboard.gras.dailyTarget.globalConsumption)
-    console.log("childata delete :::" + sum)
   }
 
   const saveItem = (item) => {
-    var array = [...grass];
+    var array = [...proteines];
     const index = array.findIndex((e) => e.id === item.id);
     index === -1 ? array.unshift(item): array[index] = item;
-    setGrass (array);
+    setProteines (array);
     closeItemContainer();
     updateCacheAndBD(array);
   }
 
-  const updateCacheAndBD = (grass) => {
+  const updateCacheAndBD = (proteines) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.gras.grass= grass;
-    setGrass(grass)
+    dashboard.proteines.proteines= proteines;
+    setProteines(proteines)
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
   const closeItemContainer = () => {
-    setGrasToEdit(undefined);
+    setProteineToEdit(undefined);
     setItemContainerDisplayStatus(false);
   }
 
   const openAddItemContainer = () => {
-    setGrasToEdit(undefined);
+    setProteineToEdit(undefined);
     setItemContainerDisplayStatus(true);
   }
-    
+
   return (
     <div>
       <IonItem className="divTitre22">
         <IonAvatar slot="start">
-        <img src="/assets/Gras.jpg" alt=""/>
+        <img src="/assets/Proteines.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Gras</b></h2>
+          <h2><b>Proteines</b></h2>
         </IonLabel>
         <IonInput className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV2")}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV5")}/>
       </IonItem> 
-      <div id="myDIV2">
+      <div id="myDIV5">
       <div className="divHyd">
             <div className="sett">
-              { grass.map((gra, index) => (      
-                <IonItem className="divTitre11" key={gra.id}>
+              { proteines.map((prot, index) => (      
+                <IonItem className="divTitre11" key={prot.id}>
                   <IonCol size="1">
                   </IonCol>
-                  <IonLabel className="nameDscripDashboard"><h2><b>{gra.name}</b></h2></IonLabel>      
-                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(index)}>
+                  <IonLabel className="nameDscripDashboard"><h2><b>{prot.name}</b></h2></IonLabel>      
+                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrementProteines(index)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
-                    <IonInput className='inputTextDashboard' value = {gra.consumption} readonly></IonInput>  
+                    <IonInput className='inputTextDashboard' value = {prot.consumption} readonly></IonInput>  
                   </IonCol>
                   <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(index)}>
                     <IonIcon  icon={addCircle} />
                   </IonButton>
-                  <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
+                  <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItemProteines(index)}>
                     <IonIcon  icon={trash} />
                   </IonButton>
                 </IonItem>
@@ -251,9 +237,9 @@ const NourrGras = (props) => {
           <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
           <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
         </div>
-        {itemContainerDisplayStatus && <GrasItem close={closeItemContainer} item={grasToEdit} save={(item) => saveItem(item)}/>}       
+        {itemContainerDisplayStatus && <ProteinesItem close={closeItemContainer} item={proteineToEdit} save={(itemDashProteines) => saveItem(itemDashProteines)}/>}        
       </div> 
     </div>    
   );
 }
-export default NourrGras;
+export default NourriProteines;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
 import {arrowDropdownCircle} from 'ionicons/icons';
 
@@ -20,30 +20,20 @@ const Activities = (props) =>  {
   }
 
   useEffect(() => {
-    setCurrentDate(props.currentDate);
-  }, [props.currentDate])
-
-  useEffect(() => {
     setHeure(props.heures);
   }, [props.heures])
 
   useEffect(() => {
-    setMinute(props.minutes);
-  }, [props.minutes])
+    setCurrentDate(props.currentDate);
+  }, [props.currentDate])
 
   useEffect(() => {
     setActivities(props.activities);
   }, [props.activities])
 
-  const handleChangeHeure = event => {
-    const activitiesHeure = event.target.value;
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.activities.heure= activitiesHeure;
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    setHeure(activitiesHeure);
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  }
+  useEffect(() => {
+    setMinute(props.minutes);
+  }, [props.minutes])
 
   const handleChangeMinute = event => {
     const activitiesMinute = event.target.value;
@@ -51,6 +41,16 @@ const Activities = (props) =>  {
     dashboard.activities.minute = activitiesMinute;
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     setMinute(activitiesMinute);
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+  
+  const handleChangeHeure = event => {
+    const activitiesHeure = event.target.value;
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    dashboard.activities.heure= activitiesHeure;
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    setHeure(activitiesHeure);
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }

@@ -193,5 +193,40 @@
       "en":"Error with Facebook authentification!",
       "es":"¡Error de autenticación de Facebook!",
       "fr":"Erreur d'authentification Facebook !"
+   },
+   "OR":{
+      "en":"OR",
+      "es":"O",
+      "fr":"OU"
+   },
+   "NEW_REGISTER":{
+      "en":"New, register",
+      "es":"Nuevo, registrarse",
+      "fr":"Nouveau, s'enregistrer"
+   },
+   "USER_NAME":{
+      "en":"Username?",
+      "es":"¿Nombre del usuario?",
+      "fr":"Nom d'utilisateur?"
+   },
+   "PASSWORD":{
+      "en":"Password?",
+      "es":"¿Contraseña?",
+      "fr":"Mot de passe?"
+   },
+   "CONNECT":{
+      "en":"Log in",
+      "es":"Conectarse",
+      "fr":"Se connecter"
+   },
+   "REGISTER":{
+      "en":"Register",
+      "es":"Registrarse",
+      "fr":"S'enregistrer"
+   },
+   "WAIT":{
+      "en":"Please wait..",
+      "es":"Espere por favor..",
+      "fr":"Veuillez patienter.."
    }
 }

@@ -85,7 +85,7 @@ const Ajout = () => {
                                 <IonCardTitle>Jour</IonCardTitle>
                             </IonCardHeader>
                             <IonCardContent>
-                                <IonSelect name="jour" multiple={true} value={values.jour} onIonChange={handleInputChange}>
+                                <IonSelect multiple={true} name="jour" onIonChange={handleInputChange} value={values.jour} >
                                     {jour.map((option, i) => (
                                     <IonSelectOption value={option} key={i}>{option}</IonSelectOption>))} 
                                 </IonSelect>
@@ -98,7 +98,7 @@ const Ajout = () => {
                                 <IonCardTitle>Heure</IonCardTitle>
                             </IonCardHeader>
                             <IonCardContent>
-                                <IonDatetime name="heure" display-format="h:mm A" picker-format="h:mm: A" value={values.heure} onIonChange={handleInputChange}></IonDatetime>
+                                <IonDatetime display-format="h:mm A" name="heure" picker-format="h:mm: A" onIonChange={handleInputChange} value={values.heure}></IonDatetime>
                             </IonCardContent>
                         </IonCard>
 

@@ -1,21 +1,10 @@
 import React from 'react';
 import { IonItem, IonIcon, IonLabel, IonAvatar} from '@ionic/react';
 import { arrowDropdownCircle,} from 'ionicons/icons';
-// import {Supp} from '../../Data/Supp';
-// import uuid from 'react-uuid';
 
 import '../../../pages/Tab1.css';
 
-//Open items Div
-const accor = (divId) => {
-    const divElt=document.getElementById(divId);
-    if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
-    }
-    
-  }
-
-const Supplement = () => {
+const Supplements = () => {
 
   return (
     <div>
@@ -27,7 +16,7 @@ const Supplement = () => {
         <IonLabel>
           <h2><b>Suppléments et médicaments</b></h2>
         </IonLabel>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV6")} />
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""} />
       </IonItem>
                   
       {/* Entête alcool */}
@@ -37,4 +26,4 @@ const Supplement = () => {
     </div>       
   );
 }
-export default Supplement;
+export default Supplements;

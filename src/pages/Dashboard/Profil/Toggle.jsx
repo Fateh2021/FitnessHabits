@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { IonIcon, IonLabel, IonButton } from "@ionic/react";
+import { IonIcon, IonLabel } from "@ionic/react";
 import { globe, menu } from 'ionicons/icons';
 
 const Toggle = (props) => {
@@ -13,7 +13,7 @@ const Toggle = (props) => {
                 </div>
                 <div className="grid-item">
                     <IonLabel className='profilTitleDashboard' color='danger'>
-                        <h3>FitHab</h3>
+                        <h3>FitnessHabits</h3>
                     </IonLabel>
                 </div>
                 <div className="grid-item">

@@ -5,7 +5,7 @@ import InitialisationPoids from "./Initialisation";
 import ConfigurationNotificationCarteListe from "./configurationNotificationCarteListe";
 import notificationObject from './notificationObject';
 
-const ConfigurationPoids = (props) => {
+const Configuration = (props) => {
   const [listNotification, setListNotification] = useState([]);
 
   const handleAjouterNotificationOnClick = () => {
@@ -51,4 +51,4 @@ const ConfigurationPoids = (props) => {
   )
 }
 
-export default ConfigurationPoids;
+export default Configuration;

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react"
-import * as firebase from 'firebase'
-import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon} from '@ionic/react';
+import firebase from 'firebase'
+import { IonInput, IonLabel, IonItem, IonAvatar} from '@ionic/react';
 
 import '../../../pages/Tab1.css';
 
@@ -34,7 +34,7 @@ const Glycemie = (props) => {
 
   return (
     <div>
-      <IonItem className="divTitre4" href="/glycemie">
+      <IonItem className="divTitre4" >
       <IonAvatar slot="start">
         <img src="/assets/Gly.jpg" alt=""/>
       </IonAvatar>

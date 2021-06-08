@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar} from '@ionic/react';
-import { arrowDropdownCircle, star} from 'ionicons/icons';
+import { IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar } from '@ionic/react';
+import { arrowDropdownCircle } from 'ionicons/icons';
 import Hydrate from '../Hydrate'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 import '../../../pages/Tab1.css';
+import HeadItems from './HeadItems';
 
 const Hydratation = (props) => {
   const [dailyTarget, setDailyTarget] = useState(props.hydratation.dailyTarget);
@@ -50,28 +51,7 @@ const Hydratation = (props) => {
 
       {/* Détails hydratation */}
       <div id="myDIV1">
-        <IonItem className="descripItem">     
-          <IonRow>
-            <IonCol size="1">
-              <IonIcon  className="target" icon={star}/></IonCol>
-            <IonCol size="3">
-              <IonLabel className = 'description'><h3>Description</h3></IonLabel></IonCol>
-            <IonCol size="2" >
-              <IonLabel className = 'taillePortion'><h3>Taille</h3></IonLabel>
-            </IonCol>
-            <IonCol size="2" >
-              <IonLabel className = 'uniteMesure'><h3>Unité</h3></IonLabel>
-            </IonCol>
-            <IonCol size="4" >
-              <div className="triangle">
-                <div className="triangleText1"><b>Gras</b></div>
-                <div className="triangleText2"><b>Prot</b></div>
-                <div className="triangleText3"><b>Fib</b></div>
-                <div className="triangleText4"><b>Gluc</b></div>         
-              </div>    
-            </IonCol>
-          </IonRow>                     
-        </IonItem>
+      <HeadItems/>
               
         {/* Items hydratation */}
         <Hydrate hydrates={props.hydratation.hydrates} />
@@ -85,12 +65,12 @@ const Hydratation = (props) => {
               <IonInput id = 'cibleQtte' type = "number" name="value" value={dailyTarget.value} onIonChange={handleDailyTargetChange}></IonInput>  
             </IonCol>
             <select id="materialSelectCibleQuot" name="unit" value={dailyTarget.unit} onChange={handleDailyTargetChange}>
-              <option value="-1"></option>
-              <option value="gr">gr</option>
-              <option value="oz">oz</option>
-              <option value="ml">ml</option>
-              <option value="tasse">tasse</option>
-              <option value="unite">unité</option>
+              <option value8="-1"></option>
+              <option value8="gr">gr</option>
+              <option value8="oz">oz</option>
+              <option value8="ml">ml</option>
+              <option value8="tasse">tasse</option>
+              <option value8="unite">unité</option>
             </select>
           </IonItem>
         </IonRadioGroup>  

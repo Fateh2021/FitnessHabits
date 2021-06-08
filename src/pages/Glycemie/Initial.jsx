@@ -59,7 +59,7 @@ const Initial = () => {
                 </IonToolbar>
 
             <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
-                <IonFabButton href="/dashboard" size="small">
+                <IonFabButton href="/settings" size="small">
                     <IonIcon icon={arrowBack} />
                 </IonFabButton>
             </IonFab>

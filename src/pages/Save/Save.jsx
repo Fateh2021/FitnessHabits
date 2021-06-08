@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { IonAlert, IonButton, IonContent } from '@ionic/react';
+import React from 'react';
 
 export const Save = () => {
 

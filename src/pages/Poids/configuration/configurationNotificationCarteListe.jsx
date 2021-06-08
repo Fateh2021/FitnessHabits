@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IonList, IonListHeader, IonLabel } from '@ionic/react';
 import ConfigurationNotificationCarte from "./configurationNotificationCarte";
 

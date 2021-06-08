@@ -2,32 +2,32 @@ import React, {useState, useEffect} from 'react';
 import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol} from '@ionic/react';
 import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
 import uuid from 'react-uuid';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 import '../../../pages/Tab1.css';
 
 const HydrateItem = (props) => {
 
-  const [item, setItem] = useState({
-    id: props.item ? props.item.id : uuid(),
-    favoris: props.item ? props.item.favoris : false, 
-    name:props.item ? props.item.name : '', 
-    qtte:props.item ? props.item.qtte : 0, 
-    proteine:props.item ? props.item.proteine : 0, 
-    glucide:props.item ? props.item.glucide : 0, 
-    fibre:props.item ? props.item.fibre : 0, 
-    gras:props.item ? props.item.gras : 0, 
-    unit: props.item ? props.item.unit : '',
-    consumption: props.item ? props.item.consumption:0
+  const [itemDashHydrate, setItemDashHydrate] = useState({
+    id: props.itemDashHydrate ? props.itemDashHydrate.id : uuid(),
+    favoris: props.itemDashHydrate ? props.itemDashHydrate.favoris : false, 
+    name:props.itemDashHydrate ? props.itemDashHydrate.name : '', 
+    qtte:props.itemDashHydrate ? props.itemDashHydrate.qtte : 0, 
+    proteine:props.itemDashHydrate ? props.itemDashHydrate.proteine : 0, 
+    glucide:props.itemDashHydrate ? props.itemDashHydrate.glucide : 0, 
+    fibre:props.itemDashHydrate ? props.itemDashHydrate.fibre : 0, 
+    gras:props.itemDashHydrate ? props.itemDashHydrate.gras : 0, 
+    unit: props.itemDashHydrate ? props.itemDashHydrate.unit : '',
+    consumption: props.itemDashHydrate ? props.itemDashHydrate.consumption:0
   });
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setItem({ ...item, [name]: value });
+    setItemDashHydrate({ ...itemDashHydrate, [name]: value });
   }
 
   const saveChanges = () => {
-    props.save(item);
+    props.save(itemDashHydrate);
   }
 
   return (
@@ -39,12 +39,12 @@ const HydrateItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemDashHydrate.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={itemDashHydrate.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <select id="materialSelectAddHyd" name="unit" defaultValue={item.unit} onChange={handleChange}>
+          <select id="materialSelectAddHyd" name="unit" defaultValue={itemDashHydrate.unit} onChange={handleChange}>
             <option value="-1"></option>
             <option value="gr">gr</option>
             <option value="oz">oz</option>
@@ -53,16 +53,16 @@ const HydrateItem = (props) => {
             <option value="unite">unité</option>
           </select>
           <IonCol className ="colNutProteinesHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={itemDashHydrate.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGlucidesHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={itemDashHydrate.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutFibresHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={itemDashHydrate.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGrasHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={itemDashHydrate.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>        
       </div>
@@ -119,13 +119,13 @@ const Hydratation = (props) => {
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
-  const DailyConsumptionDecrement = (item)=>{  
+  const DailyConsumptionDecrementHydrate = (item)=>{  
     var array = [...hydrates];
     const index = array.findIndex((event) => event.id === item.id);  
     index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
     if (array[item].consumption >=1){
       array[item].consumption -= 1;
-    };
+    }
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.hydratation.dailyTarget.globalConsumption = totalConsumption();
@@ -146,7 +146,7 @@ const Hydratation = (props) => {
     return sum
   }
 
-  const deleteItem = (item) => {
+  const deleteItemHydrate = (item) => {
     var array = [...hydrates];
     var sum = 0;
     var consumption = 0;
@@ -163,8 +163,7 @@ const Hydratation = (props) => {
     dashboard.hydratation.dailyTarget.globalConsumption = sum;    
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
-    // updateCacheAndBD(array);
+    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
   const saveItem = (item) => {
@@ -212,7 +211,7 @@ const Hydratation = (props) => {
                   <IonCol size="1">
                   </IonCol>
                   <IonLabel className="nameDscripDashboard"><h2><b>{hydra.name}</b></h2></IonLabel>      
-                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(index)}>
+                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrementHydrate(index)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
@@ -221,7 +220,7 @@ const Hydratation = (props) => {
                   <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(index)}>
                     <IonIcon  icon={addCircle} />
                   </IonButton>
-                  <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
+                  <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItemHydrate(index)}>
                     <IonIcon  icon={trash} />
                   </IonButton>
                 </IonItem>
@@ -233,7 +232,7 @@ const Hydratation = (props) => {
             <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
             <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
           </div>
-          {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(item) => saveItem(item)}/>}   
+          {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashHydrate) => saveItem(itemDashHydrate)}/>}   
         </div>
       </div>
     </div>             
