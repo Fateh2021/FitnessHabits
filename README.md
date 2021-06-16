@@ -17,10 +17,10 @@
 ```
    $ npm run start
 
-   Utiliser le format appareil mobile offert par le navigateur pour un meilleur affichage 
+   Utiliser le format appareil mobile offert par le navigateur pour un meilleur affichage
 
    ![Exemple](public/assets/exemple.png)
-   ![alt text](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git/master/public/assets/exemple.png)
+   ![alt text](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git/blob/master/public/assets/exemple.png?raw=true)
     
 ```
 
