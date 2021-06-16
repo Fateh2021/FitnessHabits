@@ -13,7 +13,7 @@
    $ npm run build  
 ```
 
-#### 4- Tester sur le navigateur:
+#### 3.1- Tester sur le navigateur:
 ```
    $ npm run start
 
