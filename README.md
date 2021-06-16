@@ -21,8 +21,6 @@
 
    ![Exemple](public/assets/exemple.png)
 ```
-   ![alt text](https://gitlab.info.uqam.ca/faidi.sofiane/FitnessHabits/master/public/assets/exemple.png)
-
 ![alt text](/public/assets/exemple.png)
 
 
