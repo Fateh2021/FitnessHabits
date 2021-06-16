@@ -26,7 +26,7 @@
    $ npx cap add ios      
 ```
 
-#### 5.1- Pour Android:
+#### 4.1- Pour Android:
 ```
    1- Supprimer le fichier 'fithab/android/app/src/main'. 
    2- Ajouter le fichier 'fithab/main', dans 'fithab/android/app/src'.  
@@ -34,7 +34,7 @@
    4- Compiler le code et tester dans un simulateur.  
 ```
 
-#### 5.2- Pour iOS:
+#### 4.2- Pour iOS:
 ```
    1- Supprimer le fichier 'fithab/ios/App/App'.  
    2- Ajouter le fichier 'fithab/App', dans 'fithab/ios/App'.  
