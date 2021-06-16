@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonItemGroup, IonCheckbox, IonTextarea } from '@ionic/react';
+import { IonCol, IonItem, IonIcon, IonToggle, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonItemGroup, IonCheckbox, IonTextarea } from '@ionic/react';
 import { arrowDropdownCircle } from 'ionicons/icons';
 import Alcool from '../Alcool'
 import firebase from 'firebase'
@@ -156,15 +156,15 @@ const BoissonAlcool = (props) => {
         <IonItemGroup className="notifHeader">
           <IonItem>
             <IonCol size="1"></IonCol>
-            <IonCol size="2" className="notifHeader"><IonLabel>Activer les notifications</IonLabel></IonCol>
-            <IonCol size='0.88'></IonCol>
-            {/* <IonCol size='1'><IonToggle color="dark" name="notifications" onIonChange={handleOnNotifications} checked={notifications.active} /></IonCol> */}
+            <IonCol size="5" className="notifHeader"><h3>Activer les notifications</h3></IonCol>
+            <IonCol size='3'></IonCol>
+            <IonCol size='3'><IonToggle color="dark" name="notifications" onIonChange={handleOnNotifications} checked={notifications.active} /></IonCol>
           </IonItem>
         </IonItemGroup>
 
         {/* Limites de consommations*/}
         <IonItemGroup className="limiteConsom" 
-        // hidden={!notifications.active}
+hidden={!notifications.active}
         >
           <IonItem>
             <IonCol size="1"></IonCol>
@@ -174,61 +174,64 @@ const BoissonAlcool = (props) => {
             <IonCol size="2"></IonCol>
             <IonCol size="1">
               <IonInput type='number' min='0' className='inputConsom' name="dailyTarget" onIonChange={handleOnLimitConsom} 
-              // disabled={limitConsom.educAlcool} 
-              // value={limitConsom.dailyTarget}
+disabled={limitConsom.educAlcool} 
+value={limitConsom.dailyTarget}
               ></IonInput>
             </IonCol>
             <IonCol size="2">
-              <IonLabel position="fixed">par jour</IonLabel>
+              <IonLabel className = "notifHeader" position="fixed"><h3>par jour</h3></IonLabel>
             </IonCol>
           </IonItem>
           <IonItem>
             <IonCol size="2"></IonCol>
             <IonCol size="1">
               <IonInput type='number' min='0' className='inputConsom' name="weeklyTarget" onIonChange={handleOnLimitConsom} 
-              // disabled={limitConsom.educAlcool} 
-              // value={limitConsom.weeklyTarget}
+disabled={limitConsom.educAlcool} 
+value={limitConsom.weeklyTarget}
               ></IonInput>
             </IonCol>
             <IonCol size="2">
-              <IonLabel position="fixed">par semaine</IonLabel>
+              <IonLabel className = "notifHeader" position="fixed"><h3>par semaine</h3></IonLabel>
             </IonCol>
           </IonItem>
           <IonItem>
             <IonCol size="1"></IonCol>
-            <IonCol size="1">
-              <IonLabel position="fixed">Maximum</IonLabel>
+            <IonCol size="2">
+              <IonLabel className = "notifHeader" position="fixed"><h3>Maximum</h3></IonLabel>
             </IonCol>
-            <IonCol size="1">
+            <IonCol size="2">
               <IonInput type='number' min='0' max='7' className='inputConsom' name="sobrietyDays" onIonChange={handleOnLimitConsom} 
-              // value={limitConsom.sobrietyDays}
+value={limitConsom.sobrietyDays}
               ></IonInput>
             </IonCol>
             <IonCol size="4">
-              <IonLabel position="fixed">jours par</IonLabel>
-              <IonLabel position="fixed">semaine</IonLabel>
+              <IonLabel className = "notifHeader" position="fixed"><h3>jour/s par semaine</h3></IonLabel>
             </IonCol>
           </IonItem>
           <IonItem>
             <IonCol size='1'></IonCol>
-            <IonCol size='2'>
+            <IonCol size='1'>
               <IonCheckbox onIonChange={handleOnEducAlcool} 
-              // checked={limitConsom.educAlcool} 
-              // value={limitConsom.educAlcool}
+checked={limitConsom.educAlcool} 
+value={limitConsom.educAlcool}
               ></IonCheckbox>
             </IonCol>
-            <IonCol size='4'>
-              <IonLabel>Utiliser les recommandations d'Educ'alcool</IonLabel>
+            <IonCol size='9'>
+              <IonLabel className = "notifHeader" ><h2>Utiliser les recommandations</h2><h2>d'Educ'alcool</h2></IonLabel>
             </IonCol>
+            <IonCol size='1'></IonCol>
           </IonItem>
           <IonItem>
-            <IonCol size='1'></IonCol>
-            <IonCol size="2"> 
-              <ion-label>Message de notification</ion-label>
+            {/* <IonCol size='1'></IonCol> */}
+            <IonCol size="3"> 
+              <IonLabel className = "notifHeader"><h3>Message de</h3><h3>notification</h3></IonLabel>
             </IonCol>
-            <IonTextarea id="message_notif" clear-on-edit="true" class="messagenotif" name="notificationMessage" onIonChange={handleOnLimitConsom} 
-            // value={limitConsom.notificationMessage}
+            <IonCol size="9"> 
+            <IonTextarea id="message_notif" rows={4} cols={6} clear-on-edit="true" className="messagenotif" name="notificationMessage" onIonChange={handleOnLimitConsom} 
+value={limitConsom.notificationMessage}
             ></IonTextarea>
+            </IonCol>
+            {/* <IonCol size='1'></IonCol>  */}
           </IonItem>
         </IonItemGroup>
       </div>

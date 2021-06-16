@@ -770,7 +770,18 @@ color: #ffffff;
 .notifHeader{
   --ion-background-color: rgb(231, 165, 79);
   padding: 0;
-  margin: 0;
+  margin-right: 0px;
+}
+
+.notifHeader h3{
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.notifHeader h2{
+  font-size: 13px;
+  font-weight: bold;
+  color: #752222;
 }
 
 .limiteConsom{
@@ -902,7 +913,7 @@ color: #ffffff;
   font-size: 10px;
 }
 .buttonCloseEdit{
-  margin-top: 2px;
+  margin-top: 0px;
   margin-right: 20px;
   font-size: 10px;
 }
@@ -1570,18 +1581,27 @@ height: 58%;
 .toiletButton1{
   height: 30px;
   width: 30px;
-  background-color: #7a5711;
+  background-color: #5c4401;
   border-radius: 30%;
-  padding: 10px;
-  size: 20px;
+}
+
+.toiletButton1 div{
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
 }
 
 .toiletButton2{
   height: 30px;
   width: 30px;
-  background-color: #c24d0a;
+  background-color: rgb(235, 221, 29);
   border-radius: 30%;
-  padding: 10px;
+}
+
+.toiletButton2 div{
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
 }
 
 .add1{
@@ -1820,8 +1840,6 @@ body {
   --ion-background-color:#f5e5b0;
 }
 
-
-
 .Toilette01{
   float:right;
   display:inline-block;
@@ -1848,14 +1866,18 @@ h2{
 }
 
 .divAdd {
-  top: 5px;
-  left: 13px;
-  width: 330px;
+  top: 2px;
+  width: auto;
   --ion-background-color:#eed996;
 }
 
 .colNutProteinesHyd {
   background-color:  brown;
+}
+
+.divMacroAdd{
+  font-size: 8px;
+  color: white;
 }
 
 .colNutGlucidesHyd {
@@ -2050,8 +2072,38 @@ h2{
 .messagenotif {
   background-color: #cac086;
 }
-
+.IonTextarea{
+  font-size: 10px;
+}
 .datePickersExportation{
   display: flex;
   justify-content: center;
+}
+
+@media only screen 
+  and (min-device-width: 375px){
+    .grid-container{
+      margin-top: 30px; 
+    }
+    .sideBarHeader{
+      margin-top: 30px;
+    }
+    .settingsHeader{
+      margin-top: 30px;
+    }
+    .exportHeader{
+      margin-top: 30px;
+    }
+    .langHeader{
+      margin-top: 30px;
+    }
+    .notGlyAdd{
+      margin-top: 30px;
+    }
+    .notGlyChange{
+      margin-top: 30px;
+    }
+}
+.SizeChange{
+  background-color: #aabb99;
 }

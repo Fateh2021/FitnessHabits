@@ -29,8 +29,12 @@ const LegumesItem = (props) => {
 
   return (
     <div id="divPopUp1-1">
-        <button className="buttonOK" onClick={saveChanges}>OK</button>
-        <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>                       
+        <IonCol size="1">
+          <button className="buttonOK" onClick={saveChanges}>OK</button>
+        </IonCol>  
+        <IonCol size="1">
+          <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
+        </IonCol>                       
         <IonItem  className="divAdd">
           <IonCol size="1">
             <IonIcon className="starFavoris" icon={star}/>
@@ -51,16 +55,16 @@ const LegumesItem = (props) => {
               <option value="unite">unité</option>
             </select>
           </IonCol>
-          <IonCol size="1">
+          <IonCol className ="colNutProteinesHyd" size="1">
             <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={itemLegumes.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol size="1">
+          <IonCol className ="colNutFibresHyd" size="1">
             <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={itemLegumes.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol size="1">
+          <IonCol className ="colNutGlucidesHyd" size="1">
             <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={itemLegumes.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol size="1">
+          <IonCol className ="colNutGrasHyd" size="1">
             <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={itemLegumes.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            

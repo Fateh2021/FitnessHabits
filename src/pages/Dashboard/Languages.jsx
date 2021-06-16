@@ -16,8 +16,8 @@ export const Languages = (props) => {
     };
 
     return (
-        <IonPage>
-            <IonHeader>
+        <IonPage className="SizeChange">
+            <IonHeader className="langHeader">
                 <IonTabBar slot="bottom" color="light">
                     <IonTabButton tab="" href="/dashboard">
                         <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />

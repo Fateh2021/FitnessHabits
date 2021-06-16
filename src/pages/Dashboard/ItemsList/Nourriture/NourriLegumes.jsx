@@ -32,8 +32,12 @@ const LegumeItem = (props) => {
 
   return (
     <div id="divPopUp1-1">
-        <button className="buttonOK" onClick={saveChanges}>OK</button>
-        <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>                       
+        <IonCol size="1">
+          <button className="buttonOK" onClick={saveChanges}>OK</button>
+        </IonCol>  
+        <IonCol size="1">
+          <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
+        </IonCol>                       
         <IonItem  className="divAdd">
           <IonCol size="1">
             <IonIcon className="starFavoris" icon={star}/>
@@ -52,16 +56,16 @@ const LegumeItem = (props) => {
             <option value="tasse">tasse</option>
             <option value="unite">unité</option>
           </select>
-          <IonCol className ="colNutProteinesHyd" size="1">
+          <IonCol className ="colNutProteinesHyd" size="1"><div className ="divMacroAdd">Pro</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutGlucidesHyd" size="1">
+          <IonCol className ="colNutGlucidesHyd" size="1"><div className ="divMacroAdd">Glu</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutFibresHyd" size="1">
+          <IonCol className ="colNutFibresHyd" size="1"><div className ="divMacroAdd">Fib</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutGrasHyd" size="1">
+          <IonCol className ="colNutGrasHyd" size="1"><div className ="divMacroAdd">Gras</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>        

@@ -85,14 +85,14 @@ const Toilettes = (props) => {
           <h2><b>Toilettes</b></h2>
         </IonLabel>
         {/* urine*/}
-        <button className="toiletButton1" onClick={ handleChangeUrineMin}>-</button>
+        <button className="toiletButton1" onClick={ handleChangeUrineMin}><div>-</div></button>
         <div className="divToilet1">{urine}</div>
-        <button className="toiletButton1" onClick={ handleChangeUrineAdd}>+</button>
+        <button className="toiletButton1" onClick={ handleChangeUrineAdd}><div>+</div></button>
         <div className="separateDiv"></div> 
         {/* feces */}
-        <button className="toiletButton2" onClick={ handleChangeFecesMin}>-</button>
+        <button className="toiletButton2" onClick={ handleChangeFecesMin}><div>-</div></button>
         <div className="divToilet2" >{feces}</div>
-        <button className="toiletButton2" onClick={ handleChangeFecesAdd} >+</button>
+        <button className="toiletButton2" onClick={ handleChangeFecesAdd} ><div>+</div></button>
       </IonItem>
     </div> 
   );

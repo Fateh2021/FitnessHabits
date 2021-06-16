@@ -237,8 +237,8 @@ const Settings = (props) => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
+    <IonPage className="SizeChange">
+      <IonHeader className="exportHeader">
         <IonTabBar slot="bottom" color="light">
           <IonTabButton tab="" href="/dashboard">
             <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />

@@ -44,7 +44,7 @@ const NourriProteines = (props) => {
           <img src="/assets/Proteines.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Proteines</b></h2>
+          <h2><b>Protéines</b></h2>
         </IonLabel>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accorProteines("myDIV3")} />
       </IonItem>

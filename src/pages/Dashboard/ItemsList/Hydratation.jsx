@@ -32,9 +32,14 @@ const HydrateItem = (props) => {
 
   return (
     <div id="divPopUp1-1">
-        <button className="buttonOK" onClick={saveChanges}>OK</button>
-        <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>                       
-        <IonItem  className="divAdd">
+        <IonCol size="1">
+          <button className="buttonOK" onClick={saveChanges}>OK</button>
+        </IonCol>  
+        <IonCol size="1">
+          <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
+        </IonCol>                
+        
+        <IonItem  className="divAdd">    
           <IonCol size="1">
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
@@ -52,16 +57,16 @@ const HydrateItem = (props) => {
             <option value="tasse">tasse</option>
             <option value="unite">unité</option>
           </select>
-          <IonCol className ="colNutProteinesHyd" size="1">
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={itemDashHydrate.proteine} onIonChange={handleChange}></IonInput>  
+          <IonCol className ="colNutProteinesHyd" size="1"><div className ="divMacroAdd">Pro</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Pro" name="proteine" value={itemDashHydrate.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutGlucidesHyd" size="1">
+          <IonCol className ="colNutGlucidesHyd" size="1"><div className ="divMacroAdd">Glu</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={itemDashHydrate.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutFibresHyd" size="1">
+          <IonCol className ="colNutFibresHyd" size="1"><div className ="divMacroAdd">Fib</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={itemDashHydrate.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutGrasHyd" size="1">
+          <IonCol className ="colNutGrasHyd" size="1"><div className ="divMacroAdd">Gras</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={itemDashHydrate.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>        

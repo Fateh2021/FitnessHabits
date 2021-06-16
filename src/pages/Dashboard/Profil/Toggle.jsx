@@ -5,6 +5,7 @@ import { globe, menu } from 'ionicons/icons';
 const Toggle = (props) => {
     return (
         <Fragment>
+            <div className="SizeChange">
             <div className="grid-container">
                 <div className="grid-item">
                     <button id="toggle" className="buttonHeaderDash" onClick={props.click}>
@@ -20,6 +21,7 @@ const Toggle = (props) => {
                     <ion-anchor href="/languages" routerDirection="forward">
                         <IonIcon className="targetProfil" icon={globe} />
                     </ion-anchor>
+                </div>
                 </div>
             </div>
         </Fragment>

@@ -53,7 +53,7 @@ const Initial = () => {
 
   return (
         <IonPage>
-            <IonHeader>
+            <IonHeader className="notGlyChange">
                 <IonToolbar>
                     <IonTitle class="titre">Notifications glycémie</IonTitle>
                 </IonToolbar>

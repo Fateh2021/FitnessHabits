@@ -43,7 +43,7 @@ const NourriLegumes = (props) => {
           <img src="/assets/Legumes.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Legumes et Fruits</b></h2>
+          <h2><b>Légumes et Fruits</b></h2>
         </IonLabel>
         <IonIcon className="arrowDashItem" onClick={() => accorGras("myDIV4")} icon={arrowDropdownCircle} />
       </IonItem>

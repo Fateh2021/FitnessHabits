@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
+import DatePicker from 'react-datepicker'
 import { arrowDropleftCircle, arrowDroprightCircle, arrowDropdownCircle, settings} from 'ionicons/icons';
 import {
   IonContent, IonList, IonPage, IonTabBar, IonIcon, IonTabButton, IonLabel, IonFooter,
@@ -225,59 +226,12 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     return dashboard;
   }
 
-  //load the current settings from the local storage if it exists, otherwise load it from the DB
-  // useEffect(() => {
-  //   const localDashboard = localStorage['dashboard'];
-  //   console.log("Loading Dashboard test..." + JSON.stringify(dashboard));
-  //   FormatDate(currentDate.startDate).then(dt => {
-  //     setFormatedCurrentDate(dt);
-  //   });
-  //   if (localDashboard) {
-  //     const sets = addMissingDashboard(JSON.parse(localDashboard));
-  //     localStorage.setItem('dashboard', JSON.stringify(sets));
-  //     setDashboard(JSON.parse(localDashboard));
-  //     console.log("Loading Dashboard From localStorage 1st time..." + JSON.stringify(dashboard));
-  //   } else {
-  //     const userUID = localStorage.getItem('userUid');
-  //     console.log("Loading Dashboard From DB...");
-  //     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear())
-  //       .once("value", (snapshot) => {
-  //         const sets = snapshot.val();
-  //         console.log("sets::" + JSON.stringify(sets));
-  //         if (sets) {
-  //           if (!(sets.hydratation.hydrates)) {
-  //             sets.hydratation.hydrates = [];
-  //           }
-  //           if (!(sets.alcool.alcools)) {
-  //             sets.alcool.alcools = []
-  //           }
-  //           const updatedSets = addMissingDashboard(sets);
-  //           localStorage.setItem('dashboard', JSON.stringify(updatedSets));
-  //           setDashboard(updatedSets);
-  //           console.log("DB if ::::::::::::::" + JSON.stringify(dashboard));
-  //         } else {
-  //           localStorage.setItem('dashboard', JSON.stringify(dashboard));
-  //           console.log("DB else ::::::::::::::" + JSON.stringify(localStorage));
-  //         }
-  //       });
-
-  //     }
-  //     const userUID = localStorage.getItem('userUid');
-  //     firebase.database().ref('language/' + userUID).once('value', (snapshot) => {
-  //         const data = snapshot.val();
-  //         if (data) {
-  //           const language = data["langue"];
-  //           if (language) {
-  //             localStorage.setItem("userLanguage", language);
-  //           }
-  //         }
-  //     });  
-
-  // }, []);
-
   useEffect(() => {
     const localDashboard = localStorage['dashboard'];
     console.log("Loading Dashboard test..."+JSON.stringify(dashboard));
+    FormatDate(currentDate.startDate).then(dt => {
+      setFormatedCurrentDate(dt);
+    });
     if (localDashboard) {
       const sets = addMissingDashboard(JSON.parse(localDashboard));
       localStorage.setItem('dashboard', JSON.stringify(sets));
@@ -305,6 +259,9 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           }
           if(!(sets.legumes.legumes)){
             sets.legumes.legumes=[]
+          }
+          if(!(sets.cereales.cereales)){
+            sets.cereales.cereales=[]
           }
           if(!(sets.cereales.cereales)){
             sets.cereales.cereales=[]
@@ -359,7 +316,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
         if(!(sets.cereales.cereales)){
           sets.cereales.cereales=[]
         }
-
         sets.nourriture.globalConsumption = sets.gras.dailyTarget.globalConsumption + sets.proteines.dailyTarget.globalConsumption
         + sets.legumes.dailyTarget.globalConsumption + sets.cereales.dailyTarget.globalConsumption;        
         const updatedSets = addMissingDashboard(sets);
@@ -397,16 +353,23 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
   };
 
   const nextDay = () => {
+
+
     const localDate = currentDate.startDate.setDate(currentDate.startDate.getDate() + 1);
     setCurrentDate({startDate: new Date(localDate)});
     setLocalday ({startDate:new Date (localDate)});
     console.log(currentDate.startDate)
+
+
+      setFormatedCurrentDate(localDate);
+    
 
       const userUID = localStorage.getItem('userUid');
       firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
       .once("value", (snapshot) =>{ 
         const sets = snapshot.val();
         console.log("dataBase" + JSON.stringify (sets));
+        console.log("BOOOOOOOOOOM")
         if(!sets){
           console.log("!snapshot.val()")
           firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(
@@ -482,15 +445,29 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
             },     
           }
         )
+        // .then(dt => {
+        //   setFormatedCurrentDate(dt);
+        // });
+        ///////////// USE THEN ///////////////////////////////
         firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
         .once("value", (snapshot) =>{
           const set = snapshot.val();
           // const set = addMissingDashboard(JSON.parse(sets));
-          //localStorage.setItem('dashboard', JSON.stringify(set));
-          const updatedSets = addMissingDashboard(set);
-          //localStorage.setItem('dashboard', JSON.stringify(updatedSets));
-          setDashboard(updatedSets);        
-        })  
+          localStorage.setItem('dashboard', JSON.stringify(set));
+          const localDashboard = localStorage['dashboard'];
+          
+
+          // const sets = addMissingDashboard(JSON.parse(set));
+          // localStorage.setItem('dashboard', JSON.stringify(sets));
+
+      // localStorage.setItem('dashboard', JSON.stringify(sets));
+      //  setDashboard(JSON.parse(localDashboard ));
+          
+          console.log("Local Storage::::::" + JSON.stringify(localDashboard));
+          console.log("Local Storage::::::" + JSON.stringify(set));
+          // setDashboard(localDashboard)  
+        });
+        
         }
         else{
           console.log("snapshot.val()")
@@ -648,7 +625,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
   }
 
   return (
-    <IonPage>
+    <IonPage >
       <Profil close={sidebarCloseHandler}> </Profil>
       <IonContent >
         <div className="datePickerPage" >
@@ -662,6 +639,12 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               <IonCol></IonCol>
               <IonCol style={{ textAlign: 'center' }}>
                 <IonLabel className="datePicker">{formatedCurrentDate}</IonLabel>
+                {/* <IonCol>
+            <DatePicker className="datePicker"
+              selected={ currentDate.startDate}
+              dateFormat="MM-dd-yyyy"
+              readOnly/> 
+          </IonCol> */}
               </IonCol>
               <IonCol></IonCol>
               <IonCol size="2">
@@ -713,43 +696,11 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       </IonContent>
 
       <IonFooter>
-        <IonAlert
-          isOpen={showAlert6}
-          onDidDismiss={() => setShowAlert6(false)}
-          cssClass='my-custom-class'
-          header={'Confirmez le format des données à exporter'}
-          inputs={[
-            {
-              name: 'checkbox1',
-              type: 'checkbox',
-              label: 'PDF',
-              value: 'value1',
-              checked: true
-            },
-            {
-              name: 'checkbox2',
-              type: 'checkbox',
-              label: 'CSV',
-              value: 'value2'
-            },
-          ]}
-          buttons={[
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'secondary',
-            },
-            {
-              text: 'Ok',
-              }
-            ]}
-          />
-          
         <IonTabBar slot="bottom" color="light">
-        <IonTabButton tab="tab1" href="/export">
+        <IonTabButton tab="tab1" href="/dashboard">
            <Home />  
            </IonTabButton>   
-           <IonTabButton tab="" href="/dashboard">
+           <IonTabButton tab="" href="/export">
           <Export />
           </IonTabButton>
           <IonTabButton tab="tab2" href="/settings">

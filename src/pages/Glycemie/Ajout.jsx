@@ -64,7 +64,7 @@ const Ajout = () => {
         <div>
             <IonPage>
 
-                <IonHeader>
+                <IonHeader className="notGlyAdd">
                     <IonToolbar>
                         <IonTitle class="titre">Nouveau horaire</IonTitle>
                     </IonToolbar>

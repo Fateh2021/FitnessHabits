@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import React, {useState, useEffect}  from 'react';
 import { IonList,IonTabBar, IonGrid, IonTabButton, IonRow, IonCol, IonHeader, IonIcon,
          IonLabel,IonFooter, IonContent, IonPage, IonAlert, IonItem, IonAvatar} from '@ionic/react';
-import { save, home, arrowDropleftCircle, arrowDropdownCircle, globe } from 'ionicons/icons';
+import { save, home, arrowDropleftCircle, arrowDropdownCircle, globe, download } from 'ionicons/icons';
 import Hydratation from './ItemsList/Hydratation'
 import BoissonAlcool from './ItemsList/BoissonAlcool' 
 import NourriGras from './ItemsList/Nourriture/NourriGras' 
@@ -201,8 +201,8 @@ const Settings =(props) =>{
   }
 
   return (      
-    <IonPage>
-      <IonHeader>
+    <IonPage className="SizeChange">
+      <IonHeader className="settingsHeader">
         <IonTabBar slot="bottom" color="light">
           <IonTabButton tab="" href="/dashboard">
             <IonIcon className="arrowDashItem" icon={arrowDropleftCircle}/>
@@ -463,7 +463,7 @@ const Settings =(props) =>{
             <IonLabel className="text"><h3>Home</h3></IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab1" href="/export">
-            <IonIcon color="warning" className="save" icon={save}/>
+            <IonIcon color="warning" className="save" icon={download}/>
             <IonLabel className="text"><h3>Exporter</h3></IonLabel>
           </IonTabButton>
         </IonTabBar>

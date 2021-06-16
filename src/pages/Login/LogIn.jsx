@@ -74,7 +74,7 @@ const LogIn = (props) => {
                 {/*Bout de code rajouté par l'équipe Gefral */}
                 <IonRow>
                     <IonCol size="12" >
-                        <IonButton expand="full" color="dark" onClick={facebookSignIn}>
+                        <IonButton expand="full" color="dark" onClick={''}>
                             <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
                             {translate.getText("AUTH_FED_CONNECT_FB")}
                             <IonIcon icon={arrowForward}/>

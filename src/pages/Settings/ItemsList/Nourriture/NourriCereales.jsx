@@ -43,7 +43,7 @@ const NourriCereales = (props) => {
           <img src="/assets/cereales.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Cereales</b></h2>
+          <h2><b>Féculents</b></h2>
         </IonLabel>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accorCereales("myDIV5")} />
       </IonItem>
@@ -55,7 +55,6 @@ const NourriCereales = (props) => {
         {/* Items cereales */}
         <NourrCereales cereales={props.cereales.cereales} />
 
-       
         {/* Cible quotidienne */}
         <IonRadioGroup>
           <IonItem className="cibleQuotid">
