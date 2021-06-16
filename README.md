@@ -13,6 +13,13 @@
    $ npm run build  
 ```
 
+#### 4- Tester sur le navigateur:
+```
+   $ npm run start
+
+   Utiliser le format appareil mobile offert par le navigateur pour un meilleur affichage  
+```
+
 #### 4- Créer les dossiers `ios` et `android` avec:
 ```
    $ npx cap add android 
