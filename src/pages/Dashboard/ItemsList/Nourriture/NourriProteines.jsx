@@ -88,7 +88,6 @@ const NourriProteines = (props) => {
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
-    console.log("proteines::::" + JSON.stringify (props.proteine))
   }
 
   useEffect(() => {

@@ -1534,14 +1534,23 @@ height: 58%;
   color: #463f3f;
  }
 
- /* .inputTextHyd {
-  width: auto;
-  font-size: medium;
+ .inputTextIMC {
+  width: 30px;
+  height: 5;
+  background-color: none;
+  margin-left: 80px;
+  margin-top: -27px;
+  margin-bottom: -6px;
+  border-radius: 15px;
+  color: #eeda24;
+ }
+
+ .inputTextIMC h2{
+  font-size:small;
   font-weight: bold;
-  background-color: #e7dcdc;
-  right: 60px;
-  border-radius: 10%;
- } */
+  text-align: center;
+  color: #eeda24;
+ }
 
  .ionSelect{
   color: #f7e8ca;
@@ -2106,4 +2115,24 @@ h2{
 }
 .SizeChange{
   background-color: #aabb99;
+}
+
+.arrow{
+  top: 0px;
+}
+
+.titre{
+  text-align: center;
+}
+
+.jour{
+  font-size: medium;
+  color: black;
+}
+
+.heure{
+  font-size: xx-large;
+  font-weight: bold;
+  color: black;
+  right: 50px;
 }

@@ -1,7 +1,7 @@
 import firebaseDb from "../../firebaseConfig";
 import React, { useState, useEffect } from 'react';
+// import '../Tab1.css'
 import './style.css';
-
 import {
     IonCard,
     IonButton,

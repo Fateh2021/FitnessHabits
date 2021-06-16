@@ -132,7 +132,6 @@ const Settings = (props) => {
     } else {
       dataSelected.push(item);
     }
-    console.log(dataSelected);
   }
 
   const [selected, setSelected] = useState("csv");

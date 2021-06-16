@@ -51,6 +51,7 @@ const RoutingSystem = () => {
           <Route path="/configurationPoids" component={ConfigurationPoids} />
           <Route path="/languages" component={Languages} />
           <Route path="/configurationNotification" component={ConfigurationNotification} />
+          {/* <Route path="/" render={(props) => getCurrentUser ? <Dashboard {...props} /> : <LogIn />} /> */}
           <Route path="/" render={() => <Redirect to="/intro" />} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>

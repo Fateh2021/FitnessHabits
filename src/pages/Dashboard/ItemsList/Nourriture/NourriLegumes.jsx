@@ -88,7 +88,6 @@ const NourriLegumes = (props) => {
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
-    console.log("legumes::::" + JSON.stringify (props.Legume))
   }
 
   useEffect(() => {

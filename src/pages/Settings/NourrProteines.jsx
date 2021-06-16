@@ -76,6 +76,7 @@ const NourrProteines = (props) => {
 
   const [proteines, setProteines] = useState(props.proteines);
   const [proteinesToEdit, setProteinesToEdit] = useState(undefined);
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
   
   // update state on prop change
@@ -88,7 +89,13 @@ const NourrProteines = (props) => {
     var array = [...proteines];
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
-      array[index].favoris = true;   
+      array[index].favoris = true;
+      
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.proteines.proteines.unshift(array[index]);
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard); 
     } else {
       event.target.style.color = '';
       array[index].favoris = false;

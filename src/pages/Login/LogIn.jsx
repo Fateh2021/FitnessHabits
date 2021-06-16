@@ -56,7 +56,7 @@ const LogIn = (props) => {
             toast(translate.getText("AUTH_FED_CONNECT_FB_ERROR"), 4000)
         }
         setBusy(false)
-    }
+    } 
 
     return (
         <IonPage className="fondIntro">

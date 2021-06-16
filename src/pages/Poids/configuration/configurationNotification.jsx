@@ -78,10 +78,6 @@ const ConfigurationNotification = (props) => {
                 </IonCard>
             </ion-content>
         </ion-app>
-        // <div>
-        //     <DatePicker controls={['calendar']} />
-        //     <h3>Hello Configuration notification</h3>
-        // </div >
     )
 }
 

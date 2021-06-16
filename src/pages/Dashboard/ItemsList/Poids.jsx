@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
-import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon } from '@ionic/react';
+import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon, IonCol } from '@ionic/react';
 
 import '../../../pages/Tab1.css';
 
@@ -33,7 +33,6 @@ const Poids = (props) => {
   }
 
   const handleRouteToConfigurationPoids = () => {
-    console.log(window.location.href);
     window.location.href = '/configurationPoids';
   }
 
@@ -43,7 +42,14 @@ const Poids = (props) => {
         <IonAvatar slot="start" onClick={handleRouteToConfigurationPoids}>
           <img src="/assets/Poids.jpg" alt="" />
         </IonAvatar>
-        <IonLabel><h2 color="warinig"><b>Poids</b></h2></IonLabel>
+        <IonLabel>
+        <h2 color="warinig"><b>Poids</b></h2>
+        {/* <div className='inputTextIMC'><h2 color="warinig"><b>IMC</b></h2></div><br/>
+        <div>
+        <IonInput className='inputTextIMC' type="number" value={dailyPoids} onIonChange={handleChange} readonly> </IonInput>
+        </div> */}
+        </IonLabel>
+        {/* <IonCol size = "1"></IonCol> */}
         <IonInput className='inputTextGly' type="number" value={dailyPoids} onIonChange={handleChange}> </IonInput>
         <IonIcon className="arrowDashItem" />
       </IonItem>

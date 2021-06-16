@@ -31,8 +31,6 @@ const Hydratation = (props) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.hydratation.dailyTarget= updatedDailyTarget;
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("handleDailyTargetChange -- updatedDailyTarget ::"+JSON.stringify(updatedDailyTarget));
-    console.log("handleDailyTargetChange -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 

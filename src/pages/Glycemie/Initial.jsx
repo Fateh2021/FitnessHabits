@@ -1,10 +1,10 @@
 import firebaseDb from "../../firebaseConfig"
 import React, { useState, useEffect } from 'react'
 import { add, arrowBack, trash} from "ionicons/icons";
-
 import Modifier from './Modifier'
-import './style.css';
 import {toast} from '../../Toast'
+// import '../Tab1.css'
+import './style.css';
 
 import {
   IonContent,

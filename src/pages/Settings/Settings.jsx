@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import React, {useState, useEffect}  from 'react';
 import { IonList,IonTabBar, IonGrid, IonTabButton, IonRow, IonCol, IonHeader, IonIcon,
          IonLabel,IonFooter, IonContent, IonPage, IonAlert, IonItem, IonAvatar} from '@ionic/react';
-import { save, home, arrowDropleftCircle, arrowDropdownCircle, globe, download } from 'ionicons/icons';
+import { home, arrowDropleftCircle, arrowDropdownCircle, globe, download } from 'ionicons/icons';
 import Hydratation from './ItemsList/Hydratation'
 import BoissonAlcool from './ItemsList/BoissonAlcool' 
 import NourriGras from './ItemsList/Nourriture/NourriGras' 

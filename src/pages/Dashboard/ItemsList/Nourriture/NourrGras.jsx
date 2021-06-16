@@ -119,15 +119,10 @@ const NourrGras = (props) => {
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.gras.dailyTarget.globalConsumption = totalConsumption();
-    //dashboard.nourriture.globalConsumption= totalConsumption();
-    ///props.parentCallback(totalConsumption());
     props.parentCallbackGras(totalConsumption());
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-    console.log("totalConsumption:::" + totalConsumption())
-    console.log("dashboard.gras.dailyTarget.globalConsumption):::" + dashboard.gras.dailyTarget.globalConsumption)
-    console.log("dashboard.nourriture.globalConsumption):::" + dashboard.nourriture.globalConsumption)
   }
 
   const DailyConsumptionDecrement = (item)=>{  
@@ -144,9 +139,6 @@ const NourrGras = (props) => {
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-    console.log("totalConsumption:::" + totalConsumption())
-    console.log("dashboard.gras.dailyTarget.globalConsumption):::" + dashboard.gras.dailyTarget.globalConsumption)
-    console.log("dashboard.nourriture.globalConsumption):::" + dashboard.nourriture.globalConsumption)
   }
 
   const totalConsumption = ()=>{
@@ -182,8 +174,6 @@ const NourrGras = (props) => {
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
     updateCacheAndBD(array);
-    console.log("props.parentCallback :::" + dashboard.gras.dailyTarget.globalConsumption)
-    console.log("childata delete :::" + sum)
   }
 
   const saveItem = (item) => {

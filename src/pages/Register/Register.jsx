@@ -46,13 +46,11 @@ const Register= () => {
       <IonPage className="fondIntro">
         <IonGrid >
           <IonRow className="">
-            <IonCol>
+            <IonCol></IonCol>
+            <IonCol size="8">
+              <img className="logoIntro" src="/assets/LogoLegion.png" alt="" />
             </IonCol>
-            <IonCol size="10">
-            <img className="logoIntro" src="/assets/Logo2.png" alt="" />  
-            </IonCol>
-            <IonCol>
-            </IonCol>
+            <IonCol></IonCol>
           </IonRow>
           <IonRow className="">
             <IonCol>

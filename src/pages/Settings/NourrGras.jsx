@@ -5,7 +5,7 @@ import uuid from 'react-uuid';
 import firebase from 'firebase'
 
 const GrasItem = (props) => {
-
+ 
   const [itemGras, setItemGras] = useState({
     id: props.itemGras ? props.itemGras.id : uuid(),
     favoris: props.itemGras ? props.itemGras.favoris : false, 
@@ -90,8 +90,6 @@ const NourrGras = (props) => {
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
       array[index].favoris = true;
-      console.log("array::"+JSON.stringify(array[index]));
-
       const dashboard = JSON.parse(localStorage.getItem('dashboard'));
       dashboard.gras.grass.unshift(array[index]);
       localStorage.setItem('dashboard', JSON.stringify(dashboard));
@@ -103,11 +101,9 @@ const NourrGras = (props) => {
     }
     setGras (array);
     updateCacheAndBD(array);
-    
   }
 
   const deleteItem = (item) => {
-    console.log("save Item::"+JSON.stringify(item))
     var array = [...gras];
     array.splice(item, 1);
     setGras (array);
@@ -137,7 +133,6 @@ const NourrGras = (props) => {
   }
 
   const saveItem = (item) => {
-    console.log("save Item::"+JSON.stringify(item))
     var array = [...gras];
     const index = array.findIndex((e) => e.id === item.id);
     index === -1 ? array.unshift(item): array[index] = item;
@@ -147,9 +142,7 @@ const NourrGras = (props) => {
     // update the cache and persist in DB
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.gras.gras= array;
-    console.log("Loading Settings From localStorage when save..."+JSON.stringify(settings));
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("Verif de settings..."+JSON.stringify(settings));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('settings/'+userUID).update(settings);
   }

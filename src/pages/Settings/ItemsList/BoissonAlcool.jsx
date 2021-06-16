@@ -39,8 +39,6 @@ const BoissonAlcool = (props) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.notifications = updatedNotifications;
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("handleOnNotifications -- updatedNotifications ::"+JSON.stringify(updatedNotifications));
-    console.log("handleOnNotifications -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   }
 
@@ -73,12 +71,10 @@ const BoissonAlcool = (props) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.limitConsom = updatedLimitConsom;
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("handleOnEducAlcool -- updatedLimitConsom ::"+JSON.stringify(updatedLimitConsom));
-    console.log("handleOnEducAlcool -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 
-  const handleOnLimitConsom = event => {console.log("change!!!");
+  const handleOnLimitConsom = event => {
     const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
     const updatedLimitConsom = { ...limitConsom, [name]: value ? value : (name === 'value') ? 0 : '' };
@@ -86,8 +82,6 @@ const BoissonAlcool = (props) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.limitConsom = updatedLimitConsom;
     localStorage.setItem('settings', JSON.stringify(settings));
-    console.log("handleOnLimitConsom -- updatedLimitConsom ::"+JSON.stringify(updatedLimitConsom));
-    console.log("handleOnLimitConsom -- settings ::"+JSON.stringify(settings));
     firebase.database().ref('settings/'+userUID).update(settings);
   };
 
@@ -99,7 +93,6 @@ const BoissonAlcool = (props) => {
           resolve();
       } else {
           const userUID = localStorage.getItem('userUid');
-          console.log("Loading Profile From DB...");
           firebase.database().ref('profiles/'+userUID)
           .once("value", (snapshot) => {
               const prof = snapshot.val();

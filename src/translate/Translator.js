@@ -14,9 +14,7 @@ export function setLang(lang) {
 export function getLang() {
     var language = "en";
     if (localStorage["userLanguage"]) {
-        console.log("local");
         language = localStorage.getItem("userLanguage");
-        console.log(language);
     } else {
         var locale = window.navigator.userLanguage
                 || window.navigator.language;
@@ -30,7 +28,6 @@ export function getLang() {
 
 export function getText(key) {
     if (dict === undefined || dict[key] === undefined || dict[key][getLang()] === undefined) {
-        console.error("Error in Translation.json")
         return "";
     }
     return dict[key][getLang()];

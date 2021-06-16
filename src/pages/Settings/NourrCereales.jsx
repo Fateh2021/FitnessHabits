@@ -76,6 +76,7 @@ const NourrCereales = (props) => {
 
   const [cereales, setCereales] = useState(props.cereales);
   const [cerealesToEdit, setCerealesToEdit] = useState(undefined);
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
   
   // update state on prop change
@@ -88,7 +89,12 @@ const NourrCereales = (props) => {
     var array = [...cereales];
     if(event.target.style.color === ''){
       event.target.style.color = '#d18a17';
-      array[index].favoris = true;   
+      array[index].favoris = true;
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      dashboard.cereales.cereales.unshift(array[index]);
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);   
     } else {
       event.target.style.color = '';
       array[index].favoris = false;
@@ -100,7 +106,6 @@ const NourrCereales = (props) => {
   }
 
   const deleteItem = (item) => {
-    console.log("save Item::"+JSON.stringify(item))
     var array = [...cereales];
     array.splice(item, 1);
     setCereales (array);
@@ -130,7 +135,6 @@ const NourrCereales = (props) => {
   }
 
   const saveItem = (item) => {
-    console.log("save Item::"+JSON.stringify(item))
     var array = [...cereales];
     const index = array.findIndex((e) => e.id === item.id);
     index === -1 ? array.unshift(item): array[index] = item;
@@ -140,7 +144,6 @@ const NourrCereales = (props) => {
     // update the cache and persist in DB
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.cereales.cereales= array;
-    console.log("Loading Settings From localStorage when save..."+JSON.stringify(settings));
     localStorage.setItem('settings', JSON.stringify(settings));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('settings/'+userUID).update(settings);

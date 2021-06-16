@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonRow, IonCol, IonItem, IonIcon, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonButton} from '@ionic/react';
+import { IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton} from '@ionic/react';
 import { arrowDropdownCircle, addCircle, star, removeCircle, trash} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
@@ -88,7 +88,6 @@ const NourrCereales = (props) => {
     if (divElt) {
       (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
-    console.log("cereales::::" + JSON.stringify (props.cereale))
   }
 
   useEffect(() => {
