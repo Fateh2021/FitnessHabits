@@ -19,7 +19,9 @@
 
    Utiliser le format appareil mobile offert par le navigateur pour un meilleur affichage 
 
-   ![Exemple](public/assets/exemple.png) 
+   ![Exemple](public/assets/exemple.png)
+   ![alt text](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git/master/public/assets/exemple.png)
+    
 ```
 
 #### 4- Créer les dossiers `ios` et `android` avec:
