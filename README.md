@@ -21,7 +21,7 @@
 
    ![Exemple](public/assets/exemple.png)
 ```
-   ![alt text](https://gitlab.info.uqam.ca/faidi.sofiane/blob/master/exemple.png?raw=true)
+   ![alt text](https://gitlab.info.uqam.ca/faidi.sofiane/FitnesshAbits/master/public/assets/exemple.png?raw=true)
 
 
 #### 4- Créer les dossiers `ios` et `android` avec:
