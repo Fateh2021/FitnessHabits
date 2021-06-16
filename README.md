@@ -20,9 +20,9 @@
    Utiliser le format appareil mobile offert par le navigateur pour un meilleur affichage
 
    ![Exemple](public/assets/exemple.png)
-   ![alt text](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits.git/blob/master/public/assets/exemple.png?raw=true)
-    
 ```
+   ![alt text](https://gitlab.info.uqam.ca/faidi.sofiane/blob/master/public/assets/exemple.png?raw=true)
+
 
 #### 4- Créer les dossiers `ios` et `android` avec:
 ```
