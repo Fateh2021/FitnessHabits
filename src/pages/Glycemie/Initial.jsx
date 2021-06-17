@@ -3,9 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { add, arrowBack, trash} from "ionicons/icons";
 import Modifier from './Modifier'
 import {toast} from '../../Toast'
-// import '../Tab1.css'
-import './style.css';
-
+import '../Tab1.css'
 import {
   IonContent,
   IonHeader,

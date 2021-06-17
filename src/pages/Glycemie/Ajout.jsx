@@ -19,9 +19,8 @@ import {
     IonSelectOption,
     IonSelect
 } from "@ionic/react";
+import '../Tab1.css'
 
-// import '../Tab1.css'
-import './style.css';
 
 const Ajout = () => {
 

@@ -20,12 +20,9 @@ const HeadItems = () => {
         <IonLabel className = 'uniteMesure'><h3>Unité</h3></IonLabel>
       </IonCol>
       <IonCol size="4" >
-        <div className="triangle">
-          <div className="triangleText1"><b>Gras</b></div>
-          <div className="triangleText2"><b>Prot</b></div>
-          <div className="triangleText3"><b>Fib</b></div>
-          <div className="triangleText4"><b>Gluc</b></div>         
-        </div>           
+      <div>
+        <img className="" src="/assets/Triangle.png" alt="" />   
+      </div>
       </IonCol>
     </IonRow>                     
   </IonItem>        
