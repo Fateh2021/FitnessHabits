@@ -6,25 +6,26 @@ import firebase from 'firebase'
 
 const GrasItem = (props) => {
  
-  const [itemGras, setItemGras] = useState({
-    id: props.itemGras ? props.itemGras.id : uuid(),
-    favoris: props.itemGras ? props.itemGras.favoris : false, 
-    name:props.itemGras ? props.itemGras.name : '', 
-    qtte:props.itemGras ? props.itemGras.qtte : 0, 
-    proteine:props.itemGras ? props.itemGras.proteine : 0, 
-    glucide:props.itemGras ? props.itemGras.glucide : 0, 
-    fibre:props.itemGras ? props.itemGras.fibre : 0, 
-    gras:props.itemGras ? props.itemGras.gras : 0, 
-    unit: props.itemGras ? props.itemGras.unit : ''
+  const [item, setItem] = useState({
+    id: props.item ? props.item.id : uuid(),
+    favoris: props.item ? props.item.favoris : false, 
+    name:props.item ? props.item.name : '', 
+    qtte:props.item? props.item.qtte : 0, 
+    proteine:props.item ? props.item.proteine : 0, 
+    glucide:props.item ? props.item.glucide : 0, 
+    fibre:props.item ? props.item.fibre : 0, 
+    gras:props.item? props.item.gras : 0, 
+    unit: props.item? props.item.unit : '',
+    consumption: props.item ? props.item.consumption:0
   });
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setItemGras({ ...itemGras, [name]: value });
+    setItem({ ...item, [name]: value });
   }
 
   const saveChanges = () => {
-    props.save(itemGras);
+    props.save(item);
   }
 
   return (
@@ -34,19 +35,19 @@ const GrasItem = (props) => {
         </IonCol>  
         <IonCol size="1">
           <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
-        </IonCol>                       
+        </IonCol> 
         <IonItem  className="divAdd">
           <IonCol size="1">
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
-          <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemGras.name} onIonChange={handleChange}></IonInput>  
+          <IonCol size="3">
+            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={itemGras.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <select id="PopUpUnitSelect" name="unit" defaultValue={itemGras.unit} onChange={handleChange}>
+            <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
               <option value="-1"></option>
               <option value="gr">gr</option>
               <option value="oz">oz</option>
@@ -56,16 +57,16 @@ const GrasItem = (props) => {
             </select>
           </IonCol>
           <IonCol className ="colNutProteinesHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={itemGras.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutFibresHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={itemGras.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGlucidesHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={itemGras.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGrasHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={itemGras.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            
       </div>
@@ -199,7 +200,7 @@ const NourrGras = (props) => {
         <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
         <IonIcon icon={addCircle}/><label className="labelAddItem">Gras</label></IonButton>
       </div>
-      {itemContainerDisplayStatus && <GrasItem close={closeItemContainer} item={grasToEdit} save={(itemGras) => saveItem(itemGras)}/>}
+      {itemContainerDisplayStatus && <GrasItem close={closeItemContainer} item={grasToEdit} save={(item) => saveItem(item)}/>}
     </div> 
   );
 }

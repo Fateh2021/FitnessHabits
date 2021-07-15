@@ -6,26 +6,26 @@ import firebase from 'firebase'
 
 const AlcoolItem = (props) => {
 
-  const [itemAlcool, setItemAlcool] = useState({
-      id: props.itemAlcool ? props.item.id : uuid(),
-      favoris: props.itemAlcool ? props.itemAlcool.favoris : false, 
-      name:props.itemAlcool ? props.itemAlcool.name : '', 
-      qtte:props.itemAlcool ? props.itemAlcool.qtte : 0, 
-      proteine:props.itemAlcool ? props.itemAlcool.proteine : 0, 
-      glucide:props.itemAlcool ? props.itemAlcool.glucide : 0, 
-      fibre:props.itemAlcool ? props.itemAlcool.fibre : 0, 
-      gras:props.itemAlcool ? props.itemAlcool.gras : 0, 
-      unit: props.itemAlcool ? props.itemAlcool.unit : '',
-      consumption: props.itemAlcool ? props.itemAlcool.consumption:0
+  const [item, setItem] = useState({
+      id: props.item ? props.item.id : uuid(),
+      favoris: props.item ? props.item.favoris : false, 
+      name:props.item ? props.item.name : '', 
+      qtte:props.item ? props.item.qtte : 0, 
+      proteine:props.item ? props.item.proteine : 0, 
+      glucide:props.item ? props.item.glucide : 0, 
+      fibre:props.item ? props.item.fibre : 0, 
+      gras:props.item? props.item.gras : 0, 
+      unit: props.item ? props.item.unit : '',
+      consumption: props.item? props.item.consumption:0
   });
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setItemAlcool({ ...itemAlcool, [name]: value });
+    setItem({ ...item, [name]: value });
   }
 
   const saveChanges = () => {
-    props.save(itemAlcool);
+    props.save(item);
   }
 
   return (
@@ -41,13 +41,13 @@ const AlcoolItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemAlcool.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={itemAlcool.qtte} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
-            <select id="PopUpUnitSelect" name="unit" defaultValue={itemAlcool.unit} onChange={handleChange}>
+            <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
               <option value="-1"></option>
               <option value="gr">gr</option>
               <option value="oz">oz</option>
@@ -57,16 +57,16 @@ const AlcoolItem = (props) => {
             </select>
           </IonCol>
           <IonCol className ="colNutProteinesHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={itemAlcool.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutFibresHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={itemAlcool.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGlucidesHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={itemAlcool.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGrasHyd" size="1">
-            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={itemAlcool.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>            
       </div>
@@ -126,7 +126,7 @@ const Alcool = (props) => {
     setItemContainerDisplayStatus(false);
   }
 
-  const openAddItemContainer = () => {
+  const openAddItemContainer = (index) => {
     setAlcoolsToEdit(undefined);
     setItemContainerDisplayStatus(true);
   }
@@ -203,7 +203,7 @@ const Alcool = (props) => {
         <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
         <IonIcon icon={addCircle}/><label className="labelAddItem">Alcool</label></IonButton>
       </div>
-      {itemContainerDisplayStatus && <AlcoolItem close={closeItemContainer} item={alcoolsToEdit} save={(itemAlcool) => saveItem(itemAlcool)}/>}
+      {itemContainerDisplayStatus && <AlcoolItem close={closeItemContainer} item={alcoolsToEdit} save={(item) => saveItem(item)}/>}
     </div> 
   );
 }

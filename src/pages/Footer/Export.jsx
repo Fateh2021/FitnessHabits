@@ -7,7 +7,7 @@ import '../Tab1.css';
 const Export = () => {
 
   return (    
-      <div>
+    <div>
     <IonIcon color="warning" className="save" icon={download} />
     <IonLabel className="text"><h3>Exporter</h3></IonLabel>
     </div> 

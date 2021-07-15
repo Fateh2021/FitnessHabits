@@ -293,6 +293,10 @@ color: #ffffff;
   text-shadow: black;
 }
 
+.footer {
+  display:inline;
+}
+
 .save, .target, .settings {
   font-size: 28px;
   color: #d66437;
@@ -302,7 +306,7 @@ color: #ffffff;
   font-size: 24px;
   color: #cc890d;
   text-shadow: black;
-  margin-left: -8px;
+  margin-left: 0px;
 }
 
 .targetLanguage, .targetProfil{
