@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
-import { IonInput, IonLabel, IonItem, IonAvatar, IonIcon, IonCol } from '@ionic/react';
-
+import { IonInput, IonButton, IonIcon, IonLabel, IonItem, IonAvatar, IonCol} from '@ionic/react';
+import {arrowDropdownCircle, star, trash, create,addCircle,removeCircle } from 'ionicons/icons';
 import '../../../pages/Tab1.css';
+
+const accor = (divId) => {
+  const divElt=document.getElementById(divId);
+  if (divElt) {
+    (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+  }
+}
 
 const Poids = (props) => {
 
@@ -44,16 +51,47 @@ const Poids = (props) => {
         </IonAvatar>
         <IonLabel>
         <h2 color="warinig"><b>Poids</b></h2>
-        {/* <div className='inputTextIMC'><h2 color="warinig"><b>IMC</b></h2></div><br/>
+        <div className='inputTextIMC'><h2 color="warinig"><b>IMC</b></h2></div><br/>
         <div>
         <IonInput className='inputTextIMC' type="number" value={dailyPoids} onIonChange={handleChange} readonly> </IonInput>
-        </div> */}
+        </div>
         </IonLabel>
-        {/* <IonCol size = "1"></IonCol> */}
+        <IonCol size = "1"></IonCol>
         <IonInput className='inputTextGly' type="number" value={dailyPoids} onIonChange={handleChange}> </IonInput>
-        <IonIcon className="arrowDashItem" />
+        <IonIcon className="arrowDashItem"  icon={arrowDropdownCircle} onClick={() => accor("accordeonPoids")}/>
       </IonItem>
+      <div id="accordeonPoids">
+      <div> 
+          <div className="divPoids">
+            <div className="sett">
+              
+                <IonItem className="divTitre11" key={123}>
+                  <IonCol size="1">
+                  </IonCol>
+                  <IonLabel className="nameDscripDashboard"><h2><b>{"test"}</b></h2></IonLabel>      
+                  <IonButton className="trashButton" color="danger" size="small">
+                    <IonIcon  icon={removeCircle} />
+                  </IonButton>
+                  <IonCol size="2" >
+                    <IonInput className='inputTextDashboard' value = {dailyPoids} readonly></IonInput>  
+                  </IonCol>
+                  <IonButton className='AddButtonHydr' color="danger" size="small">
+                    <IonIcon  icon={addCircle} />
+                  </IonButton>
+                  <IonButton className="trashButton" color="danger" size="small">
+                    <IonIcon  icon={trash} />
+                  </IonButton>
+                </IonItem>
+                
+               
+            </div>
+          </div>
+          
+          {/* {itemContainerDisplayStatus && <AlcoolItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashAlcool) => saveItem(itemDashAlcool)}/>}    */}
+        </div>        
     </div>
+    </div>
+    
   );
 }
 export default Poids;
