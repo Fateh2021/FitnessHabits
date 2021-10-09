@@ -1538,24 +1538,6 @@ height: 58%;
   color: #463f3f;
  }
 
- .inputTextIMC {
-  width: 30px;
-  height: 5;
-  background-color: none;
-  margin-left: 80px;
-  margin-top: -27px;
-  margin-bottom: -6px;
-  border-radius: 15px;
-  color: #eeda24;
- }
-
- .inputTextIMC h2{
-  font-size:small;
-  font-weight: bold;
-  text-align: center;
-  color: #eeda24;
- }
-
  .ionSelect{
   color: #f7e8ca;
   font-weight: bold;
@@ -1958,8 +1940,8 @@ h2{
 }
 
 .divTitre9 {
-  z-index: 3;
-  padding: 2px 0;
+  
+  width: 100%;
   --ion-background-color: #113d37;
 }
 

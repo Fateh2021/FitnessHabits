@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
-import { IonInput, IonButton, IonIcon, IonLabel, IonItem, IonAvatar, IonCol} from '@ionic/react';
+import { IonInput, IonText,IonButton,IonGrid, IonContent, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonRow, IonItemDivider} from '@ionic/react';
 import {arrowDropdownCircle, star, trash, create,addCircle,removeCircle } from 'ionicons/icons';
 import '../../../pages/Tab1.css';
+import '../../../pages/poids.css';
 
 const accor = (divId) => {
   const divElt=document.getElementById(divId);
@@ -44,31 +45,42 @@ const Poids = (props) => {
   }
 
   return (
-    <div>
-      <IonItem className="divTitre9">
+    <div style={{padding:0}}>
+      <IonItem className="divTitre9" lines="none">
         <IonAvatar slot="start" onClick={handleRouteToConfigurationPoids}>
           <img src="/assets/Poids.jpg" alt="" />
         </IonAvatar>
         <IonLabel>
-        <h2 color="warinig"><b>Poids</b></h2>
-        <div className='inputTextIMC'><h2 color="warinig"><b>IMC</b></h2></div><br/>
-        <div>
-        <IonInput className='inputTextIMC' type="number" value={dailyPoids} onIonChange={handleChange} readonly> </IonInput>
-        </div>
+        <h2 color="warning"><b>Poids</b></h2>
         </IonLabel>
-        <IonCol size = "1"></IonCol>
-        <IonInput className='inputTextGly' type="number" value={dailyPoids} onIonChange={handleChange}> </IonInput>
+        <IonInput className='poidsActuelReadOnly' type="number" value={dailyPoids} onIonChange={handleChange} readonly> </IonInput>
         <IonIcon className="arrowDashItem"  icon={arrowDropdownCircle} onClick={() => accor("accordeonPoids")}/>
       </IonItem>
-      <div id="accordeonPoids">
-      <div> 
-          <div className="divPoids">
-            <div className="sett">
-              
-                <IonItem className="divTitre11" key={123}>
-                  <IonCol size="1">
-                  </IonCol>
+      <div id="accordeonPoids" className="accordeonPoids">
+          <IonItem lines="none" className="ionTableau">
+            <IonGrid>
+              <IonRow class="rowPoids">
+                <IonCol className="poids-text-md">
+                    <span><b>Poids actuel</b></span>  <span className="poids-text-sm">173 lbs</span>                   
+                </IonCol>
+                <IonCol className="poids-text-md">
+                  <span><b>Date cible</b></span><span className="poids-text-sm" >2021-01-01</span> 
+                </IonCol>
+              </IonRow>
+              <IonRow class="rowPoids">
+                <IonCol className="poids-text-md">
+                  <span><b>Poids cible</b></span> <span className="poids-text-sm">153 lbs</span>                   
+                </IonCol>
+                <IonCol></IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+          
+                {/* <IonItem className="divTitre11" key={123}>
+                  <IonRow></IonRow>
+                  <IonCol size="3">
                   <IonLabel className="nameDscripDashboard"><h2><b>{"test"}</b></h2></IonLabel>      
+                  </IonCol>
                   <IonButton className="trashButton" color="danger" size="small">
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
@@ -81,17 +93,13 @@ const Poids = (props) => {
                   <IonButton className="trashButton" color="danger" size="small">
                     <IonIcon  icon={trash} />
                   </IonButton>
-                </IonItem>
+                </IonItem> */}
                 
-               
-            </div>
-          </div>
+          
           
           {/* {itemContainerDisplayStatus && <AlcoolItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashAlcool) => saveItem(itemDashAlcool)}/>}    */}
         </div>        
-    </div>
-    </div>
-    
+    </div>    
   );
 }
 export default Poids;

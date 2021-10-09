@@ -1,0 +1,38 @@
+.poidsActuelReadOnly{
+    width: 80%;
+    height: 60%;
+    background-color: #e7dcdc;
+    right: 60px;
+    border-radius: 5px;
+   }
+
+.poids-text-md{
+    font-size: 16px;
+    line-height: 100%;
+}
+
+.poids-text-sm {
+    font-size: 14px;
+    float: right;
+}
+
+.rowPoids {
+    border-color: rgb(236, 236, 236); 
+    
+    border-width: 1px; 
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-style:solid;
+}
+
+.accordeonPoids {
+    width: auto;
+    height: auto;
+    display: none;
+}
+
+.ionTableau{
+    --ion-background-color: #113d37;
+    color: white;
+}
