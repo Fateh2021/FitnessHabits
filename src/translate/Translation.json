@@ -202,17 +202,17 @@
    "NEW_REGISTER":{
       "en":"New, register",
       "es":"Nuevo, registrarse",
-      "fr":"Nouveau, s'enregistrer"
+      "fr":"Créer un nouveau compte"
    },
    "USER_NAME":{
-      "en":"Username?",
+      "en":"Username",
       "es":"¿Nombre del usuario?",
-      "fr":"Nom d'utilisateur?"
+      "fr":"Nom d'utilisateur"
    },
    "PASSWORD":{
-      "en":"Password?",
+      "en":"Password",
       "es":"¿Contraseña?",
-      "fr":"Mot de passe?"
+      "fr":"Mot de passe"
    },
    "CONNECT":{
       "en":"Log in",
@@ -222,7 +222,7 @@
    "REGISTER":{
       "en":"Register",
       "es":"Registrarse",
-      "fr":"S'enregistrer"
+      "fr":"Créer un compte"
    },
    "WAIT":{
       "en":"Please wait..",

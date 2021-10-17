@@ -65,40 +65,42 @@ const LogIn = (props) => {
                     <IonCol>
                     </IonCol>
                     <IonCol size="8">
-                        <img className="logoIntro" src="/assets/LogoLegion.png" alt="" />
+                        <img className="logoIntro" src="/assets/LogoLegion.svg" alt="Logo" />
                     </IonCol>
                     <IonCol>
                     </IonCol>
                 </IonRow>
 
                 {/*Bout de code rajouté par l'équipe Gefral */}
-                <IonRow>
+                <IonRow style={{marginBottom:30}}>
                     <IonCol size="12" >
-                        <IonButton expand="full" color="dark" onClick={''}>
-                            <IonIcon  className="icon-facebook-format" icon={logoFacebook}/>
+                        <IonButton className="btn-home" onClick={facebookSignIn}>
+                            <IonCol size="1" >
+                                <img src="/assets/socials/facebookLogo.svg" width="100%" height="100%" alt="Logo_texte" />
+                            </IonCol>
                             {translate.getText("AUTH_FED_CONNECT_FB")}
-                            <IonIcon icon={arrowForward}/>
                         </IonButton>
-                        <IonButton expand="full" color="dark" onClick={googleSignIn} >
-                            <IonIcon className="icon-google-format" icon={logoGoogle}/>
+                        <IonButton className="btn-home" onClick={googleSignIn} >
+                            <IonCol size="1" >
+                                <img src="/assets/socials/googleLogo.svg" width="100%" height="100%" alt="Logo_texte" />
+                            </IonCol>
                             {translate.getText("AUTH_FED_CONNECT_GOOGLE")}
                             <IonIcon icon={arrowForward}/>
                         </IonButton>
                     </IonCol>
-                    <IonCol class="or-format">{translate.getText("OR")}</IonCol>
                 </IonRow>
 
-                <IonRow className="">
+                <IonRow>
                     <IonCol>
                         <IonLoading message={translate.getText("WAIT")} duration={0} isOpen={busy} />
-                        <IonItem color="transparent">
-                            <IonInput placeholder={translate.getText("USER_NAME")} onIonChange={(e) => setUsername(e.target.value)}/>
+                        <IonItem color="transparent" lines="none">
+                            <IonInput className="input-login" placeholder={translate.getText("USER_NAME")} onIonChange={(e) => setUsername(e.target.value)}/>
                         </IonItem>
-                        <IonItem color="transparent">
-                            <IonInput type="password" placeholder={translate.getText("PASSWORD")} onIonChange={(e) => setPassword(e.target.value)}/>
+                        <IonItem color="transparent" lines="none" style={{marginBottom:20}}>
+                            <IonInput className="input-login" type="password" placeholder={translate.getText("PASSWORD")} onIonChange={(e) => setPassword(e.target.value)}/>
                         </IonItem>
-                        <IonButton className="login-button-left" onClick={login}>{translate.getText("CONNECT")}</IonButton>
-                        <IonButton className="register-button-right" color="secondary" href="/register">{translate.getText("NEW_REGISTER")}</IonButton>
+                        <IonButton className="btn-home" style={{marginBottom:20}}  size="large" onClick={login}>{translate.getText("CONNECT")}</IonButton>
+                        <IonButton className="btn-home" color="secondary" href="/register">{translate.getText("NEW_REGISTER")}</IonButton>
                     </IonCol>
                 </IonRow>
             </IonGrid>

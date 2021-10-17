@@ -45,27 +45,29 @@ const Register= () => {
     return (
       <IonPage className="fondIntro">
         <IonGrid >
-          <IonRow className="">
-            <IonCol></IonCol>
-            <IonCol size="8">
-              <img className="logoIntro" src="/assets/LogoLegion.png" alt="" />
+          <IonRow style={{marginBottom:30}}>
+            <IonCol size="8" offset="2">
+              <img className="logoIntro" src="/assets/LogoLegion.svg"width="100%" height="100%" alt="Logo" />
             </IonCol>
-            <IonCol></IonCol>
           </IonRow>
-          <IonRow className="">
-            <IonCol>
+          <IonRow>
+            <IonCol style={{marginBottom:30}}>
               {/* <IonLoading message="Registration in progress!" duration={10} isOpen={busy}/> */}
-              <IonItem>  
-                <IonInput placeholder="Nom d'utilisateur?" onIonChange={(e) => setUsername(e.target.value)}/>
+              <IonItem color="transparent" lines="none">  
+                <IonInput className="input-login" placeholder="Nom d'utilisateur?" onIonChange={(e) => setUsername(e.target.value)}/>
               </IonItem>
-              <IonItem>
-                <IonInput type="password" placeholder="Mot de passe?" onIonChange={(e) => setPassword(e.target.value)}/>  
+              <IonItem color="transparent" lines="none">
+                <IonInput className="input-login" type="password" placeholder="Mot de passe?" onIonChange={(e) => setPassword(e.target.value)}/>  
               </IonItem> 
-              <IonItem>
-                <IonInput type="password" placeholder="Confirmer le mot de passe?" onIonChange={(e) => setCPassword(e.target.value)}/>  
-              </IonItem>             
-              <IonButton onClick={register}>S'inscrire</IonButton>
-              <IonItem><p>Vous avez déjà un compte!</p><IonButton href="/login">Se connecter</IonButton></IonItem>           
+              <IonItem color="transparent" lines="none">
+                <IonInput className="input-login" type="password" placeholder="Confirmer le mot de passe?" onIonChange={(e) => setCPassword(e.target.value)}/>  
+              </IonItem>                        
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton className="btn-home" onClick={register}>S'inscrire</IonButton>
+              <IonButton className="btn-home" color="secondary" href="/login">J'ai déjà un compte.</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
