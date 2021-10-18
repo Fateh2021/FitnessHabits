@@ -14,13 +14,9 @@ const accor = (divId) => {
 
 const Poids = (props) => {
 
-  const [currentDate, setCurrentDate] = useState({ startDate: props.currentDate });
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});;
   const [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   const [poids, setPoids] = useState(props.poids);
-
-  useEffect(() => {
-    setCurrentDate(props.currentDate);
-  }, [props.currentDate])
 
   useEffect(() => {
     setDailyPoids(props.poids.dailyPoids);
