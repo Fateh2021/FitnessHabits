@@ -5,20 +5,24 @@ import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, Ion
 
 
 
-const Initialisation = (props) => {
-
+         
+const Initialisation = () => {
   const userUID = localStorage.getItem('userUid');
   let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-  const [poidsInitial, setPoidsInitial] = useState("10");
-  const [poidsCible, setPoidsCible] = useState("10");
-  const [unitePoids, setUnitePoids] = useState("LBS");
 
-  // preferencesPoidsRef.on('value', function(snapshot) {
-  //   let test = snapshot.val();
-  //   setPoidsInitial(test.poidsInitial);
-  //   setPoidsCible(test.poidsCible);
-  //   setUnitePoids(test.unitePoids);
-  // });
+  
+
+  useEffect(() => {
+    preferencesPoidsRef.once("value").then(function(snapshot) {
+      setPoidsInitial(snapshot.val().poidsInitial);
+      setPoidsCible(snapshot.val().poidsCible);
+      setUnitePoids(snapshot.val().unitePoids);
+    })
+  },[])
+
+  const [poidsInitial, setPoidsInitial] = useState("");
+  const [poidsCible, setPoidsCible] = useState("");
+  const [unitePoids, setUnitePoids] = useState("");
   
 
   const handlePoidsInitialChange = (value) => {
@@ -32,14 +36,12 @@ const Initialisation = (props) => {
   const handleUnitePoidsChange = (value) => {
     setUnitePoids(value);
   }
-
+  
   const testHandler = () => {
     let preferencesPoids = {poidsInitial: poidsInitial, poidsCible : poidsCible, unitePoids: unitePoids}
     console.log(preferencesPoids);
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
-
-    
   }
 
   return (
@@ -83,3 +85,4 @@ const Initialisation = (props) => {
 }
 
 export default Initialisation;
+
