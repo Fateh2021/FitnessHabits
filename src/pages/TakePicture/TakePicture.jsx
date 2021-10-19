@@ -4,12 +4,14 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { aperture } from 'ionicons/icons';
 import firebase from "firebase";// import ajouté par GEFRAL
 
+
 import { Plugins, CameraResultType } from '@capacitor/core';
 
   const { Camera } = Plugins;
   const INITIAL_STATE = {
     photo: '',
   };
+
 
 export class TakePicture extends Component {
   
@@ -30,8 +32,31 @@ export class TakePicture extends Component {
     this.setState({
       photo: imageUrl
     })
+    this.uploadToStorage();
 
   }
+
+
+  uploadToStorage() {
+    // Conversion de l'image en blob -- AJOUT TEAM APY
+    var getFileBlob = function (url, cb) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.responseType = "blob";
+      xhr.addEventListener('load', function() {
+        cb(xhr.response);
+      });
+      xhr.send();
+    };
+    getFileBlob(this.state.photo, blob =>{
+        // Upload l'image avec comme path l'ID firebase de l'utilisateur avec comme filename profilPicture -- AJOUT TEAM APY
+        firebase.storage().ref(firebase.auth().currentUser.uid + "/profilPictures").put(blob).then(function(snapshot) {
+        console.log('Upload réussi !');
+     });
+   })
+}
+
+
   
   render() {
     let { photo } = this.state;
