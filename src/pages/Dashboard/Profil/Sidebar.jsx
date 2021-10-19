@@ -13,7 +13,8 @@ const Sidebar = (props) => {
         email: "",
         size: "",
         gender: "",
-        dateFormat: ""
+        dateFormat: "",
+        profilePicture: ""
       });
       
     // load the current profile from the local storage if it exists, otherwise load it from the DB
