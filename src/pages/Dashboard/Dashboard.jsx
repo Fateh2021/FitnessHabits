@@ -43,6 +43,8 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
   day: "numeric"
 })});
 
+/* useless comment */
+
   const accor = (divId) => {
     const divElt = document.getElementById(divId);
     if (divElt) {
