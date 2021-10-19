@@ -259,10 +259,12 @@ const Alcool = (props) => {
           const currentDate = new Date();
           // Vérifier s'il respecte ses consommations journalières
           const dailyCount = getConsumptionsCount(consommations, currentDate);
-          console.log("Objectif de consommation journalier : ", +alcoolSettings.limitConsom.dailyTarget)
+          console.log("Objectif de consommation journalier : ", alcoolSettings.limitConsom.dailyTarget)
           console.log("Consommations aujourd'hui : ", dailyCount);
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.dailyTarget && dailyCount > +alcoolSettings.limitConsom.dailyTarget) {
-            console.log("!!notification daily target");
+          if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
+              alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
+            console.log("daily notification!!")
+            displayNotification(alcoolSettings.limitConsom.notificationMessage);
           }
           
 
@@ -273,10 +275,12 @@ const Alcool = (props) => {
             const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
             weeklyCount += getConsumptionsCount(consommations, dateDiff)
           }
-          console.log("Objectif de consommation hebdomadaire: ", +alcoolSettings.limitConsom.weeklyTarget);
+          console.log("Objectif de consommation hebdomadaire: ", alcoolSettings.limitConsom.weeklyTarget);
           console.log("Consommation cette semaine : ", weeklyCount);
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.weeklyTarget && weeklyCount > +alcoolSettings.limitConsom.weeklyTarget) {
-            console.log("!!notification weekly target");
+          if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
+              alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
+            console.log("weekly notification!!")
+            displayNotification(alcoolSettings.limitConsom.notificationMessage)
           }
 
           // Vérifier s'il respecte ses jours de consommation de suite 
@@ -285,7 +289,7 @@ const Alcool = (props) => {
           {
             for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
               const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
-              if(getConsumptionsCount(consommations, dateDiff) == 0) {
+              if(getConsumptionsCount(consommations, dateDiff) === 0) {
                 streak = false;
                 break;
               }
@@ -316,6 +320,19 @@ const Alcool = (props) => {
       }
     }
     return count;
+  }
+
+  const displayNotification = (message) => {
+    const toast = document.createElement('ion-toast');
+    toast.message = message;
+    toast.duration = 5000;
+    toast.position = 'top'
+    toast.cssClass = 'toast-alcool'
+
+
+
+    document.body.appendChild(toast);
+    return toast.present();
   }
 
   return (

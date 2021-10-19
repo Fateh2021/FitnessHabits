@@ -79,3 +79,8 @@ http://ionicframework.com/docs/theming/ */
 ion-header {
   --background: 169, 223, 191;
 }
+
+.toast-alcool {
+  --background: #FFE436;
+  --color: #000000;
+}
