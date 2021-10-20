@@ -48,7 +48,7 @@ const Sidebar = (props) => {
             "size": updatedProfile.size,
             "gender": updatedProfile.gender,
             "dateFormat": updatedProfile.dateFormat == null ? "" : updatedProfile.dateFormat,
-            "profilPicture": updatedProfile.profilePicture
+            "profilPicture": updatedProfile.profilePicture == null ? "" : updatedProfile.profilePicture
           }
         );
       };
