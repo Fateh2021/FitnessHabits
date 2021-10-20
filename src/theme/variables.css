@@ -83,4 +83,7 @@ ion-header {
 .toast-alcool {
   --background: #FFE436;
   --color: #000000;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 12px;
 }

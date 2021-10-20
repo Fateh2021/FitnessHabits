@@ -264,7 +264,7 @@ const Alcool = (props) => {
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
             console.log("daily notification!!")
-            displayNotification(alcoolSettings.limitConsom.notificationMessage);
+            displayNotification("Trop d'alcool?", alcoolSettings.limitConsom.notificationMessage);
           }
           
 
@@ -280,7 +280,7 @@ const Alcool = (props) => {
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
             console.log("weekly notification!!")
-            displayNotification(alcoolSettings.limitConsom.notificationMessage)
+            displayNotification("Trop d'alcool?", alcoolSettings.limitConsom.notificationMessage)
           }
 
           // Vérifier s'il respecte ses jours de consommation de suite 
@@ -322,17 +322,18 @@ const Alcool = (props) => {
     return count;
   }
 
-  const displayNotification = (message) => {
+  const displayNotification = (header, message) => {
     const toast = document.createElement('ion-toast');
+    toast.header = header;
     toast.message = message;
     toast.duration = 5000;
     toast.position = 'top'
     toast.cssClass = 'toast-alcool'
-
-
+    toast.showCloseButton = true
+    toast.closeButtonText = 'Fermer'
 
     document.body.appendChild(toast);
-    return toast.present();
+    toast.present();
   }
 
   return (
