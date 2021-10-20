@@ -7,6 +7,7 @@ import DefaultSettings from '../../Settings/DefaultSettings'
 import { DateTime } from "luxon";
 
 import '../../Tab1.css';
+import {getCurrentUser} from "../../../firebaseConfig";
 
 const AlcoolItem = (props) => {
 
@@ -261,7 +262,7 @@ const Alcool = (props) => {
           const dailyCount = getConsumptionsCount(consommations, currentDate);
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
-            displayNotification("Trop d'alcool?", alcoolSettings.limitConsom.notificationMessage);
+            displayNotification(getUserLang(), alcoolSettings.limitConsom.notificationMessage);
           }
           
 
@@ -274,7 +275,7 @@ const Alcool = (props) => {
           }
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
-            displayNotification("Trop d'alcool?", alcoolSettings.limitConsom.notificationMessage)
+            displayNotification(getUserLang(), alcoolSettings.limitConsom.notificationMessage)
           }
 
           // Vérifier s'il respecte ses jours de consommation de suite 
@@ -302,6 +303,10 @@ const Alcool = (props) => {
     return date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
   }
 
+  const getUserLang = () => {
+    return localStorage.getItem('userLanguage')
+  }
+
   const getConsumptionsCount = (consommations, date) => {
     let count = 0;
     const code = getDbDate(date);
@@ -318,7 +323,16 @@ const Alcool = (props) => {
 
   const displayNotification = (header, message) => {
     const toast = document.createElement('ion-toast');
-    toast.header = header;
+    let header_msg
+    switch (header) {
+      case "en": header_msg = "Too much alcohol?"
+            break;
+      case "fr": header_msg = "Trop d'Alcool?"
+            break;
+      default: header_msg = "Trop d'alcool?"
+    }
+
+    toast.header = header_msg;
     toast.message = message;
     toast.duration = 5000;
     toast.position = 'top'
