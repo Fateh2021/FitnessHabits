@@ -259,11 +259,8 @@ const Alcool = (props) => {
           const currentDate = new Date();
           // Vérifier s'il respecte ses consommations journalières
           const dailyCount = getConsumptionsCount(consommations, currentDate);
-          console.log("Objectif de consommation journalier : ", alcoolSettings.limitConsom.dailyTarget)
-          console.log("Consommations aujourd'hui : ", dailyCount);
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
-            console.log("daily notification!!")
             displayNotification("Trop d'alcool?", alcoolSettings.limitConsom.notificationMessage);
           }
           
@@ -275,11 +272,8 @@ const Alcool = (props) => {
             const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
             weeklyCount += getConsumptionsCount(consommations, dateDiff)
           }
-          console.log("Objectif de consommation hebdomadaire: ", alcoolSettings.limitConsom.weeklyTarget);
-          console.log("Consommation cette semaine : ", weeklyCount);
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
-            console.log("weekly notification!!")
             displayNotification("Trop d'alcool?", alcoolSettings.limitConsom.notificationMessage)
           }
 
