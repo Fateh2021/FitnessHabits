@@ -32,18 +32,9 @@ const Supplements = (props) => {
           <IonItem className="trashButton" color="danger">
             <IonAvatar slot="start">
               <img src="/assets/suppl/resumen.png" alt=""/>
-            </IonAvatar>
+            </IonAvatar> 
             <IonLabel>
-              <h2><b>Liste Suppléments et médicaments</b></h2>
-            </IonLabel>
-            <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
-          </IonItem>
-          <IonItem className="trashButton" color="danger">
-            <IonAvatar slot="start">
-              <img src="/assets/suppl/activer.png" alt=""/>
-            </IonAvatar>
-            <IonLabel>
-              <h2><b>Activer ou Désactiver Suppléments et médicaments</b></h2>
+              <h2><b>Lister suppléments et médicaments</b></h2>
             </IonLabel>
             <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
           </IonItem>
@@ -52,16 +43,7 @@ const Supplements = (props) => {
               <img src="/assets/suppl/plus.png" alt=""/>
             </IonAvatar>
             <IonLabel>
-              <h2><b>Saisir supplément ou médicament</b></h2>
-            </IonLabel>
-            <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
-          </IonItem>
-          <IonItem className="trashButton" color="danger">
-            <IonAvatar slot="start">
-              <img src="/assets/suppl/respect.png" alt=""/>
-            </IonAvatar>
-            <IonLabel>
-              <h2><b>Respect de la posologie</b></h2>
+              <h2><b>Gérer suppléments et médicaments</b></h2>
             </IonLabel>
             <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
           </IonItem>
