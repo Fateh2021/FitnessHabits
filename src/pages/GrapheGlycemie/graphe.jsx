@@ -160,7 +160,7 @@ const Graphe = () => {
                 </IonToolbar>
 
                 <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
-                    <IonFabButton routerDirection="back" href="/glycemie" size="small">
+                    <IonFabButton routerDirection="back" href="/dashboard" size="small">
                         <IonIcon icon={arrowBack} />
                     </IonFabButton>
                 </IonFab>
