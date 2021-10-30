@@ -52,18 +52,9 @@ const Graphe = () => {
 
 
 
-    var dateInitial = new Date("2021-08-01");
-    var dateFin = new Date("2021-10-30");
-
-
-
-
-    //var fecha = new Date(test2[0])
-    //console.log(test2["x"])
-    //datapoints.forEach(element,index => console.log(element));
-
-
-    //Object.values(datapoints)[Object.value(datapoints).length-1]);
+    var dateFin = new Date();
+    var dateInitial = new Date();
+    dateInitial.setMonth(dateInitial.getMonth() - 3);
 
     const options = {
         theme: "light2", //"light1", "dark1", "dark2"
@@ -90,13 +81,13 @@ const Graphe = () => {
                     label: "1M",
                     range: 1,
                     rangeType: "month",
-                    default: true
+                    
                 },
                 {
                     label: "3M",
                     range: 3,
                     rangeType: "month",
-
+                    default: true
                 },
                 {
                     label: "1Y",
@@ -128,8 +119,6 @@ const Graphe = () => {
             data: [{
                 type: "spline",
                 yValueFormatString: "##",
-                //xValueFormatString: "DD-MM-YYYY",
-                //type: "spline",
                 dataPoints: datapoints
             }]
         }],
