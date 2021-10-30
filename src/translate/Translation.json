@@ -1,4 +1,9 @@
 {
+   "ABBREVIATION_MOIS": {
+      "en":"Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec",
+      "es":"Ene, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Set, Oct, Nov, Dic",
+      "fr":"Jan, Fev, Mar, Avr, Mai, Jun, Jul, Aou, Sep, Oct, Nov, Dec "
+   },
    "LANG_CHOOSE_LANG":{
       "en":"Please choose your language",
       "es":"Por favor, elija su idioma",
@@ -228,5 +233,55 @@
       "en":"Please wait..",
       "es":"Espere por favor..",
       "fr":"Veuillez patienter.."
+   },
+   "POIDS_NOM_SECTION":{
+      "en":"Weight",
+      "es":"Peso",
+      "fr":"Poids"
+   },
+   "POIDS_PREF_UNITE_POIDS":{
+      "en":"Weight unit",
+      "es":"Unidad de peso",
+      "fr":"Unité de poids"
+   },
+   "POIDS_PREF_POIDS_INITIAL":{
+      "en":"Initial weight",
+      "es":"Peso inicial",
+      "fr":"Poids initial"
+   },
+   "POIDS_PREF_POIDS_CIBLE":{
+      "en":"Weight target",
+      "es":"Peso objetivo",
+      "fr":"Poids cible"
+   },
+   "POIDS_PREF_DATE_CIBLE":{
+      "en":"Target date",
+      "es":"Fecha objetivo",
+      "fr":"Date cible"
+   },
+   "POIDS_PREF_DATE_INITIALE":{
+      "en":"Initial date",
+      "es":"Fecha inicial",
+      "fr":"Date initiale"
+   },
+   "POIDS_PREF_REINITIALISER":{
+      "en":"Reset",
+      "es":"Reiniciar",
+      "fr":"Réinitialiser"
+   },
+   "POIDS_PREF_CONFIRMER":{
+      "en":"Confirm",
+      "es":"Confirmar",
+      "fr":"Confirmer"
+   },
+   "POIDS_PREF_CHOISIR": {
+      "en":"Select",
+      "es":"Seleccionar",
+      "fr":"Sélectionner"
+   },
+   "POIDS_PREF_ANNULER": {
+      "en":"Cancel",
+      "es":"Anular",
+      "fr":"Annuler"
    }
 }

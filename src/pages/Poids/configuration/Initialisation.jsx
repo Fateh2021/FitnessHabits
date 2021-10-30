@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent,
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
 import "../../poids.css";
+import * as translate from "../../../translate/Translator";
 
 
          
@@ -20,10 +21,12 @@ const Initialisation = (props) => {
 
   useEffect(() => {
     preferencesPoidsRef.once("value").then(function(snapshot) {
-      setPoidsInitial(snapshot.val().poidsInitial);
-      setPoidsCible(snapshot.val().poidsCible);
-      setUnitePoids(snapshot.val().unitePoids);
-      setDateCible(snapshot.val().dateCible)
+      if (snapshot.val() != null) {
+        setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
+        setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
+        setUnitePoids(snapshot.val().unitePoids);
+        setDateCible(snapshot.val().dateCible)
+      }
     })
   },[])
 
@@ -59,8 +62,8 @@ const Initialisation = (props) => {
   };
 
   const handleReinitialisation = () => {
-    setPoidsInitial("0");
-    setPoidsCible("0");
+    setPoidsInitial("0.00");
+    setPoidsCible("0.00");
     setUnitePoids("");
     setDateCible("")
   }
@@ -79,28 +82,30 @@ const Initialisation = (props) => {
         <IonCardContent>
           <IonItemGroup>
             <IonItemDivider>
-              <IonLabel slot="start">Unité de poids</IonLabel>
+              <IonLabel slot="start">{translate.getText("POIDS_PREF_UNITE_POIDS")}</IonLabel>
               <IonSelect slot ="end" value={unitePoids} okText="Choisir" cancelText="Annuler" onIonChange={e => handleUnitePoidsChange(e)}>
               <IonSelectOption value="LBS">LBS</IonSelectOption>
               <IonSelectOption value="KG">KG</IonSelectOption>
             </IonSelect>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">Poids initial</IonLabel>
+              <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_INITIAL")}</IonLabel>
               <IonInput class="ion-text-right" slot="end" value={poidsInitial} onIonChange={e => handlePoidsInitialChange(e.target.value)}></IonInput>
               <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">Poids ciblé</IonLabel>
+              <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_CIBLE")}</IonLabel>
               <IonInput class="ion-text-right" slot="end" value={poidsCible} onIonChange={e => handlePoidsCibleChange(e.target.value)}></IonInput>
               <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">Date ciblé</IonLabel>
+              <IonLabel slot="start">{translate.getText("POIDS_PREF_DATE_CIBLE")}</IonLabel>
               <IonDatetime
+                monthShortNames = {translate.getText("ABBREVIATION_MOIS")}
                 slot="end"
                 displayFormat="MMM DD, YYYY"
                 placeholder="Choisir une date"
+                max="2099-10-31"
                 value={dateCible}
                 onIonChange={(e) => handleDateCibleChange(e.target.value)}
               ></IonDatetime>
@@ -112,10 +117,10 @@ const Initialisation = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol size="6">
-              <IonButton shape="round" expand="block" onClick={handleReinitialisation}>REINITIALISER</IonButton>
+              <IonButton shape="round" expand="block" onClick={handleReinitialisation}>{translate.getText("POIDS_PREF_REINITIALISER")}</IonButton>
             </IonCol>
             <IonCol size="6">
-              <IonButton shape="round" expand="block" onClick={handlerConfirmation}>CONFIRMER</IonButton>
+              <IonButton shape="round" expand="block" onClick={handlerConfirmation}>{translate.getText("POIDS_PREF_CONFIRMER")}</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
