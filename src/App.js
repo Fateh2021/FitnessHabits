@@ -8,6 +8,7 @@ import Intro from './pages/Intro/Intro';
 import Dashboard from './pages/Dashboard/Dashboard'
 import Languages from './pages/Dashboard/Languages';
 import Graphe from './pages/Graphe/graphe';
+import GrapheGlycemie from './pages/GrapheGlycemie/graphe';
 import Settings from './pages/Settings/Settings'
 import Export from './pages/Settings/Export'
 import ConfigurationPoids from './pages/Poids/configuration/configuration';
@@ -49,6 +50,7 @@ const RoutingSystem = () => {
           <Route path="/intro" component={Intro} exact={true} />
           <Route path="/glycemie" component={GlycemieInitial} />
           <Route path="/graphe" component={Graphe} />
+          <Route path="/grapheGlycemie" component={GrapheGlycemie} />
           <Route path="/glycemieAjout" component={GlycemieAjout} />
           <Route path="/configurationPoids" component={ConfigurationPoids} />
           <Route path="/languages" component={Languages} />

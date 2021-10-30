@@ -39,7 +39,7 @@ const Glycemie = (props) => {
         <IonAvatar slot="start">
           <img src="/assets/Gly.jpg" alt="" />
         </IonAvatar>
-        <a href="/graphe">
+        <a href="/grapheGlycemie">
           <IonLabel>
             <h2><b>Glycémie</b></h2>
           </IonLabel>
