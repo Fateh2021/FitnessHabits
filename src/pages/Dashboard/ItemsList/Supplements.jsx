@@ -7,6 +7,16 @@ import '../../Tab1.css';
 
 const Supplements = (props) => {
 
+  const [supplements, setSupplements] = useState(0);
+  const [toDay, setToDaye] = useState({startDate: new Date()});
+  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
+  const [formatedCurrentDate, setFormatedCurrentDate] = useState("");
+  const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateString("fr-FR", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric"
+  })});
+  
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
@@ -31,19 +41,19 @@ const Supplements = (props) => {
         <IonList>
           <IonItem className="trashButton" color="danger">
             <IonAvatar slot="start">
-              <img src="/assets/suppl/resumen.png" alt=""/>
-            </IonAvatar> 
+              <img src="/assets/suppl/plus.png" alt=""/>
+            </IonAvatar>
             <IonLabel>
-              <h2><b>Lister suppléments et médicaments</b></h2>
+              <h2><b>Ajouter suppléments/médicaments</b></h2>
             </IonLabel>
             <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
           </IonItem>
           <IonItem className="trashButton" color="danger">
             <IonAvatar slot="start">
-              <img src="/assets/suppl/plus.png" alt=""/>
-            </IonAvatar>
+              <img src="/assets/suppl/resumen.png" alt=""/>
+            </IonAvatar> 
             <IonLabel>
-              <h2><b>Gérer suppléments et médicaments</b></h2>
+              <h2><b>Lister suppléments/médicaments</b></h2>
             </IonLabel>
             <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={""}/>
           </IonItem>

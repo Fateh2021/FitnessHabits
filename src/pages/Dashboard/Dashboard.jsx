@@ -687,7 +687,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
             </IonList>
           </div>
 
-          <Supplements />
+          <Supplements currentDate={currentDate} />
           <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
           <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
           <Activities heures={dashboard.activities.heure} minutes={dashboard.activities.minute} currentDate={currentDate} sommeil={dashboard.activities} />
