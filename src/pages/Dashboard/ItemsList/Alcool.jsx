@@ -340,7 +340,7 @@ const Alcool = (props) => {
             break;
       case "fr": header_msg = "Trop d'Alcool?"
             break;
-      default: header_msg = "Trop d'alcool?"
+      case "es": header_msg = "¿Demasiado alcohol?"
     }
 
     toast.header = header_msg;
