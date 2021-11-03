@@ -1,180 +1,154 @@
-import React, { useEffect, useState } from 'react';
-import { arrowBack, options } from "ionicons/icons";
-import {
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    IonFab,
-    IonFabButton,
-    IonIcon,
-    IonCard
-} from "@ionic/react";
+import React, { useEffect, useState, useMemo } from 'react';
 import '../Tab1.css'
 import moment from "moment";
 import firebase from 'firebase'
 import "firebase/auth";
 
 import CanvasJSReact from './canvasjs.stock.react';
-var CanvasJSStockChart = CanvasJSReact.CanvasJSStockChart;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const Graphe = () => {
-    const [datapoints, setdatapoints] = useState([]);
+const Graphe = (reloadGraph) => {
+    const today = new Date(2021, 9, 18);// Using preset date for testing
+
+    const [data, setData] = useState([]);
+    const [tauxLabel, setTauxLabel] = useState(" mmol/L"); //" mmol/L" | " mg/dl"
+    const [endDate, setEndDate] = useState(today);
+    const [startDate, setStartDate] = useState(() => getNewStartDateForRange('3m'));
 
     useEffect(() => {
-        if (datapoints.length > 0)
-            setdatapoints(datapoints)
-    }, [datapoints]);
+        if (reloadGraph && dataPoints.length <= 0)
+            fetchDatapoints();
+    }, [reloadGraph])
 
-
-    const userUID = localStorage.getItem('userUid');
-
-    var arr = [];
-
-    firebase.database().ref('dashboard/' + userUID)
-        .once("value", (snapshot) => {
-            const sets = snapshot.val();
-            if (sets) {
-                var index = 0;
-                for (const key in sets) {
-                    arr[index] = { x: new Date(moment(key, "DDMMYYYY").format('YYYY-MM-DD')), y: parseInt(sets[key].glycemie.dailyGlycemie) }
-                    index++
+    function fetchDatapoints() {
+        const userUID = localStorage.getItem('userUid');
+        var arr = [];
+        firebase.database().ref('dashboard/' + userUID)
+            .once("value", (snapshot) => {
+                const sets = snapshot.val();
+                if (sets) {
+                    var index = 0;
+                    for (const key in sets) {
+                        arr[index] = { x: moment(key, "DDMMYYYY").toDate(), y: parseInt(sets[key].glycemie.dailyGlycemie) }
+                        index++
+                    }
                 }
-            }
-            arr.sort((a, b) => {
-                return a.x - b.x;
+                arr.sort((a, b) => {
+                    return a.x - b.x;
+                });
+
+                setData(arr)
             });
-            setdatapoints(arr);
-        });
+    }
+
+    const dataPoints = useMemo(
+        () => data.filter((val) => val.x >= startDate && val.x <= endDate),
+        [data, startDate, endDate]
+    );
+
+
+    const [average, setAverage] = useState(0);
+    const [averageDataPoints, setAverageDataPoint] = useState([]);
+    useEffect(() => {
+        if (dataPoints && dataPoints.length > 0) {
+            let av = Math.round((((dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0) / dataPoints.length) + Number.EPSILON) * 100) / 100;
+            
+            setAverage(av)
+            setAverageDataPoint([
+                { x: startDate, y: av },
+                { x: endDate, y: av }
+            ])
+            console.log(averageDataPoints)
+        }
+    }, [dataPoints]);
+
+    // const averageDataPoints = [
+    //     { x: new Date(2021, 6, 18), y: 8 },
+    //     { x: new Date(2021, 9, 18), y: 8 }
+    // ]
+
+
+    function getNewStartDateForRange(range) {
+        const startDateAsMoment = moment(endDate);
+
+        switch (range) {
+            case '1w': return startDateAsMoment.subtract(1, 'week').toDate();
+            case '1m': return startDateAsMoment.subtract(1, 'month').toDate();
+            case '3m': return startDateAsMoment.subtract(3, 'month').toDate();
+            case '1y': return startDateAsMoment.subtract(1, 'year').toDate();
+        }
+    }
+
+    function onRangeClick(range) {
+        setStartDate(getNewStartDateForRange(range));
+    }
+
+    function onStartDateChange(event) {
+        setStartDate(moment(event.target.value).toDate());
+    }
+
+    function onEndDateChange(event) {
+        setEndDate(moment(event.target.value).toDate());
+    }
 
 
 
+    if (!dataPoints || dataPoints.length <= 0 || !averageDataPoints || averageDataPoints.length <= 0) {
 
-
-    var dateFin = new Date();
-    var dateInitial = new Date();
-    dateInitial.setMonth(dateInitial.getMonth() - 3);
-
-    const options = {
-        theme: "light2", //"light1", "dark1", "dark2"
-        title: {
-            text: "Glycemie"
-        },
-        rangeSelector: {
-            inputFields: {
-                startValue: dateInitial,
-                endValue: dateFin,
-
-            },
-            buttonStyle: {
-                backgroundColorOnSelect: "#4f81bc",
-                backgroundColorOnHover: "#2196f3",
-            },
-            buttons: [
-                {
-                    label: "1S",
-                    range: 1,
-                    rangeType: "week"
-                },
-                {
-                    label: "1M",
-                    range: 1,
-                    rangeType: "month",
-                    
-                },
-                {
-                    label: "3M",
-                    range: 3,
-                    rangeType: "month",
-                    default: true
-                },
-                {
-                    label: "1Y",
-                    range: 1,
-                    rangeType: "year"
-                },
-                {
-                    label: "Tout",
-                    rangeType: "all"
-                },
-            ]
-        },
-        charts: [{
+        return (
+            <>
+                Loading...
+            </>
+        );
+    } else {
+        const options = {
+            animationEnabled: true,
+            // title: {
+            //     text: "glycemie"
+            // },
             axisX: {
-                crosshair: {
-                    enabled: true,
-                    snapToDataPoint: true,
-                    valueFormatString: "DD-MM-YYYY"
-                }
+                valueFormatString: "DD-MM-YYYY"
             },
             axisY: {
                 title: "Taux glycemie",
-                suffix: " mmol/L",
-                crosshair: {
-                    enabled: true,
-                    snapToDataPoint: true,
-                }
+                suffix: tauxLabel
             },
-            data: [{
-                type: "spline",
-                yValueFormatString: "##",
-                dataPoints: datapoints
-            }]
-        }],
-    };
-
-    if (!datapoints || datapoints.length <= 0) {
-
+            data: [
+                {
+                    yValueFormatString: "##",
+                    xValueFormatString: "DD-MM-YYYY",
+                    type: "spline",
+                    dataPoints: dataPoints
+                },
+                {
+                    type: "line",
+                    dataPoints: averageDataPoints
+                }
+            ]
+        };
         return (
-            <IonPage>
-
-                <IonHeader className="notGlyAdd">
-                    <IonToolbar>
-                        <IonTitle class="titre">Graphe Glycemie</IonTitle>
-                    </IonToolbar>
-
-                    <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
-                        <IonFabButton routerDirection="back" href="/glycemie" size="small">
-                            <IonIcon icon={arrowBack} />
-                        </IonFabButton>
-                    </IonFab>
-                </IonHeader>
-
-                <IonContent>
-                    <IonCard>
-                        Loading...
-                    </IonCard>
-                </IonContent>
-            </IonPage>
+            <div style={{ overflowX: "scroll" }}>
+                <h3 style={{color: "#c0504e"}}>Moyenne: {average} {tauxLabel}</h3>
+                <div>
+                    <button onClick={() => { onRangeClick("1w"); }}><h3>1S</h3></button>
+                    <button onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
+                    <button onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
+                    <button onClick={() => { onRangeClick("1y"); }}><h3>1A</h3></button>
+                </div>
+                <div>
+                    <h3>
+                        <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
+                        <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} />
+                    </h3>
+                </div>
+                <div style={{ width: "700px" }}>
+                    <CanvasJSChart options={options} />
+                </div>
+            </div>
         );
+
     }
 
-    return (
-
-        <IonPage>
-
-            <IonHeader className="notGlyAdd">
-                <IonToolbar>
-                    <IonTitle class="titre">Graphe Glycemie</IonTitle>
-                </IonToolbar>
-
-                <IonFab class="arrow" vertical="top" horizontal="end" slot="fixed">
-                    <IonFabButton routerDirection="back" href="/dashboard" size="small">
-                        <IonIcon icon={arrowBack} />
-                    </IonFabButton>
-                </IonFab>
-            </IonHeader>
-
-            <IonContent>
-                <IonCard>
-                    <div>
-                        <CanvasJSStockChart options={options} />
-                    </div>
-                </IonCard>
-            </IonContent>
-        </IonPage>
-    );
 
 
 };
