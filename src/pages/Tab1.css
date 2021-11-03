@@ -2140,3 +2140,20 @@ h2{
   color: black;
   right: 50px;
 }
+
+.dashboard-sommeil {
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  background-color: #f70098;
+  display: none;
+}
+
+.text-white {
+  --color: rgb(255, 255, 255);
+  color:white;
+}
+
+.bg-sommeil {
+  --ion-background-color: rgb(21, 43, 63);
+}
