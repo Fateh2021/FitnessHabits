@@ -245,10 +245,12 @@ const Alcool = (props) => {
             weeklyTarget: 0,
             dailyTarget: 0,
             sobrietyDays: 7,
-            notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
+            notificationMessage: ''
           },
           alcools:DefaultSettings.alcools
         };
+
+        alcoolSettings.limitConsom.notificationMessage = getNotificationMsg()
 
         // Obtenir les consommation jusqu'au dernier lundi
         firebase
@@ -305,6 +307,15 @@ const Alcool = (props) => {
 
   const getUserLang = () => {
     return localStorage.getItem('userLanguage')
+  }
+
+  const getNotificationMsg = () => {
+    var userLang = getUserLang()
+    switch (userLang) {
+      case "fr": return "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
+      case "en": return "According to EducAlcool guidelines, you just exceeded the | limits of alcohol intake. This is just a reminder..."
+      case "es": return "Según las recomendaciones de ÉducAlcool, acaba de superar el límite. Es solo un recordatorio ..."
+    }
   }
 
   const getConsumptionsCount = (consommations, date) => {
