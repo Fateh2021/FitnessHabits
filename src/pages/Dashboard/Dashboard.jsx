@@ -633,7 +633,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
             <IonRow>
               <IonCol size="2">
                 <IonTabButton >
-                  <IonIcon className="buttonTimeLeft" icon={arrowDropleftCircle} onClick={""} />
+                  <IonIcon className="buttonTimeLeft" icon={arrowDropleftCircle} onClick={() => console.log("Go Left!")} />
                 </IonTabButton>
               </IonCol>
               <IonCol></IonCol>
@@ -649,7 +649,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               <IonCol></IonCol>
               <IonCol size="2">
                 <IonTabButton>
-                  <IonIcon className="buttonTimeRight" icon={arrowDroprightCircle} onClick={""} />
+                  <IonIcon className="buttonTimeRight" icon={arrowDroprightCircle} onClick={() => console.log("Go Right!")} />
                 </IonTabButton>
               </IonCol>
             </IonRow>
