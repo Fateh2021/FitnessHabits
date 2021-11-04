@@ -37,6 +37,11 @@
     color: white;
 }
 
+.poidsGraph {
+    padding-right: 30px!important;
+    background-color: #113d37;
+}
+
 .test11 {
     align-content: right;
 }

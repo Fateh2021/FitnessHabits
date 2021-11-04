@@ -45,6 +45,7 @@
     "react-scripts": "^3.4.3",
     "react-use-storage": "^0.4.2",
     "react-uuid": "^1.0.2",
+    "recharts": "^2.1.6",
     "typescript": "3.7.4",
     "uuid": "^8.3.1"
   },

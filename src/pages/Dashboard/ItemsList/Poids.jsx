@@ -4,6 +4,13 @@ import { IonInput, IonText,IonButton,IonGrid, IonContent, IonIcon, IonLabel, Ion
 import {arrowDropdownCircle, star, trash, create,addCircle,removeCircle } from 'ionicons/icons';
 import '../../../pages/Tab1.css';
 import '../../../pages/poids.css';
+import { Line } from "react-chartjs-2";
+
+let start = new Date(),
+  end = new Date();
+
+start.setDate(start.getDate() - 90); // set to 'now' minus 7 days.
+start.setHours(0, 0, 0, 0); // set to midnight.
 
 const accor = (divId) => {
   const divElt=document.getElementById(divId);
@@ -12,8 +19,71 @@ const accor = (divId) => {
   }
 }
 
+
 const Poids = (props) => {
 
+  let graphData = 
+  [{x: "2021-08-10", y: 180},
+  {x: "2021-08-20", y: 175},
+  {x: "2021-08-25", y: 173},
+  {x: "2021-08-29", y: 178},
+  {x: "2021-09-01", y: 175},
+  {x: "2021-09-10", y: 174},
+  {x: "2021-09-20", y: 173},
+  {x: "2021-10-16", y: 172},
+  {x: "2021-10-17", y: 170},
+  {x: "2021-11-02", y: 168}]
+
+  var poidsInitial = [{x: start, y: 180},{x: end, y: 180}]
+  var poidsCible = [{x: start, y: 171},{x: end, y: 171}]
+
+  const data = {
+    datasets: [
+      {
+        label: "Poids",
+        data: graphData,
+        fill: false,
+        borderColor: "#3B81C4",
+        backgroundColor: "#3B81C4"
+      },
+      {
+        label: "Poids initial",
+        data: poidsInitial,
+        fill: false,
+        borderColor: "#F45650",
+        backgroundColor: "#F45650",
+        pointRadius: 0
+      },
+      {
+        label: "Poids Cible",
+        data: poidsCible,
+        fill: false,
+        borderColor: "#37F52E",
+        backgroundColor: "#37F52E",
+        pointRadius: 0
+      },
+    ]
+  };
+  var options = {
+    title: {text: "Évolution du poids des 3 derniers mois", display: true},
+    scales: {
+      xAxes: [{
+        type: "time",
+        time: {
+          min: start,
+          max: end,
+          unit: "day"
+        }
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Poids'
+        }
+      }]
+    }
+  }
+  
   const [currentDate, setCurrentDate] = useState({startDate: new Date()});;
   const [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   const [poids, setPoids] = useState(props.poids);
@@ -53,8 +123,9 @@ const Poids = (props) => {
         <IonIcon className="arrowDashItem"  icon={arrowDropdownCircle} onClick={() => accor("accordeonPoids")}/>
       </IonItem>
       <div id="accordeonPoids" className="accordeonPoids">
-          <IonItem lines="none" className="ionTableau">
-            <IonGrid>
+          {/* <IonItem lines="none" className="ionTableau"> */}
+            <Line className="ionTableau poidsGraph" data={data} options={options} />
+            {/* <IonGrid>
               <IonRow class="rowPoids">
                 <IonCol className="poids-text-md">
                     <span><b>Poids actuel</b></span>  <span className="poids-text-sm">173 lbs</span>                   
@@ -69,8 +140,8 @@ const Poids = (props) => {
                 </IonCol>
                 <IonCol></IonCol>
               </IonRow>
-            </IonGrid>
-          </IonItem>
+            </IonGrid> */}
+          {/* </IonItem> */}
           
                 {/* <IonItem className="divTitre11" key={123}>
                   <IonRow></IonRow>
