@@ -2156,4 +2156,15 @@ h2{
 
 .bg-sommeil {
   --ion-background-color: rgb(21, 43, 63);
+  font-weight: bold;
+}
+
+.input-sommeil {
+  background: rgb(216, 236, 255);
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.btn-rounded{
+  --border-radius: 50px;
 }

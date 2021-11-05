@@ -16,7 +16,7 @@ const Supplements = () => {
           <h2><b>Suppléments</b></h2>
         </IonLabel>
         <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={console.log("Open Supplements")}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => console.log("Open Supplements")}/>
       </IonItem>
       <div id="myDIV3">
         <IonItem>     
