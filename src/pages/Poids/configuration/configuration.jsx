@@ -4,6 +4,7 @@ import HeaderPoids from "./header";
 import InitialisationPoids from "./Initialisation";
 import ConfigurationNotificationCarteListe from "./configurationNotificationCarteListe";
 import notificationObject from './notificationObject';
+import * as translate from "../../../translate/Translator";
 
 const Configuration = (props) => {
   const [listNotification, setListNotification] = useState([]);
@@ -39,10 +40,10 @@ const Configuration = (props) => {
 
           <ion-tab-bar slot="bottom" >
             <ion-tab-button tab="Initialisation">
-              <ion-label>Paramètre</ion-label>
+              <ion-label>{translate.getText("POIDS_PREF_PARAMETRES")}</ion-label>
             </ion-tab-button>
             <ion-tab-button tab="Notification">
-              <ion-label>Notification</ion-label>
+              <ion-label>{translate.getText("POIDS_PREF_NOTIFICATIONS")}</ion-label>
             </ion-tab-button>
           </ion-tab-bar>
         </ion-tabs>

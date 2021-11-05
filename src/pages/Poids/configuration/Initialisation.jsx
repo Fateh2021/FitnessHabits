@@ -15,6 +15,7 @@ const Initialisation = (props) => {
   }
 
   const userUID = localStorage.getItem('userUid');
+  
   let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
 
   
@@ -83,7 +84,7 @@ const Initialisation = (props) => {
           <IonItemGroup>
             <IonItemDivider>
               <IonLabel slot="start">{translate.getText("POIDS_PREF_UNITE_POIDS")}</IonLabel>
-              <IonSelect slot ="end" value={unitePoids} okText="Choisir" cancelText="Annuler" onIonChange={e => handleUnitePoidsChange(e)}>
+              <IonSelect slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
               <IonSelectOption value="LBS">LBS</IonSelectOption>
               <IonSelectOption value="KG">KG</IonSelectOption>
             </IonSelect>

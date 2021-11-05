@@ -283,5 +283,15 @@
       "en":"Cancel",
       "es":"Anular",
       "fr":"Annuler"
+   },
+   "POIDS_PREF_PARAMETRES": {
+      "en":"Parameters",
+      "es":"Parámetros",
+      "fr":"Paramètres"
+   },
+   "POIDS_PREF_NOTIFICATIONS": {
+      "en":"Notifications",
+      "es":"Notificaciones",
+      "fr":"Notifications"
    }
 }

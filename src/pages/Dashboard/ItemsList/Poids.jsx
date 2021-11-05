@@ -40,13 +40,6 @@ const Poids = (props) => {
   const data = {
     datasets: [
       {
-        label: "Poids",
-        data: graphData,
-        fill: false,
-        borderColor: "#3B81C4",
-        backgroundColor: "#3B81C4"
-      },
-      {
         label: "Poids initial",
         data: poidsInitial,
         fill: false,
@@ -55,17 +48,28 @@ const Poids = (props) => {
         pointRadius: 0
       },
       {
+        label: "Poids",
+        data: graphData,
+        fill: false,
+        borderColor: "#3B81C4",
+        backgroundColor: "#3B81C4"
+      },
+      {
         label: "Poids Cible",
         data: poidsCible,
         fill: false,
         borderColor: "#37F52E",
         backgroundColor: "#37F52E",
         pointRadius: 0
-      },
+      }
     ]
   };
   var options = {
     title: {text: "Évolution du poids des 3 derniers mois", display: true},
+    legend: {
+      position: "bottom",
+      align: "middle"
+    },
     scales: {
       xAxes: [{
         type: "time",
@@ -78,7 +82,7 @@ const Poids = (props) => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Poids'
+          labelString: 'Poids (lbs)'
         }
       }]
     }

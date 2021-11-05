@@ -28,7 +28,7 @@ export function setLang(lang) {
     if (supportedLanguages.includes(lang)) {
         localStorage.setItem("userLanguage", lang);
         var field = { "langue": lang }
-        firebase.database().ref('language/' + userUID).update(field);
+    firebase.database().ref('language/' + userUID).update(field);
     }
 }
 
