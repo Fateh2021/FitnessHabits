@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import firebase from 'firebase'
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton, IonDatetime, IonGrid, IonSelect, IonSelectOption } from '@ionic/react';
 import { arrowDropdownCircle } from 'ionicons/icons';
+import * as translate from '../../../translate/Translator'
+
 
 import '../../Tab1.css';
 
@@ -59,7 +61,7 @@ const Sommeil = (props) => {
         <IonAvatar slot="start">
           <img src="/assets/Sommeil3.png" alt="" />
         </IonAvatar>
-        <IonLabel><b className="text-white">Sommeil</b></IonLabel>
+        <IonLabel><b className="text-white">{translate.getText("SLEEP")}</b></IonLabel>
 
         <div>
           <span className="input-sommeil"><b>8 heures</b></span>
@@ -82,7 +84,7 @@ const Sommeil = (props) => {
               <IonCol size="6">
                 <IonRow>
                   <IonCol size="12">
-                    <IonLabel><b className="text-white">Endormi à</b></IonLabel>
+                    <IonLabel><b className="text-white">{translate.getText("BED_TIME")}</b></IonLabel>
                   </IonCol>
                   <IonCol size="12">
                     <IonDatetime className="input-sommeil" displayFormat="HH:mm" value={selectedDateDebut} onIonChange={e => setSelectedDateDebut(e.detail.value)}></IonDatetime>
@@ -94,7 +96,7 @@ const Sommeil = (props) => {
               <IonCol size="6">
                 <IonRow>
                   <IonCol size="12">
-                    <IonLabel><b className="text-white">Éveillé à</b></IonLabel>
+                    <IonLabel><b className="text-white">{translate.getText("WAKE_UP_TIME")}</b></IonLabel>
                   </IonCol>
                   <IonCol size="12">
                     <IonDatetime className="input-sommeil" displayFormat="HH:mm" value={selectedDateFin} onIonChange={e => setSelectedDateFin(e.detail.value)}></IonDatetime>
@@ -108,10 +110,10 @@ const Sommeil = (props) => {
             <IonRow className="text-white ion-justify-content-center ion-align-items-center">
 
               <span>
-                <IonLabel>Je me suis réveillé</IonLabel>
+                <IonLabel>{translate.getText("I_WOKE_UP")}</IonLabel>
               </span>
               <IonInput style={{ maxWidth: "40px", color: "black" }} className='input-sommeil ion-text-center ion-margin' type="number" value={0} onIonChange={() => console.log("INPUT")}></IonInput>
-              <span>fois.</span>
+              <span>{translate.getText("TIMES")}</span>
 
             </IonRow>
 
@@ -119,12 +121,15 @@ const Sommeil = (props) => {
 
               {/* Select */}
               <IonCol size="8">
-                <IonSelect style={{minWidth:"100%"}} className="input-sommeil" value={null} placeholder="État d'esprit au réveil" onIonChange={() => console.log("SELECT")}>
-                  <IonSelectOption value="repose">Reposé</IonSelectOption>
-                  <IonSelectOption value="heureux">Heureux</IonSelectOption>
-                  <IonSelectOption value="fatigue">Fatigué</IonSelectOption>
-                  <IonSelectOption value="colere">En Colère</IonSelectOption>
-                </IonSelect>
+                <IonItem className="ion-no-padding" lines="none" >
+                  <IonLabel className="ion-hide">{translate.getText("STATE_OF_MIND")}</IonLabel>
+                  <IonSelect style={{ minWidth: "100%" }} className="input-sommeil" value={null} placeholder={translate.getText("STATE_OF_MIND")} onIonChange={() => console.log("SELECT")}>
+                    <IonSelectOption value="repose">{translate.getText("RESTED")}</IonSelectOption>
+                    <IonSelectOption value="heureux">{translate.getText("HAPPY")}</IonSelectOption>
+                    <IonSelectOption value="fatigue">{translate.getText("FATIGUE")}</IonSelectOption>
+                    <IonSelectOption value="colere">{translate.getText("ANGRY")}</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
               </IonCol>
 
               <IonCol className="ion-align-items-center ion-text-center">

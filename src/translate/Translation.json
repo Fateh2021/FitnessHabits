@@ -214,19 +214,69 @@
       "es":"¿Contraseña?",
       "fr":"Mot de passe?"
    },
+   "ANGRY":{
+      "en":"Angry",
+      "es":"En cólera",
+      "fr":"En Colère"
+   },
+   "BED_TIME":{
+      "en":"Bed Time",
+      "es":"Dormido en",
+      "fr":"Endormi à"
+   },
    "CONNECT":{
       "en":"Log in",
       "es":"Conectarse",
       "fr":"Se connecter"
+   },
+   "FATIGUE":{
+      "en":"Tired",
+      "es":"Cansado",
+      "fr":"Fatigué"
+   },
+   "HAPPY":{
+      "en":"Happy",
+      "es":"Contento",
+      "fr":"Heureux"
+   },
+   "I_WOKE_UP":{
+      "en":"I woke up ",
+      "es":"Me he despertado ",
+      "fr":"Je me suis réveillé "
    },
    "REGISTER":{
       "en":"Register",
       "es":"Registrarse",
       "fr":"S'enregistrer"
    },
+   "RESTED":{
+      "en":"Rested",
+      "es":"Descansado",
+      "fr":"Reposé"
+   },
+   "SLEEP":{
+      "en":"Sleep",
+      "es":"Dormir",
+      "fr":"Sommeil"
+   },
+   "STATE_OF_MIND":{
+      "en":"Awakening state of mind",
+      "es":"Despertar estado mental",
+      "fr":"État d'esprit au réveil"
+   },
+   "TIMES":{
+      "en":" times.",
+      "es":" veces.",
+      "fr":" fois."
+   },
    "WAIT":{
       "en":"Please wait..",
       "es":"Espere por favor..",
       "fr":"Veuillez patienter.."
+   },
+   "WAKE_UP_TIME":{
+      "en":"Wake-up Time",
+      "es":"Desperté a",
+      "fr":"Réveillé à"
    }
 }
