@@ -23,9 +23,15 @@ const Initialisation = (props) => {
   useEffect(() => {
     preferencesPoidsRef.once("value").then(function(snapshot) {
       if (snapshot.val() != null) {
-        setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
-        setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
+
         setUnitePoids(snapshot.val().unitePoids);
+        if (snapshot.val().unitePoids == "LBS") {
+          setPoidsInitial((parseFloat(snapshot.val().poidsInitial) * 2.2).toFixed(2));
+          setPoidsCible((parseFloat(snapshot.val().poidsCible) * 2.2 ).toFixed(2));
+        } else {
+          setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
+          setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
+        }
         setDateCible(snapshot.val().dateCible)
       }
     })
@@ -49,13 +55,18 @@ const Initialisation = (props) => {
     let value = e.detail.value
     let OldUnitePoids = unitePoids;
     setUnitePoids(value);
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    console.log("DSADSA: " + dashboard.poids.dailyPoids)
     if (OldUnitePoids == "KG" && value == "LBS") {
+      dashboard.poids.dailyPoids = ((dashboard.poids.dailyPoids * 2.2).toFixed(2))
       setPoidsCible((poidsCible * 2.2).toFixed(2))
       setPoidsInitial((poidsInitial * 2.2).toFixed(2))
     } else if (OldUnitePoids == "LBS" && value == "KG") {
+      dashboard.poids.dailyPoids = ((dashboard.poids.dailyPoids / 2.2).toFixed(2))
       setPoidsCible((poidsCible / 2.2).toFixed(2))
       setPoidsInitial((poidsInitial / 2.2).toFixed(2))
     }
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
   }
 
   const handleDateCibleChange = (value) => {
@@ -70,10 +81,17 @@ const Initialisation = (props) => {
   }
 
   const handlerConfirmation = () => {
-    let preferencesPoids = {poidsInitial: poidsInitial, poidsCible : poidsCible, unitePoids: unitePoids, dateCible: dateCible}
+    let pi = poidsInitial;
+    let pc = poidsCible;
+    if (unitePoids == "LBS") {
+      pi = (poidsCible / 2.2).toFixed(2)
+      pc = (poidsInitial / 2.2).toFixed(2)
+    }
+    let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     console.log(preferencesPoids);
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
+    
     redirectDashboard();
   }
 

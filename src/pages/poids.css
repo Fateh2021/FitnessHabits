@@ -4,6 +4,9 @@
     background-color: #e7dcdc;
     right: 60px;
     border-radius: 5px;
+    padding: 10px;
+    text-align: end;
+
    }
 
 .poids-text-md{
