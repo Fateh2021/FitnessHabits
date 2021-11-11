@@ -41,6 +41,26 @@ const Graphe = (reloadGraph) => {
             });
     }
 
+    function toMmoll(dp) {
+        //  mgdl / 18
+        
+        for (var i = 0; i < dp.length;i++) {
+            dp[i].y = dp[i].y / 18;
+        }
+
+        return dp;
+    }
+
+    function toMgdl(dp) {
+        // mmol * 18
+
+        for (var i = 0; i < dp.length;i++) {
+            dp[i].y = dp[i].y * 18;
+        }
+
+        return dp;
+    }
+
     const dataPoints = useMemo(
         () => data.filter((val) => val.x >= startDate && val.x <= endDate),
         [data, startDate, endDate]
