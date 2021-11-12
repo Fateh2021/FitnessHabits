@@ -145,34 +145,41 @@ const Supplements = (props) => {
                   className="inputSuppConsom"
                 >
                   <IonSelectOption value="gelule">Gélule</IonSelectOption>
-                    <IonSelectOption value="comprime">Comprimé</IonSelectOption>
-                    <IonSelectOption value="goutte">Goutte</IonSelectOption>
-                    <IonSelectOption value="sirop">Sirop</IonSelectOption>
+                  <IonSelectOption value="comprime">Comprimé</IonSelectOption>
+                  <IonSelectOption value="goutte">Goutte</IonSelectOption>
+                  <IonSelectOption value="cuillereCafe">
+                    Cuillère à café
+                  </IonSelectOption>
+                  <IonSelectOption value="cuillereSoupe">
+                    Cuillère à soupe
+                  </IonSelectOption>
                 </IonSelect>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Lundi</IonLabel>
                 <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
-                <IonLabel color="light" slot="start">
-                  Mardi
-                </IonLabel>
-                <IonCheckbox color="primary" checked></IonCheckbox>
+              </IonItem>
+              <IonItem>
+                <IonLabel color="light">Mardi</IonLabel>
+                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Mercredi</IonLabel>
                 <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
-                <IonLabel color="light" slot="start">
-                  Jeudi
-                </IonLabel>
-                <IonCheckbox color="primary" checked></IonCheckbox>
+              </IonItem>
+              <IonItem>
+                <IonLabel color="light">Jeudi</IonLabel>
+                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Vendredi</IonLabel>
                 <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
-                <IonLabel color="light" slot="start">
+              </IonItem>
+              <IonItem>
+                <IonLabel color="light">
                   Samedi
                 </IonLabel>
-                <IonCheckbox color="primary" checked></IonCheckbox>
+                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Dimanche</IonLabel>
