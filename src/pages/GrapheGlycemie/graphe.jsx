@@ -3,6 +3,7 @@ import '../Tab1.css'
 import moment from "moment";
 import firebase from 'firebase'
 import "firebase/auth";
+import * as translate from '../../translate/Translator';
 
 import CanvasJSReact from './canvasjs.stock.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -14,7 +15,11 @@ const Graphe = (reloadGraph) => {
     const [tauxLabel, setTauxLabel] = useState(" mmol/L"); //" mmol/L" | " mg/dl"
     const [endDate, setEndDate] = useState(today);
     const [startDate, setStartDate] = useState(() => getNewStartDateForRange('3m'));
-
+    const averageText = translate.getText("AVERAGE");
+    const sugarLevel = translate.getText("BLOOD_SUGAR_LEVEL");
+    const weekLetter = translate.getText("WEEK_LETTER");
+    const yearLetter = translate.getText("YEAR_LETTER");
+    
     useEffect(() => {
         if (reloadGraph && dataPoints.length <= 0)
             fetchDatapoints();
@@ -79,6 +84,7 @@ const Graphe = (reloadGraph) => {
                 { x: endDate, y: av }
             ])
             console.log(averageDataPoints)
+            
         }
     }, [dataPoints]);
 
@@ -130,7 +136,7 @@ const Graphe = (reloadGraph) => {
                 valueFormatString: "DD-MM-YYYY"
             },
             axisY: {
-                title: "Taux glycemie",
+                title: sugarLevel,
                 suffix: tauxLabel
             },
             data: [
@@ -147,13 +153,14 @@ const Graphe = (reloadGraph) => {
             ]
         };
         return (
+            
             <div style={{ overflowX: "scroll" }}>
-                <h3 style={{color: "#c0504e"}}>Moyenne: {average} {tauxLabel}</h3>
+                <h3 style={{color: "#c0504e"}}>{averageText}: {average} {tauxLabel}</h3>
                 <div>
-                    <button onClick={() => { onRangeClick("1w"); }}><h3>1S</h3></button>
+                    <button onClick={() => { onRangeClick("1w"); }}><h3>1{weekLetter}</h3></button>
                     <button onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
                     <button onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
-                    <button onClick={() => { onRangeClick("1y"); }}><h3>1A</h3></button>
+                    <button onClick={() => { onRangeClick("1y"); }}><h3>1{yearLetter}</h3></button>
                 </div>
                 <div>
                     <h3>
