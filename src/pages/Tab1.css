@@ -2140,3 +2140,14 @@ h2{
   color: black;
   right: 50px;
 }
+
+.timeFilterFirst {
+    background: #d7d8da;
+    border-radius: 10%;
+}
+
+.timeFilter {
+    margin-left: 2%;
+    background: #d7d8da;
+    border-radius: 10%;
+}

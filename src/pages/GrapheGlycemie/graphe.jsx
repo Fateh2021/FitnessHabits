@@ -95,6 +95,7 @@ const Graphe = (reloadGraph) => {
             case '1w': return startDateAsMoment.subtract(1, 'week').toDate();
             case '1m': return startDateAsMoment.subtract(1, 'month').toDate();
             case '3m': return startDateAsMoment.subtract(3, 'month').toDate();
+            case '6m': return startDateAsMoment.subtract(6, 'month').toDate();
             case '1y': return startDateAsMoment.subtract(1, 'year').toDate();
         }
     }
@@ -150,10 +151,11 @@ const Graphe = (reloadGraph) => {
             <div style={{ overflowX: "scroll" }}>
                 <h3 style={{color: "#c0504e"}}>Moyenne: {average} {tauxLabel}</h3>
                 <div>
-                    <button onClick={() => { onRangeClick("1w"); }}><h3>1S</h3></button>
-                    <button onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
-                    <button onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
-                    <button onClick={() => { onRangeClick("1y"); }}><h3>1A</h3></button>
+                    <button class="timeFilterFirst" onClick={() => { onRangeClick("1w"); }}><h3>1S</h3></button>
+                    <button class="timeFilter" onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
+                    <button class="timeFilter" onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
+                    <button class="timeFilter" onClick={() => { onRangeClick("6m"); }}><h3>6M</h3></button>
+                    <button class="timeFilter" onClick={() => { onRangeClick("1y"); }}><h3>1A</h3></button>
                 </div>
                 <div>
                     <h3>
