@@ -10,7 +10,6 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Graphe = (reloadGraph) => {
     const today = new Date(2021, 9, 18);// Using preset date for testing
-
     const [data, setData] = useState([]);
     const [tauxLabel, setTauxLabel] = useState(" mmol/L"); //" mmol/L" | " mg/dl"
     const [endDate, setEndDate] = useState(today);
@@ -41,29 +40,32 @@ const Graphe = (reloadGraph) => {
                 arr.sort((a, b) => {
                     return a.x - b.x;
                 });
-
+                
                 setData(arr)
+
             });
     }
 
     function toMmoll(dp) {
         //  mgdl / 18
-        
-        for (var i = 0; i < dp.length;i++) {
-            dp[i].y = dp[i].y / 18;
+        var temp = dp.slice();
+
+        for (var i = 0; i < temp.length;i++) {
+            temp[i].y = temp[i].y / 18;
         }
 
-        return dp;
+        return temp;
     }
 
     function toMgdl(dp) {
         // mmol * 18
+        var temp = dp.slice();
 
-        for (var i = 0; i < dp.length;i++) {
-            dp[i].y = dp[i].y * 18;
+        for (var i = 0; i < temp.length;i++) {
+            temp[i].y = temp[i].y * 18;
         }
 
-        return dp;
+        return temp;
     }
 
     const dataPoints = useMemo(
@@ -71,11 +73,13 @@ const Graphe = (reloadGraph) => {
         [data, startDate, endDate]
     );
 
-
     const [average, setAverage] = useState(0);
     const [averageDataPoints, setAverageDataPoint] = useState([]);
     useEffect(() => {
         if (dataPoints && dataPoints.length > 0) {
+
+            console.log(dataPoints)
+
             let av = Math.round((((dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0) / dataPoints.length) + Number.EPSILON) * 100) / 100;
             
             setAverage(av)
@@ -115,6 +119,17 @@ const Graphe = (reloadGraph) => {
 
     function onEndDateChange(event) {
         setEndDate(moment(event.target.value).toDate());
+    }
+
+    function onUnitTypeChange(unit) {
+        if(unit !== tauxLabel) {
+            setTauxLabel(unit);
+            if(unit === " mg/dl") {
+                setData(toMgdl(data))
+            } else {
+                setData(toMmoll(data))
+            }
+        }
     }
 
 
@@ -161,6 +176,10 @@ const Graphe = (reloadGraph) => {
                     <button onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
                     <button onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
                     <button onClick={() => { onRangeClick("1y"); }}><h3>1{yearLetter}</h3></button>
+                </div>
+                <div>
+                    <button onClick={() => { onUnitTypeChange(" mg/dl"); }}><h3>mg/dl</h3></button>
+                    <button onClick={() => { onUnitTypeChange(" mmol/L"); }}><h3>mmol/L</h3></button> 
                 </div>
                 <div>
                     <h3>
