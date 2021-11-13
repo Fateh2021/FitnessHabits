@@ -2144,10 +2144,12 @@ h2{
 .timeFilterFirst {
     background: #d7d8da;
     border-radius: 10%;
+	margin-top: 3%
 }
 
 .timeFilter {
     margin-left: 2%;
     background: #d7d8da;
     border-radius: 10%;
+	margin-top: 3%
 }
