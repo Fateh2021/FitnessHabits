@@ -7,6 +7,7 @@ import * as translate from '../../translate/Translator';
 
 import CanvasJSReact from './canvasjs.stock.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+var dateFormat;
 
 const Graphe = (reloadGraph) => {
     const today = new Date(2021, 9, 18);// Using preset date for testing
@@ -19,14 +20,33 @@ const Graphe = (reloadGraph) => {
     const weekLetter = translate.getText("WEEK_LETTER");
     const yearLetter = translate.getText("YEAR_LETTER");
     
+    
+
     useEffect(() => {
         if (reloadGraph && dataPoints.length <= 0)
             fetchDatapoints();
     }, [reloadGraph])
 
+    function getDataFormat() {
+        console.log(dateFormat)
+        return dateFormat;
+    }
+
+    function setDataFormat(format) {
+        if (format === "dd-LL-yyyy") dateFormat =  'DD-MM-YYYY'
+        if (format === "LL-dd-yyyy") dateFormat ='MM-DD-YYYY'
+        if (format === "yyyy-dd-LL") dateFormat = 'YYYY-DD-MM'
+        if (format === "yyyy-LL-dd") dateFormat = 'YYYY-MM-DD'
+        if (format === "yyyy-LLL-dd") dateFormat = 'YYYY-MMM-DD'
+        if (format === "dd-LLL-yyyy") dateFormat = 'DD-MMM-YYYY'        
+    }
+
     function fetchDatapoints() {
         const userUID = localStorage.getItem('userUid');
         var arr = [];
+        firebase.database().ref('profiles/' + userUID + '/dateFormat/').once("value", (snapshot) => {
+            setDataFormat(snapshot.val());            
+        })
         firebase.database().ref('dashboard/' + userUID)
             .once("value", (snapshot) => {
                 const sets = snapshot.val();
@@ -40,17 +60,19 @@ const Graphe = (reloadGraph) => {
                 arr.sort((a, b) => {
                     return a.x - b.x;
                 });
-                
+
                 setData(arr)
 
             });
     }
 
+
+
     function toMmoll(dp) {
         //  mgdl / 18
         var temp = dp.slice();
 
-        for (var i = 0; i < temp.length;i++) {
+        for (var i = 0; i < temp.length; i++) {
             temp[i].y = temp[i].y / 18;
         }
 
@@ -61,7 +83,7 @@ const Graphe = (reloadGraph) => {
         // mmol * 18
         var temp = dp.slice();
 
-        for (var i = 0; i < temp.length;i++) {
+        for (var i = 0; i < temp.length; i++) {
             temp[i].y = temp[i].y * 18;
         }
 
@@ -81,14 +103,14 @@ const Graphe = (reloadGraph) => {
             console.log(dataPoints)
 
             let av = Math.round((((dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0) / dataPoints.length) + Number.EPSILON) * 100) / 100;
-            
+
             setAverage(av)
             setAverageDataPoint([
                 { x: startDate, y: av },
                 { x: endDate, y: av }
             ])
             console.log(averageDataPoints)
-            
+
         }
     }, [dataPoints]);
 
@@ -100,7 +122,6 @@ const Graphe = (reloadGraph) => {
 
     function getNewStartDateForRange(range) {
         const startDateAsMoment = moment(endDate);
-
         switch (range) {
             case '1w': return startDateAsMoment.subtract(1, 'week').toDate();
             case '1m': return startDateAsMoment.subtract(1, 'month').toDate();
@@ -123,9 +144,9 @@ const Graphe = (reloadGraph) => {
     }
 
     function onUnitTypeChange(unit) {
-        if(unit !== tauxLabel) {
+        if (unit !== tauxLabel) {
             setTauxLabel(unit);
-            if(unit === " mg/dl") {
+            if (unit === " mg/dl") {
                 setData(toMgdl(data))
             } else {
                 setData(toMmoll(data))
@@ -134,9 +155,7 @@ const Graphe = (reloadGraph) => {
     }
 
 
-
     if (!dataPoints || dataPoints.length <= 0 || !averageDataPoints || averageDataPoints.length <= 0) {
-
         return (
             <>
                 Loading...
@@ -149,7 +168,7 @@ const Graphe = (reloadGraph) => {
             //     text: "glycemie"
             // },
             axisX: {
-                valueFormatString: "DD-MM-YYYY"
+                valueFormatString: getDataFormat()
             },
             axisY: {
                 title: sugarLevel,
@@ -158,7 +177,7 @@ const Graphe = (reloadGraph) => {
             data: [
                 {
                     yValueFormatString: "##",
-                    xValueFormatString: "DD-MM-YYYY",
+                    xValueFormatString: getDataFormat(),
                     type: "spline",
                     dataPoints: dataPoints
                 },
@@ -169,9 +188,9 @@ const Graphe = (reloadGraph) => {
             ]
         };
         return (
-            
+
             <div style={{ overflowX: "scroll" }}>
-                <h3 style={{color: "#c0504e"}}>{averageText}: {average} {tauxLabel}</h3>
+                <h3 style={{ color: "#c0504e" }}>{averageText}: {average} {tauxLabel}</h3>
                 <div>
                     <button class="timeFilterFirst" onClick={() => { onRangeClick("1w"); }}><h3>1{weekLetter}</h3></button>
                     <button class="timeFilter" onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
@@ -181,7 +200,7 @@ const Graphe = (reloadGraph) => {
                 </div>
                 <div>
                     <button class="timeFilterFirst" onClick={() => { onUnitTypeChange(" mg/dl"); }}><h3>mg/dl</h3></button>
-                    <button class="timeFilter" onClick={() => { onUnitTypeChange(" mmol/L"); }}><h3>mmol/L</h3></button> 
+                    <button class="timeFilter" onClick={() => { onUnitTypeChange(" mmol/L"); }}><h3>mmol/L</h3></button>
                 </div>
                 <div>
                     <h3>
