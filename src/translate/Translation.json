@@ -229,6 +229,11 @@
       "es":"Conectarse",
       "fr":"Se connecter"
    },
+   "DATA_SAVED":{
+      "en":"The data has been saved successfully.",
+      "es":"Los datos se han guardado correctamente.",
+      "fr":"Les données ont bien été sauvegardées."
+   },
    "FATIGUE":{
       "en":"Tired",
       "es":"Cansado",
@@ -240,9 +245,9 @@
       "fr":"Heureux"
    },
    "I_WOKE_UP":{
-      "en":"I woke up ",
-      "es":"Me he despertado ",
-      "fr":"Je me suis réveillé "
+      "en":"During this period, I woke up ",
+      "es":"Durante este periodo, Me he despertado ",
+      "fr":"Durant cette période, je me suis réveillé "
    },
    "REGISTER":{
       "en":"Register",

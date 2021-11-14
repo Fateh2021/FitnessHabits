@@ -2165,6 +2165,14 @@ h2{
   font-weight: bold;
 }
 
+.etiquette-sommeil {
+  --background: rgb(216, 236, 255);
+}
+
 .btn-rounded{
   --border-radius: 50px;
+}
+
+.side-by-side {
+  display: flex;
 }
