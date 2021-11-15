@@ -33,6 +33,15 @@ const Supplements = (props) => {
     }),
   });
 
+  const [checked, setChecked] = useState(false);
+  const inputChangeHandler = () => {
+    if (checked) {
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
+  };
+
   const accor = (divId) => {
     const divElt = document.getElementById(divId);
     if (divElt) {
@@ -89,12 +98,11 @@ const Supplements = (props) => {
                 <IonInput className="inputSuppConsom"></IonInput>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Dose</IonLabel>
-                <IonInput className="inputSuppConsom"></IonInput>
                 <IonSelect
                   value={""}
                   placeholder="Format"
                   className="inputSuppConsom"
+                  
                 >
                   <IonSelectOption value="gelule">Gélule</IonSelectOption>
                   <IonSelectOption value="comprime">Comprimé</IonSelectOption>
@@ -156,34 +164,68 @@ const Supplements = (props) => {
                 </IonSelect>
               </IonItem>
               <IonItem>
+                <IonLabel color="light">Tous les jours</IonLabel>
+                <IonCheckbox
+                  color="primary"
+                  slot="start"
+                  onIonChange={inputChangeHandler}
+                ></IonCheckbox>
+              </IonItem>
+              <IonItem>
                 <IonLabel color="light">Lundi</IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Mardi</IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Mercredi</IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Jeudi</IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Vendredi</IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">
-                  Samedi
-                </IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonLabel color="light">Samedi</IonLabel>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">Dimanche</IonLabel>
-                <IonCheckbox color="primary" checked slot="start"></IonCheckbox>
+                <IonCheckbox
+                  color="primary"
+                  checked={checked}
+                  slot="start"
+                ></IonCheckbox>
               </IonItem>
               <IonListHeader>
                 <IonLabel color="light">Heures</IonLabel>
