@@ -234,6 +234,21 @@
       "es":"Media",
       "fr":"Moyenne"
    },
+   "MINIMUM":{
+      "en":"Minimum",
+      "es":"Mínimo",
+      "fr":"Minimum"
+   },
+   "MAXIMUM":{
+      "en":"Maximum",
+      "es":"Máximo",
+      "fr":"Maximum"
+   },
+   "LAST_VALUE":{
+      "en":"Last Value",
+      "es":"último valor",
+      "fr":"Dernière Valeur"
+   },
    "BLOOD_SUGAR_LEVEL":{
       "en":"Blood sugar level",
       "es":"Nivel de azúcar en sangre",
