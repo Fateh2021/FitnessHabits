@@ -2163,3 +2163,10 @@ h2{
   color: black;
   right: 50px;
 }
+
+#inputDose{
+  max-width: 10%!important;
+}
+#suppSelect{
+  min-width: 40%;
+}

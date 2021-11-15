@@ -53,6 +53,58 @@ const Supplements = (props) => {
     }
   };
 
+
+  // block pour avoir l'input pour ajouter des formats
+  let [showSelectFormat, setShow] = useState(true);
+
+  const inputAdd = (v) =>{
+    if(v.detail.value === "ajouter"){
+      setShow(false);
+      console.log(showSelectFormat);
+    }else{
+      setShow(true);
+    }
+  };
+
+  function IonSelectDose(props){
+    console.log("showinput", props.cond);
+    if(props.cond){
+      return(
+        <IonSelect
+                  value={""}
+                  placeholder={translate.getText("SUPPL_FORMAT")}
+                  className="inputSuppConsom"
+                  id="suppSelect"
+                  onIonChange={v => inputAdd(v)}
+        >
+                  <IonSelectOption value="ajouter">{translate.getText("SUPPL_ADD_SELECT")}</IonSelectOption>
+                  <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
+                  <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
+                  <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
+                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SYROP")}</IonSelectOption>
+        </IonSelect>
+      )
+    }else{
+      return (
+        <>
+        
+        <IonInput className="inputSuppConsom"></IonInput>
+        <IonButton onClick={() => addFormatToDb()}> OK </IonButton>
+        <IonButton onClick={() => setShow(true)}>{translate.getText("SUPPL_CANCEL")}</IonButton>
+        
+        </>
+      )
+    }
+  }
+
+
+  //Todo
+  function addFormatToDb(format){
+
+    //a la fin faire
+    setShow(true);
+  }
+
   return (
     <div>
       <IonItem className="divTitre3">
@@ -100,16 +152,10 @@ const Supplements = (props) => {
                 <IonInput className="inputSuppConsom"></IonInput>
               </IonItem>
               <IonItem>
-                <IonSelect
-                  value={""}
-                  placeholder={translate.getText("SUPPL_FORMAT")}
-                  className="inputSuppConsom"
-                >
-                  <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
-                  <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
-                  <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
-                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SYROP")}</IonSelectOption>
-                </IonSelect>
+                <IonLabel color="light">{translate.getText("SUPPL_DOSE")}</IonLabel>
+                <IonInput className="inputSuppConsom" id="inputDose"></IonInput>
+
+                <IonSelectDose cond={showSelectFormat}></IonSelectDose>
               </IonItem>
               <IonList>
                 <IonRadioGroup>

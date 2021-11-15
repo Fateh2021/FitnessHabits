@@ -159,6 +159,16 @@
       "es":"Dosis por",
       "fr":"Dose par"
    },
+   "SUPPL_DOSE":{
+      "en":"Dose",
+      "es":"Dosis",
+      "fr":"Dose"
+   },
+   "SUPPL_ADD_SELECT":{
+      "en":"Add",
+      "es":"agregar",
+      "fr":"Ajouter"
+   },
    "SUPPL_COFFE_SPOON":{
       "en":"Coffee spoon",
       "es":"Cuchara de café",
