@@ -17,6 +17,8 @@ import {
   IonCheckbox,
 } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
+import * as translate from '../../../translate/Translator'
+
 
 import "../../Tab1.css";
 
@@ -36,9 +38,9 @@ const Supplements = (props) => {
   const [checked, setChecked] = useState(false);
   const inputChangeHandler = () => {
     if (checked) {
-      setChecked(false);
-    } else {
       setChecked(true);
+    } else {
+      setChecked(false);
     }
   };
 
@@ -59,7 +61,7 @@ const Supplements = (props) => {
         </IonAvatar>
         <IonLabel>
           <h2>
-            <b>Suppléments</b>
+            <b>{translate.getText("SUPPL_TITLE")}</b>
           </h2>
         </IonLabel>
         <IonInput
@@ -82,7 +84,7 @@ const Supplements = (props) => {
             </IonAvatar>
             <IonLabel>
               <h2>
-                <b>Ajouter suppléments/médicaments</b>
+                <b>{translate.getText("SUPPL_ADD")}</b>
               </h2>
             </IonLabel>
             <IonIcon
@@ -94,43 +96,42 @@ const Supplements = (props) => {
           <div id="myDIVAjoutSupp1">
             <IonList>
               <IonItem>
-                <IonLabel color="light">Nom</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_NOM")}</IonLabel>
                 <IonInput className="inputSuppConsom"></IonInput>
               </IonItem>
               <IonItem>
                 <IonSelect
                   value={""}
-                  placeholder="Format"
+                  placeholder={translate.getText("SUPPL_FORMAT")}
                   className="inputSuppConsom"
-                  
                 >
-                  <IonSelectOption value="gelule">Gélule</IonSelectOption>
-                  <IonSelectOption value="comprime">Comprimé</IonSelectOption>
-                  <IonSelectOption value="goutte">Goutte</IonSelectOption>
-                  <IonSelectOption value="sirop">Sirop</IonSelectOption>
+                  <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
+                  <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
+                  <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
+                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SYROP")}</IonSelectOption>
                 </IonSelect>
               </IonItem>
               <IonList>
                 <IonRadioGroup>
                   <IonItem>
-                    <IonLabel color="light">Supplément</IonLabel>
+                    <IonLabel color="light">{translate.getText("SUPPL_SUPPPLEMENT")}</IonLabel>
                     <ion-radio slot="start" value="supplement"></ion-radio>
                   </IonItem>
                   <IonItem>
-                    <IonLabel color="light">Medicament</IonLabel>
+                    <IonLabel color="light">{translate.getText("SUPPL_MEDICAMENT")}</IonLabel>
                     <ion-radio slot="start" value="medicament"></ion-radio>
                   </IonItem>
                 </IonRadioGroup>
               </IonList>
               <IonItem>
-                <IonLabel color="light">Date de debut</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_DATE_DEBUT")}</IonLabel>
                 <IonDatetime
                   value="2021-10-01T15:43:40.394Z"
                   display-timezone="utc"
                 ></IonDatetime>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Date de fin</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_DATE_FIN")}</IonLabel>
                 <IonDatetime
                   value="2021-12-10T15:43:40.394Z"
                   display-timezone="utc"
@@ -138,33 +139,34 @@ const Supplements = (props) => {
               </IonItem>
               <IonItem>
                 <IonLabel slot="start" color="light">
-                  Actif
+                {translate.getText("SUPPL_ACTIVE")}
                 </IonLabel>
                 <IonToggle name="actif" color="success" checked></IonToggle>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Posologie</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_POSOLOGY")}</IonLabel>
                 <IonInput className="inputSuppConsom"></IonInput>
-                <IonLabel color="light">Dose par</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_DOSE_BY")}</IonLabel>
                 <IonInput className="inputSuppConsom"></IonInput>
                 <IonSelect
                   value={""}
-                  placeholder="Format"
+                  placeholder={translate.getText("SUPPL_FORMAT")}
                   className="inputSuppConsom"
                 >
-                  <IonSelectOption value="gelule">Gélule</IonSelectOption>
-                  <IonSelectOption value="comprime">Comprimé</IonSelectOption>
-                  <IonSelectOption value="goutte">Goutte</IonSelectOption>
+                  <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
+                  <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
+                  <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
+
                   <IonSelectOption value="cuillereCafe">
-                    Cuillère à café
+                    {translate.getText("SUPPL_COFFE_SPOON")}
                   </IonSelectOption>
                   <IonSelectOption value="cuillereSoupe">
-                    Cuillère à soupe
+                    {translate.getText("SUPPL_SOUP_SPOON")}
                   </IonSelectOption>
                 </IonSelect>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Tous les jours</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_EVERY_DAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   slot="start"
@@ -172,7 +174,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Lundi</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_MONDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -180,7 +182,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Mardi</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_TUESDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -188,7 +190,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Mercredi</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_WEDNESDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -196,7 +198,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Jeudi</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_THURSDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -204,7 +206,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Vendredi</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_FRIDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -212,7 +214,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Samedi</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_SATURDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -220,7 +222,7 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonItem>
-                <IonLabel color="light">Dimanche</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_SUNDAY")}</IonLabel>
                 <IonCheckbox
                   color="primary"
                   checked={checked}
@@ -228,11 +230,11 @@ const Supplements = (props) => {
                 ></IonCheckbox>
               </IonItem>
               <IonListHeader>
-                <IonLabel color="light">Heures</IonLabel>
+                <IonLabel color="light">{translate.getText("SUPPL_HOURS")}</IonLabel>
               </IonListHeader>
               <IonList>
                 <IonItem>
-                  <IonLabel color="light">Matin</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_MORNING")}</IonLabel>
                   <IonDatetime
                     display-format="h:mm A"
                     picker-format="h:mm A"
@@ -245,7 +247,7 @@ const Supplements = (props) => {
                   ></IonDatetime>
                 </IonItem>
                 <IonItem>
-                  <IonLabel color="light">Midi</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_HALF_DAY")}</IonLabel>
                   <IonDatetime
                     display-format="h:mm A"
                     picker-format="h:mm A"
@@ -258,7 +260,7 @@ const Supplements = (props) => {
                   ></IonDatetime>
                 </IonItem>
                 <IonItem>
-                  <IonLabel color="light">Soir</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_NIGHT")}</IonLabel>
                   <IonDatetime
                     display-format="h:mm A"
                     picker-format="h:mm A"
@@ -272,8 +274,8 @@ const Supplements = (props) => {
                 </IonItem>
               </IonList>
               <IonItem>
-                <IonButton color="success">Enregistrer</IonButton>
-                <IonButton color="danger">Annuler</IonButton>
+                <IonButton color="success">{translate.getText("SUPPL_SAVE")}</IonButton>
+                <IonButton color="danger">{translate.getText("SUPPL_CANCEL")}</IonButton>
               </IonItem>
             </IonList>
           </div>
@@ -283,7 +285,7 @@ const Supplements = (props) => {
             </IonAvatar>
             <IonLabel>
               <h2>
-                <b>Lister suppléments/médicaments</b>
+                <b>{translate.getText("SUPPL_LIST")}</b>
               </h2>
             </IonLabel>
             <IonIcon
@@ -298,7 +300,7 @@ const Supplements = (props) => {
             </IonAvatar>
             <IonLabel>
               <h2>
-                <b>Afficher les écarts</b>
+                <b>{translate.getText("SUPPL_DISPLAY_GAPS")}</b>
               </h2>
             </IonLabel>
             <IonIcon
