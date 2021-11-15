@@ -245,9 +245,9 @@
       "fr":"Maximum"
    },
    "LAST_VALUE":{
-      "en":"Last Value",
-      "es":"último valor",
-      "fr":"Dernière Valeur"
+      "en":"Last measured value",
+      "es":"Último valor medido",
+      "fr":"Dernière valeur mesurée"
    },
    "BLOOD_SUGAR_LEVEL":{
       "en":"Blood sugar level",
