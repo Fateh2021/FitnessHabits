@@ -2140,3 +2140,26 @@ h2{
   color: black;
   right: 50px;
 }
+
+.timeFilterFirst {
+    background: #d7d8da;
+    transition-duration: 0.4s;
+    border-radius: 10%;
+	margin-top: 3%
+}
+.timeFilterFirst:hover {
+  background-color: rgb(110, 30, 61);
+  color: white;
+}
+
+.timeFilter {
+    margin-left: 2%;
+    transition-duration: 0.4s;
+    background:#d7d8da;
+    border-radius: 10%;
+	margin-top: 3%
+}
+.timeFilter:hover {
+  background-color: rgb(110, 30, 61);
+  color: white;
+}
