@@ -126,6 +126,9 @@ const Graphe = (reloadGraph) => {
                 }
             ]
         };
+
+        let graphWidth = window.innerWidth < 700 ? window.innerWidth*2 : window.innerWidth
+
         return (
             <div style={{ overflowX: "scroll" }}>
                 <h3 style={{color: "#c0504e"}}>Moyenne: {average} {tauxLabel}</h3>
@@ -141,7 +144,7 @@ const Graphe = (reloadGraph) => {
                         <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} />
                     </h3>
                 </div>
-                <div style={{ width: "700px" }}>
+                <div style={{ width: graphWidth }}>
                     <CanvasJSChart options={options} />
                 </div>
             </div>
