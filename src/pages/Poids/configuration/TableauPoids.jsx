@@ -31,8 +31,8 @@ const TableauPoids = () => {
     useEffect(() => {
         const userUID = localStorage.getItem('userUid');
         let poidsRef = firebase.database().ref('dashboard/' + userUID)
-        poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
-            setRefData(snapshot.val())
+          poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
+          setRefData(snapshot.val())
         });
         let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
         preferencesPoidsRef.once("value").then(function(snapshot) {
@@ -47,14 +47,14 @@ const TableauPoids = () => {
 
     var graphData = []
     if (refData != null) {
-
-        for (const [key, value] of Object.entries(refData)) {
-            if (value.poids.datePoids != undefined) {
-                let datePoids = formatDate(value.poids.datePoids)
-                let poids = value.poids.dailyPoids
-                graphData.push ({x: datePoids, y: poids})
-            }
-        }
+      for (const [key, value] of Object.entries(refData)) {
+          if (value.poids.datePoids != undefined) {
+              let datePoids = formatDate(value.poids.datePoids)
+              let poids = value.poids.dailyPoids
+              graphData.push ({x: datePoids, y: poids})
+          }
+      }
+      let sortedGraphData = graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
     }
     let start = new Date(),
     end = new Date();
