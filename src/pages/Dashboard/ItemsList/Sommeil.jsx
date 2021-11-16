@@ -4,13 +4,10 @@ import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonBut
 import { arrowDropdownCircle } from 'ionicons/icons';
 import { toast } from '../../../Toast'
 import * as translate from '../../../translate/Translator'
-
 import '../../Tab1.css';
 
 
 const Sommeil = (props) => {
-
-
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState({ startDate: props.currentDate });
