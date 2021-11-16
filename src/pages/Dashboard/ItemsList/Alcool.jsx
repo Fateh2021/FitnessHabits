@@ -5,6 +5,7 @@ import uuid from 'react-uuid';
 import firebase from 'firebase'
 import DefaultSettings from '../../Settings/DefaultSettings'
 import { DateTime } from "luxon";
+import { getLang } from "../../../translate/Translator"
 
 import '../../Tab1.css';
 import {getCurrentUser} from "../../../firebaseConfig";
@@ -264,7 +265,8 @@ const Alcool = (props) => {
           const dailyCount = getConsumptionsCount(consommations, currentDate);
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
-            displayNotification(getUserLang(), alcoolSettings.limitConsom.notificationMessage);
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + alcoolSettings.limitConsom.notificationMessage)
+            displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage);
           }
           
 
@@ -277,7 +279,8 @@ const Alcool = (props) => {
           }
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
-            displayNotification(getUserLang(), alcoolSettings.limitConsom.notificationMessage)
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + alcoolSettings.limitConsom.notificationMessage)
+            displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage)
           }
 
           // Vérifier s'il respecte ses jours de consommation de suite 
@@ -305,15 +308,11 @@ const Alcool = (props) => {
     return date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
   }
 
-  const getUserLang = () => {
-    return localStorage.getItem('userLanguage')
-  }
-
   const getNotificationMsg = () => {
-    var userLang = getUserLang()
+    var userLang = getLang()
     switch (userLang) {
       case "fr": return "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
-      case "en": return "According to EducAlcool guidelines, you just exceeded the | limits of alcohol intake. This is just a reminder..."
+      case "en": return "According to EducAlcool guidelines, you just exceeded the limits of alcohol intake. This is just a reminder..."
       case "es": return "Según las recomendaciones de ÉducAlcool, acaba de superar el límite. Es solo un recordatorio ..."
     }
   }
@@ -335,12 +334,19 @@ const Alcool = (props) => {
   const displayNotification = (header, message) => {
     const toast = document.createElement('ion-toast');
     let header_msg
+    let close_msg
     switch (header) {
-      case "en": header_msg = "Too much alcohol?"
+      case "en": 
+        header_msg = "Too much alcohol?"
+        close_msg = "Close"
             break;
-      case "fr": header_msg = "Trop d'Alcool?"
+      case "fr": 
+        header_msg = "Trop d'Alcool?"
+        close_msg = "Fermer"
             break;
-      case "es": header_msg = "¿Demasiado alcohol?"
+      case "es": 
+        header_msg = "¿Demasiado alcohol?"
+        close_msg = "Cerrar"
     }
 
     toast.header = header_msg;
@@ -349,7 +355,7 @@ const Alcool = (props) => {
     toast.position = 'top'
     toast.cssClass = 'toast-alcool'
     toast.showCloseButton = true
-    toast.closeButtonText = 'Fermer'
+    toast.closeButtonText = close_msg
 
     document.body.appendChild(toast);
     toast.present();
