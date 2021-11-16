@@ -58,7 +58,7 @@ const BoissonAlcool = (props) => {
     const userUID = localStorage.getItem('userUid');
     const updatedLimitConsom = { ...limitConsom, "educAlcool": event.detail.checked };
     if(event.detail.checked){
-      if(gender == "H")
+      if(gender === "H" || gender === "")
       {
         updatedLimitConsom.dailyTarget = 3;
         updatedLimitConsom.weeklyTarget = 15;
