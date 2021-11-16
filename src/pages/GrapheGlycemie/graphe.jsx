@@ -6,32 +6,44 @@ import "firebase/auth";
 import * as translate from '../../translate/Translator';
 
 import CanvasJSReact from './canvasjs.stock.react';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var dateFormat;
+let CanvasJSChart = CanvasJSReact.CanvasJSChart;
+let dateFormat;
+
+//enum equivalents
+const Taux = Object.freeze({
+    mmoll: ' mmol/L',
+    mgdl: ' mg/dl'
+})
+
+const DateRange = Object.freeze({
+    _1w: '1' + translate.getText("WEEK_LETTER"),
+    _1m: '1m',
+    _3m: '3m',
+    _6m: '6m',
+    _1y: '1' + translate.getText("YEAR_LETTER")
+})
+
+
 
 const Graphe = (reloadGraph) => {
-    const today = new Date(2021, 9, 18);// Using preset date for testing
     const [data, setData] = useState([]);
-    const [tauxLabel, setTauxLabel] = useState(" mmol/L"); //" mmol/L" | " mg/dl"
-    const [endDate, setEndDate] = useState(today);
-    const [startDate, setStartDate] = useState(() => getNewStartDateForRange('3m'));
-    const averageText = translate.getText("AVERAGE");
-    const sugarLevel = translate.getText("BLOOD_SUGAR_LEVEL");
-    const weekLetter = translate.getText("WEEK_LETTER");
-    const yearLetter = translate.getText("YEAR_LETTER");
-    const minText = translate.getText("MINIMUM");
-    const maxText = translate.getText("MAXIMUM");
-    const lastvText = translate.getText("LAST_VALUE");
+    const [tauxLabel, setTauxLabel] = useState(Taux.mmoll);
+    const [taux, setTaux] = useState(Taux.mmoll);
+    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(() => getNewStartDateForRange(DateRange._3m));
     const [average, setAverage] = useState(0);
     const [minimum, setMinimum] = useState(0);
     const [maximum, setMaximum] = useState(0);
-    const [range, setRange] = useState("3m");
+    const [loading, setLoading] = useState(true);
+    //used to keep track of button style
+    const [range, setRange] = useState(DateRange._3m);
+    //Used to display average line on graphe *---*
     const [averageDataPoints, setAverageDataPoint] = useState([]);
 
     //datapoint is a filtered subset of data between 2 dates
     const dataPoints = useMemo(
-        () => data.filter((val) => val.x >= startDate && val.x <= endDate),
-        [data, startDate, endDate]
+        () => convertMesurementUnit(taux, tauxLabel, data.filter((val) => val.x >= startDate && val.x <= endDate)),
+        [data, startDate, endDate, tauxLabel, taux]
     );
 
     //Get data on graphe display
@@ -42,6 +54,24 @@ const Graphe = (reloadGraph) => {
 
     function getDataFormat() {
         return dateFormat;
+    }
+
+    function convertMesurementUnit(currentType, newType, _data) {
+        const copy = [..._data]
+
+        for (var i = 0; i < _data.length; i++) {
+            if (newType === Taux.mmoll && currentType === Taux.mgdl) {
+                copy[i].y = copy[i].y * 18; //  mmol/L = mg/dl * 18
+                setTaux(newType)
+            }
+
+            if (newType === Taux.mgdl && currentType === Taux.mmoll) {
+                copy[i].y = copy[i].y / 18; //  mg/dl = mmol/L / 18
+                setTaux(newType)
+            }
+        }
+
+        return copy;
     }
 
     //Get glycemie data from Firebase using userUID from localstorage
@@ -67,6 +97,7 @@ const Graphe = (reloadGraph) => {
                 });
                 setData(arr)
             });
+        setLoading(false)
     }
 
     function setDataFormat(format) {
@@ -78,65 +109,48 @@ const Graphe = (reloadGraph) => {
         if (format === "dd-LLL-yyyy") dateFormat = 'DD-MMM-YYYY'
     }
 
-    function convertMesurementUnit(type, _data){
-        
-        _data = _data.slice();
-
-        for (var i = 0; i < _data.length; i++) {
-            if(type === "mmoll")
-                //  mgdl / 18
-                _data[i].y = _data[i].y / 18;
-
-            if(type === "mgdl")
-                //  mgdl / 18
-                _data[i].y = _data[i].y * 18;
-        }
-        return _data;
-    }
-
     useEffect(() => {
         if (dataPoints && dataPoints.length > 0) {
-            let _average = Math.round((((dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0) / dataPoints.length) + Number.EPSILON) * 100) / 100;
+            let sum = (dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0)
+            let _average = Math.round(((sum / dataPoints.length) + Number.EPSILON) * 100) / 100;
             setAverage(_average)
-
-            // minimum
-            let min = Math.min.apply(
-                Math,
-                dataPoints.map(function (o) {
-                    return o.y;
-                })
-            );
-            // maximum
-            let max = Math.max.apply(
-                Math,
-                dataPoints.map(function (o) {
-                    return o.y;
-                })
-            );
-
-            setMinimum(min);
-            setMaximum(max);
             setAverageDataPoint([
                 { x: startDate, y: _average },
                 { x: endDate, y: _average }
             ])
+
+            // minimum
+            let min = Math.round(
+                (Math.min.apply(
+                    Math,
+                    dataPoints.map(function (o) {
+                        return o.y;
+                    })
+                ) + Number.EPSILON) * 100) / 100;
+            console.log(min)
+            setMinimum(min);
+
+            // maximum
+            let max = Math.round(
+                (Math.max.apply(
+                    Math,
+                    dataPoints.map(function (o) {
+                        return o.y;
+                    })
+                ) + Number.EPSILON) * 100) / 100;
+            setMaximum(max);
         }
     }, [dataPoints]);
-
-    // const averageDataPoints = [
-    //     { x: new Date(2021, 6, 18), y: 8 },
-    //     { x: new Date(2021, 9, 18), y: 8 }
-    // ]
 
 
     function getNewStartDateForRange(range) {
         const startDateAsMoment = moment(endDate);
         switch (range) {
-            case '1w': return startDateAsMoment.subtract(1, 'week').toDate()
-            case '1m': return startDateAsMoment.subtract(1, 'month').toDate()
-            case '3m': return startDateAsMoment.subtract(3, 'month').toDate()
-            case '6m': return startDateAsMoment.subtract(6, 'month').toDate()
-            case '1y': return startDateAsMoment.subtract(1, 'year').toDate()
+            case DateRange._1w: return startDateAsMoment.subtract(1, 'week').toDate()
+            case DateRange._1m: return startDateAsMoment.subtract(1, 'month').toDate()
+            case DateRange._3m: return startDateAsMoment.subtract(3, 'month').toDate()
+            case DateRange._6m: return startDateAsMoment.subtract(6, 'month').toDate()
+            case DateRange._1y: return startDateAsMoment.subtract(1, 'year').toDate()
         }
     }
 
@@ -153,23 +167,8 @@ const Graphe = (reloadGraph) => {
         setEndDate(moment(event.target.value).toDate())
     }
 
-    function onUnitTypeChange(unit) {
-        if (unit !== tauxLabel) {
-            setTauxLabel(unit);
-            let type = unit === " mg/dl" ? "mgdl" : "mmoll"
-            convertMesurementUnit(type, data)
-        }
-    }
-
-
-    if (!dataPoints || dataPoints.length <= 0 || !averageDataPoints || averageDataPoints.length <= 0) {
-        return (
-            <>
-                Loading...
-            </>
-        );
-    } else {
-        const options = {
+    function getOptions() {
+        return {
             animationEnabled: true,
             // title: {
             //     text: "glycemie"
@@ -178,12 +177,12 @@ const Graphe = (reloadGraph) => {
                 valueFormatString: getDataFormat()
             },
             axisY: {
-                title: sugarLevel,
+                title: translate.getText("BLOOD_SUGAR_LEVEL"),
                 suffix: tauxLabel
             },
             data: [
                 {
-                    yValueFormatString: "##",
+                    yValueFormatString: "#0.##",
                     xValueFormatString: getDataFormat(),
                     type: "spline",
                     dataPoints: dataPoints
@@ -194,48 +193,73 @@ const Graphe = (reloadGraph) => {
                 }
             ]
         };
-
-        let graphWidth = window.innerWidth < 700 ? window.innerWidth * 2 : window.innerWidth
-
-        let selectedButtonClass  = "bg-red color-white";
-        let buttonClass = "bg-white color-black"
-
-        return (
-
-            <div style={{ overflowX: "scroll" }}>
-                <div id="box1">
-                    <div style={{ color: "#c0504e" }}>{lastvText}: {data[data.length - 1].y} {tauxLabel} </div>
-                    <div style={{ color: "#c0504e" }}>{averageText}: {average} {tauxLabel}</div>
-                </div>
-                <div id="box2">
-                    <div style={{ color: "#c0504e" }}> {minText}: {minimum} {tauxLabel} </div>
-                    <div style={{ color: "#c0504e" }}> {maxText}: {maximum} {tauxLabel} </div>
-                </div>
-
-                <div>
-                    <button class={(range==="1w"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("1w"); }}><h3>1{weekLetter}</h3></button>
-                    <button class={(range==="1m"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
-                    <button class={(range==="3m"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
-                    <button class={(range==="6m"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("6m"); }}><h3>6M</h3></button>
-                    <button class={(range==="1y"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("1y"); }}><h3>1{yearLetter}</h3></button>
-                </div>
-                <div>
-                    <button class={(tauxLabel===" mg/dl"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onUnitTypeChange(" mg/dl"); }}><h3>mg/dl</h3></button>
-                    <button class={(tauxLabel===" mmol/L"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onUnitTypeChange(" mmol/L"); }}><h3>mmol/L</h3></button>
-                </div>
-                <div>
-                    <h3>
-                        <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
-                        <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} />
-                    </h3>
-                </div>
-                <div style={{ width: graphWidth }}>
-                    <CanvasJSChart options={options} />
-                </div>
-            </div>
-        );
-
     }
+
+    let graphWidth = window.innerWidth < 700 ? window.innerWidth * 2 : window.innerWidth
+    let tableLeftColStyle = {textAlign: 'right', paddingRight: '10px'}
+    let tableMidColStyle = {textAlign: 'right', paddingRight: '5px'}
+
+    return (
+
+        <div style={{ overflowX: "scroll" }}>
+            <div>
+                {Object.values(DateRange).map(val => {
+                    return (
+                        <button class={(range === val ? "selectedGraphButton" : "") + " graphButton"}
+                            onClick={() => { onRangeClick(val); }}>
+                            <h3>{val}</h3>
+                        </button>
+                    )
+                })}
+            </div>
+            <div>
+                <button class={(tauxLabel === " mg/dl" ? "selectedGraphButton" : "") + " graphButton"} onClick={() => { setTauxLabel(Taux.mgdl); }}><h3>mg/dl</h3></button>
+                <button class={(tauxLabel === " mmol/L" ? "selectedGraphButton" : "") + " graphButton"} onClick={() => { setTauxLabel(Taux.mmoll); }}><h3>mmol/L</h3></button>
+            </div>
+            <div>
+                <h3>
+                    <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
+                    <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} />
+                </h3>
+            </div>
+
+            {loading ? (
+                <div>Loading...</div>
+            ) : !dataPoints || dataPoints.length <= 0 || !averageDataPoints || averageDataPoints.length <= 0 ? (
+                <div>No data found</div>
+            ) : (
+                <>
+                    <table>
+                        <tbody style={{ color: "#c0504e" }}>
+                            <tr>
+                                <td style={tableLeftColStyle}>{translate.getText("LAST_VALUE")}:&nbsp;</td>
+                                <td style={tableMidColStyle}>{Math.round(((data[data.length - 1].y) + Number.EPSILON) * 100) / 100}</td>
+                                <td>{tauxLabel}</td>
+                            </tr>
+                            <tr>
+                                <td style={tableLeftColStyle}>{translate.getText("AVERAGE")}:&nbsp;</td>
+                                <td style={tableMidColStyle}>{average}</td>
+                                <td>{tauxLabel}</td>
+                            </tr>
+                            <tr>
+                                <td style={tableLeftColStyle}>{translate.getText("MINIMUM")}:&nbsp;</td>
+                                <td style={tableMidColStyle}>{minimum}</td>
+                                <td>{tauxLabel}</td>
+                            </tr>
+                            <tr>
+                                <td style={tableLeftColStyle}>{translate.getText("MAXIMUM")}:&nbsp;</td>
+                                <td style={tableMidColStyle}>{maximum}</td>
+                                <td>{tauxLabel}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style={{ width: graphWidth }}>
+                        <CanvasJSChart options={getOptions()} />
+                    </div>
+                </>
+            )}
+        </div >
+    )
 
 };
 
