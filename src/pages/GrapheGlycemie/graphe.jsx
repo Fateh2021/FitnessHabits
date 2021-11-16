@@ -39,6 +39,8 @@ const Graphe = (reloadGraph) => {
     const [range, setRange] = useState(DateRange._3m);
     //Used to display average line on graphe *---*
     const [averageDataPoints, setAverageDataPoint] = useState([]);
+    const [minimumDataPoints, setMinimumDataPoint] = useState([]);
+    const [maximumDataPoints, setMaximumDataPoint] = useState([]);
 
     //datapoint is a filtered subset of data between 2 dates
     const dataPoints = useMemo(
@@ -50,7 +52,7 @@ const Graphe = (reloadGraph) => {
     useEffect(() => {
         if (reloadGraph && dataPoints.length <= 0)
             fetchDatapoints();
-    }, [reloadGraph])
+    }, [reloadGraph, dataPoints])
 
     function getDataFormat() {
         return dateFormat;
@@ -129,6 +131,10 @@ const Graphe = (reloadGraph) => {
                 ) + Number.EPSILON) * 100) / 100;
             console.log(min)
             setMinimum(min);
+            setMinimumDataPoint([
+                { x: startDate, y: min },
+                { x: endDate, y: min }
+            ])
 
             // maximum
             let max = Math.round(
@@ -139,6 +145,10 @@ const Graphe = (reloadGraph) => {
                     })
                 ) + Number.EPSILON) * 100) / 100;
             setMaximum(max);
+            setMaximumDataPoint([
+                { x: startDate, y: max },
+                { x: endDate, y: max }
+            ])
         }
     }, [dataPoints]);
 
@@ -160,10 +170,12 @@ const Graphe = (reloadGraph) => {
     }
 
     function onStartDateChange(event) {
+        setRange("");
         setStartDate(moment(event.target.value).toDate())
     }
 
     function onEndDateChange(event) {
+        setRange("");
         setEndDate(moment(event.target.value).toDate())
     }
 
@@ -190,6 +202,14 @@ const Graphe = (reloadGraph) => {
                 {
                     type: "line",
                     dataPoints: averageDataPoints
+                },
+                {
+                    type: "line",
+                    dataPoints: minimumDataPoints
+                },
+                {
+                    type: "line",
+                    dataPoints: maximumDataPoints
                 }
             ]
         };
@@ -201,7 +221,7 @@ const Graphe = (reloadGraph) => {
 
     return (
 
-        <div style={{ overflowX: "scroll" }}>
+        <div style={{ overflowX: "hidden" }}>
             <div>
                 {Object.values(DateRange).map(val => {
                     return (
@@ -224,9 +244,12 @@ const Graphe = (reloadGraph) => {
             </div>
 
             {loading ? (
-                <div>Loading...</div>
-            ) : !dataPoints || dataPoints.length <= 0 || !averageDataPoints || averageDataPoints.length <= 0 ? (
-                <div>No data found</div>
+                <div>{translate.getText('LOADING')}...</div>
+            ) : (!dataPoints || dataPoints.length <= 0 || 
+                !averageDataPoints || averageDataPoints.length <= 0 || 
+                !minimumDataPoints || minimumDataPoints.length <= 0 || 
+                !maximumDataPoints || maximumDataPoints.length <= 0) ? (
+                <div>{translate.getText('NO_DATA_FOUND')}</div>
             ) : (
                 <>
                     <table>
@@ -253,8 +276,10 @@ const Graphe = (reloadGraph) => {
                             </tr>
                         </tbody>
                     </table>
-                    <div style={{ width: graphWidth }}>
+                    <div style={{overflowX: "scroll"}}>
+                        <div style={{ width: graphWidth }}>
                         <CanvasJSChart options={getOptions()} />
+                        </div>
                     </div>
                 </>
             )}
