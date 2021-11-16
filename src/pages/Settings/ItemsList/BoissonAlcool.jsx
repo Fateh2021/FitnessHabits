@@ -200,7 +200,7 @@ value={limitConsom.educAlcool}
               ></IonCheckbox>
             </IonCol>
             <IonCol size='12'>
-              <IonLabel position="center" className = "notifHeader" ><h2>Utiliser les recommandations</h2><h2>d'Educ'alcool</h2></IonLabel>
+              <IonLabel className = "notifHeader" ><h2>Utiliser les recommandations</h2><h2>d'Educ'alcool</h2></IonLabel>
             </IonCol>
           </IonItem>
           <IonRow>
