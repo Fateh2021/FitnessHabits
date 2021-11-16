@@ -11,8 +11,8 @@ const Sommeil = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState({ startDate: props.currentDate });
-  const [selectedHeureDebut, setSelectedHeureDebut] = useState(props.sommeil.heureDebut || "23:00");
-  const [selectedHeureFin, setSelectedHeureFin] = useState(props.sommeil.heureFin || "07:00");
+  const [selectedHeureDebut, setSelectedHeureDebut] = useState(props.sommeil.heureDebut || "00:00");
+  const [selectedHeureFin, setSelectedHeureFin] = useState(props.sommeil.heureFin || "00:00");
   const [nbReveils, setNbReveils] = useState(props.sommeil.nbReveils || 0);
   const [selectedEtatReveil, setEtatReveil] = useState(props.sommeil.etatReveil || null);
 
@@ -64,6 +64,12 @@ const Sommeil = (props) => {
 
   // Fontion qui sauvegarde les resultat dans le local storage et dans le backend
   const handleSave = () => {
+
+    if(duree === 0)
+      return toast(translate.getText("SOMMEIL_DUREE_ERROR"))
+    else if(selectedEtatReveil === null)
+      return toast(translate.getText("SOMMEIL_ETAT_REVEIL_ERROR"))
+
     // Calcul de l'heure
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.sommeil.heureDebut = selectedHeureDebut;
@@ -81,8 +87,6 @@ const Sommeil = (props) => {
     setIsOpen(false);
     toast(translate.getText("DATA_SAVED"))
   }
-
-
 
 
   return (

@@ -264,6 +264,16 @@
       "es":"Dormir",
       "fr":"Sommeil"
    },
+   "SOMMEIL_DUREE_ERROR":{
+      "en":"The sleep time cannot be 0 minutes.",
+      "es":"El tiempo de reposo no puede ser de 0 minutos.",
+      "fr":"La durée de sommeil ne peut pas être de 0 minutes."
+   },
+   "SOMMEIL_ETAT_REVEIL_ERROR":{
+      "en":"At least one wake-up state must be selected.",
+      "es":"Debe seleccionarse al menos un estado de activación.",
+      "fr":"Il faut sélectionner au moins un état de réveil."
+   },
    "STATE_OF_MIND":{
       "en":"Awakening state of mind",
       "es":"Despertar estado mental",

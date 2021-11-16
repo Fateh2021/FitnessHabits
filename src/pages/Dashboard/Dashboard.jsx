@@ -121,8 +121,8 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     sommeil: {
       heure: 0,
       minute: 0,
-      heureDebut: "23:00",
-      heureFin: "07:00",
+      heureDebut: "00:00",
+      heureFin: "00:00",
       nbReveils: 0,
       etatReveil: null
     },
@@ -440,8 +440,8 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               urine:0
             },
             sommeil : {
-              heureDebut: "23:00",
-              heureFin: "07:00",
+              heureDebut: "00:00",
+              heureFin: "00:00",
               nbReveils: 0,
               etatReveil: null
             },
@@ -581,8 +581,8 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               urine:0
             },
             sommeil : {
-              heureDebut: "23:00",
-              heureFin: "07:00",
+              heureDebut: "00:00",
+              heureFin: "00:00",
               nbReveils: 0,
               etatReveil: null
             },
