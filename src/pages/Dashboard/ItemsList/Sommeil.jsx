@@ -54,6 +54,13 @@ const Sommeil = (props) => {
     return duree_totale;
   }
 
+  
+  // Formattage de la durée 
+  const duree = calculer_duree();
+  const duree_heures = Math.floor(duree / 60)
+  const duree_minutes = duree % 60;
+  const duree_format_heure = duree_heures + ":" + (duree_minutes < 10 ? "0" : "") + duree_minutes;
+
 
   // Fontion qui sauvegarde les resultat dans le local storage et dans le backend
   const handleSave = () => {
@@ -63,6 +70,7 @@ const Sommeil = (props) => {
     dashboard.sommeil.heureFin = selectedHeureFin;
     dashboard.sommeil.nbReveils = nbReveils;
     dashboard.sommeil.etatReveil = selectedEtatReveil;
+    dashboard.sommeil.duree = duree;
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
 
     // Sauvegarder 
@@ -75,11 +83,6 @@ const Sommeil = (props) => {
   }
 
 
-  // Formattage de la durée 
-  const duree = calculer_duree();
-  const duree_heures = Math.floor(duree / 60)
-  const duree_minutes = duree % 60;
-  const duree_format_heure = duree_heures + ":" + (duree_minutes < 10 ? "0" : "") + duree_minutes;
 
 
   return (
