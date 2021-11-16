@@ -22,28 +22,29 @@ const Graphe = (reloadGraph) => {
     const minText = translate.getText("MINIMUM");
     const maxText = translate.getText("MAXIMUM");
     const lastvText = translate.getText("LAST_VALUE");
+    const [average, setAverage] = useState(0);
+    const [minimum, setMinimum] = useState(0);
+    const [maximum, setMaximum] = useState(0);
+    const [range, setRange] = useState("3m");
+    const [averageDataPoints, setAverageDataPoint] = useState([]);
 
+    //datapoint is a filtered subset of data between 2 dates
+    const dataPoints = useMemo(
+        () => data.filter((val) => val.x >= startDate && val.x <= endDate),
+        [data, startDate, endDate]
+    );
 
-
+    //Get data on graphe display
     useEffect(() => {
         if (reloadGraph && dataPoints.length <= 0)
             fetchDatapoints();
     }, [reloadGraph])
 
     function getDataFormat() {
-        console.log(dateFormat)
         return dateFormat;
     }
 
-    function setDataFormat(format) {
-        if (format === "dd-LL-yyyy") dateFormat = 'DD-MM-YYYY'
-        if (format === "LL-dd-yyyy") dateFormat = 'MM-DD-YYYY'
-        if (format === "yyyy-dd-LL") dateFormat = 'YYYY-DD-MM'
-        if (format === "yyyy-LL-dd") dateFormat = 'YYYY-MM-DD'
-        if (format === "yyyy-LLL-dd") dateFormat = 'YYYY-MMM-DD'
-        if (format === "dd-LLL-yyyy") dateFormat = 'DD-MMM-YYYY'
-    }
-
+    //Get glycemie data from Firebase using userUID from localstorage
     function fetchDatapoints() {
         const userUID = localStorage.getItem('userUid');
         var arr = [];
@@ -60,55 +61,44 @@ const Graphe = (reloadGraph) => {
                         index++
                     }
                 }
+                //Sorting data by datetime
                 arr.sort((a, b) => {
                     return a.x - b.x;
                 });
-
                 setData(arr)
-
             });
     }
 
-
-
-    function toMmoll(dp) {
-        //  mgdl / 18
-        var temp = dp.slice();
-
-        for (var i = 0; i < temp.length; i++) {
-            temp[i].y = temp[i].y / 18;
-        }
-
-        return temp;
+    function setDataFormat(format) {
+        if (format === "dd-LL-yyyy") dateFormat = 'DD-MM-YYYY'
+        if (format === "LL-dd-yyyy") dateFormat = 'MM-DD-YYYY'
+        if (format === "yyyy-dd-LL") dateFormat = 'YYYY-DD-MM'
+        if (format === "yyyy-LL-dd") dateFormat = 'YYYY-MM-DD'
+        if (format === "yyyy-LLL-dd") dateFormat = 'YYYY-MMM-DD'
+        if (format === "dd-LLL-yyyy") dateFormat = 'DD-MMM-YYYY'
     }
 
-    function toMgdl(dp) {
-        // mmol * 18
-        var temp = dp.slice();
+    function convertMesurementUnit(type, _data){
+        
+        _data = _data.slice();
 
-        for (var i = 0; i < temp.length; i++) {
-            temp[i].y = temp[i].y * 18;
+        for (var i = 0; i < _data.length; i++) {
+            if(type === "mmoll")
+                //  mgdl / 18
+                _data[i].y = _data[i].y / 18;
+
+            if(type === "mgdl")
+                //  mgdl / 18
+                _data[i].y = _data[i].y * 18;
         }
-
-        return temp;
+        return _data;
     }
 
-    const dataPoints = useMemo(
-        () => data.filter((val) => val.x >= startDate && val.x <= endDate),
-        [data, startDate, endDate]
-    );
-
-    const [average, setAverage] = useState(0);
-    const [minimum, setMinimum] = useState(0);
-    const [maximum, setMaximum] = useState(0);
-
-    const [averageDataPoints, setAverageDataPoint] = useState([]);
     useEffect(() => {
         if (dataPoints && dataPoints.length > 0) {
+            let _average = Math.round((((dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0) / dataPoints.length) + Number.EPSILON) * 100) / 100;
+            setAverage(_average)
 
-            console.log(dataPoints)
-
-            let av = Math.round((((dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0) / dataPoints.length) + Number.EPSILON) * 100) / 100;
             // minimum
             let min = Math.min.apply(
                 Math,
@@ -124,15 +114,12 @@ const Graphe = (reloadGraph) => {
                 })
             );
 
-            setAverage(av)
             setMinimum(min);
             setMaximum(max);
             setAverageDataPoint([
-                { x: startDate, y: av },
-                { x: endDate, y: av }
+                { x: startDate, y: _average },
+                { x: endDate, y: _average }
             ])
-            console.log(averageDataPoints)
-
         }
     }, [dataPoints]);
 
@@ -145,34 +132,32 @@ const Graphe = (reloadGraph) => {
     function getNewStartDateForRange(range) {
         const startDateAsMoment = moment(endDate);
         switch (range) {
-            case '1w': return startDateAsMoment.subtract(1, 'week').toDate();
-            case '1m': return startDateAsMoment.subtract(1, 'month').toDate();
-            case '3m': return startDateAsMoment.subtract(3, 'month').toDate();
-            case '6m': return startDateAsMoment.subtract(6, 'month').toDate();
-            case '1y': return startDateAsMoment.subtract(1, 'year').toDate();
+            case '1w': return startDateAsMoment.subtract(1, 'week').toDate()
+            case '1m': return startDateAsMoment.subtract(1, 'month').toDate()
+            case '3m': return startDateAsMoment.subtract(3, 'month').toDate()
+            case '6m': return startDateAsMoment.subtract(6, 'month').toDate()
+            case '1y': return startDateAsMoment.subtract(1, 'year').toDate()
         }
     }
 
     function onRangeClick(range) {
-        setStartDate(getNewStartDateForRange(range));
+        setRange(range)
+        setStartDate(getNewStartDateForRange(range))
     }
 
     function onStartDateChange(event) {
-        setStartDate(moment(event.target.value).toDate());
+        setStartDate(moment(event.target.value).toDate())
     }
 
     function onEndDateChange(event) {
-        setEndDate(moment(event.target.value).toDate());
+        setEndDate(moment(event.target.value).toDate())
     }
 
     function onUnitTypeChange(unit) {
         if (unit !== tauxLabel) {
             setTauxLabel(unit);
-            if (unit === " mg/dl") {
-                setData(toMgdl(data))
-            } else {
-                setData(toMmoll(data))
-            }
+            let type = unit === " mg/dl" ? "mgdl" : "mmoll"
+            convertMesurementUnit(type, data)
         }
     }
 
@@ -212,6 +197,9 @@ const Graphe = (reloadGraph) => {
 
         let graphWidth = window.innerWidth < 700 ? window.innerWidth * 2 : window.innerWidth
 
+        let selectedButtonClass  = "bg-red color-white";
+        let buttonClass = "bg-white color-black"
+
         return (
 
             <div style={{ overflowX: "scroll" }}>
@@ -225,15 +213,15 @@ const Graphe = (reloadGraph) => {
                 </div>
 
                 <div>
-                    <button class="timeFilterFirst" onClick={() => { onRangeClick("1w"); }}><h3>1{weekLetter}</h3></button>
-                    <button class="timeFilter" onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
-                    <button class="timeFilter" onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
-                    <button class="timeFilter" onClick={() => { onRangeClick("6m"); }}><h3>6M</h3></button>
-                    <button class="timeFilter" onClick={() => { onRangeClick("1y"); }}><h3>1{yearLetter}</h3></button>
+                    <button class={(range==="1w"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("1w"); }}><h3>1{weekLetter}</h3></button>
+                    <button class={(range==="1m"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
+                    <button class={(range==="3m"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("3m"); }}><h3>3M</h3></button>
+                    <button class={(range==="6m"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("6m"); }}><h3>6M</h3></button>
+                    <button class={(range==="1y"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onRangeClick("1y"); }}><h3>1{yearLetter}</h3></button>
                 </div>
                 <div>
-                    <button class="timeFilterFirst" onClick={() => { onUnitTypeChange(" mg/dl"); }}><h3>mg/dl</h3></button>
-                    <button class="timeFilter" onClick={() => { onUnitTypeChange(" mmol/L"); }}><h3>mmol/L</h3></button>
+                    <button class={(tauxLabel===" mg/dl"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onUnitTypeChange(" mg/dl"); }}><h3>mg/dl</h3></button>
+                    <button class={(tauxLabel===" mmol/L"?"selectedGraphButton":"") + " graphButton"} onClick={() => { onUnitTypeChange(" mmol/L"); }}><h3>mmol/L</h3></button>
                 </div>
                 <div>
                     <h3>
