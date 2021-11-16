@@ -7,7 +7,7 @@ import * as translate from '../../translate/Translator'
 
 /* les imports de l'équipe GEFRAL */
 import { signInWithGoogle, signInWithFacebook } from '../../firebaseConfig';
-import {logoFacebook,logoGoogle,arrowForward} from "ionicons/icons";
+import {arrowForward} from "ionicons/icons";
 
 const LogIn = (props) => {
     const [username, setUsername]= useState('')
@@ -23,7 +23,7 @@ const LogIn = (props) => {
             toast('Authentification reussi!');
             props.history.push('/dashboard');
         }catch(error){
-            toast('Erreur d\'authentification. L\'identifiant et/ou le mot passe sont invalides !', 4000)
+            toast(translate.getText("AUTH_LOGIN_ERROR"), 4000)
         }
         setBusy(false)
     }

@@ -3,6 +3,7 @@ import "firebase/auth";
 import React, { useState } from 'react';
 import { IonInput, IonGrid, IonRow, IonCol, IonPage, IonButton, IonItem } from '@ionic/react';
 import {toast} from '../../Toast'
+import * as translate from '../../translate/Translator'
 
 
 const Register= () => {
@@ -14,13 +15,13 @@ const Register= () => {
     async function register(){
         // Validation 
         if(password !== cPassword){
-            return toast('Passwords do not match')
+            return toast(translate.getText("PASSWORD_NOT_MATCH"))
         }
         if(username.trim() === '' || password.trim() === ''){
-            return toast('Username and password are required')
+            return toast(translate.getText("USER_NAME_PASSWORD_REQUIRED"))
         }
         if (username !=='' || password.trim() !== '' || password === cPassword){
-          toast('You have register successfully!')
+          toast(translate.getText("REGISTERED_SUCCESSFULLY"))
         }
         const res = await registerUser(username, password)
         if (res){   
@@ -54,20 +55,20 @@ const Register= () => {
             <IonCol style={{marginBottom:30}}>
               {/* <IonLoading message="Registration in progress!" duration={10} isOpen={busy}/> */}
               <IonItem color="transparent" lines="none">  
-                <IonInput className="input-login" placeholder="Nom d'utilisateur?" onIonChange={(e) => setUsername(e.target.value)}/>
+                <IonInput className="input-login" placeholder={translate.getText("USER_NAME")} onIonChange={(e) => setUsername(e.target.value)}/>
               </IonItem>
               <IonItem color="transparent" lines="none">
-                <IonInput className="input-login" type="password" placeholder="Mot de passe?" onIonChange={(e) => setPassword(e.target.value)}/>  
+                <IonInput className="input-login" type="password" placeholder={translate.getText("PASSWORD")} onIonChange={(e) => setPassword(e.target.value)}/>  
               </IonItem> 
               <IonItem color="transparent" lines="none">
-                <IonInput className="input-login" type="password" placeholder="Confirmer le mot de passe?" onIonChange={(e) => setCPassword(e.target.value)}/>  
+                <IonInput className="input-login" type="password" placeholder={translate.getText("CONFIRM_PASWORD")} onIonChange={(e) => setCPassword(e.target.value)}/>  
               </IonItem>                        
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonButton className="btn-home" onClick={register}>S'inscrire</IonButton>
-              <IonButton className="btn-home" color="secondary" href="/login">J'ai déjà un compte.</IonButton>
+              <IonButton className="btn-home" onClick={register}>{translate.getText("REGISTER")}</IonButton>
+              <IonButton className="btn-home" color="secondary" href="/login">{translate.getText("ALREADY_REGISTERED")}</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
