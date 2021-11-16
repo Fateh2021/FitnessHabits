@@ -265,7 +265,6 @@ const Alcool = (props) => {
           const dailyCount = getConsumptionsCount(consommations, currentDate);
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
-            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + alcoolSettings.limitConsom.notificationMessage)
             displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage);
           }
           
@@ -279,7 +278,6 @@ const Alcool = (props) => {
           }
           if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
               alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
-            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + alcoolSettings.limitConsom.notificationMessage)
             displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage)
           }
 
@@ -332,6 +330,11 @@ const Alcool = (props) => {
   }
 
   const displayNotification = (header, message) => {
+    // Notification already being displayed check
+    if (document.getElementsByTagName('ion-toast').length > 0) {
+      return
+    }
+
     const toast = document.createElement('ion-toast');
     let header_msg
     let close_msg
