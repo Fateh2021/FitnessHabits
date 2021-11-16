@@ -2163,3 +2163,13 @@ h2{
   background-color: rgb(110, 30, 61);
   color: white;
 }
+.tLine1,.tLine2{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.tLine1 > div,.tLine2 > div {
+  margin :1%;
+  width: 40%;
+  font-weight: bold;
+}

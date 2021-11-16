@@ -215,10 +215,15 @@ const Graphe = (reloadGraph) => {
     return (
 
       <div style={{ overflowX: "scroll" }}>
-        <h3 style={{ color: "#c0504e" }}>{averageText}: {average} {tauxLabel}</h3>
-        <h3 style={{ color: "#c0504e" }}>{lastvText}: {data[data.length - 1].y} {tauxLabel} </h3>
-        <h3 style={{ color: "#c0504e" }}> {minText}: {minimum} {tauxLabel} </h3>
-        <h3 style={{ color: "#c0504e" }}> {maxText}: {maximum} {tauxLabel} </h3>
+        <div classe = "tLine1">
+        <div  style={{ color: "#c0504e" }}>{lastvText}: {data[data.length - 1].y} {tauxLabel} </div>
+        <div  style={{ color: "#c0504e" }}>{averageText}: {average} {tauxLabel}</div>
+        </div>
+        <div classe = "tLine2">
+        <div  style={{ color: "#c0504e" }}> {minText}: {minimum} {tauxLabel} </div>
+        <div  style={{ color: "#c0504e" }}> {maxText}: {maximum} {tauxLabel} </div>
+        </div>
+
         <div>
           <button class="timeFilterFirst" onClick={() => { onRangeClick("1w"); }}><h3>1{weekLetter}</h3></button>
           <button class="timeFilter" onClick={() => { onRangeClick("1m"); }}><h3>1M</h3></button>
@@ -243,8 +248,6 @@ const Graphe = (reloadGraph) => {
     );
 
   }
-
-
 
 };
 
