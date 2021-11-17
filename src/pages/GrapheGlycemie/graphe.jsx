@@ -153,6 +153,15 @@ const Graphe = (reloadGraph) => {
         if (format === "dd-LLL-yyyy") return 'dd-MMM-yyyy'
     }
 
+    function toDatePickerFormat(format) {
+        if (format === "dd-MM-yyyy") return 'dd-MM-y'
+        if (format === "MM-dd-yyyy") return 'MM-dd-y'
+        if (format === "yyyy-dd-MM") return 'y-dd-MM'
+        if (format === "yyyy-MM-dd") return 'y-MM-dd'
+        if (format === "yyyy-LLL-dd") return 'y-MMM-dd'
+        if (format === "yyyy-MMM-dd") return 'dd-MMM-y'
+    }
+
     function getNewStartDateForRange(range) {
         const startDateAsMoment = moment(endDate);
         switch (range) {
@@ -169,16 +178,18 @@ const Graphe = (reloadGraph) => {
         setStartDate(getNewStartDateForRange(range))
     }
 
-    function onStartDateChange(event) {
-        console.log(event)
-        console.log(dateFormat)
-        setRange("");
-        // setStartDate(moment(event.target.value).toDate())
+    function onStartDateChange(value) {
+        if (value) {
+            setRange("");
+            setStartDate(moment(value).toDate())
+        }
     }
 
-    function onEndDateChange(event) {
-        setRange("");
-        setEndDate(moment(event.target.value).toDate())
+    function onEndDateChange(value) {
+        if (value) {
+            setRange("");
+            setEndDate(moment(value).toDate())
+        }
     }
 
     function getOptions() {
@@ -268,10 +279,15 @@ const Graphe = (reloadGraph) => {
                 <h3>
                     <DatePicker locale={translate.getLang()}
                         value={moment(startDate, dateFormat).toDate()}
-                        onChange={setStartDate}
-                        format={"y-MMM-dd"} />
-                    <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
-                    <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} />
+                        onChange={(val) => onStartDateChange(val)}
+                        format={toDatePickerFormat(dateFormat)} />
+                        &nbsp;-&nbsp;
+                    <DatePicker locale={translate.getLang()}
+                        value={moment(endDate, dateFormat).toDate()}
+                        onChange={(val) => onEndDateChange(val)}
+                        format={toDatePickerFormat(dateFormat)} />
+                    {/* <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
+                    <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} /> */}
                 </h3>
             </div>
 
