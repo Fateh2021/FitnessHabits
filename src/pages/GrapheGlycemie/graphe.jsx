@@ -195,7 +195,7 @@ const Graphe = (reloadGraph) => {
     }
 
     function getOptions() {
-        let numberFormat = "#0'" + translate.getText('.') + "'##"
+        let numberFormat = "#0'" + translate.getText('.') + "'#####"
 
         canvas.CanvasJS.addCultureInfo("fr",
             {
