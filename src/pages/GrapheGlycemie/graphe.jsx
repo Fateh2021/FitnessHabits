@@ -123,6 +123,7 @@ const Graphe = (reloadGraph) => {
         var arr = [];
         firebase.database().ref('profiles/' + userUID + '/dateFormat/').once("value", (snapshot) => {
             setDateFormat(toLocalDateFormat(snapshot.val()));
+            console.log(snapshot.val())
         })
         firebase.database().ref('dashboard/' + userUID)
             .once("value", (snapshot) => {
@@ -145,21 +146,21 @@ const Graphe = (reloadGraph) => {
     }
 
     function toLocalDateFormat(format) {
-        if (format === "dd-LL-yyyy") return 'dd-MM-yyyy'
-        if (format === "LL-dd-yyyy") return 'MM-dd-yyyy'
-        if (format === "yyyy-dd-LL") return 'yyyy-dd-MM'
-        if (format === "yyyy-LL-dd") return 'yyyy-MM-dd'
-        if (format === "yyyy-LLL-dd") return 'yyyy-MMM-dd'
-        if (format === "dd-LLL-yyyy") return 'dd-MMM-yyyy'
+        if (format === "dd-LL-yyyy") return 'DD-MM-YYYY'
+        if (format === "LL-dd-yyyy") return 'MM-DD-YYYY'
+        if (format === "yyyy-dd-LL") return 'YYYY-DD-MM'
+        if (format === "yyyy-LL-dd") return 'YYYY-MM-DD'
+        if (format === "yyyy-LLL-dd") return 'YYYY-MMM-DD'
+        if (format === "dd-LLL-yyyy") return 'DD-MMM-YYYY'
     }
 
     function toDatePickerFormat(format) {
-        if (format === "dd-MM-yyyy") return 'dd-MM-y'
-        if (format === "MM-dd-yyyy") return 'MM-dd-y'
-        if (format === "yyyy-dd-MM") return 'y-dd-MM'
-        if (format === "yyyy-MM-dd") return 'y-MM-dd'
-        if (format === "yyyy-LLL-dd") return 'y-MMM-dd'
-        if (format === "yyyy-MMM-dd") return 'dd-MMM-y'
+        if (format === "DD-MM-YYYY") return 'dd-MM-y'
+        if (format === "MM-DD-YYYY") return 'MM-dd-y'
+        if (format === "YYYY-DD-MM") return 'y-dd-MM'
+        if (format === "YYYY-MM-DD") return 'y-MM-dd'
+        if (format === "YYYY-MMM-DD") return 'y-MMM-dd'
+        if (format === "DD-MMM-YYYY") return 'dd-MMM-y'
     }
 
     function getNewStartDateForRange(range) {
@@ -179,6 +180,7 @@ const Graphe = (reloadGraph) => {
     }
 
     function onStartDateChange(value) {
+        console.log(dateFormat)
         if (value) {
             setRange("");
             setStartDate(moment(value).toDate())
@@ -277,12 +279,12 @@ const Graphe = (reloadGraph) => {
             </div>
             <div>
                 <h3>
-                    <DatePicker locale={translate.getLang()}
+                    <DatePicker className="customDatePicker" locale={translate.getLang()}
                         value={moment(startDate, dateFormat).toDate()}
                         onChange={(val) => onStartDateChange(val)}
                         format={toDatePickerFormat(dateFormat)} />
                         &nbsp;-&nbsp;
-                    <DatePicker locale={translate.getLang()}
+                    <DatePicker className="customDatePicker" locale={translate.getLang()}
                         value={moment(endDate, dateFormat).toDate()}
                         onChange={(val) => onEndDateChange(val)}
                         format={toDatePickerFormat(dateFormat)} />

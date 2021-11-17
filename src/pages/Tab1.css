@@ -2196,6 +2196,14 @@ h2 {
     margin: 10px 5px 0;
 }
 
+.customDatePicker .react-date-picker__clear-button {
+    display: none;
+}
+
+.customDatePicker select {
+    appearance: none;
+}
+
 #box1,
 #box2 {
     display: flex;
