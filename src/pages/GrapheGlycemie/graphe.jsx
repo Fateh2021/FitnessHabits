@@ -105,6 +105,7 @@ const Graphe = (reloadGraph) => {
         for (var i = 0; i < _data.length; i++) {
             if (newType === Taux.mmoll && currentType === Taux.mgdl) {
                 copy[i].y = copy[i].y * 18; //  mmol/L = mg/dl * 18
+                console.log(copy[i].y)
                 setTaux(newType)
             }
 
@@ -195,7 +196,7 @@ const Graphe = (reloadGraph) => {
     }
 
     function getOptions() {
-        let numberFormat = "#0'" + translate.getText('.') + "'#####"
+        let numberFormat = "0.00"
 
         canvas.CanvasJS.addCultureInfo("fr",
             {
@@ -215,8 +216,6 @@ const Graphe = (reloadGraph) => {
             }
         );
 
-
-
         return {
             culture: translate.getLang(),
             animationEnabled: true,
@@ -230,7 +229,7 @@ const Graphe = (reloadGraph) => {
             },
             data: [
                 {
-                    yValueFormatString: "#0.##",
+                    yValueFormatString: numberFormat,
                     xValueFormatString: dateFormat,
                     type: "spline",
                     dataPoints: dataPoints
@@ -288,8 +287,6 @@ const Graphe = (reloadGraph) => {
                         value={moment(endDate, dateFormat).toDate()}
                         onChange={(val) => onEndDateChange(val)}
                         format={toDatePickerFormat(dateFormat)} />
-                    {/* <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
-                    <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} /> */}
                 </h3>
             </div>
 
