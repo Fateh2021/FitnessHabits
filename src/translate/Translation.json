@@ -273,5 +273,10 @@
       "en":"Loading",
       "es":"*** traduction needed *** (Loading)",
       "fr":"Chargement"
+   },
+   ".":{
+      "en":".",
+      "es":"*** traduction needed *** (.)",
+      "fr":","
    }
 }

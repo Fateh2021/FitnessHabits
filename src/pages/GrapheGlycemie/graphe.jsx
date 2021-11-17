@@ -6,8 +6,9 @@ import "firebase/auth";
 import * as translate from '../../translate/Translator';
 
 import CanvasJSReact from './canvasjs.stock.react';
+import DatePicker from 'react-date-picker';
 let CanvasJSChart = CanvasJSReact.CanvasJSChart;
-let dateFormat;
+let canvas = CanvasJSReact;
 
 //enum equivalents
 const Taux = Object.freeze({
@@ -15,17 +16,17 @@ const Taux = Object.freeze({
     mgdl: ' mg/dl'
 })
 
-const DateRange = Object.freeze({
-    _1w: '1' + translate.getText("WEEK_LETTER"),
-    _1m: '1m',
-    _3m: '3m',
-    _6m: '6m',
-    _1y: '1' + translate.getText("YEAR_LETTER")
-})
-
-
-
 const Graphe = (reloadGraph) => {
+
+    // ========= CONST =========
+    const DateRange = Object.freeze({
+        _1w: '1' + translate.getText("WEEK_LETTER"),
+        _1m: '1m',
+        _3m: '3m',
+        _6m: '6m',
+        _1y: '1' + translate.getText("YEAR_LETTER")
+    })
+    const [dateFormat, setDateFormat] = useState("")
     const [data, setData] = useState([]);
     const [tauxLabel, setTauxLabel] = useState(Taux.mmoll);
     const [taux, setTaux] = useState(Taux.mmoll);
@@ -44,19 +45,59 @@ const Graphe = (reloadGraph) => {
 
     //datapoint is a filtered subset of data between 2 dates
     const dataPoints = useMemo(
-        () => convertMesurementUnit(taux, tauxLabel, data.filter((val) => val.x >= startDate && val.x <= endDate)),
+        () => convertMesurementUnit(
+            taux,
+            tauxLabel,
+            data.filter(({ x, y }) => x >= startDate && x <= endDate)),
         [data, startDate, endDate, tauxLabel, taux]
     );
 
+    // ========= USEEFFECT =========
     //Get data on graphe display
     useEffect(() => {
         if (reloadGraph && dataPoints.length <= 0)
             fetchDatapoints();
     }, [reloadGraph, dataPoints])
 
-    function getDataFormat() {
-        return dateFormat;
-    }
+    useEffect(() => {
+        if (dataPoints && dataPoints.length > 0) {
+            let sum = (dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0)
+            let _average = Math.round(((sum / dataPoints.length) + Number.EPSILON) * 100) / 100;
+            setAverage(_average)
+            setAverageDataPoint([
+                { x: startDate, y: _average },
+                { x: endDate, y: _average }
+            ])
+
+            // minimum
+            let min = Math.round(
+                (Math.min.apply(
+                    Math,
+                    dataPoints.map(function (o) {
+                        return o.y;
+                    })
+                ) + Number.EPSILON) * 100) / 100;
+            setMinimum(min);
+            setMinimumDataPoint([
+                { x: startDate, y: min },
+                { x: endDate, y: min }
+            ])
+
+            // maximum
+            let max = Math.round(
+                (Math.max.apply(
+                    Math,
+                    dataPoints.map(function (o) {
+                        return o.y;
+                    })
+                ) + Number.EPSILON) * 100) / 100;
+            setMaximum(max);
+            setMaximumDataPoint([
+                { x: moment(startDate).format(dateFormat).toString(), y: max },
+                { x: endDate, y: max }
+            ])
+        }
+    }, [dataPoints]);
 
     function convertMesurementUnit(currentType, newType, _data) {
         const copy = [..._data]
@@ -81,7 +122,7 @@ const Graphe = (reloadGraph) => {
         const userUID = localStorage.getItem('userUid');
         var arr = [];
         firebase.database().ref('profiles/' + userUID + '/dateFormat/').once("value", (snapshot) => {
-            setDataFormat(snapshot.val());
+            setDateFormat(toLocalDateFormat(snapshot.val()));
         })
         firebase.database().ref('dashboard/' + userUID)
             .once("value", (snapshot) => {
@@ -97,61 +138,20 @@ const Graphe = (reloadGraph) => {
                 arr.sort((a, b) => {
                     return a.x - b.x;
                 });
+
                 setData(arr)
             });
         setLoading(false)
     }
 
-    function setDataFormat(format) {
-        if (format === "dd-LL-yyyy") dateFormat = 'DD-MM-YYYY'
-        if (format === "LL-dd-yyyy") dateFormat = 'MM-DD-YYYY'
-        if (format === "yyyy-dd-LL") dateFormat = 'YYYY-DD-MM'
-        if (format === "yyyy-LL-dd") dateFormat = 'YYYY-MM-DD'
-        if (format === "yyyy-LLL-dd") dateFormat = 'YYYY-MMM-DD'
-        if (format === "dd-LLL-yyyy") dateFormat = 'DD-MMM-YYYY'
+    function toLocalDateFormat(format) {
+        if (format === "dd-LL-yyyy") return 'dd-MM-yyyy'
+        if (format === "LL-dd-yyyy") return 'MM-dd-yyyy'
+        if (format === "yyyy-dd-LL") return 'yyyy-dd-MM'
+        if (format === "yyyy-LL-dd") return 'yyyy-MM-dd'
+        if (format === "yyyy-LLL-dd") return 'yyyy-MMM-dd'
+        if (format === "dd-LLL-yyyy") return 'dd-MMM-yyyy'
     }
-
-    useEffect(() => {
-        if (dataPoints && dataPoints.length > 0) {
-            let sum = (dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0)
-            let _average = Math.round(((sum / dataPoints.length) + Number.EPSILON) * 100) / 100;
-            setAverage(_average)
-            setAverageDataPoint([
-                { x: startDate, y: _average },
-                { x: endDate, y: _average }
-            ])
-
-            // minimum
-            let min = Math.round(
-                (Math.min.apply(
-                    Math,
-                    dataPoints.map(function (o) {
-                        return o.y;
-                    })
-                ) + Number.EPSILON) * 100) / 100;
-            console.log(min)
-            setMinimum(min);
-            setMinimumDataPoint([
-                { x: startDate, y: min },
-                { x: endDate, y: min }
-            ])
-
-            // maximum
-            let max = Math.round(
-                (Math.max.apply(
-                    Math,
-                    dataPoints.map(function (o) {
-                        return o.y;
-                    })
-                ) + Number.EPSILON) * 100) / 100;
-            setMaximum(max);
-            setMaximumDataPoint([
-                { x: startDate, y: max },
-                { x: endDate, y: max }
-            ])
-        }
-    }, [dataPoints]);
-
 
     function getNewStartDateForRange(range) {
         const startDateAsMoment = moment(endDate);
@@ -170,8 +170,10 @@ const Graphe = (reloadGraph) => {
     }
 
     function onStartDateChange(event) {
+        console.log(event)
+        console.log(dateFormat)
         setRange("");
-        setStartDate(moment(event.target.value).toDate())
+        // setStartDate(moment(event.target.value).toDate())
     }
 
     function onEndDateChange(event) {
@@ -180,34 +182,58 @@ const Graphe = (reloadGraph) => {
     }
 
     function getOptions() {
+        let numberFormat = "#0'" + translate.getText('.') + "'##"
+
+        canvas.CanvasJS.addCultureInfo("fr",
+            {
+                decimalSeparator: ",",
+                digitGroupSeparator: " ",
+                months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+                shortMonths: ["janv.", "févr.", "mars", "avril", "mai", "juin", "juil.", "août", "sep.", "oct.", "nov.", "dec."]
+            }
+        );
+
+        canvas.CanvasJS.addCultureInfo("es",
+            {
+                // decimalSeparator: ",",
+                // digitGroupSeparator: " ",
+                // months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+                // shortMonths: ["jan", "fév", "mar", "avr", "mai", "juin", "juil", "aoû", "sep", "oct", "nov", "dec"]
+            }
+        );
+
+
+
         return {
+            culture: translate.getLang(),
             animationEnabled: true,
-            // title: {
-            //     text: "glycemie"
-            // },
             axisX: {
-                valueFormatString: getDataFormat()
+                valueFormatString: dateFormat
             },
             axisY: {
+                valueFormatString: numberFormat,
                 title: translate.getText("BLOOD_SUGAR_LEVEL"),
                 suffix: tauxLabel
             },
             data: [
                 {
                     yValueFormatString: "#0.##",
-                    xValueFormatString: getDataFormat(),
+                    xValueFormatString: dateFormat,
                     type: "spline",
                     dataPoints: dataPoints
                 },
                 {
+                    yValueFormatString: numberFormat,
                     type: "line",
                     dataPoints: averageDataPoints
                 },
                 {
+                    yValueFormatString: numberFormat,
                     type: "line",
                     dataPoints: minimumDataPoints
                 },
                 {
+                    yValueFormatString: numberFormat,
                     type: "line",
                     dataPoints: maximumDataPoints
                 }
@@ -215,13 +241,15 @@ const Graphe = (reloadGraph) => {
         };
     }
 
+    //style variables
     let graphWidth = window.innerWidth < 700 ? window.innerWidth * 2 : window.innerWidth
-    let tableLeftColStyle = {textAlign: 'right', paddingRight: '10px'}
-    let tableMidColStyle = {textAlign: 'right', paddingRight: '5px'}
+    const tableLeftColStyle = { textAlign: 'right', paddingRight: '10px' }
+    const tableMidColStyle = { textAlign: 'right', paddingRight: '5px' }
 
     return (
 
         <div style={{ overflowX: "hidden" }}>
+            {/* CONTROLS */}
             <div>
                 {Object.values(DateRange).map(val => {
                     return (
@@ -238,51 +266,70 @@ const Graphe = (reloadGraph) => {
             </div>
             <div>
                 <h3>
+                    <DatePicker locale={translate.getLang()}
+                        value={moment(startDate, dateFormat).toDate()}
+                        onChange={setStartDate}
+                        format={"y-MMM-dd"} />
                     <input type="date" value={moment(startDate).format("YYYY-MM-DD")} onChange={onStartDateChange} /> -&nbsp;
                     <input type="date" value={moment(endDate).format("YYYY-MM-DD")} onChange={onEndDateChange} />
                 </h3>
             </div>
 
-            {loading ? (
-                <div>{translate.getText('LOADING')}...</div>
-            ) : (!dataPoints || dataPoints.length <= 0 || 
-                !averageDataPoints || averageDataPoints.length <= 0 || 
-                !minimumDataPoints || minimumDataPoints.length <= 0 || 
-                !maximumDataPoints || maximumDataPoints.length <= 0) ? (
-                <div>{translate.getText('NO_DATA_FOUND')}</div>
-            ) : (
-                <>
-                    <table>
-                        <tbody style={{ color: "#c0504e" }}>
-                            <tr>
-                                <td style={tableLeftColStyle}>{translate.getText("LAST_VALUE")}:&nbsp;</td>
-                                <td style={tableMidColStyle}>{Math.round(((data[data.length - 1].y) + Number.EPSILON) * 100) / 100}</td>
-                                <td>{tauxLabel}</td>
-                            </tr>
-                            <tr>
-                                <td style={tableLeftColStyle}>{translate.getText("AVERAGE")}:&nbsp;</td>
-                                <td style={tableMidColStyle}>{average}</td>
-                                <td>{tauxLabel}</td>
-                            </tr>
-                            <tr>
-                                <td style={tableLeftColStyle}>{translate.getText("MINIMUM")}:&nbsp;</td>
-                                <td style={tableMidColStyle}>{minimum}</td>
-                                <td>{tauxLabel}</td>
-                            </tr>
-                            <tr>
-                                <td style={tableLeftColStyle}>{translate.getText("MAXIMUM")}:&nbsp;</td>
-                                <td style={tableMidColStyle}>{maximum}</td>
-                                <td>{tauxLabel}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div style={{overflowX: "scroll"}}>
-                        <div style={{ width: graphWidth }}>
-                        <CanvasJSChart options={getOptions()} />
-                        </div>
-                    </div>
-                </>
-            )}
+            {/* GRAPH */}
+
+            {/* IF LOADING */}
+            {loading ?
+                (
+                    <div>{translate.getText('LOADING')}...</div>
+                )
+                // IF NO DATA
+                : (!dataPoints || dataPoints.length <= 0 ||
+                    !averageDataPoints || averageDataPoints.length <= 0 ||
+                    !minimumDataPoints || minimumDataPoints.length <= 0 ||
+                    !maximumDataPoints || maximumDataPoints.length <= 0) ?
+                    (
+                        <div>{translate.getText('NO_DATA_FOUND')}</div>
+                    )
+                    // ELSE SHOW GRAPH
+                    : (
+                        <>
+                            {/* INFO TABLE */}
+                            <table>
+                                <tbody style={{ color: "#c0504e" }}>
+                                    <tr>
+                                        <td style={tableLeftColStyle}>{translate.getText("LAST_VALUE")}:&nbsp;</td>
+                                        <td style={tableMidColStyle}>
+                                            {(Math.round(((data[data.length - 1].y) + Number.EPSILON) * 100) / 100)
+                                                .toString().replace('.', translate.getText('.'))}
+                                        </td>
+                                        <td>{tauxLabel}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={tableLeftColStyle}>{translate.getText("AVERAGE")}:&nbsp;</td>
+                                        <td style={tableMidColStyle}>{(average).toString().replace('.', translate.getText('.'))}</td>
+                                        <td>{tauxLabel}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={tableLeftColStyle}>{translate.getText("MINIMUM")}:&nbsp;</td>
+                                        <td style={tableMidColStyle}>{(minimum).toString().replace('.', translate.getText('.'))}</td>
+                                        <td>{tauxLabel}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={tableLeftColStyle}>{translate.getText("MAXIMUM")}:&nbsp;</td>
+                                        <td style={tableMidColStyle}>{(maximum).toString().replace('.', translate.getText('.'))}</td>
+                                        <td>{tauxLabel}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            {/* GRAPH */}
+                            <div style={{ overflowX: "scroll" }}>
+                                <div style={{ width: graphWidth }}>
+                                    <CanvasJSChart options={getOptions()} />
+                                </div>
+                            </div>
+                        </>
+                    )}
         </div >
     )
 
