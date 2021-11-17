@@ -36,12 +36,11 @@ const Supplements = (props) => {
   });
 
   const [checked, setChecked] = useState(false);
+  const [boxEveryDay, setBoxEveryDay] = useState(false);
+  const [posoValue, setPosoValue] = useState("");
   const inputChangeHandler = () => {
-    if (checked) {
-      setChecked(true);
-    } else {
-      setChecked(false);
-    }
+    setBoxEveryDay(!boxEveryDay);
+    setChecked(!checked);
   };
 
   const accor = (divId) => {
@@ -53,6 +52,11 @@ const Supplements = (props) => {
     }
   };
 
+  function everydayTrue(v){
+    v.detail.value === "day" ? setBoxEveryDay(true) :  setBoxEveryDay(false);
+    setPosoValue(v.detail.value);
+  }
+
 
   // block pour avoir l'input pour ajouter des formats
   let [showSelectFormat, setShow] = useState(true);
@@ -60,14 +64,12 @@ const Supplements = (props) => {
   const inputAdd = (v) =>{
     if(v.detail.value === "ajouter"){
       setShow(false);
-      console.log(showSelectFormat);
     }else{
       setShow(true);
     }
   };
 
   function IonSelectDose(props){
-    console.log("showinput", props.cond);
     if(props.cond){
       return(
         <IonSelect
@@ -154,7 +156,6 @@ const Supplements = (props) => {
               <IonItem>
                 <IonLabel color="light">{translate.getText("SUPPL_DOSE")}</IonLabel>
                 <IonInput className="inputSuppConsom" id="inputDose"></IonInput>
-
                 <IonSelectDose cond={showSelectFormat}></IonSelectDose>
               </IonItem>
               <IonList>
@@ -195,20 +196,16 @@ const Supplements = (props) => {
                 <IonLabel color="light">{translate.getText("SUPPL_DOSE_BY")}</IonLabel>
                 <IonInput className="inputSuppConsom"></IonInput>
                 <IonSelect
-                  value={""}
+                  value={posoValue}
                   placeholder={translate.getText("SUPPL_FORMAT")}
                   className="inputSuppConsom"
+                  onIonChange={ v => everydayTrue(v) }
                 >
-                  <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
-                  <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
-                  <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
-
-                  <IonSelectOption value="cuillereCafe">
-                    {translate.getText("SUPPL_COFFE_SPOON")}
-                  </IonSelectOption>
-                  <IonSelectOption value="cuillereSoupe">
-                    {translate.getText("SUPPL_SOUP_SPOON")}
-                  </IonSelectOption>
+                  <IonSelectOption value="hours">{translate.getText("SUPPL_HOURS")}</IonSelectOption>
+                  <IonSelectOption value="day">{translate.getText("SUPPL_DAY")}</IonSelectOption>
+                  <IonSelectOption value="week">{translate.getText("SUPPL_WEEK")}</IonSelectOption>
+                  <IonSelectOption value="month">{translate.getText("SUPPL_MONTH")}</IonSelectOption>
+                  
                 </IonSelect>
               </IonItem>
               <IonItem>
@@ -216,6 +213,7 @@ const Supplements = (props) => {
                 <IonCheckbox
                   color="primary"
                   slot="start"
+                  checked={boxEveryDay}
                   onIonChange={inputChangeHandler}
                 ></IonCheckbox>
               </IonItem>

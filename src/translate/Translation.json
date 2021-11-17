@@ -224,6 +224,21 @@
       "es":"Horas",
       "fr":"Heures"
    },
+   "SUPPL_DAY":{
+      "en":"Days",
+      "es":"Dias",
+      "fr":"Jours"
+   },
+   "SUPPL_WEEK":{
+      "en":"Week",
+      "es":"Semana",
+      "fr":"Semaine"
+   },
+   "SUPPL_MONTH":{
+      "en":"Month",
+      "es":"Mes",
+      "fr":"Mois"
+   },
    "SUPPL_MORNING":{
       "en":"Morning",
       "es":"Mañana",
