@@ -208,10 +208,10 @@ const Graphe = (reloadGraph) => {
 
         canvas.CanvasJS.addCultureInfo("es",
             {
-                // decimalSeparator: ",",
-                // digitGroupSeparator: " ",
-                // months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
-                // shortMonths: ["jan", "fév", "mar", "avr", "mai", "juin", "juil", "aoû", "sep", "oct", "nov", "dec"]
+                 decimalSeparator: ",",
+                 digitGroupSeparator: " ",
+                 months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+                 shortMonths: ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sept.", "oct.", "nov.", "dic."]
             }
         );
 

@@ -266,17 +266,17 @@
    },
    "NO_DATA_FOUND":{
       "en":"No data found",
-      "es":"*** traduction needed *** (no data found)",
+      "es":"Ningún dato encontrado",
       "fr":"Aucune donnée trouvée"
    },
    "LOADING":{
       "en":"Loading",
-      "es":"*** traduction needed *** (Loading)",
+      "es":"Cargando",
       "fr":"Chargement"
    },
    ".":{
       "en":".",
-      "es":"*** traduction needed *** (.)",
+      "es":",",
       "fr":","
    }
 }
