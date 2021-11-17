@@ -173,15 +173,15 @@ const Supplements = (props) => {
               <IonItem>
                 <IonLabel color="light">{translate.getText("SUPPL_DATE_DEBUT")}</IonLabel>
                 <IonDatetime
-                  value="2021-10-01T15:43:40.394Z"
                   display-timezone="utc"
+                  class="timeBox"
                 ></IonDatetime>
               </IonItem>
               <IonItem>
                 <IonLabel color="light">{translate.getText("SUPPL_DATE_FIN")}</IonLabel>
                 <IonDatetime
-                  value="2021-12-10T15:43:40.394Z"
                   display-timezone="utc"
+                  class="timeBox"
                 ></IonDatetime>
               </IonItem>
               <IonItem>
@@ -278,43 +278,22 @@ const Supplements = (props) => {
               </IonListHeader>
               <IonList>
                 <IonItem>
-                  <IonLabel color="light">{translate.getText("SUPPL_MORNING")}</IonLabel>
-                  <IonDatetime
-                    display-format="h:mm A"
-                    picker-format="h:mm A"
-                    value="1990-02-19T11:00Z"
-                  ></IonDatetime>
-                  <IonDatetime
-                    display-format="h:mm A"
-                    picker-format="h:mm A"
-                    value="1990-02-19T14:00Z"
-                  ></IonDatetime>
+                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_MORNING")}</IonButton>
+                  <IonButton class="selectPeriod" color="light">8:00</IonButton>
+                  <IonButton class="selectPeriod" color="light">10:00</IonButton>
                 </IonItem>
                 <IonItem>
-                  <IonLabel color="light">{translate.getText("SUPPL_HALF_DAY")}</IonLabel>
-                  <IonDatetime
-                    display-format="h:mm A"
-                    picker-format="h:mm A"
-                    value="1990-02-19T17:00Z"
-                  ></IonDatetime>
-                  <IonDatetime
-                    display-format="h:mm A"
-                    picker-format="h:mm A"
-                    value="1990-02-19T19:00Z"
-                  ></IonDatetime>
+                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_HALF_DAY")}</IonButton>
+                  <IonButton class="selectPeriod" color="light">14:00</IonButton>
+                  <IonButton class="selectPeriod" color="light">16:00</IonButton>
                 </IonItem>
                 <IonItem>
-                  <IonLabel color="light">{translate.getText("SUPPL_NIGHT")}</IonLabel>
-                  <IonDatetime
-                    display-format="h:mm A"
-                    picker-format="h:mm A"
-                    value="1990-02-19T00:00Z"
-                  ></IonDatetime>
-                  <IonDatetime
-                    display-format="h:mm A"
-                    picker-format="h:mm A"
-                    value="1990-02-19T03:00Z"
-                  ></IonDatetime>
+                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_NIGHT")}</IonButton>
+                  <IonButton class="selectPeriod" color="light">20:00</IonButton>
+                  <IonButton class="selectPeriod" color="light">22:00</IonButton>
+                </IonItem>
+                <IonItem>
+                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_ADD_SELECT")}</IonButton>
                 </IonItem>
               </IonList>
               <IonItem>
