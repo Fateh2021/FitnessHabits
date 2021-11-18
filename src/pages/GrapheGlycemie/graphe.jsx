@@ -104,13 +104,13 @@ const Graphe = (reloadGraph) => {
 
         for (var i = 0; i < _data.length; i++) {
             if (newType === Taux.mmoll && currentType === Taux.mgdl) {
-                copy[i].y = copy[i].y * 18; //  mmol/L = mg/dl * 18
+                copy[i].y = copy[i].y / 18; //  mmol/L = mg/dl / 18
                 console.log(copy[i].y)
                 setTaux(newType)
             }
 
             if (newType === Taux.mgdl && currentType === Taux.mmoll) {
-                copy[i].y = copy[i].y / 18; //  mg/dl = mmol/L / 18
+                copy[i].y = copy[i].y * 18; //  mg/dl = mmol/L * 18
                 setTaux(newType)
             }
         }
