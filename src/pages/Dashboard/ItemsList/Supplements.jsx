@@ -60,6 +60,7 @@ const Supplements = (props) => {
 
   // block pour avoir l'input pour ajouter des formats
   let [showSelectFormat, setShow] = useState(true);
+  
 
   const inputAdd = (v) =>{
     if(v.detail.value === "ajouter"){
@@ -106,6 +107,24 @@ const Supplements = (props) => {
     //a la fin faire
     setShow(true);
   }
+
+
+
+  //block pour les période
+
+  function PeriodButton(props){
+
+    let [colorPeriod, setColorPeriod] = useState("light");
+
+    function changeColor(){
+      
+      return colorPeriod === "light" ? setColorPeriod("medium") : setColorPeriod("light") ;
+    }
+
+    return <IonButton class="selectPeriod" color={colorPeriod} onClick={changeColor}>{props.name}</IonButton>
+
+  }
+
 
   return (
     <div>
@@ -278,19 +297,19 @@ const Supplements = (props) => {
               </IonListHeader>
               <IonList>
                 <IonItem>
-                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_MORNING")}</IonButton>
-                  <IonButton class="selectPeriod" color="light">8:00</IonButton>
-                  <IonButton class="selectPeriod" color="light">10:00</IonButton>
+                  <PeriodButton name={translate.getText("SUPPL_MORNING")}></PeriodButton>
+                  <PeriodButton name={"8:00"}></PeriodButton>
+                  <PeriodButton name={"10:00"}></PeriodButton>
                 </IonItem>
                 <IonItem>
-                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_HALF_DAY")}</IonButton>
-                  <IonButton class="selectPeriod" color="light">14:00</IonButton>
-                  <IonButton class="selectPeriod" color="light">16:00</IonButton>
+                  <PeriodButton name={translate.getText("SUPPL_HALF_DAY")}></PeriodButton>
+                  <PeriodButton name={"14:00"}></PeriodButton>
+                  <PeriodButton name={"16:00"}></PeriodButton>
                 </IonItem>
                 <IonItem>
-                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_NIGHT")}</IonButton>
-                  <IonButton class="selectPeriod" color="light">20:00</IonButton>
-                  <IonButton class="selectPeriod" color="light">22:00</IonButton>
+                  <PeriodButton name={translate.getText("SUPPL_NIGHT")}></PeriodButton>
+                  <PeriodButton name={"20:00"}></PeriodButton>
+                  <PeriodButton name={"22:00"}></PeriodButton>
                 </IonItem>
                 <IonItem>
                   <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_ADD_SELECT")}</IonButton>
