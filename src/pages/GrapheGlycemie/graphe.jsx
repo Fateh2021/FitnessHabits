@@ -314,24 +314,24 @@ const Graphe = (reloadGraph) => {
                                     <tr>
                                         <td style={tableLeftColStyle}>{translate.getText("LAST_VALUE")}:&nbsp;</td>
                                         <td style={tableMidColStyle}>
-                                            {(Math.round(((data[data.length - 1].y) + Number.EPSILON) * 100) / 100)
+                                            {(Math.round(((data[data.length - 1].y) + Number.EPSILON) * 100) / 100).toFixed(2)
                                                 .toString().replace('.', translate.getText('.'))}
                                         </td>
                                         <td>{tauxLabel}</td>
                                     </tr>
                                     <tr>
                                         <td style={tableLeftColStyle}>{translate.getText("AVERAGE")}:&nbsp;</td>
-                                        <td style={tableMidColStyle}>{(average).toString().replace('.', translate.getText('.'))}</td>
+                                        <td style={tableMidColStyle}>{(average.toFixed(2)).toString().replace('.', translate.getText('.'))}</td>
                                         <td>{tauxLabel}</td>
                                     </tr>
                                     <tr>
                                         <td style={tableLeftColStyle}>{translate.getText("MINIMUM")}:&nbsp;</td>
-                                        <td style={tableMidColStyle}>{(minimum).toString().replace('.', translate.getText('.'))}</td>
+                                        <td style={tableMidColStyle}>{(minimum.toFixed(2)).toString().replace('.', translate.getText('.'))}</td>
                                         <td>{tauxLabel}</td>
                                     </tr>
                                     <tr>
                                         <td style={tableLeftColStyle}>{translate.getText("MAXIMUM")}:&nbsp;</td>
-                                        <td style={tableMidColStyle}>{(maximum).toString().replace('.', translate.getText('.'))}</td>
+                                        <td style={tableMidColStyle}>{(maximum.toFixed(2)).toString().replace('.', translate.getText('.'))}</td>
                                         <td>{tauxLabel}</td>
                                     </tr>
                                 </tbody>
