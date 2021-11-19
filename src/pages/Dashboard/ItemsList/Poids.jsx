@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { IonInput, IonText,IonButton,IonGrid, IonContent, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonRow, IonItemDivider} from '@ionic/react';
+import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar} from '@ionic/react';
 import {arrowDropdownCircle} from 'ionicons/icons';
 import '../../../pages/Tab1.css';
 import '../../../pages/poids.css';
 import TableauPoids from "../../Poids/configuration/TableauPoids"
 import * as poidsService from "../../Poids/configuration/poidsService"
+import * as translate from "../../../translate/Translator";
 
 
 const accor = (divId) => {
@@ -68,7 +68,7 @@ const Poids = (props) => {
           <img src="/assets/Poids.jpg" alt="" />
         </IonAvatar>
         <IonLabel>
-        <h2 color="warning"><b>Poids</b></h2>
+        <h2 color="warning"><b>{translate.getText("POIDS_NOM_SECTION")}</b></h2>
         </IonLabel>
         <IonInput className='poidsActuelReadOnly' type="number" value={poidsService.formatPoids(dailyPoids)} onIonChange={handleChange}> </IonInput>
         <IonIcon className="arrowDashItem"  icon={arrowDropdownCircle} onClick={() => accor("accordeonPoids")}/>

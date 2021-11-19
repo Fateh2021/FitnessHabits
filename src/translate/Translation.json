@@ -289,9 +289,9 @@
       "es":"Parámetros",
       "fr":"Paramètres"
    },
-   "POIDS_PREF_NOTIFICATIONS": {
-      "en":"Notifications",
-      "es":"Notificaciones",
-      "fr":"Notifications"
+   "POIDS_TABL_EVO_3_MOIS": {
+      "en":"Last 3 months weight evolution",
+      "es":"Evolución del peso de los últimos 3 meses",
+      "fr":"Évolution du poids des 3 derniers mois"
    }
 }

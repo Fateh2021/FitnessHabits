@@ -8,7 +8,7 @@ import * as translate from "../../../translate/Translator";
 
 
          
-const Initialisation = (props) => {
+const Initialisation = () => {
   const history = useHistory()
   const redirectDashboard = () => {
     history.push("/dashboard") 

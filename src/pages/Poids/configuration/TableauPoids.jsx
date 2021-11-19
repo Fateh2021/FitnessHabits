@@ -3,6 +3,7 @@ import moment from "moment"
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
 import * as poidsService from "../../Poids/configuration/poidsService"
+import * as translate from "../../../translate/Translator";
 
 
 const TableauPoids = () => {
@@ -66,7 +67,7 @@ const TableauPoids = () => {
         
         datasets: [
         {
-            label: "Poids initial",
+            label: translate.getText("POIDS_PREF_POIDS_INITIAL"),
             data: dataPoidsInitial,
             fill: false,
             borderColor: "#F45650",
@@ -74,14 +75,14 @@ const TableauPoids = () => {
             pointRadius: 0
         },
         {
-            label: "Poids",
+            label: translate.getText("POIDS_NOM_SECTION"),
             data: graphData,
             fill: false,
             borderColor: "#3B81C4",
             backgroundColor: "#3B81C4"
         },
         {
-            label: "Poids Cible",
+            label: translate.getText("POIDS_PREF_POIDS_CIBLE"),
             data: dataPoidsCible,
             fill: false,
             borderColor: "#37F52E",
@@ -91,7 +92,7 @@ const TableauPoids = () => {
         ]
     };
   var options = {
-    title: {text: "Évolution du poids des 3 derniers mois", display: true},
+    title: {text: translate.getText("POIDS_TABL_EVO_3_MOIS"), display: true},
     legend: {
       position: "bottom",
       align: "middle"
@@ -108,7 +109,7 @@ const TableauPoids = () => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Poids'
+          labelString: translate.getText("POIDS_NOM_SECTION") + ' (' + poidsService.getprefUnitePoids() + ")" 
         }
       }]
     }
