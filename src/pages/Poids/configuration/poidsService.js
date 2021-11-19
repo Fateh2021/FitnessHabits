@@ -6,7 +6,6 @@ export function initPrefPoids() {
     const userUID = localStorage.getItem('userUid');
     let prefPoidsRef = firebase.database().ref('profiles/' + userUID +"/preferencesPoids")
     prefPoidsRef.once("value").then(function(snapshot) {
-        console.log(snapshot.val())
         if (localStorage["prefUnitePoids"] == "LBS" || localStorage["prefUnitePoids"] == "KG") {
             prefUnitePoids = localStorage.getItem("prefUnitePoids");
         } else if (snapshot.val() != null && snapshot.val().unitePoids != null) {
@@ -15,7 +14,6 @@ export function initPrefPoids() {
             localStorage.setItem("prefUnitePoids", "KG");
         }
     })
-    console.log("PREF: " +  prefUnitePoids)
     localStorage.setItem("prefUnitePoids", prefUnitePoids);
 }
 
@@ -27,8 +25,15 @@ export function formatPoids(poids) {
     return poids
 }
 
+export function formatToKG(poids) {
+    let prefUnitePoids = localStorage.getItem('prefUnitePoids');
+    if (prefUnitePoids == "LBS") {
+        return (poids / 2.2).toFixed(2)
+    }
+    return poids
+}
+
 export function getDailyPoids() {
-    
     const userUID = localStorage.getItem('userUid');
     let preferencesPoidsRef = firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear())
     preferencesPoidsRef.once("value").then(function(snapshot) {

@@ -10,7 +10,6 @@ const TableauPoids = () => {
     const [poidsInitial, setPoidsInitial] = useState("");
     const [poidsCible, setPoidsCible] = useState("");
 
-
     function formatDate (date) {
         let formattedDate = moment(date).format('YYYY-MM-DD')
         return formattedDate
@@ -21,7 +20,6 @@ const TableauPoids = () => {
         let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
         preferencesPoidsRef.once("value").then(function(snapshot) {
             if (snapshot.val() != null) {
-              console.log(poidsService.getprefUnitePoids())
               setPoidsInitial(poidsService.formatPoids(parseFloat(snapshot.val().poidsInitial)));
               setPoidsCible(poidsService.formatPoids(parseFloat(snapshot.val().poidsCible)));
             }
@@ -48,7 +46,6 @@ const TableauPoids = () => {
     if (refData != null) {
       for (const [key, value] of Object.entries(refData)) {
           if (value.poids.datePoids != undefined) {
-            console.log("dsadsa")
               let datePoids = formatDate(value.poids.datePoids)
               let poids = poidsService.formatPoids(value.poids.dailyPoids)
               graphData.push ({x: datePoids, y: poids})

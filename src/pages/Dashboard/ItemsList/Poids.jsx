@@ -33,19 +33,7 @@ const Poids = (props) => {
   useEffect(() => {
     poidsService.initPrefPoids()
     setUnitePoids(poidsService.getDailyPoids())
-    console.log("DSAdsa : " + unitePoids)
-    console.log("DSAdsa : " + poidsService.getDailyPoids())
 
-    // const userUID = localStorage.getItem('userUid');
-    // let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-    // preferencesPoidsRef.once("value").then(function(snapshot) {
-    //     if (snapshot.val() != null) {
-    //       setUnitePoids(snapshot.val().unitePoids);
-    //       if (snapshot.val().unitePoids == "LBS") {
-    //         props.poids.dailyPoids = props.poids.dailyPoids * 2.2
-    //       }
-    //     }
-    //   })
   }, [])
 
 
@@ -56,17 +44,17 @@ const Poids = (props) => {
     const prefUnitePoids = localStorage.getItem('prefUnitePoids');
 
     // const prefUnitePoids = JSON.parse(localStorage.getItem('prefUnitePoids'));
-    dashboard.poids.dailyPoids = dailyPoids;
+    dashboard.poids.dailyPoids = poidsService.formatToKG(dailyPoids);
     dashboard.poids.datePoids = new Date()
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    setDailyPoids(dailyPoids);
-    console.log("UNITE: " + prefUnitePoids)
+    // setDailyPoids(poidsService.formatPoids(dailyPoids));
     if (prefUnitePoids == "LBS") {
-      console.log("UCUI")
       dashboard.poids.dailyPoids = ((dailyPoids / 2.2).toFixed(2))
     }
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
+    dashboard.poids.dailyPoids = dailyPoids;
+
   }
 
   const handleRouteToConfigurationPoids = () => {
@@ -82,7 +70,7 @@ const Poids = (props) => {
         <IonLabel>
         <h2 color="warning"><b>Poids</b></h2>
         </IonLabel>
-        <IonInput className='poidsActuelReadOnly' type="number" value={dailyPoids} onIonChange={handleChange}> </IonInput>
+        <IonInput className='poidsActuelReadOnly' type="number" value={poidsService.formatPoids(dailyPoids)} onIonChange={handleChange}> </IonInput>
         <IonIcon className="arrowDashItem"  icon={arrowDropdownCircle} onClick={() => accor("accordeonPoids")}/>
       </IonItem>
       <div id="accordeonPoids" className="accordeonPoids">
