@@ -6,6 +6,7 @@ import {arrowDropdownCircle} from 'ionicons/icons';
 import '../../../pages/Tab1.css';
 import '../../../pages/poids.css';
 import TableauPoids from "../../Poids/configuration/TableauPoids"
+import * as poidsService from "../../Poids/configuration/poidsService"
 
 
 const accor = (divId) => {
@@ -30,16 +31,18 @@ const Poids = (props) => {
   }, [props.poids])
 
   useEffect(() => {
-    const userUID = localStorage.getItem('userUid');
-    let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-    preferencesPoidsRef.once("value").then(function(snapshot) {
-        if (snapshot.val() != null) {
-          setUnitePoids(snapshot.val().unitePoids);
-          if (snapshot.val().unitePoids == "LBS") {
-            props.poids.dailyPoids = props.poids.dailyPoids * 2.2
-          }
-        }
-      })
+    poidsService.initPrefPoids()
+    setUnitePoids(poidsService.getDailyPoids)
+    // const userUID = localStorage.getItem('userUid');
+    // let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+    // preferencesPoidsRef.once("value").then(function(snapshot) {
+    //     if (snapshot.val() != null) {
+    //       setUnitePoids(snapshot.val().unitePoids);
+    //       if (snapshot.val().unitePoids == "LBS") {
+    //         props.poids.dailyPoids = props.poids.dailyPoids * 2.2
+    //       }
+    //     }
+    //   })
   }, [])
 
 

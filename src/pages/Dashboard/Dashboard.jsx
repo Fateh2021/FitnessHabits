@@ -232,6 +232,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     FormatDate(currentDate.startDate).then(dt => {
       setFormatedCurrentDate(dt);
     });
+
     if (localDashboard) {
       const sets = addMissingDashboard(JSON.parse(localDashboard));
       localStorage.setItem('dashboard', JSON.stringify(sets));

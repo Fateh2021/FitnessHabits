@@ -84,8 +84,8 @@ const Initialisation = (props) => {
     let pi = poidsInitial;
     let pc = poidsCible;
     if (unitePoids == "LBS") {
-      pi = (poidsCible / 2.2).toFixed(2)
-      pc = (poidsInitial / 2.2).toFixed(2)
+      pi = (poidsInitial / 2.2).toFixed(2)
+      pc = (poidsCible / 2.2).toFixed(2)
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     console.log(preferencesPoids);
