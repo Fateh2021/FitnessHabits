@@ -56,7 +56,6 @@ const Initialisation = () => {
     let OldUnitePoids = unitePoids;
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    console.log("DSADSA: " + dashboard.poids.dailyPoids)
     if (OldUnitePoids == "KG" && value == "LBS") {
       // dashboard.poids.dailyPoids = ((dashboard.poids.dailyPoids * 2.2).toFixed(2))
       setPoidsCible((poidsCible * 2.2).toFixed(2))
