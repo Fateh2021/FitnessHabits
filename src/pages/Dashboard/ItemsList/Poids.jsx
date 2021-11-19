@@ -32,7 +32,10 @@ const Poids = (props) => {
 
   useEffect(() => {
     poidsService.initPrefPoids()
-    setUnitePoids(poidsService.getDailyPoids)
+    setUnitePoids(poidsService.getDailyPoids())
+    console.log("DSAdsa : " + unitePoids)
+    console.log("DSAdsa : " + poidsService.getDailyPoids())
+
     // const userUID = localStorage.getItem('userUid');
     // let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
     // preferencesPoidsRef.once("value").then(function(snapshot) {
@@ -50,12 +53,16 @@ const Poids = (props) => {
     let dailyPoids = event.target.value;
 
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    const prefUnitePoids = localStorage.getItem('prefUnitePoids');
+
+    // const prefUnitePoids = JSON.parse(localStorage.getItem('prefUnitePoids'));
     dashboard.poids.dailyPoids = dailyPoids;
     dashboard.poids.datePoids = new Date()
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     setDailyPoids(dailyPoids);
-
-    if (unitePoids == "LBS") {
+    console.log("UNITE: " + prefUnitePoids)
+    if (prefUnitePoids == "LBS") {
+      console.log("UCUI")
       dashboard.poids.dailyPoids = ((dailyPoids / 2.2).toFixed(2))
     }
     const userUID = localStorage.getItem('userUid');

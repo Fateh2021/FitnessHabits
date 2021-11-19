@@ -7,10 +7,10 @@ export function initPrefPoids() {
     let prefPoidsRef = firebase.database().ref('profiles/' + userUID +"/preferencesPoids")
     prefPoidsRef.once("value").then(function(snapshot) {
         console.log(snapshot.val())
-        if (localStorage["prefUnitePoids"] == "LBS" || localStorage["prefUnitePoids"] == "LBS") {
+        if (localStorage["prefUnitePoids"] == "LBS" || localStorage["prefUnitePoids"] == "KG") {
             prefUnitePoids = localStorage.getItem("prefUnitePoids");
         } else if (snapshot.val() != null && snapshot.val().unitePoids != null) {
-            localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids);
+            localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
         } else {
             localStorage.setItem("prefUnitePoids", "KG");
         }

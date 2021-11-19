@@ -2,13 +2,13 @@ import { Line } from "react-chartjs-2";
 import moment from "moment"
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
+import * as poidsService from "../../Poids/configuration/poidsService"
+
 
 const TableauPoids = () => {
-
     const [refData, setRefData] = useState()
     const [poidsInitial, setPoidsInitial] = useState("");
     const [poidsCible, setPoidsCible] = useState("");
-    const [unitePoids, setUnitePoids] = useState("");
 
 
     function formatDate (date) {
@@ -21,9 +21,9 @@ const TableauPoids = () => {
         let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
         preferencesPoidsRef.once("value").then(function(snapshot) {
             if (snapshot.val() != null) {
-              setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
-              setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
-              setUnitePoids(snapshot.val().unitePoids);
+              console.log(poidsService.getprefUnitePoids())
+              setPoidsInitial(poidsService.formatPoids(parseFloat(snapshot.val().poidsInitial)));
+              setPoidsCible(poidsService.formatPoids(parseFloat(snapshot.val().poidsCible)));
             }
           })
     }, [])
@@ -37,9 +37,8 @@ const TableauPoids = () => {
         let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
         preferencesPoidsRef.once("value").then(function(snapshot) {
             if (snapshot.val() != null) {
-                setUnitePoids(snapshot.val().unitePoids);
-                setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
-                setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
+                setPoidsInitial(poidsService.formatPoids(parseFloat(snapshot.val().poidsInitial)));
+                setPoidsCible(poidsService.formatPoids(parseFloat(snapshot.val().poidsCible)))
             }
           })
     }, [])
@@ -49,12 +48,13 @@ const TableauPoids = () => {
     if (refData != null) {
       for (const [key, value] of Object.entries(refData)) {
           if (value.poids.datePoids != undefined) {
+            console.log("dsadsa")
               let datePoids = formatDate(value.poids.datePoids)
-              let poids = value.poids.dailyPoids
+              let poids = poidsService.formatPoids(value.poids.dailyPoids)
               graphData.push ({x: datePoids, y: poids})
           }
       }
-      let sortedGraphData = graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
+      graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
     }
     let start = new Date(),
     end = new Date();
@@ -111,7 +111,7 @@ const TableauPoids = () => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Poids (Kg)'
+          labelString: 'Poids'
         }
       }]
     }
