@@ -11,7 +11,7 @@ import * as translate from "../../../translate/Translator";
 const Initialisation = () => {
   const history = useHistory()
   const redirectDashboard = () => {
-    history.push("/dashboard") 
+    window.location.href = "/dashboard"
   }
 
   const userUID = localStorage.getItem('userUid');
