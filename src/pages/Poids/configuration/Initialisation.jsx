@@ -6,6 +6,7 @@ import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, Ion
 import "../../poids.css";
 import * as translate from "../../../translate/Translator";
 
+const DIFF_UNITE_POIDS = 2.2;
 
          
 const Initialisation = () => {
@@ -18,16 +19,14 @@ const Initialisation = () => {
   
   let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
 
-  
-
   useEffect(() => {
     preferencesPoidsRef.once("value").then(function(snapshot) {
       if (snapshot.val() != null) {
 
         setUnitePoids(snapshot.val().unitePoids);
         if (snapshot.val().unitePoids == "LBS") {
-          setPoidsInitial((parseFloat(snapshot.val().poidsInitial) * 2.2).toFixed(2));
-          setPoidsCible((parseFloat(snapshot.val().poidsCible) * 2.2 ).toFixed(2));
+          setPoidsInitial((parseFloat(snapshot.val().poidsInitial) * DIFF_UNITE_POIDS).toFixed(2));
+          setPoidsCible((parseFloat(snapshot.val().poidsCible) * DIFF_UNITE_POIDS ).toFixed(2));
         } else {
           setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
           setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
@@ -42,7 +41,6 @@ const Initialisation = () => {
   const [unitePoids, setUnitePoids] = useState("");
   const [dateCible, setDateCible] = useState("");
   
-
   const handlePoidsInitialChange = (value) => {
     setPoidsInitial(value)
   }
@@ -57,13 +55,11 @@ const Initialisation = () => {
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     if (OldUnitePoids == "KG" && value == "LBS") {
-      // dashboard.poids.dailyPoids = ((dashboard.poids.dailyPoids * 2.2).toFixed(2))
-      setPoidsCible((poidsCible * 2.2).toFixed(2))
-      setPoidsInitial((poidsInitial * 2.2).toFixed(2))
+      setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
+      setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
     } else if (OldUnitePoids == "LBS" && value == "KG") {
-      // dashboard.poids.dailyPoids = ((dashboard.poids.dailyPoids / 2.2).toFixed(2))
-      setPoidsCible((poidsCible / 2.2).toFixed(2))
-      setPoidsInitial((poidsInitial / 2.2).toFixed(2))
+      setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
+      setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
     }
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
   }
@@ -83,8 +79,8 @@ const Initialisation = () => {
     let pi = poidsInitial;
     let pc = poidsCible;
     if (unitePoids == "LBS") {
-      pi = (poidsInitial / 2.2).toFixed(2)
-      pc = (poidsCible / 2.2).toFixed(2)
+      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
+      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     console.log(preferencesPoids);
