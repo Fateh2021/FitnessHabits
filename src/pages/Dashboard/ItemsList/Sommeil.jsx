@@ -113,7 +113,12 @@ const Sommeil = (props) => {
                     <IonLabel><b className="text-white">{translate.getText("BED_TIME")}</b></IonLabel>
                   </IonCol>
                   <IonCol size="12">
-                    <IonDatetime className="input-sommeil" displayFormat="HH:mm" value={selectedHeureDebut} onIonChange={e => setSelectedHeureDebut(e.detail.value)}></IonDatetime>
+                    <IonDatetime className="input-sommeil" 
+                    cancelText={translate.getText("CANCEL")}
+                    doneText="OK" 
+                    displayFormat="HH:mm" 
+                    value={selectedHeureDebut} 
+                    onIonChange={e => setSelectedHeureDebut(e.detail.value)}></IonDatetime>
                   </IonCol>
                 </IonRow>
               </IonCol>
@@ -125,7 +130,11 @@ const Sommeil = (props) => {
                     <IonLabel><b className="text-white">{translate.getText("WAKE_UP_TIME")}</b></IonLabel>
                   </IonCol>
                   <IonCol size="12">
-                    <IonDatetime className="input-sommeil" displayFormat="HH:mm" value={selectedHeureFin} onIonChange={e => setSelectedHeureFin(e.detail.value)}></IonDatetime>
+                    <IonDatetime className="input-sommeil" 
+                      cancelText={translate.getText("CANCEL")} 
+                      doneText="OK"
+                      displayFormat="HH:mm" value={selectedHeureFin} 
+                      onIonChange={e => setSelectedHeureFin(e.detail.value)}></IonDatetime>
                   </IonCol>
                 </IonRow>
               </IonCol>
@@ -148,7 +157,7 @@ const Sommeil = (props) => {
               <IonCol size="8">
                 <IonItem className="ion-no-padding" lines="none" >
                   <IonLabel className="ion-hide">{translate.getText("STATE_OF_MIND")}</IonLabel>
-                  <IonSelect style={{ minWidth: "100%" }} className="input-sommeil" value={selectedEtatReveil} placeholder={translate.getText("STATE_OF_MIND")} onIonChange={(e) => setEtatReveil(e.detail.value)}>
+                  <IonSelect style={{ minWidth: "100%" }} className="input-sommeil"  cancelText={translate.getText("CANCEL")} value={selectedEtatReveil} placeholder={translate.getText("STATE_OF_MIND")} onIonChange={(e) => setEtatReveil(e.detail.value)}>
                     <IonSelectOption value="repose">{translate.getText("RESTED")}</IonSelectOption>
                     <IonSelectOption value="heureux">{translate.getText("HAPPY")}</IonSelectOption>
                     <IonSelectOption value="fatigue">{translate.getText("FATIGUE")}</IonSelectOption>

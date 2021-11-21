@@ -224,6 +224,11 @@
       "es":"Dormido en",
       "fr":"Endormi à"
    },
+   "CANCEL":{
+      "en":"Cancel",
+      "es":"Cancelar",
+      "fr":"Annuler"
+   },
    "CONNECT":{
       "en":"Log in",
       "es":"Conectarse",
