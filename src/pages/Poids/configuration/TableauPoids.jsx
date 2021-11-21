@@ -21,8 +21,8 @@ const TableauPoids = () => {
         let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
         preferencesPoidsRef.once("value").then(function(snapshot) {
             if (snapshot.val() != null) {
-              setPoidsInitial(poidsService.formatPoids(parseFloat(snapshot.val().poidsInitial)));
-              setPoidsCible(poidsService.formatPoids(parseFloat(snapshot.val().poidsCible)));
+              setPoidsInitial(parseFloat(snapshot.val().poidsInitial));
+              setPoidsCible(parseFloat(snapshot.val().poidsCible));
             }
           })
     }, [])
@@ -33,13 +33,6 @@ const TableauPoids = () => {
           poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
           setRefData(snapshot.val())
         });
-        let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-        preferencesPoidsRef.once("value").then(function(snapshot) {
-            if (snapshot.val() != null) {
-                setPoidsInitial(poidsService.formatPoids(parseFloat(snapshot.val().poidsInitial)));
-                setPoidsCible(poidsService.formatPoids(parseFloat(snapshot.val().poidsCible)))
-            }
-          })
     }, [])
 
 
@@ -59,10 +52,16 @@ const TableauPoids = () => {
 
     start.setDate(start.getDate() - 90); // set to 'now' minus 7 days.
     start.setHours(0, 0, 0, 0); // set to midnight.
-
-    let dataPoidsInitial = [{x: start, y: poidsInitial},{x: end, y: poidsInitial}]
-    let dataPoidsCible = [{x: start, y: poidsCible},{x: end, y: poidsCible}]
+    let poidsIni = poidsService.formatPoids(poidsInitial)
+    let poidsCib = poidsService.formatPoids(poidsCible)
+    let dataPoidsInitial = [{x: start, y: poidsIni},{x: end, y: poidsIni}]
+    let dataPoidsCible = [{x: start, y: poidsCib},{x: end, y: poidsCib}]
     
+    console.log(graphData )
+    console.log(" dataPoidsInitial: " + dataPoidsInitial[0].y )
+    console.log("dataPoidsCible: " + dataPoidsCible[0].y )
+
+
     const data = {
         
         datasets: [
@@ -109,7 +108,7 @@ const TableauPoids = () => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: translate.getText("POIDS_NOM_SECTION") + ' (' + poidsService.getprefUnitePoids() + ")" 
+          labelString: translate.getText("POIDS_NOM_SECTION") + ' (' + poidsService.getPrefUnitePoids() + ")" 
         }
       }]
     }

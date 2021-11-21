@@ -45,9 +45,15 @@ export function getDailyPoids() {
     })
 }
 
-export function getprefUnitePoids() {
+export function getPrefUnitePoids() {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
     return prefUnitePoids
+}
+
+export function setPrefUnitePoids(val) {
+    const userUID = localStorage.getItem('userUid');
+    localStorage.setItem("prefUnitePoids",val)
+    firebase.database().ref('profiles/' + userUID +"/preferencesPoids").update({"unitePoids": val})
 }
 
 export function saveEntreeDePoids(dailyPoids) {

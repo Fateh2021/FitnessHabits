@@ -5,6 +5,7 @@ import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, Ion
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
 import "../../poids.css";
 import * as translate from "../../../translate/Translator";
+import * as poidsService from "../../Poids/configuration/poidsService"
 
 const DIFF_UNITE_POIDS = 2.2;
 
@@ -61,6 +62,7 @@ const Initialisation = () => {
       setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
       setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
     }
+    
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
   }
 
@@ -83,6 +85,7 @@ const Initialisation = () => {
       pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
+    poidsService.setPrefUnitePoids(unitePoids)
     console.log(preferencesPoids);
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
