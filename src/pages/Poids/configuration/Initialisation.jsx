@@ -86,7 +86,6 @@ const Initialisation = () => {
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     poidsService.setPrefUnitePoids(unitePoids)
-    console.log(preferencesPoids);
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
     

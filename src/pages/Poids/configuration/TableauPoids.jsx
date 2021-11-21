@@ -56,10 +56,6 @@ const TableauPoids = () => {
     let poidsCib = poidsService.formatPoids(poidsCible)
     let dataPoidsInitial = [{x: start, y: poidsIni},{x: end, y: poidsIni}]
     let dataPoidsCible = [{x: start, y: poidsCib},{x: end, y: poidsCib}]
-    
-    console.log(graphData )
-    console.log(" dataPoidsInitial: " + dataPoidsInitial[0].y )
-    console.log("dataPoidsCible: " + dataPoidsCible[0].y )
 
 
     const data = {
