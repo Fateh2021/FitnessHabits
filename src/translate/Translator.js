@@ -1,29 +1,39 @@
 import firebase from 'firebase'
+import { useEffect } from 'react';
 const dict = require('./Translation.json');
 const supportedLanguages = ["en", "es", "fr"];
+const userUID = localStorage.getItem('userUid');
+
+export function initLangue() {
+    var language = "fr"
+    let prefLangueRef = firebase.database().ref('language/' + userUID)
+    prefLangueRef.once("value").then(function(snapshot) {
+        if (localStorage["userLanguage"]) {
+            language = localStorage.getItem("userLanguage");
+        } else if (snapshot.val() != null && supportedLanguages.includes(snapshot.val().langue)) {
+            language = snapshot.val().langue
+        } else {
+            var locale = window.navigator.userLanguage
+                    || window.navigator.language;
+            locale = locale.substring(0, 2);
+            if (supportedLanguages.includes(locale)) {
+                language = locale;
+            }
+        }
+    })
+    localStorage.setItem("userLanguage", language);
+}
 
 export function setLang(lang) {
-    const userUID = localStorage.getItem('userUid');
     if (supportedLanguages.includes(lang)) {
         localStorage.setItem("userLanguage", lang);
         var field = { "langue": lang }
-        firebase.database().ref('language/' + userUID).update(field);
+    firebase.database().ref('language/' + userUID).update(field);
     }
 }
 
 export function getLang() {
-    var language = "en";
-    if (localStorage["userLanguage"]) {
-        language = localStorage.getItem("userLanguage");
-    } else {
-        var locale = window.navigator.userLanguage
-                || window.navigator.language;
-        locale = locale.substring(0, 2);
-        if (supportedLanguages.includes(locale)) {
-            language = locale;
-        }
-    }
-    return language;
+    return localStorage.getItem("userLanguage");;
 }
 
 export function getText(key) {

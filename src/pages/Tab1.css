@@ -806,22 +806,6 @@ color: #ffffff;
   text-align: center;
  }
 
- .inputSuppConsom{
-  font-size:16px;
-  padding-left: 10px;
-  margin-bottom: 10pxpx;
-  font-stretch: semi-condensed;
-  font-weight: bold;
-  margin-top: 3px;
-  margin-right: 10px;
-  margin-left: 10px;
-  color: #000000;
-  text-align: center;
-  border: 2px solid #8b8a8b;
-  border-radius: 4px;
-  background-color: white;
- }
-
 .ionRadio1{
   position: absolute;
   bottom:3px;
@@ -1554,24 +1538,6 @@ height: 58%;
   color: #463f3f;
  }
 
- .inputTextIMC {
-  width: 30px;
-  height: 5;
-  background-color: none;
-  margin-left: 80px;
-  margin-top: -27px;
-  margin-bottom: -6px;
-  border-radius: 15px;
-  color: #eeda24;
- }
-
- .inputTextIMC h2{
-  font-size:small;
-  font-weight: bold;
-  text-align: center;
-  color: #eeda24;
- }
-
  .ionSelect{
   color: #f7e8ca;
   font-weight: bold;
@@ -1943,13 +1909,6 @@ h2{
   --ion-background-color: #3e554a;
 }
 
-#myDIVAjoutSupp1{
-  z-index: 3;
-  padding: 2px 0;
-  --ion-background-color: #589051;
-  --ion-color-light: #FFF;
-}
-
 .divTitre4 {
   z-index: 3;
   padding: 2px 0;
@@ -1981,8 +1940,8 @@ h2{
 }
 
 .divTitre9 {
-  z-index: 3;
-  padding: 2px 0;
+  
+  width: 100%;
   --ion-background-color: #113d37;
 }
 
@@ -2162,26 +2121,4 @@ h2{
   font-weight: bold;
   color: black;
   right: 50px;
-}
-
-#inputDose{
-  max-width: 10%!important;
-}
-#suppSelect{
-  min-width: 40%;
-}
-.timeBox{
-  border: 1px solid rgba(255, 238, 0, 0.658);
-  min-width: 60%;
-  border-radius: 5px;
-}
-
-.selectPeriod{
-  border-radius: 5px;
-  width: 25%;
-  height: 70%;
-  margin: 5%;
-}
-.selectPeriod .selected{
-
-}
+}

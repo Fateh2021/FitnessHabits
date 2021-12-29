@@ -137,17 +137,8 @@ const Supplements = (props) => {
             <b>{translate.getText("SUPPL_TITLE")}</b>
           </h2>
         </IonLabel>
-        <IonInput
-          className="inputTextGly"
-          readonly
-          color="danger"
-          value={""}
-        ></IonInput>
-        <IonIcon
-          className="arrowDashItem"
-          icon={arrowDropdownCircle}
-          onClick={() => accor("myDIVSuppl")}
-        />
+        <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => console.log("Open Supplements")}/>
       </IonItem>
       <div id="myDIVSuppl">
         <IonList>

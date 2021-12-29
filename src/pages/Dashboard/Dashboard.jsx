@@ -122,7 +122,11 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     },
     sommeil: {
       heure: 0,
-      minute: 0
+      minute: 0,
+      heureDebut: "00:00",
+      heureFin: "00:00",
+      nbReveils: 0,
+      etatReveil: null
     },
     activities: {
       heure: 0,
@@ -234,6 +238,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     FormatDate(currentDate.startDate).then(dt => {
       setFormatedCurrentDate(dt);
     });
+
     if (localDashboard) {
       const sets = addMissingDashboard(JSON.parse(localDashboard));
       localStorage.setItem('dashboard', JSON.stringify(sets));
@@ -438,8 +443,10 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               urine:0
             },
             sommeil : {
-              heure:0,
-              minute:0
+              heureDebut: "00:00",
+              heureFin: "00:00",
+              nbReveils: 0,
+              etatReveil: null
             },
             activities : {
               heure:0,
@@ -577,8 +584,10 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               urine:0
             },
             sommeil : {
-              heure:0,
-              minute:0
+              heureDebut: "00:00",
+              heureFin: "00:00",
+              nbReveils: 0,
+              etatReveil: null
             },
             activities : {
               heure:0,
@@ -635,7 +644,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
             <IonRow>
               <IonCol size="2">
                 <IonTabButton >
-                  <IonIcon className="buttonTimeLeft" icon={arrowDropleftCircle} onClick={""} />
+                  <IonIcon className="buttonTimeLeft" icon={arrowDropleftCircle} onClick={() => console.log("Go Left!")} />
                 </IonTabButton>
               </IonCol>
               <IonCol></IonCol>
@@ -651,7 +660,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               <IonCol></IonCol>
               <IonCol size="2">
                 <IonTabButton>
-                  <IonIcon className="buttonTimeRight" icon={arrowDroprightCircle} onClick={""} />
+                  <IonIcon className="buttonTimeRight" icon={arrowDroprightCircle} onClick={() => console.log("Go Right!")} />
                 </IonTabButton>
               </IonCol>
             </IonRow>
@@ -691,7 +700,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
           <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
           <Activities heures={dashboard.activities.heure} minutes={dashboard.activities.minute} currentDate={currentDate} sommeil={dashboard.activities} />
-          <Sommeil heures={dashboard.sommeil.heure} minutes={dashboard.sommeil.minute} currentDate={currentDate} sommeil={dashboard.sommeil} />
+          <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
           <Alcool alcool={dashboard.alcool} alcools={dashboard.alcool.alcools} globalConsumption={dashboard.alcool.dailyTarget.globalConsumption} currentDate={currentDate} />
           <Poids poids={dashboard.poids} currentDate={currentDate} />
         </IonList>
