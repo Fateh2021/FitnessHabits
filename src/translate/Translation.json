@@ -329,57 +329,6 @@
       "es":"Espere por favor..",
       "fr":"Veuillez patienter.."
    },
-<<<<<<< HEAD
-   "AVERAGE":{
-      "en":"Average",
-      "es":"Media",
-      "fr":"Moyenne"
-   },
-   "MINIMUM":{
-      "en":"Minimum",
-      "es":"Mínimo",
-      "fr":"Minimum"
-   },
-   "MAXIMUM":{
-      "en":"Maximum",
-      "es":"Máximo",
-      "fr":"Maximum"
-   },
-   "LAST_VALUE":{
-      "en":"Last measured value",
-      "es":"Último valor medido",
-      "fr":"Dernière valeur mesurée"
-   },
-   "BLOOD_SUGAR_LEVEL":{
-      "en":"Blood sugar level",
-      "es":"Nivel de azúcar en sangre",
-      "fr":"Taux glycémie"
-   },
-   "WEEK_LETTER":{
-      "en":"W",
-      "es":"S",
-      "fr":"S"
-   },
-   "YEAR_LETTER":{
-      "en":"Y",
-      "es":"A",
-      "fr":"A"
-   },
-   "NO_DATA_FOUND":{
-      "en":"No data found",
-      "es":"Ningún dato encontrado",
-      "fr":"Aucune donnée trouvée"
-   },
-   "LOADING":{
-      "en":"Loading",
-      "es":"Cargando",
-      "fr":"Chargement"
-   },
-   ".":{
-      "en":".",
-      "es":",",
-      "fr":","
-=======
    "POIDS_NOM_SECTION":{
       "en":"Weight",
       "es":"Peso",
@@ -439,6 +388,5 @@
       "en":"Last 3 months weight evolution",
       "es":"Evolución del peso de los últimos 3 meses",
       "fr":"Évolution du poids des 3 derniers mois"
->>>>>>> feature/17
    }
 }
