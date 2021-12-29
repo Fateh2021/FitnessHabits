@@ -94,6 +94,196 @@
       "es":"unidad",
       "fr":"unité"
    },
+   "SUPPL_TITLE":{
+      "en":"Supplements",
+      "es":"Suplementos",
+      "fr":"Suppléments"
+   },
+   "SUPPL_ADD":{
+      "en":"Add supplements/medications",
+      "es":"Añadir suplementos/medicamentos",
+      "fr":"Ajouter suppléments/médicaments"
+   }, 
+   "SUPPL_NOM":{
+      "en":"Name",
+      "es":"Nombre",
+      "fr":"Nom"
+   }, 
+   "SUPPL_FORME_CAPSULE":{
+      "en":"Capsule",
+      "es":"Cápsula",
+      "fr":"Gélule"
+   }, 
+   "SUPPL_FORME_TABLET":{
+      "en":"Tablet",
+      "es":"Tableta",
+      "fr":"Comprimé"
+   }, 
+   "SUPPL_FORME_DROP":{
+      "en":"Drop",
+      "es":"Gota",
+      "fr":"Goutte"
+   }, 
+   "SUPPL_FORME_SYROP":{
+      "en":"Syrup",
+      "es":"Jarabe",
+      "fr":"Sirop"
+   }, 
+   "SUPPL_SUPPPLEMENT":{
+      "en":"Supplement",
+      "es":"Suplemento",
+      "fr":"Supplément"
+   },
+   "SUPPL_MEDICAMENT":{
+      "en":"Medicament",
+      "es":"Medicamento",
+      "fr":"Médicament"
+   },  
+   "SUPPL_DATE_DEBUT":{
+      "en":"Start date",
+      "es":"Fecha de inicio",
+      "fr":"Date de debut"
+   },  
+   "SUPPL_DATE_FIN":{
+      "en":"End date",
+      "es":"Fecha de fin",
+      "fr":"Date de fin"
+   },  
+   "SUPPL_ACTIVE":{
+      "en":"Active",
+      "es":"Activo",
+      "fr":"Actif"
+   },
+   "SUPPL_POSOLOGY":{
+      "en":"Posology",
+      "es":"Posología",
+      "fr":"Posologie"
+   },
+   "SUPPL_DOSE_BY":{
+      "en":"Dose by",
+      "es":"Dosis por",
+      "fr":"Dose par"
+   },
+   "SUPPL_DOSE":{
+      "en":"Dose",
+      "es":"Dosis",
+      "fr":"Dose"
+   },
+   "SUPPL_ADD_SELECT":{
+      "en":"Add",
+      "es":"agregar",
+      "fr":"Ajouter"
+   },
+   "SUPPL_COFFE_SPOON":{
+      "en":"Coffee spoon",
+      "es":"Cuchara de café",
+      "fr":"Cuillère à café"
+   },
+   "SUPPL_SOUP_SPOON":{
+      "en":"Soup spoon",
+      "es":"Cuchara de sopa",
+      "fr":"Cuillère à soupe"
+   },
+   "SUPPL_EVERY_DAY":{
+      "en":"Every day",
+      "es":"Todos los días",
+      "fr":"Tous les jours"
+   },
+   "SUPPL_MONDAY":{
+      "en":"Monday",
+      "es":"Lunes",
+      "fr":"Lundi"
+   },
+   "SUPPL_TUESDAY":{
+      "en":"Tuesday",
+      "es":"Martes",
+      "fr":"Mardi"
+   },
+   "SUPPL_WEDNESDAY":{
+      "en":"Wednesday",
+      "es":"Miércoles",
+      "fr":"Mercredi"
+   },
+   "SUPPL_THURSDAY":{
+      "en":"Thursday",
+      "es":"Jueves",
+      "fr":"Jeudi"
+   },
+   "SUPPL_FRIDAY":{
+      "en":"Friday",
+      "es":"Viernes",
+      "fr":"Vendredi"
+   },
+   "SUPPL_SATURDAY":{
+      "en":"Saturday",
+      "es":"Sábado",
+      "fr":"Samedi"
+   },
+   "SUPPL_SUNDAY":{
+      "en":"Sunday",
+      "es":"Domingo",
+      "fr":"Dimanche"
+   },
+   "SUPPL_HOURS":{
+      "en":"Hours",
+      "es":"Horas",
+      "fr":"Heures"
+   },
+   "SUPPL_DAY":{
+      "en":"Days",
+      "es":"Dias",
+      "fr":"Jours"
+   },
+   "SUPPL_WEEK":{
+      "en":"Week",
+      "es":"Semana",
+      "fr":"Semaine"
+   },
+   "SUPPL_MONTH":{
+      "en":"Month",
+      "es":"Mes",
+      "fr":"Mois"
+   },
+   "SUPPL_MORNING":{
+      "en":"Morning",
+      "es":"Mañana",
+      "fr":"Matin"
+   },
+   "SUPPL_HALF_DAY":{
+      "en":"Half-day",
+      "es":"Medio día",
+      "fr":"Midi"
+   },
+   "SUPPL_NIGHT":{
+      "en":"Night",
+      "es":"Noche",
+      "fr":"Soir"
+   },
+   "SUPPL_SAVE":{
+      "en":"Save",
+      "es":"Guardar",
+      "fr":"Enregistrer"
+   },
+   "SUPPL_CANCEL":{
+      "en":"Cancel",
+      "es":"Cancelar",
+      "fr":"Annuler"
+   },
+   "SUPPL_LIST":{
+      "en":"List supplements/medications",
+      "es":"Lista suplementos/medicamentos",
+      "fr":"Lister suppléments/médicaments"
+   },
+   "SUPPL_DISPLAY_GAPS":{
+      "en":"Display the gaps",
+      "es":"Visualizar las diferencias",
+      "fr":"Afficher les écarts"
+   },
+   "SUPPL_FORMAT":{
+      "en":"Format",
+      "es":"Formato",
+      "fr":"Format"
+   },
    "DATE_FORMAT_SETTINGS_TITLE":{
       "en":"Date format",
       "es":"Formato de fecha",
