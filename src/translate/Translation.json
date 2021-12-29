@@ -214,15 +214,80 @@
       "es":"¿Contraseña?",
       "fr":"Mot de passe?"
    },
+   "ANGRY":{
+      "en":"Angry",
+      "es":"En cólera",
+      "fr":"En Colère"
+   },
+   "BED_TIME":{
+      "en":"Bed Time",
+      "es":"Dormido en",
+      "fr":"Endormi à"
+   },
+   "CANCEL":{
+      "en":"Cancel",
+      "es":"Cancelar",
+      "fr":"Annuler"
+   },
    "CONNECT":{
       "en":"Log in",
       "es":"Conectarse",
       "fr":"Se connecter"
    },
+   "DATA_SAVED":{
+      "en":"The data has been saved successfully.",
+      "es":"Los datos se han guardado correctamente.",
+      "fr":"Les données ont bien été sauvegardées."
+   },
+   "FATIGUE":{
+      "en":"Tired",
+      "es":"Cansado",
+      "fr":"Fatigué"
+   },
+   "HAPPY":{
+      "en":"Happy",
+      "es":"Contento",
+      "fr":"Heureux"
+   },
+   "I_WOKE_UP":{
+      "en":"During this period, I woke up ",
+      "es":"Durante este periodo, Me he despertado ",
+      "fr":"Durant cette période, je me suis réveillé "
+   },
    "REGISTER":{
       "en":"Register",
       "es":"Registrarse",
       "fr":"S'enregistrer"
+   },
+   "RESTED":{
+      "en":"Rested",
+      "es":"Descansado",
+      "fr":"Reposé"
+   },
+   "SLEEP":{
+      "en":"Sleep",
+      "es":"Dormir",
+      "fr":"Sommeil"
+   },
+   "SOMMEIL_DUREE_ERROR":{
+      "en":"The sleep time cannot be 0 minutes.",
+      "es":"El tiempo de reposo no puede ser de 0 minutos.",
+      "fr":"La durée de sommeil ne peut pas être de 0 minutes."
+   },
+   "SOMMEIL_ETAT_REVEIL_ERROR":{
+      "en":"At least one wake-up state must be selected.",
+      "es":"Debe seleccionarse al menos un estado de activación.",
+      "fr":"Il faut sélectionner au moins un état de réveil."
+   },
+   "STATE_OF_MIND":{
+      "en":"Awakening state of mind",
+      "es":"Despertar estado mental",
+      "fr":"État d'esprit au réveil"
+   },
+   "TIMES":{
+      "en":" times.",
+      "es":" veces.",
+      "fr":" fois."
    },
    "WAIT":{
       "en":"Please wait..",
