@@ -194,6 +194,11 @@
       "es":"¡Error de autenticación de Facebook!",
       "fr":"Erreur d'authentification Facebook !"
    },
+   "AUTH_LOGIN_ERROR":{
+      "en":"Authentification error. The username and/or password are invalid!",
+      "es":"Error de autentificación. ¡El nombre de usuario y/o contraseña no son válidos!",
+      "fr":"Erreur d'authentification. L'identifiant et/ou le mot passe sont invalides !"
+   },
    "OR":{
       "en":"OR",
       "es":"O",
@@ -202,17 +207,37 @@
    "NEW_REGISTER":{
       "en":"New, register",
       "es":"Nuevo, registrarse",
-      "fr":"Nouveau, s'enregistrer"
+      "fr":"Créer un nouveau compte"
    },
    "USER_NAME":{
-      "en":"Username?",
+      "en":"Username",
       "es":"¿Nombre del usuario?",
-      "fr":"Nom d'utilisateur?"
+      "fr":"Nom d'utilisateur"
+   },
+   "USER_NAME_PASSWORD_REQUIRED":{
+      "en":"Username and password are required.",
+      "es":"Se requiere nombre de usuario y contraseña.",
+      "fr":"Nom d'utilisateur et mot de passe requis."
+   },
+   "CONFIRM_PASWORD":{
+      "en":"Confirm the password",
+      "es":"Confirma la contraseña",
+      "fr":"Confirmer le mot de passe"
    },
    "PASSWORD":{
-      "en":"Password?",
+      "en":"Password",
       "es":"¿Contraseña?",
-      "fr":"Mot de passe?"
+      "fr":"Mot de passe"
+   },
+   "PASSWORD_NOT_MATCH":{
+      "en":"Passwords do not match.",
+      "es":"Las contraseñas no coinciden.",
+      "fr":"Les mots de passe ne match pas."
+   },
+   "ALREADY_REGISTERED":{
+      "en":"I have an account.",
+      "es":"Ya tengo una cuenta.",
+      "fr":"J'ai déjà un compte."
    },
    "ANGRY":{
       "en":"Angry",
@@ -257,7 +282,12 @@
    "REGISTER":{
       "en":"Register",
       "es":"Registrarse",
-      "fr":"S'enregistrer"
+      "fr":"S'inscrire"
+   },
+   "REGISTERED_SUCCESSFULLY":{
+      "en":"You have successfully registered.",
+      "es":"Se ha registrado exitosamente.",
+      "fr":"Votre compte a été créé avec succès."
    },
    "RESTED":{
       "en":"Rested",

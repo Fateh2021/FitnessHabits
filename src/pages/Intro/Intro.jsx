@@ -1,6 +1,5 @@
 import React from 'react';
 import { IonGrid, IonPage, IonCol, IonButton, IonRow, IonIcon } from '@ionic/react';
-import { logIn, add } from 'ionicons/icons';
 import * as translate from "../../translate/Translator";
 
 /*DFA*/
@@ -8,22 +7,27 @@ import * as translate from "../../translate/Translator";
 const Intro = () => {
     return (
         <IonPage className="fondIntro">
-            <IonGrid >
+            <IonGrid  style={{marginBottom:100}}>
                 <IonRow >
-                    <IonCol size="12">
-                        <img className="logoIntro" src="/assets/LogoLegion.png" alt="" />
+                    <IonCol size="10" offset="1">
+                        <img className="logoIntro" src="/assets/LogoLegion.svg" width="100%" height="100%" alt="Logo" />
+                    </IonCol>
+                    <IonCol size="8" offset="2">
+                        <img src="/assets/LogoCadre.svg" width="100%" height="100%" alt="Logo_texte"/>
                     </IonCol>
                 </IonRow>
             </IonGrid>
+
             <IonGrid >
-                <IonRow className="">
+                <IonRow>
                     <IonCol size="12">
-                        <IonButton expand="full" routerLink="/login"><IonIcon className="save" icon={logIn}/>{translate.getText("CONNECT")}</IonButton>
-                        <IonButton routerLink="/register" color="secondary"><IonIcon className="save" icon={add}/>{translate.getText("REGISTER")}</IonButton>
+                        <IonButton size="large" class="btn-home" routerLink="/login">{translate.getText("CONNECT")}</IonButton>
                     </IonCol>
+                        <IonButton size="large" class="btn-home" routerLink="/register">{translate.getText("REGISTER")}</IonButton>
                 </IonRow>
             </IonGrid>
         </IonPage>
     )
 }
+
 export default Intro;
