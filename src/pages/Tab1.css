@@ -1437,7 +1437,7 @@ background-color: #ffffff;
 }
 
 .fondIntro{
-    background-image: linear-gradient(#0072ff,#00fff2);
+    background-image: linear-gradient(#0072ff,#00c6ff);
 }
 
 .logoSideBar{
@@ -1447,7 +1447,7 @@ background-color: #ffffff;
 
 .logoIntro{
     margin-top: 30px;
-    text-align: center;
+    margin-left: 0px;
 }
 
 .profilText h2{
@@ -1536,24 +1536,6 @@ height: 58%;
   font-weight: bold;
   text-align: center;
   color: #463f3f;
- }
-
- .inputTextIMC {
-  width: 30px;
-  height: 5;
-  background-color: none;
-  margin-left: 80px;
-  margin-top: -27px;
-  margin-bottom: -6px;
-  border-radius: 15px;
-  color: #eeda24;
- }
-
- .inputTextIMC h2{
-  font-size:small;
-  font-weight: bold;
-  text-align: center;
-  color: #eeda24;
  }
 
  .ionSelect{
@@ -1958,8 +1940,8 @@ h2{
 }
 
 .divTitre9 {
-  z-index: 3;
-  padding: 2px 0;
+  
+  width: 100%;
   --ion-background-color: #113d37;
 }
 
@@ -2139,20 +2121,4 @@ h2{
   font-weight: bold;
   color: black;
   right: 50px;
-}
-
-.btn-home {
-  --background: #fff;
-  --color: rgb(44, 153, 255);
-  text-transform: uppercase;
-  font-weight: 600;
-  --border-radius: 25px;
-  letter-spacing: 1px;
-  width: 100%;
-}
-
-.input-login {
-  --color: rgb(255, 255, 255);
-  border-bottom: 2px solid white;
-  --placeholder-opacity: .8;
 }

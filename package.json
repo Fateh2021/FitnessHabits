@@ -32,6 +32,7 @@
     "mime-db": "^1.48.0",
     "mime-lookup": "^0.0.2",
     "mime-types": "^2.1.31",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-calendar": "^2.19.2",
     "react-chartjs-2": "^2.10.0",
@@ -45,6 +46,7 @@
     "react-scripts": "^3.4.3",
     "react-use-storage": "^0.4.2",
     "react-uuid": "^1.0.2",
+    "recharts": "^2.1.6",
     "typescript": "3.7.4",
     "uuid": "^8.3.1"
   },

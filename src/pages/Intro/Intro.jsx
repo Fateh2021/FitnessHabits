@@ -5,6 +5,7 @@ import * as translate from "../../translate/Translator";
 /*DFA*/
 
 const Intro = () => {
+    translate.initLangue()
     return (
         <IonPage className="fondIntro">
             <IonGrid  style={{marginBottom:100}}>
