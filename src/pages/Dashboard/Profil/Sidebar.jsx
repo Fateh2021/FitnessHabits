@@ -13,7 +13,8 @@ const Sidebar = (props) => {
         email: "",
         size: "",
         gender: "",
-        dateFormat: ""
+        dateFormat: "",
+        profilePicture: ""
       });
       
     // load the current profile from the local storage if it exists, otherwise load it from the DB
@@ -46,7 +47,8 @@ const Sidebar = (props) => {
             "email": updatedProfile.email,
             "size": updatedProfile.size,
             "gender": updatedProfile.gender,
-            "dateFormat": updatedProfile.dateFormat == null ? "" : updatedProfile.dateFormat
+            "dateFormat": updatedProfile.dateFormat == null ? "" : updatedProfile.dateFormat,
+            "profilPicture": updatedProfile.profilePicture == null ? "" : updatedProfile.profilePicture
           }
         );
       };

@@ -5,8 +5,10 @@ import uuid from 'react-uuid';
 import firebase from 'firebase'
 import DefaultSettings from '../../Settings/DefaultSettings'
 import { DateTime } from "luxon";
+import { getLang } from "../../../translate/Translator"
 
 import '../../Tab1.css';
+import {getCurrentUser} from "../../../firebaseConfig";
 
 const AlcoolItem = (props) => {
 
@@ -244,10 +246,12 @@ const Alcool = (props) => {
             weeklyTarget: 0,
             dailyTarget: 0,
             sobrietyDays: 7,
-            notificationMessage: "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
+            notificationMessage: ''
           },
           alcools:DefaultSettings.alcools
         };
+
+        alcoolSettings.limitConsom.notificationMessage = getNotificationMsg()
 
         // Obtenir les consommation jusqu'au dernier lundi
         firebase
@@ -259,10 +263,9 @@ const Alcool = (props) => {
           const currentDate = new Date();
           // Vérifier s'il respecte ses consommations journalières
           const dailyCount = getConsumptionsCount(consommations, currentDate);
-          console.log("Objectif de consommation journalier : ", +alcoolSettings.limitConsom.dailyTarget)
-          console.log("Consommations aujourd'hui : ", dailyCount);
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.dailyTarget && dailyCount > +alcoolSettings.limitConsom.dailyTarget) {
-            console.log("!!notification daily target");
+          if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
+              alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
+            displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage);
           }
           
 
@@ -273,10 +276,9 @@ const Alcool = (props) => {
             const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
             weeklyCount += getConsumptionsCount(consommations, dateDiff)
           }
-          console.log("Objectif de consommation hebdomadaire: ", +alcoolSettings.limitConsom.weeklyTarget);
-          console.log("Consommation cette semaine : ", weeklyCount);
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.weeklyTarget && weeklyCount > +alcoolSettings.limitConsom.weeklyTarget) {
-            console.log("!!notification weekly target");
+          if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
+              alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
+            displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage)
           }
 
           // Vérifier s'il respecte ses jours de consommation de suite 
@@ -285,7 +287,7 @@ const Alcool = (props) => {
           {
             for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
               const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
-              if(getConsumptionsCount(consommations, dateDiff) == 0) {
+              if(getConsumptionsCount(consommations, dateDiff) === 0) {
                 streak = false;
                 break;
               }
@@ -304,6 +306,15 @@ const Alcool = (props) => {
     return date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
   }
 
+  const getNotificationMsg = () => {
+    var userLang = getLang()
+    switch (userLang) {
+      case "fr": return "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
+      case "en": return "According to EducAlcool guidelines, you just exceeded the limits of alcohol intake. This is just a reminder..."
+      case "es": return "Según las recomendaciones de ÉducAlcool, acaba de superar el límite. Es solo un recordatorio ..."
+    }
+  }
+
   const getConsumptionsCount = (consommations, date) => {
     let count = 0;
     const code = getDbDate(date);
@@ -316,6 +327,41 @@ const Alcool = (props) => {
       }
     }
     return count;
+  }
+
+  const displayNotification = (header, message) => {
+    // Notification already being displayed check
+    if (document.getElementsByTagName('ion-toast').length > 0) {
+      return
+    }
+
+    const toast = document.createElement('ion-toast');
+    let header_msg
+    let close_msg
+    switch (header) {
+      case "en": 
+        header_msg = "Too much alcohol?"
+        close_msg = "Close"
+            break;
+      case "fr": 
+        header_msg = "Trop d'Alcool?"
+        close_msg = "Fermer"
+            break;
+      case "es": 
+        header_msg = "¿Demasiado alcohol?"
+        close_msg = "Cerrar"
+    }
+
+    toast.header = header_msg;
+    toast.message = message;
+    toast.duration = 5000;
+    toast.position = 'top'
+    toast.cssClass = 'toast-alcool'
+    toast.showCloseButton = true
+    toast.closeButtonText = close_msg
+
+    document.body.appendChild(toast);
+    toast.present();
   }
 
   return (
