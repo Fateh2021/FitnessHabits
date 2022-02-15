@@ -148,7 +148,8 @@ const Poids = (props) => {
         </IonAvatar>{" "}
         <IonLabel classeName="titrePoids" style={{ width: 60 }}>
           <h2 color="warning">
-            <b>Poids</b>
+            {/*<b>Poids</b>*/}
+	    <b> {translate.getText("POIDS_NOM_SECTION")}</b>
           </h2>
         </IonLabel>
         <div className="titreImc">
