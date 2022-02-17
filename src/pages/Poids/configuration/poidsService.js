@@ -46,8 +46,7 @@ export function getDailyPoids() {
 }
 
 export function getPrefUnitePoids() {
-    let prefUnitePoids = localStorage.getItem('prefUnitePoids');
-    return prefUnitePoids
+    return localStorage.getItem('prefUnitePoids');
 }
 
 export function setPrefUnitePoids(val) {
