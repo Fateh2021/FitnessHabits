@@ -257,11 +257,16 @@ const Settings = (props) => {
           <div>
             De: &nbsp;
             <DatePicker
-              onChange={onChangeD1}
-              value={d1}
-              maxDate={d2}
-              clearIcon={null}
-              autoFocus={true}
+                onChange={onChangeD1}
+                          value={d1}
+                minDate={new Date("01-01-2010")} // A CHANGER ICI POUR LA PLUS PETITE DATE QU'ON VEUT
+                maxDate={d2}
+                clearIcon={null}
+                autoFocus={true}
+                onKeyDown={(e) => {
+                  e.preventDefault()
+                }}
+                          
             />
           </div>
           <div>
@@ -272,6 +277,9 @@ const Settings = (props) => {
               minDate={d1}
               maxDate={new Date()}
               clearIcon={null}
+              onKeyDown={(e) => {
+                  e.preventDefault()
+              }}
             />
           </div>
         </div>
