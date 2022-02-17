@@ -1,5 +1,4 @@
 import React, { useState , useEffect} from 'react';
-import { useHistory } from "react-router-dom";
 import firebase from 'firebase'
 import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent,
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
@@ -8,16 +7,16 @@ import * as translate from "../../../translate/Translator";
 import * as poidsService from "../../Poids/configuration/poidsService"
 
 const DIFF_UNITE_POIDS = 2.2;
-
          
 const Initialisation = () => {
-  const history = useHistory()
-  const redirectDashboard = () => {
-    window.location.href = "/dashboard"
-  }
+
+	const redirectDashboard = () => {
+		window.location.href = "/dashboard"
+	}
 
   const userUID = localStorage.getItem('userUid');
-  
+
+  // Récupération des informations de la préférence par rapport au poids
   let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
 
   useEffect(() => {
@@ -86,7 +85,6 @@ const Initialisation = () => {
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     poidsService.setPrefUnitePoids(unitePoids)
-    const userUID = localStorage.getItem('userUid');
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
     
     redirectDashboard();
