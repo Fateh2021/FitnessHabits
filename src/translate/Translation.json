@@ -578,5 +578,10 @@
       "en":"Last 3 months weight evolution",
       "es":"Evolución del peso de los últimos 3 meses",
       "fr":"Évolution du poids des 3 derniers mois"
+   },
+   "POIDS_IMC_ACCRONIME": {
+      "en":"BMI",
+      "es":"IMC",
+      "fr":"IMC"
    }
 }

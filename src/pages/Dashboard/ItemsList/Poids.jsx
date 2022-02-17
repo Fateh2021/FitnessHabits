@@ -6,16 +6,16 @@ import * as translate from "../../../translate/Translator";
 import {
   IonInput,
   IonText,
-  IonButton,
-  IonGrid,
-  IonContent,
+  //IonButton,
+  //IonGrid,
+  //IonContent,
   IonIcon,
   IonLabel,
   IonItem,
   IonAvatar,
-  IonCol,
-  IonRow,
-  IonItemDivider,
+  //IonCol,
+  //IonRow,
+  //IonItemDivider,
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
@@ -143,19 +143,18 @@ const Poids = (props) => {
   return (
     <div>
       <IonItem className="divTitre9" lines="none">
-        <IonAvatar slot="start" onClick={handleRouteToConfigurationPoids}>
+        <IonAvatar class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
           <img src="/assets/Poids.jpg" alt="" />
         </IonAvatar>{" "}
         <IonLabel classeName="titrePoids" style={{ width: 60 }}>
           <h2 color="warning">
-            {/*<b>Poids</b>*/}
-	    <b> {translate.getText("POIDS_NOM_SECTION")}</b>
+	        <b>{translate.getText("POIDS_NOM_SECTION")}</b>
           </h2>
         </IonLabel>
         <div className="titreImc">
           <IonLabel>
-            <h2 style={{ marginLeft: 10 }} className="IMC">
-              <b>IMC</b>
+            <h2 className="IMC" style={{ marginLeft: 13 }}>
+              <b>{translate.getText("POIDS_IMC_ACCRONIME")}</b>
             </h2>
           </IonLabel>
           <IonInput
