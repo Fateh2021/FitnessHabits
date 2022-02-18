@@ -88,7 +88,7 @@ const Settings = (props) => {
 
   var toastMessage = "Veuillez sélectionner au moins un type de donnée";
 
-  //Variable indiquant quels données l'utilisateur souhaite exporter
+  //Variable indiquant quelles données l'utilisateur souhaite exporter
   var dataSelected = userCategories();
 
   function userCategories() {
@@ -134,7 +134,9 @@ const Settings = (props) => {
     }
   }
 
-  const [selected, setSelected] = useState("csv");
+  // const [selected, setSelected] = useState({format: "csv"});
+  // variable qui va contenir le format d'exportation désiré, par défaut csv
+  var selected = "csv";
 
   const [d1, onChangeD1] = useState(new Date());
   const [d2, onChangeD2] = useState(new Date());
@@ -405,9 +407,9 @@ const Settings = (props) => {
           </IonItem>
 
           <IonRadioGroup
-            value={selected}
+            // value={selected}
             onIonChange={(e) => {
-              setSelected(e.detail.value);
+              selected = e.detail.value;
             }}
           >
             <IonListHeader>
@@ -416,7 +418,7 @@ const Settings = (props) => {
 
             <IonItem>
               <IonLabel>CSV</IonLabel>
-              <IonRadio slot="start" value="csv" />
+              <IonRadio slot="start" value="csv" checked="true"/>
             </IonItem>
 
             <IonItem>
