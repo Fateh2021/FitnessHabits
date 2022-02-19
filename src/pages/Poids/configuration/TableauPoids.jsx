@@ -12,8 +12,8 @@ const TableauPoids = () => {
     const [poidsCible, setPoidsCible] = useState("");
 
     function formatDate (date) {
-        let formattedDate = moment(date).format('YYYY-MM-DD')
-        return formattedDate
+       return moment(date).format('YYYY-MM-DD')
+        
     }
 
     useEffect(() => {
