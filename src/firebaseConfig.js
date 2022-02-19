@@ -14,7 +14,7 @@ const config={
 
 export default firebase.initializeApp(config).database().ref();
 
-export const storage = firebase.storage();
+//export const storage = firebase.storage(); //Test non fonctionnels avec cette ligne
 
 /*Config authentification Google et Facebook par l'équipe GEFRAL*/
 export const auth = firebase.auth();
