@@ -14,7 +14,7 @@ const Profil = ({ children, close: parentHandleSidebarClose}) => {
 
     return (
         <>
-            {isSidebarOpen && <Sidebar close={() => handleSidebarToggle(false)} sidebarClass="sidebar"/>}
+            {isSidebarOpen && <Sidebar handleClose={() => handleSidebarToggle(false)}/>}
             <Toggle click={() => handleSidebarToggle(!isSidebarOpen)}/>
             <p>{children}</p>
         </>
