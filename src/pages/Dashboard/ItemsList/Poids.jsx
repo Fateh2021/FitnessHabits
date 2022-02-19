@@ -123,7 +123,6 @@ const Poids = (props) => {
       
   };
   var CalculImc = () => {
-  // Je pense que je dois aller chercher l'information ici en BD
     taille = taille / 100;
     var p = dailyPoids;
     var IMC;
@@ -193,5 +192,4 @@ const Poids = (props) => {
     </div>
   );
 };
-
 export default Poids;
