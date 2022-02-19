@@ -17,7 +17,6 @@ const Taux = Object.freeze({
 })
 
 // Modification de l'équipe Glicémie
-//const Graphe = (reloadGraph) => {
 const Graphe = ({ reloadGraph }) => {
 
     // ========= CONST =========
@@ -56,13 +55,11 @@ const Graphe = ({ reloadGraph }) => {
 
     // ========= USEEFFECT =========
     //Get data on graphe display
-    // en attendant de trouver la solution
-    /*
     useEffect(() => {
         if (reloadGraph && dataPoints.length <= 0)
             fetchDatapoints();
     }, [reloadGraph, dataPoints])
-*/
+
     useEffect(() => {
         if (dataPoints && dataPoints.length > 0) {
             let sum = (dataPoints.map(val => val.y)).reduce((a, b) => (a + b), 0)
