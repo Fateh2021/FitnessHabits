@@ -4,6 +4,7 @@ import {compilerBilanCSV, compilerBilanPDF} from './pages/Settings/Export';
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
 import App from './App';
+import {saveItem} from './pages/Dashoard/ItemsList/Alccol';
 
 test('renders without crashing', () => {
   const { baseElement } = render(<App />);
