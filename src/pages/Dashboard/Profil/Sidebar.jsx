@@ -1,12 +1,12 @@
-import firebase from "firebase"
+import firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import { IonList, IonGrid, IonRow, IonCol, IonHeader, IonIcon, IonInput, IonLabel, IonContent, IonItemDivider, IonItem } from "@ionic/react";
 import { arrowRoundBack, logOut } from "ionicons/icons";
-import { TakePicture } from "../../TakePicture/TakePicture"
+import { TakePicture } from "../../TakePicture/TakePicture";
+import * as translate from "../../../translate/Translator";
 
-// TODO: translate placeholders/date formats
 
 const Sidebar = ({ handleClose }) => {
     const [sidebarClass, setSidebarClass] = useState("sidebar");
@@ -114,40 +114,42 @@ const Sidebar = ({ handleClose }) => {
             <IonRow className="sideBarHeader">
                 <IonCol>
                     <IonLabel className="headerTitleDashboard" color="danger">
-                        <h3>Profil</h3>
+                        <h3>{translate.getText("SIDEBAR_LBL_PROFILE")}</h3>
                     </IonLabel>
                 </IonCol>
             </IonRow>
             <IonContent className="contentProfil">
 
                 <IonList>
-                    <IonItemDivider color="warning" className="profilText"><h2>Pseudo</h2></IonItemDivider>
+                    <IonItemDivider color="warning" className="profilText"><h2>{translate.getText("SIDEBAR_LBL_USERNAME")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="text" name="pseudo" value={profile.pseudo} onIonBlur={handleInputChange} placeholder="Nom" clearInput ></IonInput>
+                        <IonInput className="inputProfilText" type="text" name="pseudo" value={profile.pseudo} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_LBL_USERNAME")} clearInput ></IonInput>
                     </IonItem>
 
-                    <IonItemDivider color="warning" className="profilText"><h2>Email</h2></IonItemDivider>
+                    <IonItemDivider color="warning" className="profilText"><h2>{translate.getText("SIDEBAR_LBL_EMAIL")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="url" name="email" value={profile.email} onIonBlur={handleInputChange} placeholder="URL" clearInput></IonInput>
+                        <IonInput className="inputProfilText" type="email" name="email" value={profile.email} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_EMAIL")} clearInput></IonInput>
                     </IonItem>
 
-                    <IonItemDivider color="warning" className="profilText"><h2>Taille</h2></IonItemDivider>
+                    <IonItemDivider color="warning" className="profilText"><h2>{translate.getText("SIDEBAR_LBL_TAILLE")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="number" name="size" value={profile.size} onIonBlur={handleInputChange} placeholder="Centimètres" clearInput></IonInput>
+                        <IonInput className="inputProfilText" type="number" name="size" value={profile.size} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput></IonInput>
                     </IonItem>
 
-                    <IonItemDivider className="profilText"><h2>Sexe</h2></IonItemDivider>
+                    <IonItemDivider className="profilText"><h2>{translate.getText("SIDEBAR_LBL_SEXE")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="text" name="gender" value={profile.gender} onIonBlur={handleInputChange} placeholder="Genre" clearInput></IonInput>
+                        <IonInput className="inputProfilText" type="text" name="gender" value={profile.gender} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_LBL_SEXE")} clearInput></IonInput>
                     </IonItem>
 
-                    <IonItemDivider className="profilText"><h2>Format de date</h2></IonItemDivider>
+                    <IonItemDivider className="profilText">
+                        <h2>{translate.getText("SIDEBAR_LBL_DATEFORMAT")}</h2>
+                    </IonItemDivider>
                     <select name="dateFormat" value={profile.dateFormat} onChange={handleInputChange}>
-                        <option value="LL-dd-yyyy">MM-JJ-AAAA (format Américain ou Anglais) ex: 02-16-2021</option>
-                        <option value="dd-LL-yyyy">JJ-MM-AAAA (format Français) ex: 16-02-2021</option>
-                        <option value="yyyy-LL-dd">AAAA-MM-JJ (format International) ex: 2021-02-16</option>
-                        <option value="yyyy-LLL-dd">AAAA-mmm-JJ (International dont le mois est lettré) ex: 2021-fev-16</option>
-                        <option value="dd-LLL-yyyy">JJ-mmm-AAAA (Français avec mois lettré) ex: 16-fev-2021</option>
+                        <option value="LL-dd-yyyy">{translate.getText("SIDEBAR_OPTION_DATE_1")}</option>
+                        <option value="dd-LL-yyyy">{translate.getText("SIDEBAR_OPTION_DATE_2")}</option>
+                        <option value="yyyy-LL-dd">{translate.getText("SIDEBAR_OPTION_DATE_3")}</option>
+                        <option value="yyyy-LLL-dd">{translate.getText("SIDEBAR_OPTION_DATE_4")}</option>
+                        <option value="dd-LLL-yyyy">{translate.getText("SIDEBAR_OPTION_DATE_5")}</option>
                     </select>
 
                     <IonItemDivider color="warning" className="profilText"></IonItemDivider>
