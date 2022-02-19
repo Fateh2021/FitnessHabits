@@ -497,7 +497,7 @@
    "PASSWORD_NOT_MATCH":{
       "en":"Passwords do not match.",
       "es":"Las contraseñas no coinciden.",
-      "fr":"Les mots de passe ne match pas."
+      "fr":"Les mots de passe ne correspondent pas."
    },
    "ALREADY_REGISTERED":{
       "en":"I have an account.",
