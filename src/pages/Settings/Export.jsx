@@ -136,10 +136,8 @@ const Settings = (props) => {
     }
   }
 
-  // const [selected, setSelected] = useState({format: "csv"});
   // variable qui va contenir le format d'exportation désiré, par défaut csv
   var selected = "csv";
-  console.log(new Date().setMonth(new Date().getMonth() - 3))
 
 
   const [d1, onChangeD1] = useState(new Date());
@@ -411,7 +409,6 @@ const Settings = (props) => {
             </IonItem>
 
             <IonRadioGroup
-                // value={selected}
                 onIonChange={(e) => {
                   selected = e.detail.value;
                 }}
