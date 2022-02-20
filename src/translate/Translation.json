@@ -578,5 +578,106 @@
       "en":"Last 3 months weight evolution",
       "es":"Evolución del peso de los últimos 3 meses",
       "fr":"Évolution du poids des 3 derniers mois"
+   },
+   "SELECT_DATA_REQUIRED_TITLE":{
+      "en":"Veuillez sélectionner au moins un type de donnée",
+      "es":"Seleccione al menos un tipo de datos",
+      "fr":"Veuillez sélectionner au moins un type de donnée" 
+   },
+   "HYDR_TITLE":{
+      "en":"Hydration",
+      "es":"Hidratación",
+      "fr":"Hydratation"
+   },
+   "ALCOOL_TITLE":{
+      "en":"Alcohol",
+      "es":"Alcohol",
+      "fr":"Alcool"
+   },
+   "NOURRITURE_TITLE":{
+      "en":"Food",
+      "es":"Alimentos",
+      "fr":"Nourriture"
+   },
+   "EXPORT_TITLE":{
+      "en":"Export",
+      "es":"Exportar",
+      "fr":"Exportation"
+   },
+   "DATES_EXPORTATION_TITLE":{
+      "en":"Export dates",
+      "es":"Fechas de exportación",
+      "fr":"Dates d'exportation"
+   },
+   "EXPORT_DATA_SELECTION_TITLE":{
+      "en":"Selection of data to be exported",
+      "es":"Selección de los datos a exportar",
+      "fr":"Sélection des données à exporter"
+   },
+   "ACTIVITES_TITLE":{
+      "en":"Physical activities",
+      "es":"Actividades físicas",
+      "fr":"Activités physiques"
+   },
+   "GLYC_TITLE":{
+      "en":"Blood sugar level",
+      "es":"Glucemia",
+      "fr":"Glycémie"
+   },
+   "TOILETS_TITLE":{
+      "en":"Toilets",
+      "es":"Aseos",
+      "fr":"Toilettes"
+   },
+   "EXPORT_FORMAT_TITLE":{
+      "en":"Export format",
+      "es":"Formato de exportación",
+      "fr":"Format exportation"
+   },
+   "CSV_AND_PDF_TITLE":{
+      "en":"CSV and PDF",
+      "es":"CSV y PDF",
+      "fr":"CSV et PDF"
+   },
+   "NO_DATA_FOUND_IN_SELECTED_DATES_TITLE":{
+      "en":"No data to be extracted on the selected dates",
+      "es":"No hay datos que extraer en las fechas seleccionadas",
+      "fr":"Aucune donnée à extraire à l'intérieur des dates choisies"
+   },
+   "EXPORT_FILENAME_TITLE":{
+      "en":"Fitness Habits Report as of ",
+      "es":"Informe sobre los hábitos de fitness a partir de",
+      "fr":"Bilan Fitness Habits en date du "
+   },
+   "SUPP_NOT_YET_IMPLEMENTED":{
+      "en":"Supplements are not yet implemented",
+      "es":"Los suplementos aún no están implementados",
+      "fr":"Les suppléments ne sont pas encore implémentés"
+   },
+   "FECES_TITLE":{
+      "en":"Feces",
+      "es":"Heces",
+      "fr":"Feces"
+   },
+   "URINE_TITLE":{
+      "en":"Urine",
+      "es":"Orina",
+      "fr":"Urine"
+   },
+   "SEND_MAIL": {
+      "en":"Send by email",
+      "es": "Enviar por correo elec.",
+      "fr": "Envoyer par courriel"
+   },
+   "SAVE_TO_DEV":{
+      "en": "Save to device",
+      "es": "Guardar en el dispositivo",
+      "fr": "Enregistrer sur appareil"
+   },
+   "DE": {
+      "en": "From",
+      "es": "Del",
+      "fr": "De"
    }
+
 }

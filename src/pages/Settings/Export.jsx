@@ -29,8 +29,9 @@ import {
 } from "ionicons/icons";
 import DefaultSettings from "./DefaultSettings";
 import DatePicker from "react-date-picker";
-
+import * as translate from '../../translate/Translator'
 import { jsPDF } from "jspdf";
+
 
 import "../Tab1.css";
 
@@ -86,9 +87,9 @@ const Settings = (props) => {
     },
   });
 
-  var toastMessage = "Veuillez sélectionner au moins un type de donnée";
+  var toastMessage = translate.getText("SELECT_DATA_REQUIRED_TITLE");
 
-  //Variable indiquant quels données l'utilisateur souhaite exporter
+  //Variable indiquant quelles données l'utilisateur souhaite exporter
   var dataSelected = userCategories();
 
   function userCategories() {
@@ -100,10 +101,10 @@ const Settings = (props) => {
       categories.push("alcool");
     }
     if (
-      settings.legumes.dailyTarget.value > 0 ||
-      settings.gras.dailyTarget.value > 0 ||
-      settings.cereales.dailyTarget.value > 0 ||
-      settings.proteines.dailyTarget.value > 0
+        settings.legumes.dailyTarget.value > 0 ||
+        settings.gras.dailyTarget.value > 0 ||
+        settings.cereales.dailyTarget.value > 0 ||
+        settings.proteines.dailyTarget.value > 0
     ) {
       categories.push("nourriture");
     }
@@ -134,7 +135,9 @@ const Settings = (props) => {
     }
   }
 
-  const [selected, setSelected] = useState("csv");
+  // const [selected, setSelected] = useState({format: "csv"});
+  // variable qui va contenir le format d'exportation désiré, par défaut csv
+  var selected = "csv";
 
   const [d1, onChangeD1] = useState(new Date());
   const [d2, onChangeD2] = useState(new Date());
@@ -150,24 +153,24 @@ const Settings = (props) => {
     } else {
       const userUID = localStorage.getItem("userUid");
       firebase
-        .database()
-        .ref("settings/" + userUID)
-        .once("value", (snapshot) => {
-          const sets = snapshot.val();
-          if (sets) {
-            if (!sets.hydratation.hydrates) {
-              sets.hydratation.hydrates = [];
+          .database()
+          .ref("settings/" + userUID)
+          .once("value", (snapshot) => {
+            const sets = snapshot.val();
+            if (sets) {
+              if (!sets.hydratation.hydrates) {
+                sets.hydratation.hydrates = [];
+              }
+              if (!sets.alcool.alcools) {
+                sets.alcool.alcools = [];
+              }
+              const updatedSets = addMissingSettings(sets);
+              localStorage.setItem("settings", JSON.stringify(updatedSets));
+              setSettings(updatedSets);
+            } else {
+              localStorage.setItem("settings", JSON.stringify(settings));
             }
-            if (!sets.alcool.alcools) {
-              sets.alcool.alcools = [];
-            }
-            const updatedSets = addMissingSettings(sets);
-            localStorage.setItem("settings", JSON.stringify(updatedSets));
-            setSettings(updatedSets);
-          } else {
-            localStorage.setItem("settings", JSON.stringify(settings));
-          }
-        });
+          });
     }
   }, []);
 
@@ -236,350 +239,358 @@ const Settings = (props) => {
   };
 
   return (
-    <IonPage className="SizeChange">
-      <IonHeader className="exportHeader">
-        <IonTabBar slot="bottom" color="light">
-          <IonTabButton tab="" href="/dashboard">
-            <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />
-          </IonTabButton>
-          <IonTabButton tab="menu" href="/sidbar">
-            <IonLabel className="headerTitle">Exportation</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="settings">
+      <IonPage className="SizeChange">
+        <IonHeader className="exportHeader">
+          <IonTabBar slot="bottom" color="light">
+            <IonTabButton tab="" href="/dashboard">
+              <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />
+            </IonTabButton>
+            <IonTabButton tab="menu" href="/sidbar">
+              <IonLabel className="headerTitle">{translate.getText("EXPORT_TITLE")}</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="settings" href="/languages">
             <IonIcon className="targetProfil " icon={globe} />
           </IonTabButton>
-        </IonTabBar>
-      </IonHeader>
+          </IonTabBar>
+        </IonHeader>
 
-      <IonContent>
-        <IonItemDivider>Dates d'exportation </IonItemDivider>
-        <div class="datePickersExportation">
-          <div>
-            De: &nbsp;
-            <DatePicker
-              onChange={onChangeD1}
-              value={d1}
-              maxDate={d2}
-              clearIcon={null}
-              autoFocus={true}
-            />
+        <IonContent>
+          <IonItemDivider>{translate.getText("DATES_EXPORTATION_TITLE")}</IonItemDivider>
+          <div class="datePickersExportation">
+            <div>
+              {translate.getText("DE")}: &nbsp;
+              <DatePicker
+                  onChange={onChangeD1}
+                  value={d1}
+                  minDate={new Date("01-01-2010")} // A CHANGER ICI POUR LA PLUS PETITE DATE QU'ON VEUT
+                  maxDate={d2}
+                  clearIcon={null}
+                  autoFocus={true}
+                  onKeyDown={(e) => {
+                    e.preventDefault()
+                  }}
+
+              />
+            </div>
+            <div>
+              &nbsp; &nbsp; À: &nbsp;
+              <DatePicker
+                  onChange={onChangeD2}
+                  value={d2}
+                  minDate={d1}
+                  maxDate={new Date()}
+                  clearIcon={null}
+                  onKeyDown={(e) => {
+                    e.preventDefault()
+                  }}
+              />
+            </div>
           </div>
-          <div>
-            &nbsp; &nbsp; À: &nbsp;
-            <DatePicker
-              onChange={onChangeD2}
-              value={d2}
-              minDate={d1}
-              maxDate={new Date()}
-              clearIcon={null}
-            />
-          </div>
-        </div>
 
-        <IonList>
-          <IonItemDivider>Sélection des données à exporter</IonItemDivider>
-          <IonItem>
-            <IonLabel>Activités physiques</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("activities")}
-              onIonChange={(e) => {
-                manageCategories("activities");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Nourriture</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("nourriture")}
-              onIonChange={(e) => {
-                manageCategories("nourriture");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Hydratation</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("hydratation")}
-              onIonChange={(e) => {
-                manageCategories("hydratation");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Suppléments</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("supplements")}
-              onIonChange={(e) => {
-                manageCategories("supplements");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Sommeil</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("sommeil")}
-              onIonChange={(e) => {
-                manageCategories("sommeil");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Poids</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("poids")}
-              onIonChange={(e) => {
-                manageCategories("poids");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Glycémie</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("glycémie")}
-              onIonChange={(e) => {
-                manageCategories("glycémie");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Alcool</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("alcool")}
-              onIonChange={(e) => {
-                manageCategories("alcool");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>Toilettes</IonLabel>
-            <IonCheckbox
-              checked={dataSelected.includes("toilettes")}
-              onIonChange={(e) => {
-                manageCategories("toilettes");
-                if (dataSelected.length === 0) {
-                  toast(toastMessage);
-                  e.target.checked = true;
-                }
-              }}
-            />
-          </IonItem>
-
-          <IonRadioGroup
-            value={selected}
-            onIonChange={(e) => {
-              setSelected(e.detail.value);
-            }}
-          >
-            <IonListHeader>
-              <IonLabel>Format exportation</IonLabel>
-            </IonListHeader>
-
+          <IonList>
+            <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
             <IonItem>
-              <IonLabel>CSV</IonLabel>
-              <IonRadio slot="start" value="csv" />
+              <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("activities")}
+                  onIonChange={(e) => {
+                    manageCategories("activities");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("nourriture")}
+                  onIonChange={(e) => {
+                    manageCategories("nourriture");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("hydratation")}
+                  onIonChange={(e) => {
+                    manageCategories("hydratation");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("SUPPL_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("supplements")}
+                  onIonChange={(e) => {
+                    manageCategories("supplements");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("SLEEP")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("sommeil")}
+                  onIonChange={(e) => {
+                    manageCategories("sommeil");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("poids")}
+                  onIonChange={(e) => {
+                    manageCategories("poids");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("glycémie")}
+                  onIonChange={(e) => {
+                    manageCategories("glycémie");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("ALCOOL_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("alcool")}
+                  onIonChange={(e) => {
+                    manageCategories("alcool");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("toilettes")}
+                  onIonChange={(e) => {
+                    manageCategories("toilettes");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
             </IonItem>
 
-            <IonItem>
-              <IonLabel>PDF</IonLabel>
-              <IonRadio slot="start" value="pdf" />
-            </IonItem>
-
-            <IonItem>
-              <IonLabel>CSV et PDF</IonLabel>
-              <IonRadio slot="start" value="hybride" />
-            </IonItem>
-          </IonRadioGroup>
-        </IonList>
-        <ion-grid>
-          <ion-row class="ion-justify-content-center">
-            <ion-col size="6">
-              <IonButton
-                disabled="true"
-                color="secondary"
-                expand="full"
-                class="ion-text-wrap"
-                onClick={() => {
-                  window.open(
-                    `mailto:?subject=Fitnesshabits données du ${new Date()
-                      .toISOString()
-                      .slice(0, 10)}&body=Ceci est un body test`
-                  );
+            <IonRadioGroup
+                // value={selected}
+                onIonChange={(e) => {
+                  selected = e.detail.value;
                 }}
-              >
-                Envoyer par email
-                <IonIcon slot="start" icon={mail} />
-              </IonButton>
-            </ion-col>
-            <ion-col size="6">
-              <IonButton
-                expand="full"
-                class="ion-text-wrap"
-                onClick={async () => {
-                  var date = new Date().toISOString().slice(0, 10);
-                  var retour = "";
-                  if (selected === "pdf" || selected === "hybride") {
-                    var bilan = await compilerBilanPDF(dataSelected, d1, d2);
-                    if (bilan.length <= 0) {
-                      toast(
-                        "Aucune donnée à extraire à l'intérieur des dates choisies"
-                      );
-                      dataSelected.forEach((data) => {
-                        switch (data) {
-                          case "hydratation":
-                            var hydratation = recupererHydratation();
-                            retour = retour + hydratation + "\n";
-                            break;
-                          case "activities":
-                            var activite = recupererActivite();
-                            retour = retour + activite + "\n";
-                            break;
-                          case "nourriture":
-                            var nourriture = recupererNourriture();
-                            retour = retour + nourriture + "\n";
-                            break;
-                          case "sommeil":
-                            var sommeil = recupererSommeil();
-                            retour = retour + sommeil + "\n";
-                            break;
-                          case "toilettes":
-                            var toilettes = recupererToilettes();
-                            retour = retour + toilettes + "\n";
-                            break;
-                          case "alcool":
-                            var alcool = recupererAlcools();
-                            retour = retour + alcool + "\n";
-                            break;
-                          case "glycémie":
-                            var glycemie = recupererGlycemie();
-                            retour = retour + glycemie + "\n";
-                            break;
-                          case "poids":
-                            var poids = recupererPoids();
-                            retour = retour + poids + "\n";
-                            break;
-                          case "supplements":
-                            var supplements = recupererSupplements();
-                            retour = retour + supplements + "\n";
-                            break;
+            >
+              <IonListHeader>
+                <IonLabel>{translate.getText("EXPORT_FORMAT_TITLE")}</IonLabel>
+              </IonListHeader>
 
-                          default:
-                            break;
+              <IonItem>
+                <IonLabel>CSV</IonLabel>
+                <IonRadio slot="start" value="csv" checked="true"/>
+              </IonItem>
+
+              <IonItem>
+                <IonLabel>PDF</IonLabel>
+                <IonRadio slot="start" value="pdf" />
+              </IonItem>
+
+              <IonItem>
+                <IonLabel>{translate.getText("CSV_AND_PDF_TITLE")}</IonLabel>
+                <IonRadio slot="start" value="hybride" />
+              </IonItem>
+            </IonRadioGroup>
+          </IonList>
+          <ion-grid>
+            <ion-row class="ion-justify-content-center">
+              <ion-col size="6">
+                <IonButton
+                    disabled="true"
+                    color="secondary"
+                    expand="full"
+                    class="ion-text-wrap"
+                    onClick={() => {
+                      window.open(
+                          `mailto:?subject=Fitnesshabits données du ${new Date()
+                              .toISOString()
+                              .slice(0, 10)}&body=Ceci est un body test`
+                      );
+                    }}
+                >
+                  {translate.getText("SEND_MAIL")}
+                  <IonIcon slot="start" icon={mail} />
+                </IonButton>
+              </ion-col>
+              <ion-col size="6">
+                <IonButton
+                    expand="full"
+                    class="ion-text-wrap"
+                    onClick={async () => {
+                      var date = new Date().toISOString().slice(0, 10);
+                      var retour = "";
+                      if (selected === "pdf" || selected === "hybride") {
+                        var bilan = await compilerBilanPDF(dataSelected, d1, d2);
+                        if (bilan.length <= 0) {
+                          toast(
+                              translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
+                          );
+                          dataSelected.forEach((data) => {
+                            switch (data) {
+                              case "hydratation":
+                                var hydratation = recupererHydratation();
+                                retour = retour + hydratation + "\n";
+                                break;
+                              case "activities":
+                                var activite = recupererActivite();
+                                retour = retour + activite + "\n";
+                                break;
+                              case "nourriture":
+                                var nourriture = recupererNourriture();
+                                retour = retour + nourriture + "\n";
+                                break;
+                              case "sommeil":
+                                var sommeil = recupererSommeil();
+                                retour = retour + sommeil + "\n";
+                                break;
+                              case "toilettes":
+                                var toilettes = recupererToilettes();
+                                retour = retour + toilettes + "\n";
+                                break;
+                              case "alcool":
+                                var alcool = recupererAlcools();
+                                retour = retour + alcool + "\n";
+                                break;
+                              case "glycémie":
+                                var glycemie = recupererGlycemie();
+                                retour = retour + glycemie + "\n";
+                                break;
+                              case "poids":
+                                var poids = recupererPoids();
+                                retour = retour + poids + "\n";
+                                break;
+                              case "supplements":
+                                var supplements = recupererSupplements();
+                                retour = retour + supplements + "\n";
+                                break;
+
+                              default:
+                                break;
+                            }
+                          });
+                          const doc = new jsPDF();
+                          var splitTitle = doc.splitTextToSize(retour, 270);
+                          var y = 7;
+                          for (var i = 0; i < splitTitle.length; i++) {
+                            if (y > 280) {
+                              y = 10;
+                              doc.addPage();
+                            }
+                            doc.text(15, y, splitTitle[i]);
+                            y = y + 7;
+                          }
+
+                          doc.save("FitnessHabits-data-" + date + ".pdf");
+
+                        } else {
+                          const doc = new jsPDF();
+                          var titre =
+                              translate.getText("EXPORT_FILENAME_TITLE") + date + "\n\n";
+                          retour = titre + retour;
+                          dataSelected.forEach((data) => {
+                            retour = retour + "\n" + data + ": \n";
+                            bilan.forEach((x) => {
+                              retour = retour + x.date + ": " + x[data] + " \n";
+                            });
+
+                          });
+                          var splitTitle = doc.splitTextToSize(retour, 270);
+                          var y = 7;
+                          for (var i = 0; i < splitTitle.length; i++) {
+                            if (y > 280) {
+                              y = 10;
+                              doc.addPage();
+                            }
+                            doc.text(15, y, splitTitle[i]);
+                            y = y + 7;
+                          }
+                          doc.save("FitnessHabits-data-" + date + ".pdf");
                         }
-                      });
-                      const doc = new jsPDF();
-                      var splitTitle = doc.splitTextToSize(retour, 270);
-                      var y = 7;
-                      for (var i = 0; i < splitTitle.length; i++) {
-                        if (y > 280) {
-                          y = 10;
-                          doc.addPage();
-                        }
-                        doc.text(15, y, splitTitle[i]);
-                        y = y + 7;
                       }
 
-                      doc.save("FitnessHabits-data-" + date + ".pdf");
+                      if (selected === "csv" || selected === "hybride") {
+                        var bilan = await compilerBilanCSV(dataSelected, d1, d2);
+                        if (bilan.length <= 0) {
+                          toast(
+                              translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
+                          );
+                        } else {
+                          const options = {
+                            title: `FitnessHabits-data-${new Date()
+                                .toISOString()
+                                .slice(0, 10)}`,
+                            filename: `FitnessHabits-data-${new Date()
+                                .toISOString()
+                                .slice(0, 10)}`,
+                            useKeysAsHeaders: true,
+                          };
 
-                    } else {
-                      const doc = new jsPDF();
-                      var titre =
-                        "Bilan Fitness Habits en date du " + date + "\n\n";
-                      retour = titre + retour;
-                      dataSelected.forEach((data) => {
-                        retour = retour + "\n" + data + ": \n";
-                        bilan.forEach((x) => {
-                          retour = retour + x.date + ": " + x[data] + " \n";
-                        });
-
-                      });
-                      var splitTitle = doc.splitTextToSize(retour, 270);
-                      var y = 7;
-                      for (var i = 0; i < splitTitle.length; i++) {
-                        if (y > 280) {
-                          y = 10;
-                          doc.addPage();
+                          const csvExporter = new ExportToCsv(options);
+                          await csvExporter.generateCsv(bilan);
                         }
-                        doc.text(15, y, splitTitle[i]);
-                        y = y + 7;
                       }
-                      doc.save("FitnessHabits-data-" + date + ".pdf");
-                    }
-                  }
+                    }}
+                >
+                  {translate.getText("SAVE_TO_DEV")}
+                  <IonIcon slot="start" icon={download} />
+                </IonButton>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </IonContent>
 
-                  if (selected === "csv" || selected === "hybride") {
-                    var bilan = await compilerBilanCSV(dataSelected, d1, d2);
-                    if (bilan.length <= 0) {
-                      toast(
-                        "Aucune donnée à extraire à l'intérieur des dates choisies"
-                      );
-                    } else {
-                      const options = {
-                        title: `FitnessHabits-data-${new Date()
-                          .toISOString()
-                          .slice(0, 10)}`,
-                        filename: `FitnessHabits-data-${new Date()
-                          .toISOString()
-                          .slice(0, 10)}`,
-                        useKeysAsHeaders: true,
-                      };
-
-                      const csvExporter = new ExportToCsv(options);
-                      await csvExporter.generateCsv(bilan);
-                    }
-                  }
-                }}
-              >
-                Enregistrer sur appareil
-                <IonIcon slot="start" icon={download} />
-              </IonButton>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </IonContent>
-
-      <IonFooter>
-        <IonTabBar slot="bottom" color="light">
-          <IonTabButton tab="" href="/dashboard">
-            <IonIcon color="warning" className="target" icon={home} />
-            <IonLabel className="text">
-              <h3>Home</h3>
-            </IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonFooter>
-    </IonPage>
+        <IonFooter>
+          <IonTabBar slot="bottom" color="light">
+            <IonTabButton tab="" href="/dashboard">
+              <IonIcon color="warning" className="target" icon={home} />
+              <IonLabel className="text">
+                <h3>Home</h3>
+              </IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonFooter>
+      </IonPage>
   );
 };
 
@@ -607,8 +618,8 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
     dataFormat = [JSON.parse(localStorage.getItem("dashboard"))];
     let ajd = new Date();
     dataFormat[0].date = ('0' + ajd.getDate()).slice(-2) + '-'
-      + ('0' + (ajd.getMonth() + 1)).slice(-2) + '-'
-      + ajd.getFullYear();
+        + ('0' + (ajd.getMonth() + 1)).slice(-2) + '-'
+        + ajd.getFullYear();
   } else {
     let ref = firebase.database().ref("dashboard/" + userUID + "/");
     await ref.once("value", (snap) => {
@@ -630,10 +641,10 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
   dataFormat = dataFormat.filter((data) => {
     return !!datePickerDates.find((item) => {
       return (
-        item.getTime() ==
-        new Date(
-          data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-        ).getTime()
+          item.getTime() ==
+          new Date(
+              data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+          ).getTime()
       );
     });
   });
@@ -644,8 +655,8 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
   for (let i = 0; i < dataFormat.length; ++i) {
     retour[i] = {};
     retour[i].date = dataFormat[i].date
-      ? dataFormat[i].date
-      : new Date().toISOString().slice(0, 10);
+        ? dataFormat[i].date
+        : new Date().toISOString().slice(0, 10);
     for (const data of dataSelected) {
       switch (data) {
         case "hydratation":
@@ -653,20 +664,20 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
             for (const hydr of dataFormat[i].hydratation.hydrates) {
               if (retour[i][data])
                 retour[i][data] +=
-                  (hydr.name ? hydr.name : "NO-NAME") +
-                  ": " +
-                  hydr.qtte +
-                  " " +
-                  hydr.unit +
-                  "; ";
+                    (hydr.name ? hydr.name : "NO-NAME") +
+                    ": " +
+                    hydr.qtte +
+                    " " +
+                    hydr.unit +
+                    "; ";
               else
                 retour[i][data] =
-                  (hydr.name ? hydr.name : "NO-NAME") +
-                  ": " +
-                  hydr.qtte +
-                  " " +
-                  hydr.unit +
-                  "; ";
+                    (hydr.name ? hydr.name : "NO-NAME") +
+                    ": " +
+                    hydr.qtte +
+                    " " +
+                    hydr.unit +
+                    "; ";
             }
           } else {
             retour[i][data] = "empty";
@@ -689,27 +700,27 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
         case "toilettes":
           var toilettes = dataFormat[i].toilettes;
           retour[i][data] =
-            "Feces: " + toilettes.feces + "; Urine: " + toilettes.urine;
+              "Feces: " + toilettes.feces + "; Urine: " + toilettes.urine;
           break;
         case "alcool":
           if (dataFormat[i].alcool.alcools) {
             dataFormat[i].alcool.alcools.forEach((alc) => {
               if (retour[i][data])
                 retour[i][data] +=
-                  (alc.name ? alc.name : "NO-NAME") +
-                  ": " +
-                  alc.qtte +
-                  " " +
-                  alc.unit +
-                  "; ";
+                    (alc.name ? alc.name : "NO-NAME") +
+                    ": " +
+                    alc.qtte +
+                    " " +
+                    alc.unit +
+                    "; ";
               else
                 retour[i][data] =
-                  (alc.name ? alc.name : "NO-NAME") +
-                  ": " +
-                  alc.qtte +
-                  " " +
-                  alc.unit +
-                  "; ";
+                    (alc.name ? alc.name : "NO-NAME") +
+                    ": " +
+                    alc.qtte +
+                    " " +
+                    alc.unit +
+                    "; ";
             });
           } else {
             retour[i][data] = "empty";
@@ -727,7 +738,7 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
           var supplement = dataFormat[i].supplement;
           if (!supplement)
             retour[i][data] =
-              "Les supplements ne sont pas encore implémentés\n";
+                "Les supplements ne sont pas encore implémentés\n";
           else retour[i][data] = supplement;
           break;
 
@@ -742,10 +753,10 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
 function recupererHydratation() {
   var retour = "Hydratation: \n";
   var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
-    .hydrates;
+      .hydrates;
   hydratation.forEach((data) => {
     retour =
-      retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
+        retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
   });
   return retour;
 }
@@ -755,7 +766,7 @@ function recupererAlcools() {
   var alcool = JSON.parse(localStorage.getItem("dashboard")).alcool.alcools;
   alcool.forEach((data) => {
     retour =
-      retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
+        retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
   });
   return retour;
 }
@@ -791,12 +802,12 @@ function recupererToilettes() {
   var toilettes = JSON.parse(localStorage.getItem("dashboard")).toilettes;
 
   retour =
-    retour +
-    " Feces: " +
-    toilettes.feces +
-    "\n Urine: " +
-    toilettes.urine +
-    "\n";
+      retour +
+      " Feces: " +
+      toilettes.feces +
+      "\n Urine: " +
+      toilettes.urine +
+      "\n";
 
   return retour;
 }
@@ -804,7 +815,7 @@ function recupererToilettes() {
 function recupererGlycemie() {
   var retour = "Glycemie: \n";
   var glycemie = JSON.parse(localStorage.getItem("dashboard")).glycemie
-    .dailyGlycemie;
+      .dailyGlycemie;
 
   retour = retour + glycemie + "\n";
 
@@ -840,8 +851,8 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
     dataFormat = [JSON.parse(localStorage.getItem("dashboard"))];
     let ajd = new Date();
     dataFormat[0].date = ('0' + ajd.getDate()).slice(-2) + '-'
-      + ('0' + (ajd.getMonth() + 1)).slice(-2) + '-'
-      + ajd.getFullYear();
+        + ('0' + (ajd.getMonth() + 1)).slice(-2) + '-'
+        + ajd.getFullYear();
   } else {
     let ref = firebase.database().ref("dashboard/" + userUID + "/");
     await ref.once("value", (snap) => {
@@ -863,10 +874,10 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
   dataFormat = dataFormat.filter((data) => {
     return !!datePickerDates.find((item) => {
       return (
-        item.getTime() ==
-        new Date(
-          data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-        ).getTime()
+          item.getTime() ==
+          new Date(
+              data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+          ).getTime()
       );
     });
   });
@@ -877,8 +888,8 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
   for (let i = 0; i < dataFormat.length; ++i) {
     retour[i] = {};
     retour[i].date = dataFormat[i].date
-      ? dataFormat[i].date
-      : new Date().toISOString().slice(0, 10);
+        ? dataFormat[i].date
+        : new Date().toISOString().slice(0, 10);
     for (const data of dataSelected) {
       switch (data) {
         case "hydratation":
@@ -886,20 +897,20 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
             for (const hydr of dataFormat[i].hydratation.hydrates) {
               if (retour[i][data])
                 retour[i][data] +=
-                  (hydr.name ? hydr.name : "NO-NAME") +
-                  ": " +
-                  hydr.qtte +
-                  " " +
-                  hydr.unit +
-                  "; ";
+                    (hydr.name ? hydr.name : "NO-NAME") +
+                    ": " +
+                    hydr.qtte +
+                    " " +
+                    hydr.unit +
+                    "; ";
               else
                 retour[i][data] =
-                  (hydr.name ? hydr.name : "NO-NAME") +
-                  ": " +
-                  hydr.qtte +
-                  " " +
-                  hydr.unit +
-                  "; ";
+                    (hydr.name ? hydr.name : "NO-NAME") +
+                    ": " +
+                    hydr.qtte +
+                    " " +
+                    hydr.unit +
+                    "; ";
             }
           } else {
             retour[i][data] = "empty";
@@ -922,27 +933,27 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
         case "toilettes":
           var toilettes = dataFormat[i].toilettes;
           retour[i][data] =
-            "Feces: " + toilettes.feces + "; Urine: " + toilettes.urine;
+              "Feces: " + toilettes.feces + "; Urine: " + toilettes.urine;
           break;
         case "alcool":
           if (dataFormat[i].alcool.alcools) {
             dataFormat[i].alcool.alcools.forEach((alc) => {
               if (retour[i][data])
                 retour[i][data] +=
-                  (alc.name ? alc.name : "NO-NAME") +
-                  ": " +
-                  alc.qtte +
-                  " " +
-                  alc.unit +
-                  "; ";
+                    (alc.name ? alc.name : "NO-NAME") +
+                    ": " +
+                    alc.qtte +
+                    " " +
+                    alc.unit +
+                    "; ";
               else
                 retour[i][data] =
-                  (alc.name ? alc.name : "NO-NAME") +
-                  ": " +
-                  alc.qtte +
-                  " " +
-                  alc.unit +
-                  "; ";
+                    (alc.name ? alc.name : "NO-NAME") +
+                    ": " +
+                    alc.qtte +
+                    " " +
+                    alc.unit +
+                    "; ";
             });
           } else {
             retour[i][data] = "empty";
@@ -960,7 +971,7 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
           var supplement = dataFormat[i].supplement;
           if (!supplement)
             retour[i][data] =
-              "Les supplements ne sont pas encore implémentés\n";
+                "Les supplements ne sont pas encore implémentés\n";
           else retour[i][data] = supplement;
           break;
 
