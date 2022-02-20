@@ -7,6 +7,7 @@ const NourriLegumes = (props) => {
       name = 'Legumes'
       type = 'legumes'
       subType = 'legumes'
+      cssId = 'myDIV4'
       parentCallback = {props.parentCallbackLegumes}
       macroNutriment = {props.legume}
       macroNutriments = {props.legumes}

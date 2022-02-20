@@ -133,6 +133,7 @@ const Nourriture = (props) => {
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard[props.type].dailyTarget.globalConsumption = totalConsumption();
+    props.parentCallback(totalConsumption());
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
@@ -210,9 +211,9 @@ const Nourriture = (props) => {
           <h2><b>{ props.name }</b></h2>
         </IonLabel>
         <IonInput className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor(props.type)}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor(props.cssId)}/>
       </IonItem> 
-      <div id={ props.type }>
+      <div id={ props.cssId }>
       <div className="divHyd">
             <div className="sett">
               { macroNutriments.map((macroNutriment, index) => (      

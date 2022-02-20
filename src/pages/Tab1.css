@@ -1802,8 +1802,8 @@ body {
   padding: 0px;
 }
 
-#myDIV1, #gras, #cereales,
-#legumes, #proteines, #myDIV6,
+#myDIV1, #myDIV2, #myDIV3,
+#myDIV4, #myDIV5, #myDIV6,
 #myDIV7, #myDIV8, #myDIV9, #myDIV22{
   width: 100%;
   padding: 5px 0;
