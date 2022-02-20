@@ -35,6 +35,7 @@ import { jsPDF } from "jspdf";
 
 
 import "../Tab1.css";
+import moment from "moment";
 
 const Settings = (props) => {
 
@@ -139,8 +140,9 @@ const Settings = (props) => {
   // variable qui va contenir le format d'exportation désiré, par défaut csv
   var selected = "csv";
 
-
-  const [d1, onChangeD1] = useState(new Date());
+  var defaultDate = new Date();
+  defaultDate.setMonth(defaultDate.getMonth() - 3);
+  const [d1, onChangeD1] = useState(defaultDate);
   const [d2, onChangeD2] = useState(new Date());
 
   // load the current settings from the local storage if it exists, otherwise load it from the DB
@@ -274,7 +276,7 @@ const Settings = (props) => {
               />
             </div>
             <div>
-              &nbsp; &nbsp; À: &nbsp;
+              &nbsp; &nbsp; {translate.getText("A")}: &nbsp;
               <DatePicker
                   onChange={onChangeD2}
                   value={d2}
