@@ -1,17 +1,22 @@
 import React from 'react';
-
-
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {compilerBilanCSV, compilerBilanPDF} from './pages/Settings/Export';
-import { ExportToCsv } from "export-to-csv";
-import { jsPDF } from "jspdf";
-
-
+import {ExportToCsv} from "export-to-csv";
+import {jsPDF} from "jspdf";
 //import {saveItem} from './pages/Dashoard/ItemsList/Alccol';  //Test non fonctionnel avec cette ligne
 
 import App from './App';
+import userEvent from '@testing-library/user-event'
+import {createMemoryHistory} from 'history'
+import {Router} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom';
 
+//Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
+const renderWithRouter = (ui, {route = '/'} = {}) => {
+  window.history.pushState({}, 'Test page', route)
+  return render(ui, {wrapper: BrowserRouter})
+}
 
 test('renders without crashing', () => {
   const { baseElement } = render(<App />);
@@ -30,7 +35,16 @@ test('Check alcool value', () => {
   expect(something.alcool.dailyTarget.value).toEqual(attendu);
 });
 
-test('Check if PDF format done correctly', async () => {
+// // let's match some data against our object
+// test('Add item in array', () => {
+//   var something =  {id: uuid(), favoris: false, name:"Vin rouge", qtte:1,  proteine:0, fibre:0, gras:0, glucide:0.8, unit: 'oz', consumption:0};
+
+//   expect(saveItem(something.consumption).toEqual(0));
+// });
+
+
+// -------- EXPORT MODULE SECTION ----------//
+test('ExportModule - Check if PDF format done correctly', async () => {
   var date1 = new Date("2021-02-01");
   var date2 = new Date("2021-03-29");
   let data = await compilerBilanPDF(['activities'], date1, date2);
@@ -38,7 +52,7 @@ test('Check if PDF format done correctly', async () => {
   expect(data.length).toBeGreaterThanOrEqual(0);
 });
 
-test('Check if CSV format done correctly', async () => {
+test('ExportModule - Check if CSV format done correctly', async () => {
   var date1 = new Date("2021-02-01");
   var date2 = new Date("2021-03-29");
   let data = await compilerBilanCSV(['activities'], date1, date2);
@@ -46,7 +60,7 @@ test('Check if CSV format done correctly', async () => {
   expect(data.length).toBeGreaterThanOrEqual(0);
 });
 
-test('Check if CSV export options set correctly', async () => {
+test('ExportModule - Check if CSV export options set correctly', async () => {
   const options = {
     title: `FitnessHabits-data-${new Date()
       .toISOString()
@@ -61,36 +75,53 @@ test('Check if CSV export options set correctly', async () => {
   expect(csvExporter).toBeDefined();
 });
 
-test('Check if PDF export options set correctly', async () => {
+test('ExportModule - Check if PDF export options set correctly', async () => {
   var string = "lorem ipsum";
   var doc = new jsPDF();
   doc.text(string,10,10);
-  
   expect(doc).toBeDefined();
 });
 
-// // let's match some data against our object
-// test('Add item in array', () => {
-//   var something =  {id: uuid(), favoris: false, name:"Vin rouge", qtte:1,  proteine:0, fibre:0, gras:0, glucide:0.8, unit: 'oz', consumption:0};
 
-//   expect(saveItem(something.consumption).toEqual(0));
-// });
-
-test('CheckIfSeConnecterIsOnTheMainPage', async () => {
-  render(<App />); //on the main page
-  const linkElement = screen.getByText(/Se connecter/i); 
-  expect(linkElement).toBeInTheDocument();
+test('ExportModule - CheckExportationComponents', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  //const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE');
+  //screen.getByDisplayValue('Nourriture');
+  const checkboxAlcool = screen.getByRole('checkbox', {name: 'Alcool'});
+  fireEvent.click(checkboxAlcool);
+  //expect(checkboxAlcool).toBeChecked();
+  
 });
 
-test('export_screen', async () => {
-  //render(<Fetch url="/export" />);
-  //const buttonX = screen.getByText(/Nourriture/i); //on the main page
-  //const color = screen.getByRole('button', {name: 'Change to blue'});
-  //colorButton.click();
-  //expect(colorButton).toBeVisible();
-  //expect(buttonX).toBeDisabled(); 
-  //expect(getByText('link')).not.toBeDisabled()
+test('CheckMainPageComponents', async () => {
+  render(<App />); //render the main page
+  const buttonInscrip = screen.getByText(/S'inscrire/i);
+  const buttonConnection = screen.getByText(/Se connecter/i); 
+  expect(buttonInscrip).toBeInTheDocument();
+  expect(buttonConnection).toBeInTheDocument();
+  //expect(screen.getByRole('alert')).toBeInvalid();  
 });
+
+/*Tester les dates par défaut dans la page*/
+/*Tester select all par défaut dans la page*/
+/*Tester if format selected changes, no change in attribute selected*/
+/*Tester if dates cahnges, no change in attribute selected*/
+/*Tester le changement de langues*/
+/*Tester les messages de,erreurs*/
+
+/* Notes
+test('CheckMainPageComponents', async () => {
+  const img = screen.getByRole('img', {name: 'Logo_texte'});
+  expect(colorButton).toBeVisible();
+  expect(buttonX).toBeDisabled(); 
+  expect(getByText('link')).not.toBeDisabled()
+  expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
+  screen.getByRole('alert').
+});
+*/
+
+
+
 
 
 

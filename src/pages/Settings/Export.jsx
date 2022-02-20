@@ -381,8 +381,8 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>{translate.getText("ALCOOL_TITLE")}</IonLabel>
-              <IonCheckbox
+              <IonLabel role="checkbox">{translate.getText("ALCOOL_TITLE")}</IonLabel>
+              <IonCheckbox 
                   checked={dataSelected.includes("alcool")}
                   onIonChange={(e) => {
                     manageCategories("alcool");
@@ -652,6 +652,7 @@ export async function compilerBilanPDF(dataSelected, d1, d2) {
   let retour = [];
 
   // Remplacer par i dans un for (de-à) lorsque les dates seront gere
+  // veut-on vraiment garder glycémie  --> glycemie au lieu ? 
   for (let i = 0; i < dataFormat.length; ++i) {
     retour[i] = {};
     retour[i].date = dataFormat[i].date
@@ -884,7 +885,7 @@ export async function compilerBilanCSV(dataSelected, d1, d2) {
 
   let retour = [];
 
-  // Remplacer par i dans un for (de-à) lorsque les dates seront gere
+  // Remplacer par i dans un for (de-à) lorsque les dates seront geres
   for (let i = 0; i < dataFormat.length; ++i) {
     retour[i] = {};
     retour[i].date = dataFormat[i].date
