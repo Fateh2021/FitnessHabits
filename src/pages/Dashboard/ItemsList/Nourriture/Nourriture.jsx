@@ -110,82 +110,48 @@ const Nourriture = (props) => {
   }
 
   const DailyConsumptionIncrement = (item)=>{ 
-    var array = [...macroNutriments];
-    const index = array.findIndex((event) => event.id === item.id);  
-    index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
-    array[item].consumption += 1;
-    updateCacheAndBD(array);
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard[props.type].dailyTarget.globalConsumption = totalConsumption();
-    props.parentCallback(totalConsumption());
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    // Vu que les objets et les tableaux sont passés par référence en JS, on peut faire l'incrémentation de l'objet passé en argument directement 
+    // et le résultat sera reflété dans le tableau <code> macroNutriments </code>, qui contient le <code> item </code> en question.
+    item.consumption++;
+    updateCacheAndBD((total) => { return ++total; });
   }
 
   const DailyConsumptionDecrement = (item)=>{  
-    var array = [...macroNutriments];
-    const index = array.findIndex((event) => event.id === item.id);  
-    index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
-    if (array[item].consumption >=1){
-      array[item].consumption -= 1;
+    if (item.consumption >= 1) {
+      // Vu que les objets et les tableaux sont passés par référence en JS, on peut faire la décrémentation de l'objet passé en argument directement 
+      // et le résultat sera reflété dans le tableau <code> macroNutriments </code>, qui contient le <code> item </code> en question.
+      item.consumption--;
+      updateCacheAndBD((total) => { return Math.max(--total, 0); });
     };
-    updateCacheAndBD(array);
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard[props.type].dailyTarget.globalConsumption = totalConsumption();
-    props.parentCallback(totalConsumption());
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
-  const totalConsumption = ()=>{
-    var array = [...macroNutriments];
-    var sum = 0;
-    var consumption = 0;
-    for (var i = 0; i < array.length; i++ ){
-      consumption = array[i].consumption;
-      sum += consumption; 
-    }
-    setGlobalConsumption(sum);
-    return sum
-  }
-
-  const deleteItem = (item) => {
-    var array = [...macroNutriments];
-    var sum = 0;
-    var consumption = 0;
-    const index = array.findIndex((e) => e.id === item.id);
-    array.splice(item, 1);
-    setMacroNutriments(array);  
-    for (var i = 0; i < array.length; i++ ){
-      consumption = array[i].consumption;
-      sum += consumption; 
-    }
-    setGlobalConsumption(sum);
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard[props.type][props.subType] = array;
-    dashboard[props.type].dailyTarget.globalConsumption = sum;
-    props.parentCallback(sum);      
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);     
-    updateCacheAndBD(array);
+  const deleteItem = (index) => {
+    const itemConsumption = macroNutriments[index].consumption;
+    macroNutriments.splice(index, 1);
+    updateCacheAndBD((total) => { 
+      const newTotal = total - itemConsumption; 
+      return Math.max(newTotal, 0);
+    });
   }
 
   const saveItem = (item) => {
-    var array = [...macroNutriments];
-    const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.unshift(item): array[index] = item;
-    setMacroNutriments(array);
+    const index = macroNutriments.findIndex((e) => e.id === item.id);
+    if (index === -1) {
+      macroNutriments.unshift(item);
+      // Dans le cas d'une sauvegarde, le total ne change pas dans la présente implémentation, alors on ne fait que le retourner tel quel par le foncteur de mise à jour (pour le moment).
+      updateCacheAndBD((total) => { return total; } );
+    }
     closeItemContainer();
-    updateCacheAndBD(array);
   }
 
-  const updateCacheAndBD = (macroNutriments) => {
+  const updateCacheAndBD = (updateTotalFunc) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard[props.type][props.subType] = macroNutriments;
     setMacroNutriments(macroNutriments);
+    const totalConsumption = updateTotalFunc(dashboard[props.type].dailyTarget.globalConsumption);
+    dashboard[props.type].dailyTarget.globalConsumption = totalConsumption;
+    setGlobalConsumption(totalConsumption);
+    props.parentCallback(totalConsumption);
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
@@ -221,13 +187,13 @@ const Nourriture = (props) => {
                   <IonCol size="1">
                   </IonCol>
                   <IonLabel className="nameDscripDashboard"><h2><b>{macroNutriment.name}</b></h2></IonLabel>      
-                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(index)}>
+                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(macroNutriment)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
                     <IonInput className='inputTextDashboard' value = {macroNutriment.consumption} readonly></IonInput>  
                   </IonCol>
-                  <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(index)}>
+                  <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(macroNutriment)}>
                     <IonIcon  icon={addCircle} />
                   </IonButton>
                   <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
