@@ -58,7 +58,7 @@ const Poids = (props) => {
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids == "LBS") {
+        if (snapshot.val().unitePoids === "LBS") {
           props.poids.dailyPoids = props.poids.dailyPoids * 2.2;
         }
       }
@@ -79,12 +79,12 @@ const Poids = (props) => {
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    if (OldUnitePoids == "KG" && value == "LBS") {
+    if (OldUnitePoids === "KG" && value === "LBS") {
       dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(
         2
       );
       setDailyPoids((dailyPoids * 2.2).toFixed(2));
-    } else if (OldUnitePoids == "LBS" && value == "KG") {
+    } else if (OldUnitePoids === "LBS" && value === "KG") {
       dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(
         2
       );
@@ -103,9 +103,11 @@ const Poids = (props) => {
     dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
+
     setDailyPoids(poidsDaily);
     if (unitePoids == "LBS") {
       dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
+
     }
 
     const userUID = localStorage.getItem("userUid");
@@ -126,9 +128,11 @@ const Poids = (props) => {
   var CalculImc = () => {
     taille = taille / 100;
     var p = dailyPoids;
+
     //var IMC;
     var indicateur_IMC;
     if (unitePoids == "LBS") {
+
       p = (p / 2.2).toFixed(2);
       indicateur_IMC = p / (taille * taille);
     } else {
