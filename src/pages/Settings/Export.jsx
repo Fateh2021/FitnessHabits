@@ -258,7 +258,7 @@ const Settings = (props) => {
           <IonItemDivider>{translate.getText("DATES_EXPORTATION_TITLE")}</IonItemDivider>
           <div class="datePickersExportation">
             <div>
-              De: &nbsp;
+              {translate.getText("DE")}: &nbsp;
               <DatePicker
                   onChange={onChangeD1}
                   value={d1}

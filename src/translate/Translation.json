@@ -673,6 +673,11 @@
       "en": "Save to device",
       "es": "Guardar en el dispositivo",
       "fr": "Enregistrer sur appareil"
+   },
+   "DE": {
+      "en": "From",
+      "es": "Del",
+      "fr": "De"
    }
 
 }
