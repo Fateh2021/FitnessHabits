@@ -42,7 +42,6 @@ test('Check alcool value', () => {
 //   expect(saveItem(something.consumption).toEqual(0));
 // });
 
-
 // -------- EXPORT MODULE SECTION ----------//
 test('ExportModule - Check if PDF format done correctly', async () => {
   var date1 = new Date("2021-02-01");
@@ -82,42 +81,61 @@ test('ExportModule - Check if PDF export options set correctly', async () => {
   expect(doc).toBeDefined();
 });
 
-
-test('ExportModule - CheckExportationComponents', () => {
-  renderWithRouter(<App />, {route: '/Export'});
-  //const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE');
-  //screen.getByDisplayValue('Nourriture');
-  const checkboxAlcool = screen.getByRole('checkbox', {name: 'Alcool'});
-  fireEvent.click(checkboxAlcool);
-  //expect(checkboxAlcool).toBeChecked();
-  
-});
-
+/* Tester la présence des composantes dans la page ? 
 test('CheckMainPageComponents', async () => {
   render(<App />); //render the main page
   const buttonInscrip = screen.getByText(/S'inscrire/i);
   const buttonConnection = screen.getByText(/Se connecter/i); 
   expect(buttonInscrip).toBeInTheDocument();
   expect(buttonConnection).toBeInTheDocument();
-  //expect(screen.getByRole('alert')).toBeInvalid();  
+});*/
+
+
+/*Tester select all par défaut dans la page*/
+test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  //const checkboxAlcool = screen.getByRole('checkbox', {name: 'Alcool'}); //fonctionne
+  const alcoolCheckbox = screen.getByTestId('checkbox-alcool');
+  fireEvent.click(alcoolCheckbox);
+  expect(alcoolCheckbox).toBeChecked(); 
 });
 
+
 /*Tester les dates par défaut dans la page*/
-/*Tester select all par défaut dans la page*/
+test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+  renderWithRouter(<App />, {route: '/Export'}); 
+});
+
 /*Tester if format selected changes, no change in attribute selected*/
+test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+  renderWithRouter(<App />, {route: '/Export'}); 
+});
+
 /*Tester if dates cahnges, no change in attribute selected*/
+test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+  renderWithRouter(<App />, {route: '/Export'}); 
+});
+
 /*Tester le changement de langues*/
-/*Tester les messages de,erreurs*/
+test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+  renderWithRouter(<App />, {route: '/Export'}); 
+});
+
+/*Tester les messages d'erreurs*/
+test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+  renderWithRouter(<App />, {route: '/Export'}); 
+});
 
 /* Notes
-test('CheckMainPageComponents', async () => {
   const img = screen.getByRole('img', {name: 'Logo_texte'});
   expect(colorButton).toBeVisible();
   expect(buttonX).toBeDisabled(); 
   expect(getByText('link')).not.toBeDisabled()
   expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
-  screen.getByRole('alert').
-});
+  screen.getByRole('alert')
+  //const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE'); //ne fonctionne pas
+  //screen.getByDisplayValue('Nourriture'); //ne fonctionne pas
+  //expect(screen.getByRole('alert')).toBeInvalid(); //fonctionne pas 
 */
 
 
