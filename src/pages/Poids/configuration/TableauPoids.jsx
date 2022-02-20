@@ -37,11 +37,7 @@ const TableauPoids = () => {
 
     var graphData = []
     if (refData != null) {
-<<<<<<< Updated upstream
-      //for (const [value] of Object.entries(refData)) {
-=======
     // On doit comprendre à quoi sert la variable _
->>>>>>> Stashed changes
       for (const [_,value] of Object.entries(refData)) {
           if (value.poids.datePoids !== undefined) {
               let datePoids = formatDate(value.poids.datePoids)
