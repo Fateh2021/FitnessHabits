@@ -1,4 +1,5 @@
 import firebase from "firebase";
+
 import React, { useState, useEffect } from "react";
 import { ExportToCsv } from "export-to-csv";
 import { toast } from "../../Toast";
@@ -138,6 +139,8 @@ const Settings = (props) => {
   // const [selected, setSelected] = useState({format: "csv"});
   // variable qui va contenir le format d'exportation désiré, par défaut csv
   var selected = "csv";
+  console.log(new Date().setMonth(new Date().getMonth() - 3))
+
 
   const [d1, onChangeD1] = useState(new Date());
   const [d2, onChangeD2] = useState(new Date());
@@ -461,96 +464,73 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        var bilan = await compilerBilanPDF(dataSelected, d1, d2);
+                        var bilan = await compilerBilan(dataSelected, d1, d2);
                         if (bilan.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
-                          dataSelected.forEach((data) => {
-                            switch (data) {
-                              case "hydratation":
-                                var hydratation = recupererHydratation();
-                                retour = retour + hydratation + "\n";
-                                break;
-                              case "activities":
-                                var activite = recupererActivite();
-                                retour = retour + activite + "\n";
-                                break;
-                              case "nourriture":
-                                var nourriture = recupererNourriture();
-                                retour = retour + nourriture + "\n";
-                                break;
-                              case "sommeil":
-                                var sommeil = recupererSommeil();
-                                retour = retour + sommeil + "\n";
-                                break;
-                              case "toilettes":
-                                var toilettes = recupererToilettes();
-                                retour = retour + toilettes + "\n";
-                                break;
-                              case "alcool":
-                                var alcool = recupererAlcools();
-                                retour = retour + alcool + "\n";
-                                break;
-                              case "glycémie":
-                                var glycemie = recupererGlycemie();
-                                retour = retour + glycemie + "\n";
-                                break;
-                              case "poids":
-                                var poids = recupererPoids();
-                                retour = retour + poids + "\n";
-                                break;
-                              case "supplements":
-                                var supplements = recupererSupplements();
-                                retour = retour + supplements + "\n";
-                                break;
-
-                              default:
-                                break;
-                            }
-                          });
-                          const doc = new jsPDF();
-                          var splitTitle = doc.splitTextToSize(retour, 270);
-                          var y = 7;
-                          for (var i = 0; i < splitTitle.length; i++) {
-                            if (y > 280) {
-                              y = 10;
-                              doc.addPage();
-                            }
-                            doc.text(15, y, splitTitle[i]);
-                            y = y + 7;
-                          }
-
-                          doc.save("FitnessHabits-data-" + date + ".pdf");
-
                         } else {
-                          const doc = new jsPDF();
-                          var titre =
-                              translate.getText("EXPORT_FILENAME_TITLE") + date + "\n\n";
-                          retour = titre + retour;
-                          dataSelected.forEach((data) => {
-                            retour = retour + "\n" + data + ": \n";
-                            bilan.forEach((x) => {
-                              retour = retour + x.date + ": " + x[data] + " \n";
-                            });
+                            dataSelected.forEach((data) => {
+                              switch (data) {
+                                case "hydratation":
+                                  var hydratation = recupererHydratation();
+                                  retour = retour + hydratation + "\n";
+                                  break;
+                                case "activities":
+                                  var activite = recupererActivite();
+                                  retour = retour + activite + "\n";
+                                  break;
+                                case "nourriture":
+                                  var nourriture = recupererNourriture();
+                                  retour = retour + nourriture + "\n";
+                                  break;
+                                case "sommeil":
+                                  var sommeil = recupererSommeil();
+                                  retour = retour + sommeil + "\n";
+                                  break;
+                                case "toilettes":
+                                  var toilettes = recupererToilettes();
+                                  retour = retour + toilettes + "\n";
+                                  break;
+                                case "alcool":
+                                  var alcool = recupererAlcools();
+                                  retour = retour + alcool + "\n";
+                                  break;
+                                case "glycémie":
+                                  var glycemie = recupererGlycemie();
+                                  retour = retour + glycemie + "\n";
+                                  break;
+                                case "poids":
+                                  var poids = recupererPoids();
+                                  retour = retour + poids + "\n";
+                                  break;
+                                case "supplements":
+                                  var supplements = recupererSupplements();
+                                  retour = retour + supplements + "\n";
+                                  break;
 
-                          });
-                          var splitTitle = doc.splitTextToSize(retour, 270);
-                          var y = 7;
-                          for (var i = 0; i < splitTitle.length; i++) {
-                            if (y > 280) {
-                              y = 10;
-                              doc.addPage();
+                                default:
+                                  break;
+                              }
+                            });
+                            const doc = new jsPDF();
+                            var splitTitle = doc.splitTextToSize(retour, 270);
+                            var y = 7;
+                            for (var i = 0; i < splitTitle.length; i++) {
+                              if (y > 280) {
+                                y = 10;
+                                doc.addPage();
+                              }
+                              doc.text(15, y, splitTitle[i]);
+                              y = y + 7;
                             }
-                            doc.text(15, y, splitTitle[i]);
-                            y = y + 7;
+
+                            doc.save("FitnessHabits-data-" + date + ".pdf");
                           }
-                          doc.save("FitnessHabits-data-" + date + ".pdf");
                         }
-                      }
 
                       if (selected === "csv" || selected === "hybride") {
-                        var bilan = await compilerBilanCSV(dataSelected, d1, d2);
+                        var bilan = await compilerBilan(dataSelected, d1, d2);
                         if (bilan.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
@@ -610,7 +590,7 @@ function getDates(startDate, stopDate) {
   return dateArray;
 }
 
-export async function compilerBilanPDF(dataSelected, d1, d2) {
+export async function compilerBilan(dataSelected, d1, d2) {
   d1.setHours(0, 0, 0, 0)
   const userUID = localStorage.getItem("userUid");
   let dataFormat = [];
@@ -839,147 +819,6 @@ function recupererSupplements() {
     retour = retour + supplement + "\n";
   }
 
-  return retour;
-}
-
-
-export async function compilerBilanCSV(dataSelected, d1, d2) {
-  d1.setHours(0, 0, 0, 0)
-  const userUID = localStorage.getItem("userUid");
-  let dataFormat = [];
-  if (!window.navigator.onLine) {
-    dataFormat = [JSON.parse(localStorage.getItem("dashboard"))];
-    let ajd = new Date();
-    dataFormat[0].date = ('0' + ajd.getDate()).slice(-2) + '-'
-        + ('0' + (ajd.getMonth() + 1)).slice(-2) + '-'
-        + ajd.getFullYear();
-  } else {
-    let ref = firebase.database().ref("dashboard/" + userUID + "/");
-    await ref.once("value", (snap) => {
-      snap.forEach((data) => {
-        var jour = data.key[0] + data.key[1] + "-";
-        var mois = "0" + data.key[2] + "-";
-        var annee = data.key[3] + data.key[4] + data.key[5] + data.key[6];
-        var date = jour + mois + annee;
-
-        var obj = data.val();
-        obj.date = date;
-        dataFormat.push(obj);
-      });
-    });
-  }
-
-  // Only uses dates in datepicker
-  let datePickerDates = getDates(d1, d2);
-  dataFormat = dataFormat.filter((data) => {
-    return !!datePickerDates.find((item) => {
-      return (
-          item.getTime() ==
-          new Date(
-              data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-          ).getTime()
-      );
-    });
-  });
-
-  let retour = [];
-
-  // Remplacer par i dans un for (de-à) lorsque les dates seront gere
-  for (let i = 0; i < dataFormat.length; ++i) {
-    retour[i] = {};
-    retour[i].date = dataFormat[i].date
-        ? dataFormat[i].date
-        : new Date().toISOString().slice(0, 10);
-    for (const data of dataSelected) {
-      switch (data) {
-        case "hydratation":
-          if (dataFormat[i].hydratation.hydrates) {
-            for (const hydr of dataFormat[i].hydratation.hydrates) {
-              if (retour[i][data])
-                retour[i][data] +=
-                    (hydr.name ? hydr.name : "NO-NAME") +
-                    ": " +
-                    hydr.qtte +
-                    " " +
-                    hydr.unit +
-                    "; ";
-              else
-                retour[i][data] =
-                    (hydr.name ? hydr.name : "NO-NAME") +
-                    ": " +
-                    hydr.qtte +
-                    " " +
-                    hydr.unit +
-                    "; ";
-            }
-          } else {
-            retour[i][data] = "empty";
-          }
-          break;
-        case "activities":
-          var activite = dataFormat[i].activities;
-          retour[i][data] = activite.heure + "h " + activite.minute + " min";
-          break;
-        case "nourriture":
-          var nourriture = dataFormat[i].nourriture;
-          if (nourriture.globalConsumption === "0")
-            retour[i][data] = " NO DATA FOUND IN NOURRITURE";
-          else retour[i][data] = nourriture.globalConsumption;
-          break;
-        case "sommeil":
-          var sommeil = dataFormat[i].sommeil;
-          retour[i][data] = sommeil.heure + "h " + sommeil.minute + " min";
-          break;
-        case "toilettes":
-          var toilettes = dataFormat[i].toilettes;
-          retour[i][data] =
-              "Feces: " + toilettes.feces + "; Urine: " + toilettes.urine;
-          break;
-        case "alcool":
-          if (dataFormat[i].alcool.alcools) {
-            dataFormat[i].alcool.alcools.forEach((alc) => {
-              if (retour[i][data])
-                retour[i][data] +=
-                    (alc.name ? alc.name : "NO-NAME") +
-                    ": " +
-                    alc.qtte +
-                    " " +
-                    alc.unit +
-                    "; ";
-              else
-                retour[i][data] =
-                    (alc.name ? alc.name : "NO-NAME") +
-                    ": " +
-                    alc.qtte +
-                    " " +
-                    alc.unit +
-                    "; ";
-            });
-          } else {
-            retour[i][data] = "empty";
-          }
-          break;
-        case "glycémie":
-          var glycemie = dataFormat[i].glycemie.dailyGlycemie;
-          retour[i][data] = glycemie;
-          break;
-        case "poids":
-          var poids = dataFormat[i].poids.dailyPoids;
-          retour[i][data] = poids;
-          break;
-        case "supplements":
-          var supplement = dataFormat[i].supplement;
-          if (!supplement)
-            retour[i][data] =
-                "Les supplements ne sont pas encore implémentés\n";
-          else retour[i][data] = supplement;
-          break;
-
-        default:
-          break;
-      }
-    }
-  }
   return retour;
 }
 
