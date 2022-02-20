@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
-import {compilerBilanCSV, compilerBilanPDF} from './pages/Settings/Export';
+import {compilerBilan} from './pages/Settings/Export';
 import {ExportToCsv} from "export-to-csv";
 import {jsPDF} from "jspdf";
 //import {saveItem} from './pages/Dashoard/ItemsList/Alccol';  //Test non fonctionnel avec cette ligne
