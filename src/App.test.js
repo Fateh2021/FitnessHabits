@@ -1,9 +1,12 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import App from './App';
+
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import '@testing-library/jest-dom'
 import {compilerBilanCSV, compilerBilanPDF} from './pages/Settings/Export';
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
-import App from './App';
+
 //import {saveItem} from './pages/Dashoard/ItemsList/Alccol';  //Test non fonctionnel avec cette ligne
 
 test('renders without crashing', () => {
@@ -69,7 +72,21 @@ test('Check if PDF export options set correctly', async () => {
 //   expect(saveItem(something.consumption).toEqual(0));
 // });
 
+test('CheckIfSeConnecterIsOnTheMainPage', async () => {
+  render(<App />); //on the main page
+  const linkElement = screen.getByText(/Se connecter/i); 
+  expect(linkElement).toBeInTheDocument();
+});
 
+test('export_screen', async () => {
+  //render(<Fetch url="/export" />);
+  //const buttonX = screen.getByText(/Nourriture/i); //on the main page
+  //const color = screen.getByRole('button', {name: 'Change to blue'});
+  //colorButton.click();
+  //expect(colorButton).toBeVisible();
+  //expect(buttonX).toBeDisabled(); 
+  //expect(getByText('link')).not.toBeDisabled()
+});
 
 
 
