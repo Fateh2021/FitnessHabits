@@ -5,7 +5,7 @@ import * as translate from "../../../translate/Translator";
 
 import {
   IonInput,
-  IonText,
+  //IonText,
   //IonButton,
   //IonGrid,
   //IonContent,
@@ -57,7 +57,7 @@ const Poids = (props) => {
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids == "LBS") {
+        if (snapshot.val().unitePoids === "LBS") {
           props.poids.dailyPoids = props.poids.dailyPoids * 2.2;
         }
       }
@@ -78,12 +78,12 @@ const Poids = (props) => {
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    if (OldUnitePoids == "KG" && value == "LBS") {
+    if (OldUnitePoids === "KG" && value === "LBS") {
       dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(
         2
       );
       setDailyPoids((dailyPoids * 2.2).toFixed(2));
-    } else if (OldUnitePoids == "LBS" && value == "KG") {
+    } else if (OldUnitePoids === "LBS" && value === "KG") {
       dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(
         2
       );
@@ -103,7 +103,7 @@ const Poids = (props) => {
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
     setDailyPoids(dailyPoids);
-    if (unitePoids == "LBS") {
+    if (unitePoids === "LBS") {
       dashboard.poids.dailyPoids = (dailyPoids / 2.2).toFixed(2);
     }
 
@@ -126,7 +126,7 @@ const Poids = (props) => {
     taille = taille / 100;
     var p = dailyPoids;
     var IMC;
-    if (unitePoids == "LBS") {
+    if (unitePoids === "LBS") {
       p = (p / 2.2).toFixed(2);
       IMC = p / (taille * taille);
     } else {

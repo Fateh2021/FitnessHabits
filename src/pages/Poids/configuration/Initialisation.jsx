@@ -21,10 +21,10 @@ const Initialisation = () => {
 
   useEffect(() => {
     preferencesPoidsRef.once("value").then(function(snapshot) {
-      if (snapshot.val() != null) {
+      if (snapshot.val() !== null) {
 
         setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids == "LBS") {
+        if (snapshot.val().unitePoids === "LBS") {
           setPoidsInitial((parseFloat(snapshot.val().poidsInitial) * DIFF_UNITE_POIDS).toFixed(2));
           setPoidsCible((parseFloat(snapshot.val().poidsCible) * DIFF_UNITE_POIDS ).toFixed(2));
         } else {
@@ -54,10 +54,10 @@ const Initialisation = () => {
     let OldUnitePoids = unitePoids;
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    if (OldUnitePoids == "KG" && value == "LBS") {
+    if (OldUnitePoids === "KG" && value === "LBS") {
       setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
       setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
-    } else if (OldUnitePoids == "LBS" && value == "KG") {
+    } else if (OldUnitePoids === "LBS" && value === "KG") {
       setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
       setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
     }
@@ -78,7 +78,7 @@ const Initialisation = () => {
 
   const handlerConfirmation = () => {
   // Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
-    if (poidsInitial != 0 && poidsCible != 0 && unitePoids != "" && dateCible != ""){
+    if (poidsInitial !== 0 && poidsCible !== 0 && unitePoids !== "" && dateCible !== ""){
 		console.log(poidsInitial)
         let pi = poidsInitial;
         let pc = poidsCible;
