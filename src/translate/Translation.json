@@ -678,6 +678,11 @@
       "en": "From",
       "es": "Del",
       "fr": "De"
+   },
+   "A": {
+      "en": "To",
+      "es": "Al",
+      "fr": "De"
    }
 
 }
