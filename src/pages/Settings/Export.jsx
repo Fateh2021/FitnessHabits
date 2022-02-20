@@ -35,7 +35,6 @@ import { jsPDF } from "jspdf";
 
 
 import "../Tab1.css";
-import moment from "moment";
 
 const Settings = (props) => {
 
@@ -140,9 +139,8 @@ const Settings = (props) => {
   // variable qui va contenir le format d'exportation désiré, par défaut csv
   var selected = "csv";
 
-  var defaultDate = new Date();
-  defaultDate.setMonth(defaultDate.getMonth() - 3);
-  const [d1, onChangeD1] = useState(defaultDate);
+
+  const [d1, onChangeD1] = useState(new Date(new Date().setMonth(-3)));
   const [d2, onChangeD2] = useState(new Date());
 
   // load the current settings from the local storage if it exists, otherwise load it from the DB
@@ -276,7 +274,7 @@ const Settings = (props) => {
               />
             </div>
             <div>
-              &nbsp; &nbsp; {translate.getText("A")}: &nbsp;
+              &nbsp; &nbsp; À: &nbsp;
               <DatePicker
                   onChange={onChangeD2}
                   value={d2}
@@ -292,141 +290,123 @@ const Settings = (props) => {
 
           <IonList>
             <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
-            <div role="checkbox" aria-checked={dataSelected.includes("activities")} data-testid="checkbox-activities">
-              <IonItem>
-                <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("activities")}
-                    onIonChange={(e) => {
-                      manageCategories("activities");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("nourriture")} data-testid="checkbox-nourriture">
-              <IonItem>
-                <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("nourriture")}
-                    onIonChange={(e) => {
-                      manageCategories("nourriture");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("hydratation")} data-testid="checkbox-hydratation">
-              <IonItem>
-                <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("hydratation")}
-                    onIonChange={(e) => {
-                      manageCategories("hydratation");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-              </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("supplements")} data-testid="checkbox-supplements">
-              <IonItem>
-                <IonLabel>{translate.getText("SUPPL_TITLE")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("supplements")}
-                    onIonChange={(e) => {
-                      manageCategories("supplements");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("sommeil")} data-testid="checkbox-sommeil">
-              <IonItem>
-                <IonLabel>{translate.getText("SLEEP")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("sommeil")}
-                    onIonChange={(e) => {
-                      manageCategories("sommeil");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("poids")} data-testid="checkbox-poids">
-              <IonItem>
-                <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("poids")}
-                    onIonChange={(e) => {
-                      manageCategories("poids");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("glycémie")} data-testid="checkbox-glycémie">
-              <IonItem>
-                <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("glycémie")}
-                    onIonChange={(e) => {
-                      manageCategories("glycémie");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("alcool")} data-testid="checkbox-alcool">
-              <IonItem>
-                <IonLabel >{translate.getText("ALCOOL_TITLE")}</IonLabel>
-                <IonCheckbox 
-                    checked={dataSelected.includes("alcool")}
-                    onIonChange={(e) => {
-                      manageCategories("alcool");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("toilettes")} data-testid="checkbox-toilettes">
-              <IonItem>
-                <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
-                <IonCheckbox
-                    checked={dataSelected.includes("toilettes")}
-                    onIonChange={(e) => {
-                      manageCategories("toilettes");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
-                    }}
-                />
-              </IonItem>
-            </div>
+            <IonItem>
+              <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("activities")}
+                  onIonChange={(e) => {
+                    manageCategories("activities");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("nourriture")}
+                  onIonChange={(e) => {
+                    manageCategories("nourriture");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("hydratation")}
+                  onIonChange={(e) => {
+                    manageCategories("hydratation");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("SUPPL_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("supplements")}
+                  onIonChange={(e) => {
+                    manageCategories("supplements");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("SLEEP")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("sommeil")}
+                  onIonChange={(e) => {
+                    manageCategories("sommeil");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("poids")}
+                  onIonChange={(e) => {
+                    manageCategories("poids");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("glycémie")}
+                  onIonChange={(e) => {
+                    manageCategories("glycémie");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("ALCOOL_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("alcool")}
+                  onIonChange={(e) => {
+                    manageCategories("alcool");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
+              <IonCheckbox
+                  checked={dataSelected.includes("toilettes")}
+                  onIonChange={(e) => {
+                    manageCategories("toilettes");
+                    if (dataSelected.length === 0) {
+                      toast(toastMessage);
+                      e.target.checked = true;
+                    }
+                  }}
+              />
+            </IonItem>
 
             <IonRadioGroup
                 onIonChange={(e) => {
@@ -649,7 +629,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
   let retour = [];
 
   // Remplacer par i dans un for (de-à) lorsque les dates seront gere
-  // veut-on vraiment garder glycémie  --> glycemie au lieu ? 
   for (let i = 0; i < dataFormat.length; ++i) {
     retour[i] = {};
     retour[i].date = dataFormat[i].date
