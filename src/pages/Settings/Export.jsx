@@ -29,8 +29,9 @@ import {
 } from "ionicons/icons";
 import DefaultSettings from "./DefaultSettings";
 import DatePicker from "react-date-picker";
-
+import * as translate from '../../translate/Translator'
 import { jsPDF } from "jspdf";
+
 
 import "../Tab1.css";
 
@@ -247,9 +248,9 @@ const Settings = (props) => {
             <IonTabButton tab="menu" href="/sidbar">
               <IonLabel className="headerTitle">Exportation</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="settings">
-              <IonIcon className="targetProfil " icon={globe} />
-            </IonTabButton>
+            <IonTabButton tab="settings" href="/languages">
+            <IonIcon className="targetProfil " icon={globe} />
+          </IonTabButton>
           </IonTabBar>
         </IonHeader>
 
@@ -328,7 +329,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Suppléments</IonLabel>
+              <IonLabel>{translate.getText("SUPPL_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("supplements")}
                   onIonChange={(e) => {
