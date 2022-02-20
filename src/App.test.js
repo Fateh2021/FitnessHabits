@@ -46,7 +46,7 @@ test('Check alcool value', () => {
 test('ExportModule - Check if PDF format done correctly', async () => {
   var date1 = new Date("2021-02-01");
   var date2 = new Date("2021-03-29");
-  let data = await compilerBilanPDF(['activities'], date1, date2);
+  let data = await compilerBilan(['activities'], date1, date2);
   expect(data).toBeInstanceOf(Array);
   expect(data.length).toBeGreaterThanOrEqual(0);
 });
@@ -54,7 +54,7 @@ test('ExportModule - Check if PDF format done correctly', async () => {
 test('ExportModule - Check if CSV format done correctly', async () => {
   var date1 = new Date("2021-02-01");
   var date2 = new Date("2021-03-29");
-  let data = await compilerBilanCSV(['activities'], date1, date2);
+  let data = await compilerBilan(['activities'], date1, date2);
   expect(data).toBeInstanceOf(Array);
   expect(data.length).toBeGreaterThanOrEqual(0);
 });
