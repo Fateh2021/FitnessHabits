@@ -12,8 +12,8 @@ const TableauPoids = () => {
     const [poidsCible, setPoidsCible] = useState("");
 
     function formatDate (date) {
-       return moment(date).format('YYYY-MM-DD')
-        
+       var d = moment(date).format('YYYY-MM-DD')
+       return d;
     }
 
     useEffect(() => {
@@ -38,7 +38,8 @@ const TableauPoids = () => {
 
     var graphData = []
     if (refData != null) {
-      for (const [_,value] of Object.entries(refData)) {
+      for (const [value] of Object.entries(refData)) {
+      //for (const [_,value] of Object.entries(refData)) {
           if (value.poids.datePoids !== undefined) {
               let datePoids = formatDate(value.poids.datePoids)
               let poids = poidsService.formatPoids(value.poids.dailyPoids)
