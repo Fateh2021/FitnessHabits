@@ -5,7 +5,7 @@ import * as translate from "../../../translate/Translator";
 
 import {
   IonInput,
-  IonText,
+  //IonText,
   //IonButton,
   //IonGrid,
   //IonContent,
@@ -27,17 +27,18 @@ import TableauPoids from "../../Poids/configuration/TableauPoids";
 const accor = (divId) => {
   const divElt = document.getElementById(divId);
   if (divElt) {
-    !divElt.style.display || divElt.style.display === "none"
-      ? (divElt.style.display = "block")
-      : (divElt.style.display = "none");
+    divElt.style.display =  !divElt.style.display || divElt.style.display === "none"? "block": "none";
+    //!divElt.style.display || divElt.style.display === "none"? (divElt.style.display = "block"): (divElt.style.display = "none");
   }
 };
 
 const Poids = (props) => {
   const [unitePoids, setUnitePoids] = useState("KG");
-  const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
+  const [currentDate, ] = useState({ startDate: new Date() });
+  //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
-  const [poids, setPoids] = useState(props.poids);
+  //const [poids, setPoids] = useState(props.poids);
+  const [, setPoids] = useState(props.poids);
   var [taille, setTaille] = useState("");
 
   useEffect(() => {
@@ -63,8 +64,8 @@ const Poids = (props) => {
       }
     });
     // setUnitePoids(poidsService.getPrefUnitePoids())
-    var taille = firebase.database().ref("profiles/" + userUID);
-    taille.once("value").then(function (snapshot) {
+    var taille_l = firebase.database().ref("profiles/" + userUID);
+    taille_l.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setTaille(snapshot.val().size);
       }
@@ -94,17 +95,17 @@ const Poids = (props) => {
   };
 
   const handleChange = (event) => {
-    let dailyPoids = event.target.value;
-
+    //let dailyPoids = event.target.value;
+    let poidsDaily = event.target.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    const prefUnitePoids = localStorage.getItem('prefUnitePoids');
+    //const prefUnitePoids = localStorage.getItem('prefUnitePoids');
 
-    dashboard.poids.dailyPoids = poidsService.formatToKG(dailyPoids);
+    dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    setDailyPoids(dailyPoids);
+    setDailyPoids(poidsDaily);
     if (unitePoids == "LBS") {
-      dashboard.poids.dailyPoids = (dailyPoids / 2.2).toFixed(2);
+      dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
     }
 
     const userUID = localStorage.getItem("userUid");
@@ -125,14 +126,15 @@ const Poids = (props) => {
   var CalculImc = () => {
     taille = taille / 100;
     var p = dailyPoids;
-    var IMC;
+    //var IMC;
+    var indicateur_IMC;
     if (unitePoids == "LBS") {
       p = (p / 2.2).toFixed(2);
-      IMC = p / (taille * taille);
+      indicateur_IMC = p / (taille * taille);
     } else {
-      IMC = dailyPoids / (taille * taille);
+      indicateur_IMC = dailyPoids / (taille * taille);
     }
-    return IMC.toFixed(2);
+    return indicateur_IMC.toFixed(2);
   };
   const IMC = CalculImc();
 
