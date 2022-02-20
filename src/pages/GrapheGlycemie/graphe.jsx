@@ -16,7 +16,8 @@ const Taux = Object.freeze({
     mgdl: ' mg/dl'
 })
 
-const Graphe = (reloadGraph) => {
+// Modification de l'équipe Glicémie
+const Graphe = ({ reloadGraph }) => {
 
     // ========= CONST =========
     const DateRange = Object.freeze({

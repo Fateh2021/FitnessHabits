@@ -77,17 +77,22 @@ const Initialisation = () => {
   }
 
   const handlerConfirmation = () => {
-    let pi = poidsInitial;
-    let pc = poidsCible;
-    if (unitePoids == "LBS") {
-      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
-      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
+  // Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
+    if (poidsInitial != 0 && poidsCible != 0 && unitePoids != "" && dateCible != ""){
+		console.log(poidsInitial)
+        let pi = poidsInitial;
+        let pc = poidsCible;
+        if (unitePoids === "LBS") {
+          pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
+          pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
+        }
+        let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
+        poidsService.setPrefUnitePoids(unitePoids)
+        firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
+        redirectDashboard();
+    } else {
+        alert("Attention, veuiller saisir les informations manquantes !")
     }
-    let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
-    poidsService.setPrefUnitePoids(unitePoids)
-    firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
-    
-    redirectDashboard();
   }
 
   return (
