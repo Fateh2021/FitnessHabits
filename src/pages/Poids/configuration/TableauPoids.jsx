@@ -38,8 +38,8 @@ const TableauPoids = () => {
 
     var graphData = []
     if (refData != null) {
-      for (const [value] of Object.entries(refData)) {
-      //for (const [_,value] of Object.entries(refData)) {
+      //for (const [value] of Object.entries(refData)) {
+      for (const [_,value] of Object.entries(refData)) {
           if (value.poids.datePoids !== undefined) {
               let datePoids = formatDate(value.poids.datePoids)
               let poids = poidsService.formatPoids(value.poids.dailyPoids)
