@@ -10,7 +10,6 @@ const handleRouterPageConfigNotification = () => {
 const ConfigurationNotification = (props) => {
     const [titre, setrTitre] = useState("Titre de notification");
     const [selectedDate, setSelectedDate] = useState('2012-12-15T13:47:20.789');
-    //const [repetition, setRepetition] = useState(['ven', 'sam']);
     const repetition = ['ven', 'sam'];
     const getJoursRepetition = (r) => {
         return r.reduce((prev, curr) => prev + "," + curr);

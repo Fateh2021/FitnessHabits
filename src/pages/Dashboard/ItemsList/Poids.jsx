@@ -37,8 +37,8 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
-  //const [poids, setPoids] = useState(props.poids);
-  const [, setPoids] = useState(props.poids);
+  const [poids, setPoids] = useState(props.poids);
+  //const [, setPoids] = useState(props.poids); -- Cette ligne je ne l'a comprends pas, veuiller me l'expliquer
   var [taille, setTaille] = useState("");
 
   useEffect(() => {
@@ -80,14 +80,10 @@ const Poids = (props) => {
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
     if (OldUnitePoids === "KG" && value === "LBS") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(
-        2
-      );
+      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
       setDailyPoids((dailyPoids * 2.2).toFixed(2));
     } else if (OldUnitePoids === "LBS" && value === "KG") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(
-        2
-      );
+      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(2);
       setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
@@ -95,7 +91,6 @@ const Poids = (props) => {
   };
 
   const handleChange = (event) => {
-    //let dailyPoids = event.target.value;
     let poidsDaily = event.target.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
     //const prefUnitePoids = localStorage.getItem('prefUnitePoids');
@@ -107,7 +102,6 @@ const Poids = (props) => {
     setDailyPoids(poidsDaily);
     if (unitePoids == "LBS") {
       dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
-
     }
 
     const userUID = localStorage.getItem("userUid");

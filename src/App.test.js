@@ -61,21 +61,6 @@ test('Check if PDF export options set correctly', async () => {
   expect(doc).toBeDefined();
 });
 
-// // let's match some data against our object
-// test('Add item in array', () => {
-//   var something =  {id: uuid(), favoris: false, name:"Vin rouge", qtte:1,  proteine:0, fibre:0, gras:0, glucide:0.8, unit: 'oz', consumption:0};
-
-//   expect(saveItem(something.consumption).toEqual(0));
-// });
-
-
-
-
-
-
-
-
-
 
 
 

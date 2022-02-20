@@ -78,7 +78,7 @@ const Initialisation = () => {
 
   const handlerConfirmation = () => {
   // Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
-    if (poidsInitial !== 0 && poidsCible !== 0 && unitePoids !== "" && dateCible !== ""){
+    if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
 		console.log(poidsInitial)
         let pi = poidsInitial;
         let pc = poidsCible;
