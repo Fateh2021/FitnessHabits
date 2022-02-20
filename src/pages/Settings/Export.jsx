@@ -87,7 +87,7 @@ const Settings = (props) => {
     },
   });
 
-  var toastMessage = "Veuillez sélectionner au moins un type de donnée";
+  var toastMessage = translate.getText("SELECT_DATA_REQUIRED_TITLE");
 
   //Variable indiquant quelles données l'utilisateur souhaite exporter
   var dataSelected = userCategories();
@@ -246,7 +246,7 @@ const Settings = (props) => {
               <IonIcon className="arrowDashItem" icon={arrowDropleftCircle} />
             </IonTabButton>
             <IonTabButton tab="menu" href="/sidbar">
-              <IonLabel className="headerTitle">Exportation</IonLabel>
+              <IonLabel className="headerTitle">{translate.getText("EXPORT_TITLE")}</IonLabel>
             </IonTabButton>
             <IonTabButton tab="settings" href="/languages">
             <IonIcon className="targetProfil " icon={globe} />
@@ -255,7 +255,7 @@ const Settings = (props) => {
         </IonHeader>
 
         <IonContent>
-          <IonItemDivider>Dates d'exportation </IonItemDivider>
+          <IonItemDivider>{translate.getText("DATES_EXPORTATION_TITLE")}</IonItemDivider>
           <div class="datePickersExportation">
             <div>
               De: &nbsp;
@@ -288,9 +288,9 @@ const Settings = (props) => {
           </div>
 
           <IonList>
-            <IonItemDivider>Sélection des données à exporter</IonItemDivider>
+            <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
             <IonItem>
-              <IonLabel>Activités physiques</IonLabel>
+              <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("activities")}
                   onIonChange={(e) => {
@@ -303,7 +303,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Nourriture</IonLabel>
+              <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("nourriture")}
                   onIonChange={(e) => {
@@ -316,7 +316,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Hydratation</IonLabel>
+              <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("hydratation")}
                   onIonChange={(e) => {
@@ -342,7 +342,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Sommeil</IonLabel>
+              <IonLabel>{translate.getText("SLEEP")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("sommeil")}
                   onIonChange={(e) => {
@@ -355,7 +355,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Poids</IonLabel>
+              <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("poids")}
                   onIonChange={(e) => {
@@ -368,7 +368,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Glycémie</IonLabel>
+              <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("glycémie")}
                   onIonChange={(e) => {
@@ -381,7 +381,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Alcool</IonLabel>
+              <IonLabel>{translate.getText("ALCOOL_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("alcool")}
                   onIonChange={(e) => {
@@ -394,7 +394,7 @@ const Settings = (props) => {
               />
             </IonItem>
             <IonItem>
-              <IonLabel>Toilettes</IonLabel>
+              <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
               <IonCheckbox
                   checked={dataSelected.includes("toilettes")}
                   onIonChange={(e) => {
@@ -414,7 +414,7 @@ const Settings = (props) => {
                 }}
             >
               <IonListHeader>
-                <IonLabel>Format exportation</IonLabel>
+                <IonLabel>{translate.getText("EXPORT_FORMAT_TITLE")}</IonLabel>
               </IonListHeader>
 
               <IonItem>
@@ -428,7 +428,7 @@ const Settings = (props) => {
               </IonItem>
 
               <IonItem>
-                <IonLabel>CSV et PDF</IonLabel>
+                <IonLabel>{translate.getText("CSV_AND_PDF_TITLE")}</IonLabel>
                 <IonRadio slot="start" value="hybride" />
               </IonItem>
             </IonRadioGroup>
@@ -449,7 +449,7 @@ const Settings = (props) => {
                       );
                     }}
                 >
-                  Envoyer par email
+                  {translate.getText("SEND_MAIL")}
                   <IonIcon slot="start" icon={mail} />
                 </IonButton>
               </ion-col>
@@ -464,7 +464,7 @@ const Settings = (props) => {
                         var bilan = await compilerBilanPDF(dataSelected, d1, d2);
                         if (bilan.length <= 0) {
                           toast(
-                              "Aucune donnée à extraire à l'intérieur des dates choisies"
+                              translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
                           dataSelected.forEach((data) => {
                             switch (data) {
@@ -526,7 +526,7 @@ const Settings = (props) => {
                         } else {
                           const doc = new jsPDF();
                           var titre =
-                              "Bilan Fitness Habits en date du " + date + "\n\n";
+                              translate.getText("EXPORT_FILENAME_TITLE") + date + "\n\n";
                           retour = titre + retour;
                           dataSelected.forEach((data) => {
                             retour = retour + "\n" + data + ": \n";
@@ -553,7 +553,7 @@ const Settings = (props) => {
                         var bilan = await compilerBilanCSV(dataSelected, d1, d2);
                         if (bilan.length <= 0) {
                           toast(
-                              "Aucune donnée à extraire à l'intérieur des dates choisies"
+                              translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
                         } else {
                           const options = {
@@ -572,7 +572,7 @@ const Settings = (props) => {
                       }
                     }}
                 >
-                  Enregistrer sur appareil
+                  {translate.getText("SAVE_TO_DEV")}
                   <IonIcon slot="start" icon={download} />
                 </IonButton>
               </ion-col>

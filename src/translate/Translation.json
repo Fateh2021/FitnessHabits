@@ -663,6 +663,16 @@
       "en":"Urine",
       "es":"Orina",
       "fr":"Urine"
+   },
+   "SEND_MAIL": {
+      "en":"Send by email",
+      "es": "Enviar por correo elec.",
+      "fr": "Envoyer par courriel"
+   },
+   "SAVE_TO_DEV":{
+      "en": "Save to device",
+      "es": "Guardar en el dispositivo",
+      "fr": "Enregistrer sur appareil"
    }
 
 }
