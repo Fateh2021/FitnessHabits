@@ -307,7 +307,7 @@ const Settings = (props) => {
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("nourriture")} data-testid="checkbox-nourriture">
+            <div role="checkbox" aria-checked={dataSelected.includes("nourriture")} data-testid="checkbox-food">
               <IonItem>
                 <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
                 <IonCheckbox
@@ -322,7 +322,7 @@ const Settings = (props) => {
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("hydratation")} data-testid="checkbox-hydratation">
+            <div role="checkbox" aria-checked={dataSelected.includes("hydratation")} data-testid="checkbox-hydration">
               <IonItem>
                 <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
                 <IonCheckbox
@@ -352,7 +352,7 @@ const Settings = (props) => {
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("sommeil")} data-testid="checkbox-sommeil">
+            <div role="checkbox" aria-checked={dataSelected.includes("sommeil")} data-testid="checkbox-sleep">
               <IonItem>
                 <IonLabel>{translate.getText("SLEEP")}</IonLabel>
                 <IonCheckbox
@@ -367,7 +367,7 @@ const Settings = (props) => {
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("poids")} data-testid="checkbox-poids">
+            <div role="checkbox" aria-checked={dataSelected.includes("poids")} data-testid="checkbox-weight">
               <IonItem>
                 <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
                 <IonCheckbox
@@ -382,7 +382,7 @@ const Settings = (props) => {
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("glycémie")} data-testid="checkbox-glycémie">
+            <div role="checkbox" aria-checked={dataSelected.includes("glycémie")} data-testid="checkbox-glycemia">
               <IonItem>
                 <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
                 <IonCheckbox
@@ -412,7 +412,7 @@ const Settings = (props) => {
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("toilettes")} data-testid="checkbox-toilettes">
+            <div role="checkbox" aria-checked={dataSelected.includes("toilettes")} data-testid="checkbox-toilet">
               <IonItem>
                 <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
                 <IonCheckbox

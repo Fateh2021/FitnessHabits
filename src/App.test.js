@@ -7,9 +7,6 @@ import {jsPDF} from "jspdf";
 //import {saveItem} from './pages/Dashoard/ItemsList/Alccol';  //Test non fonctionnel avec cette ligne
 
 import App from './App';
-import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-import {Router} from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom';
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
@@ -22,6 +19,7 @@ test('renders without crashing', () => {
   const { baseElement } = render(<App />);
   expect(baseElement).toBeDefined();
 });
+
 
 test('Check hydratation value', () => {
 var attendu = 5;
@@ -81,61 +79,126 @@ test('ExportModule - Check if PDF export options set correctly', async () => {
   expect(doc).toBeDefined();
 });
 
-/* Tester la présence des composantes dans la page ? 
-test('CheckMainPageComponents', async () => {
-  render(<App />); //render the main page
-  const buttonInscrip = screen.getByText(/S'inscrire/i);
-  const buttonConnection = screen.getByText(/Se connecter/i); 
-  expect(buttonInscrip).toBeInTheDocument();
-  expect(buttonConnection).toBeInTheDocument();
-});*/
 
+/* Tester la présence des composantes dans la page */
+test('ExportModule - TestElementsPresence', async () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  const actPhys = screen.getByTestId(/checkbox-activities/i);
+  expect(actPhys).toBeInTheDocument();
+  
+  const nourriture = screen.getByTestId(/checkbox-food/i);
+  expect(nourriture).toBeInTheDocument();
 
-/*Tester select all par défaut dans la page*/
+  const hydratation = screen.getByTestId(/checkbox-hydration/i);
+  expect(hydratation).toBeInTheDocument();
+
+  const supplement = screen.getByTestId(/checkbox-supplements/i);
+  expect(supplement).toBeInTheDocument();
+
+  const sommeil = screen.getByTestId(/checkbox-sleep/i);
+  expect(sommeil).toBeInTheDocument();
+
+  const poids = screen.getByTestId(/checkbox-weight/i);
+  expect(poids).toBeInTheDocument();
+
+  const glycemie = screen.getByTestId(/checkbox-glycemia/i);
+  expect(glycemie).toBeInTheDocument();
+
+  const alcool = screen.getByTestId(/checkbox-alcool/i);
+  //const checkboxAlcool = screen.getByRole('checkbox', {name: 'Alcool'});//serait preferable a getbytestid
+  expect(alcool).toBeInTheDocument();
+
+  const toilettes = screen.getByTestId(/checkbox-toilet/i);
+  expect(toilettes).toBeInTheDocument();
+});
+
+//import { shallow } from 'enzyme';
+/*Test all attributes selected byDefault*/
 test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
   renderWithRouter(<App />, {route: '/Export'});
-  //const checkboxAlcool = screen.getByRole('checkbox', {name: 'Alcool'}); //fonctionne
-  const alcoolCheckbox = screen.getByTestId('checkbox-alcool');
-  fireEvent.click(alcoolCheckbox);
-  expect(alcoolCheckbox).toBeChecked(); 
+  const checkboxes = screen.getAllByRole('checkbox', { checked: 'True' })
+  expect(checkboxes.length).toEqual(9);
 });
 
 
-/*Tester les dates par défaut dans la page*/
-test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+//Amorce
+test('ExportModule - TestEnglishTranslation', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  //Amorce--> Get user language before !
+  const nourriture = screen.getByTestId(/checkbox-food/i);
+  expect(nourriture).toBeInTheDocument();
+  expect(nourriture.textContent).toBe('Nourriture')
+});
+
+
+test('ExportModule - TestFrenchTranslation', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  //Amorce--> Get user language before !
+  const nourriture = screen.getByTestId(/checkbox-food/i);
+  expect(nourriture).toBeInTheDocument();
+  expect(nourriture.textContent).toBe('Nourriture')
+});
+
+test('ExportModule - TestSpanishTranslation', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  //Amorce--> Get user language before !
+  const nourriture = screen.getByTestId(/checkbox-food/i);
+  expect(nourriture).toBeInTheDocument();
+  expect(nourriture.textContent).toBe('Nourriture')
+});
+
+
+
+
+
+
+//TODOq
+/*Test default dates on the page*/
+test('ExportModule - TestDefaultDateBehaviour', () => {
   renderWithRouter(<App />, {route: '/Export'}); 
 });
 
-/*Tester if format selected changes, no change in attribute selected*/
-test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+/*Test if format selected changes, no change in attributes selected*/
+test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', () => {
   renderWithRouter(<App />, {route: '/Export'}); 
 });
 
-/*Tester if dates cahnges, no change in attribute selected*/
-test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
+/*Test if dates cahnges, no change in attributes selected*/
+test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', () => {
   renderWithRouter(<App />, {route: '/Export'}); 
 });
 
-/*Tester le changement de langues*/
-test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
-  renderWithRouter(<App />, {route: '/Export'}); 
+
+
+
+/*Tester les messages d'erreurs -- aucune erreur*/
+test('ExportModule - TestErrorMessage_NoErrorDisplayed', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  expect(screen.queryByRole('alert')).toBeNull();
 });
 
-/*Tester les messages d'erreurs*/
-test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
-  renderWithRouter(<App />, {route: '/Export'}); 
+/*Tester les messages d'erreurs -- avec erreur*/
+test('ExportModule - TestErrorMessage_ErrorDisplayed', () => {
+  renderWithRouter(<App />, {route: '/Export'});
+  /* things to do here toget popup error*/
+  //expect(screen.queryByRole('alert')).not.toBeNull();  //or
+  //expect(screen.queryByText('error message todo')).toBeInTheDocument();
+  //expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
 });
 
 /* Notes
-  const img = screen.getByRole('img', {name: 'Logo_texte'});
-  expect(colorButton).toBeVisible();
-  expect(buttonX).toBeDisabled(); 
-  expect(getByText('link')).not.toBeDisabled()
-  expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
-  screen.getByRole('alert')
-  //const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE'); //ne fonctionne pas
-  //screen.getByDisplayValue('Nourriture'); //ne fonctionne pas
-  //expect(screen.getByRole('alert')).toBeInvalid(); //fonctionne pas 
+  fireEvent.click(alcoolCheckbox);
+  expect(alcoolCheckbox).toBeChecked();
+  //expect(subscriptionService.subscribe).toHaveBeenCalledTimes(1)
+  use await finallbyrole instead of get allbyrole with async function
+  Runner seulemet un test: 
+  test.only('', () => {});
+  Skip un test: 
+  test.skip('', () => {});
+
+  const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE'); //ne fonctionne pas
+  screen.getByDisplayValue('Nourriture'); //ne fonctionne pas
+  expect(screen.getByRole('alert')).toBeInvalid(); //fonctionne pas
 */
 
 
