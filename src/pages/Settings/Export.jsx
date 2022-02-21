@@ -461,8 +461,8 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        var bilan = await compilerBilan(dataSelected, d1, d2);
-                        if (bilan.length <= 0) {
+                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
+                        if (overviewPdf.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
@@ -527,8 +527,8 @@ const Settings = (props) => {
                         }
 
                       if (selected === "csv" || selected === "hybride") {
-                        var bilan = await compilerBilan(dataSelected, d1, d2);
-                        if (bilan.length <= 0) {
+                        var overviewCsv = await compilerBilan(dataSelected, d1, d2);
+                        if (overviewCsv.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
@@ -544,7 +544,7 @@ const Settings = (props) => {
                           };
 
                           const csvExporter = new ExportToCsv(options);
-                          await csvExporter.generateCsv(bilan);
+                          await csvExporter.generateCsv(overviewCsv);
                         }
                       }
                     }}
