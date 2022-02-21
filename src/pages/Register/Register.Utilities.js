@@ -1,7 +1,6 @@
-import firebase from 'firebase'
-import "firebase/auth";
 import { toast } from '../../Toast'
 import * as translate from '../../translate/Translator'
+import { firebaseCreateUser } from './firebase.helper';
 
 
 export function validateFieldsEmpty (username, password) {
@@ -15,7 +14,7 @@ export function validatePasswordsMatching (password, confirmPassword) {
 export async function registerUser(username, password) {
     const email = username + '@fithab.com'
     try {
-        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        await firebaseCreateUser(email, password)
         return true
     } catch (error) {
         toast(error.message, 5000)
