@@ -5,7 +5,7 @@ import uuid from 'react-uuid';
 import firebase from 'firebase'
 
 import '../../../pages/Tab1.css';
-
+//TODO : Execute SonarQube to check the code quality
 const HydrateItem = (props) => {
 
   const [itemDashHydrate, setItemDashHydrate] = useState({
