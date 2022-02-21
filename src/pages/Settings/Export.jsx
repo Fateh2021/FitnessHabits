@@ -35,7 +35,6 @@ import { jsPDF } from "jspdf";
 
 
 import "../Tab1.css";
-import moment from "moment";
 
 const Settings = (props) => {
 
@@ -140,9 +139,8 @@ const Settings = (props) => {
   // variable qui va contenir le format d'exportation désiré, par défaut csv
   var selected = "csv";
 
-  var defaultDate = new Date();
-  defaultDate.setMonth(defaultDate.getMonth() - 3);
-  const [d1, onChangeD1] = useState(defaultDate);
+
+  const [d1, onChangeD1] = useState(new Date(new Date().setMonth(-2)));
   const [d2, onChangeD2] = useState(new Date());
 
   // load the current settings from the local storage if it exists, otherwise load it from the DB
@@ -276,7 +274,7 @@ const Settings = (props) => {
               />
             </div>
             <div>
-              &nbsp; &nbsp; {translate.getText("A")}: &nbsp;
+              &nbsp; &nbsp; À: &nbsp;
               <DatePicker
                   onChange={onChangeD2}
                   value={d2}
@@ -481,8 +479,8 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        var bilan = await compilerBilan(dataSelected, d1, d2);
-                        if (bilan.length <= 0) {
+                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
+                        if (overviewPdf.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
@@ -547,8 +545,8 @@ const Settings = (props) => {
                         }
 
                       if (selected === "csv" || selected === "hybride") {
-                        var bilan = await compilerBilan(dataSelected, d1, d2);
-                        if (bilan.length <= 0) {
+                        var overviewCsv = await compilerBilan(dataSelected, d1, d2);
+                        if (overviewCsv.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
@@ -564,7 +562,7 @@ const Settings = (props) => {
                           };
 
                           const csvExporter = new ExportToCsv(options);
-                          await csvExporter.generateCsv(bilan);
+                          await csvExporter.generateCsv(overviewCsv);
                         }
                       }
                     }}
@@ -649,7 +647,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
   let retour = [];
 
   // Remplacer par i dans un for (de-à) lorsque les dates seront gere
-  // veut-on vraiment garder glycémie  --> glycemie au lieu ? 
   for (let i = 0; i < dataFormat.length; ++i) {
     retour[i] = {};
     retour[i].date = dataFormat[i].date
