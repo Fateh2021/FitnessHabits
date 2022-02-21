@@ -1,9 +1,14 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen} from '@testing-library/react';
 import {compilerBilanCSV, compilerBilanPDF} from './pages/Settings/Export';
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
 import App from './App';
+
+import Poids from './pages/Dashboard/ItemsList/Poids'
+
+
+
 
 test('renders without crashing', () => {
   const { baseElement } = render(<App />);
@@ -60,6 +65,45 @@ test('Check if PDF export options set correctly', async () => {
   
   expect(doc).toBeDefined();
 });
+
+
+
+
+test('poids translation', async()=>{
+
+  render(<Poids poids="dailyPoids: 50"/>);
+  const value = screen.getByText(/Poids/i);
+  expect(value).toBeDefined();
+
+})
+
+test('poids translation en englais', async()=>{
+  localStorage.setItem('userLanguage', 'en')
+  render(<Poids poids="dailyPoids: 50"/>);
+  const value = screen.getByText(/Weight/i);
+  expect(value).toBeDefined();
+
+})
+/*
+test('poids unite', async()=>{
+  var u = localStorage.getItem('prefUnitePoids')
+  render(<Poids poids="dailyPoids: 50"/>);
+  var value; 
+  if(u === 'LBS'){
+    value = screen.getByText(/LBS/i);
+  }else{
+    value = screen.getByText(/KG/i);
+  }
+  
+  expect(value).toBeDefined();
+
+})
+*/
+
+
+
+
+
 
 
 
