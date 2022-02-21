@@ -5,6 +5,7 @@ import { arrowDropdownCircle } from 'ionicons/icons';
 
 import '../../../pages/Tab1.css';
 import Graphe from "../../GrapheGlycemie/graphe";
+import * as translate from '../../../translate/Translator'
 
 const Glycemie = (props) => {
 
@@ -51,7 +52,7 @@ const Glycemie = (props) => {
           <img src="/assets/Gly.jpg" alt="" />
         </IonAvatar>
         <IonLabel>
-          <h2><b>Glycémie</b></h2>
+          <h2><b>{translate.getText("GLYC_TITLE")}</b></h2>
         </IonLabel>
         <IonInput className='inputTextGly' type="number" value={dailyGlycemie} onIonChange={handleChange}></IonInput>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => {accor("myDIVGlycemie"); setReloadGraph(true)}} />
