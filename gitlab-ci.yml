@@ -1,0 +1,37 @@
+
+image: node:16.14.0 
+# Toggle comments to use the pipeline only on merge request or not
+# workflow: 
+#   rules: 
+#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+#     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'master'
+
+# Create an anchor called `&install_dependencies`
+.install:
+  before_script:
+    # Install web app dependencies
+    - echo "Installing npm packages..."
+    - npm install --loglevel error
+
+stages:
+  - build
+  - tests
+
+build-web-app:
+  stage: build
+  extends:
+    - .install
+  script:
+    # Building web app
+    - echo "Building web app..."
+    - CI=false npm run build # Remove "CI=false" once the teams will have fixed all lint problems
+    - echo "Build complete."
+
+tests:
+  stage: tests
+  extends:
+    - .install
+  script:
+    # Running unit tests
+    - echo "Running unit tests..."
+    - CI=true npm run test:ci
