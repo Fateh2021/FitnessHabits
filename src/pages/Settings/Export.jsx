@@ -1,6 +1,6 @@
 import firebase from "firebase";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useRef} from "react";
 import { ExportToCsv } from "export-to-csv";
 import { toast } from "../../Toast";
 import {
@@ -35,6 +35,7 @@ import { jsPDF } from "jspdf";
 
 
 import "../Tab1.css";
+import { render } from "@testing-library/react";
 
 const Settings = (props) => {
 
@@ -91,7 +92,8 @@ const Settings = (props) => {
   var toastMessage = translate.getText("SELECT_DATA_REQUIRED_TITLE");
 
   //Variable indiquant quelles données l'utilisateur souhaite exporter
-  var dataSelected = userCategories();
+  const dataSelected = useRef(userCategories());
+  //var dataSelected = userCategories();
 
   function userCategories() {
     var categories = [];
@@ -128,11 +130,11 @@ const Settings = (props) => {
 
   //Logique gérant la liste des catégories sélectionnées par l'utilisateur
   function manageCategories(item) {
-    const index = dataSelected.indexOf(item);
+    const index = dataSelected.current.indexOf(item);
     if (index > -1) {
-      dataSelected.splice(index, 1);
+      dataSelected.current.splice(index, 1);
     } else {
-      dataSelected.push(item);
+      dataSelected.current.push(item);
     }
   }
 
@@ -295,137 +297,103 @@ const Settings = (props) => {
 
           <IonList>
             <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
-            <div role="checkbox" aria-checked={dataSelected.includes("activities")} data-testid="checkbox-activities">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("activities")} data-testid="checkbox-activities">
               <IonItem>
                 <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("activities")}
+                    checked={dataSelected.current.includes("activities")}
                     onIonChange={(e) => {
                       manageCategories("activities");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
+                      console.log(dataSelected);
+                      console.log(dataSelected.current);
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("nourriture")} data-testid="checkbox-food">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("nourriture")} data-testid="checkbox-food">
               <IonItem>
                 <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("nourriture")}
+                    checked={dataSelected.current.includes("nourriture")}
                     onIonChange={(e) => {
                       manageCategories("nourriture");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("hydratation")} data-testid="checkbox-hydration">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("hydratation")} data-testid="checkbox-hydration">
               <IonItem>
                 <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("hydratation")}
+                    checked={dataSelected.current.includes("hydratation")}
                     onIonChange={(e) => {
                       manageCategories("hydratation");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
               </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("supplements")} data-testid="checkbox-supplements">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("supplements")} data-testid="checkbox-supplements">
               <IonItem>
                 <IonLabel>{translate.getText("SUPPL_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("supplements")}
+                    checked={dataSelected.current.includes("supplements")}
                     onIonChange={(e) => {
                       manageCategories("supplements");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("sommeil")} data-testid="checkbox-sleep">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("sommeil")} data-testid="checkbox-sleep">
               <IonItem>
                 <IonLabel>{translate.getText("SLEEP")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("sommeil")}
+                    checked={dataSelected.current.includes("sommeil")}
                     onIonChange={(e) => {
                       manageCategories("sommeil");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("poids")} data-testid="checkbox-weight">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("poids")} data-testid="checkbox-weight">
               <IonItem>
                 <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("poids")}
+                    checked={dataSelected.current.includes("poids")}
                     onIonChange={(e) => {
                       manageCategories("poids");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("glycémie")} data-testid="checkbox-glycemia">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("glycémie")} data-testid="checkbox-glycemia">
               <IonItem>
                 <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("glycémie")}
+                    checked={dataSelected.current.includes("glycémie")}
                     onIonChange={(e) => {
                       manageCategories("glycémie");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("alcool")} data-testid="checkbox-alcool">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("alcool")} data-testid="checkbox-alcool">
               <IonItem>
                 <IonLabel >{translate.getText("ALCOOL_TITLE")}</IonLabel>
                 <IonCheckbox 
-                    checked={dataSelected.includes("alcool")}
+                    checked={dataSelected.current.includes("alcool")}
                     onIonChange={(e) => {
                       manageCategories("alcool");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.includes("toilettes")} data-testid="checkbox-toilet">
+            <div role="checkbox" aria-checked={dataSelected.current.includes("toilettes")} data-testid="checkbox-toilet">
               <IonItem>
                 <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.includes("toilettes")}
+                    checked={dataSelected.current.includes("toilettes")}
                     onIonChange={(e) => {
                       manageCategories("toilettes");
-                      if (dataSelected.length === 0) {
-                        toast(toastMessage);
-                        e.target.checked = true;
-                      }
                     }}
                 />
               </IonItem>
@@ -481,6 +449,10 @@ const Settings = (props) => {
                     expand="full"
                     class="ion-text-wrap"
                     onClick={async () => {
+                      if (dataSelected.current.length === 0) {
+                        toast(toastMessage);
+                      } else {
+                      
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
@@ -570,6 +542,7 @@ const Settings = (props) => {
                           await csvExporter.generateCsv(overviewCsv);
                         }
                       }
+                    }
                     }}
                 >
                   {translate.getText("SAVE_TO_DEV")}
