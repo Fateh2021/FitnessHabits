@@ -302,8 +302,6 @@ const Settings = (props) => {
                     checked={dataSelected.current.includes("activities")}
                     onIonChange={(e) => {
                       manageCategories("activities");
-                      console.log(dataSelected);
-                      console.log(dataSelected.current);
                     }}
                 />
               </IonItem>
