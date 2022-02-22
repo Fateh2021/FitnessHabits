@@ -28,7 +28,6 @@ const accor = (divId) => {
   const divElt = document.getElementById(divId);
   if (divElt) {
     divElt.style.display =  !divElt.style.display || divElt.style.display === "none"? "block": "none";
-    //!divElt.style.display || divElt.style.display === "none"? (divElt.style.display = "block"): (divElt.style.display = "none");
   }
 };
 
@@ -63,7 +62,6 @@ const Poids = (props) => {
         }
       }
     });
-    // setUnitePoids(poidsService.getPrefUnitePoids())
     var taille_l = firebase.database().ref("profiles/" + userUID);
     taille_l.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
@@ -93,7 +91,6 @@ const Poids = (props) => {
   const handleChange = (event) => {
     let poidsDaily = event.target.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    //const prefUnitePoids = localStorage.getItem('prefUnitePoids');
 
     dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
     dashboard.poids.datePoids = new Date();

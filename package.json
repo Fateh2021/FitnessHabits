@@ -53,7 +53,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -75,6 +75,7 @@
   "devDependencies": {
     "@capacitor/cli": "^2.4.5",
     "@types/firebase": "^3.2.1",
-    "jest-canvas-mock": "^2.3.1"
+    "jest-canvas-mock": "^2.3.1",
+    "jest-sonar-reporter": "^2.0.0"
   }
 }
