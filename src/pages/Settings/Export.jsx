@@ -261,7 +261,6 @@ const Settings = (props) => {
           <IonItemDivider>{translate.getText("DATES_EXPORTATION_TITLE")}</IonItemDivider>
           <div className="datePickersExportation">
             <div data-testid="startDate">
-            <div>
               {translate.getText("DE")}: &nbsp;
 
                 <DatePicker
@@ -275,23 +274,22 @@ const Settings = (props) => {
                       e.preventDefault()
                     }}
                 />
-              </div>
             </div>
-
-            <div>
-              &nbsp; &nbsp; À: &nbsp;
-              <div data-testid="endDate">
-                <DatePicker
-                    onChange={onChangeD2}
-                    value={d2}
-                    minDate={d1}
-                    maxDate={new Date()}
-                    clearIcon={null}
-                    onKeyDown={(e) => {
-                      e.preventDefault()
-                    }}
-                />
-              </div>
+            <div className="headerTitle">
+              &nbsp; À: &nbsp;
+            </div>   
+            <div data-testid="endDate">
+            
+              <DatePicker
+                  onChange={onChangeD2}
+                  value={d2}
+                  minDate={d1}
+                  maxDate={new Date()}
+                  clearIcon={null}
+                  onKeyDown={(e) => {
+                    e.preventDefault()
+                  }}
+              />
             </div>
           </div>
 
@@ -456,13 +454,13 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
+                        var overviewPdf = await compilerBilan(dataSelected.current, d1, d2);
                         if (overviewPdf.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
                         } else {
-                            dataSelected.forEach((data) => {
+                            dataSelected.current.forEach((data) => {
                               switch (data) {
                                 case "hydratation":
                                   var hydratation = recupererHydratation();
@@ -522,7 +520,7 @@ const Settings = (props) => {
                         }
 
                       if (selected === "csv" || selected === "hybride") {
-                        var overviewCsv = await compilerBilan(dataSelected, d1, d2);
+                        var overviewCsv = await compilerBilan(dataSelected.current, d1, d2);
                         if (overviewCsv.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
