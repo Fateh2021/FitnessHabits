@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {compilerBilan} from './pages/Settings/Export';
 import {ExportToCsv} from "export-to-csv";
 import {jsPDF} from "jspdf";
+import { configure, shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+configure({ adapter: new Adapter() });
+
 //import {saveItem} from './pages/Dashoard/ItemsList/Alccol';  //Test non fonctionnel avec cette ligne
 
 import App from './App';
@@ -49,6 +53,7 @@ test('ExportModule - Check if PDF format done correctly', async () => {
   expect(data.length).toBeGreaterThanOrEqual(0);
 });
 
+
 test('ExportModule - Check if CSV format done correctly', async () => {
   var date1 = new Date("2021-02-01");
   var date2 = new Date("2021-03-29");
@@ -56,6 +61,7 @@ test('ExportModule - Check if CSV format done correctly', async () => {
   expect(data).toBeInstanceOf(Array);
   expect(data.length).toBeGreaterThanOrEqual(0);
 });
+
 
 test('ExportModule - Check if CSV export options set correctly', async () => {
   const options = {
@@ -71,6 +77,7 @@ test('ExportModule - Check if CSV export options set correctly', async () => {
   const csvExporter = new ExportToCsv(options);
   expect(csvExporter).toBeDefined();
 });
+
 
 test('ExportModule - Check if PDF export options set correctly', async () => {
   var string = "lorem ipsum";
@@ -112,7 +119,7 @@ test('ExportModule - TestElementsPresence', async () => {
   expect(toilettes).toBeInTheDocument();
 });
 
-//import { shallow } from 'enzyme';
+
 /*Test all attributes selected byDefault*/
 test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
   renderWithRouter(<App />, {route: '/Export'});
@@ -121,64 +128,75 @@ test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
 });
 
 
-//Amorce
-test('ExportModule - TestEnglishTranslation', () => {
+//Todo add other attributes --> PL
+test('ExportModule - TestEnglishTranslation', async() => {
+  localStorage.setItem('userLanguage', 'en');
   renderWithRouter(<App />, {route: '/Export'});
-  //Amorce--> Get user language before !
+  const nourriture = screen.getByTestId(/checkbox-food/i);
+  expect(nourriture).toBeInTheDocument();
+  expect(nourriture.textContent).toBe('Food')
+});
+
+
+//Todo add other attributes --> PL
+test('ExportModule - TestFrenchTranslation', async() => {
+  localStorage.setItem('userLanguage', 'fr');
+  renderWithRouter(<App />, {route: '/Export'});
   const nourriture = screen.getByTestId(/checkbox-food/i);
   expect(nourriture).toBeInTheDocument();
   expect(nourriture.textContent).toBe('Nourriture')
 });
 
 
-test('ExportModule - TestFrenchTranslation', () => {
+//Todo add other attributes --> PL
+test('ExportModule - TestSpanishTranslation', async() => {
+  localStorage.setItem('userLanguage', 'es');
   renderWithRouter(<App />, {route: '/Export'});
-  //Amorce--> Get user language before !
   const nourriture = screen.getByTestId(/checkbox-food/i);
   expect(nourriture).toBeInTheDocument();
-  expect(nourriture.textContent).toBe('Nourriture')
+  expect(nourriture.textContent).toBe('Alimentos')
 });
 
-test('ExportModule - TestSpanishTranslation', () => {
+
+/*Test default dates on the page: By default,  endDate is today's
+date and the startDate is 3 months before*/
+test('ExportModule - TestDefaultDateBehaviour', async () => {
   renderWithRouter(<App />, {route: '/Export'});
-  //Amorce--> Get user language before !
-  const nourriture = screen.getByTestId(/checkbox-food/i);
-  expect(nourriture).toBeInTheDocument();
-  expect(nourriture.textContent).toBe('Nourriture')
+
+  const endDate_1 = new Date(new Date() + " UTC").toISOString().slice(0, 10);
+  const endDate_2 = screen.getByTestId('endDate').querySelector('input').value;
+  expect(endDate_2).toBe(endDate_1);
+
+  let startDate_1 = new Date(new Date() + " UTC");
+  startDate_1.setMonth(startDate_1.getMonth() - 3);
+  startDate_1 = startDate_1.toISOString().slice(0, 10);
+  const startDate_2 = screen.getByTestId('startDate').querySelector('input').value;
+  expect(startDate_2).toBe(startDate_1);
 });
 
 
-
-
-
-
-//TODOq
-/*Test default dates on the page*/
-test('ExportModule - TestDefaultDateBehaviour', () => {
-  renderWithRouter(<App />, {route: '/Export'}); 
-});
-
+//TODO
 /*Test if format selected changes, no change in attributes selected*/
-test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', () => {
-  renderWithRouter(<App />, {route: '/Export'}); 
-});
-
-/*Test if dates cahnges, no change in attributes selected*/
-test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', () => {
+test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async() => {
   renderWithRouter(<App />, {route: '/Export'}); 
 });
 
 
+/*Test if dates changes, no change in attributes selected*/
+test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
+  renderWithRouter(<App />, {route: '/Export'}); 
+});
 
 
 /*Tester les messages d'erreurs -- aucune erreur*/
-test('ExportModule - TestErrorMessage_NoErrorDisplayed', () => {
+test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
   renderWithRouter(<App />, {route: '/Export'});
   expect(screen.queryByRole('alert')).toBeNull();
 });
 
+
 /*Tester les messages d'erreurs -- avec erreur*/
-test('ExportModule - TestErrorMessage_ErrorDisplayed', () => {
+test('ExportModule - TestErrorMessage_ErrorDisplayed', async() => {
   renderWithRouter(<App />, {route: '/Export'});
   /* things to do here toget popup error*/
   //expect(screen.queryByRole('alert')).not.toBeNull();  //or
@@ -186,19 +204,17 @@ test('ExportModule - TestErrorMessage_ErrorDisplayed', () => {
   //expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
 });
 
+
 /* Notes
   fireEvent.click(alcoolCheckbox);
   expect(alcoolCheckbox).toBeChecked();
-  //expect(subscriptionService.subscribe).toHaveBeenCalledTimes(1)
+  expect(subscriptionService.subscribe).toHaveBeenCalledTimes(1)
   use await finallbyrole instead of get allbyrole with async function
-  Runner seulemet un test: 
-  test.only('', () => {});
-  Skip un test: 
-  test.skip('', () => {});
 
   const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE'); //ne fonctionne pas
   screen.getByDisplayValue('Nourriture'); //ne fonctionne pas
-  expect(screen.getByRole('alert')).toBeInvalid(); //fonctionne pas
+  expect(screen.getByRole('alert')).toBeInvalid(); //ne fonctionne pas
+  npm test -- --coverage
 */
 
 

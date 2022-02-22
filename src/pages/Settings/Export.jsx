@@ -257,34 +257,39 @@ const Settings = (props) => {
 
         <IonContent>
           <IonItemDivider>{translate.getText("DATES_EXPORTATION_TITLE")}</IonItemDivider>
-          <div class="datePickersExportation">
+          <div className="datePickersExportation">
+            <div data-testid="startDate">
             <div>
               {translate.getText("DE")}: &nbsp;
-              <DatePicker
-                  onChange={onChangeD1}
-                  value={d1}
-                  minDate={new Date("01-01-2010")} // A CHANGER ICI POUR LA PLUS PETITE DATE QU'ON VEUT
-                  maxDate={d2}
-                  clearIcon={null}
-                  autoFocus={true}
-                  onKeyDown={(e) => {
-                    e.preventDefault()
-                  }}
 
-              />
+                <DatePicker
+                    onChange={onChangeD1}
+                    value={d1}
+                    minDate={new Date("01-01-2010")} // A CHANGER ICI POUR LA PLUS PETITE DATE QU'ON VEUT
+                    maxDate={d2}
+                    clearIcon={null}
+                    autoFocus={true}
+                    onKeyDown={(e) => {
+                      e.preventDefault()
+                    }}
+                />
+              </div>
             </div>
+
             <div>
               &nbsp; &nbsp; À: &nbsp;
-              <DatePicker
-                  onChange={onChangeD2}
-                  value={d2}
-                  minDate={d1}
-                  maxDate={new Date()}
-                  clearIcon={null}
-                  onKeyDown={(e) => {
-                    e.preventDefault()
-                  }}
-              />
+              <div data-testid="endDate">
+                <DatePicker
+                    onChange={onChangeD2}
+                    value={d2}
+                    minDate={d1}
+                    maxDate={new Date()}
+                    clearIcon={null}
+                    onKeyDown={(e) => {
+                      e.preventDefault()
+                    }}
+                />
+              </div>
             </div>
           </div>
 
