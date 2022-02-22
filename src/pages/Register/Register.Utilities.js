@@ -34,7 +34,6 @@ export async function signUp(username, password, confirmPassword) {
 
     const response = await registerUser(username, password)
     if (response) {
-        window.location.href = '/dashboard'
         return true
     }
 }
