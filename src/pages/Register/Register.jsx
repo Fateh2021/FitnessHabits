@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import { IonInput, IonGrid, IonRow, IonCol, IonPage, IonButton, IonItem } from '@ionic/react';
 import * as translate from '../../translate/Translator'
 import { signUp } from './Register.Utilities';
-
+import { useHistory } from 'react-router';
 
 const Register = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setconfirmPassword] = useState('')
-
+  let history = useHistory()
+  
   async function signUpButtonEnter() {
-    signUp(username, password, confirmPassword)
+    const response = await signUp(username, password, confirmPassword)
+
+    if ( response ) history.push('/dashboard')
+
   }
 
   return (
