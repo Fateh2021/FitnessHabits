@@ -32,7 +32,7 @@ const MacroNutrimentItem = (props) => {
   return (
     <div id="divPopUp1-1">
         <IonCol size="1">
-          <button className="buttonOK" onClick={saveChanges}>OK</button>
+          <button id='saveButton' className="buttonOK" onClick={saveChanges}>OK</button>
         </IonCol>  
         <IonCol size="1">
           <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
@@ -73,7 +73,7 @@ const MacroNutrimentItem = (props) => {
 }
 
 const Nourriture = (props) => {
-
+  const [test, setTest] = useState(props.test);
   const [dailyTarget, setDailyTarget] = useState(props.dailyTarget);
   const [macroNutriment, setMacroNutriment] = useState(props.macroNutriment);
   const [macroNutriments, setMacroNutriments] = useState(props.macroNutriments);
@@ -138,7 +138,7 @@ const Nourriture = (props) => {
     const index = macroNutriments.findIndex((e) => e.id === item.id);
     if (index === -1) {
       macroNutriments.unshift(item);
-      // Dans le cas d'une sauvegarde, le total ne change pas dans la présente implémentation, alors on ne fait que le retourner tel quel par le foncteur de mise à jour (pour le moment).
+      // Dans le cas d'une sauvegarde, le total ne change pas dans l'implémentation courante, alors on ne fait que le retourner tel quel par le foncteur de mise à jour (pour le moment).
       updateCacheAndBD((total) => { return total; } );
     }
     closeItemContainer();
@@ -153,8 +153,11 @@ const Nourriture = (props) => {
     setGlobalConsumption(totalConsumption);
     props.parentCallback(totalConsumption);
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    
+    if (!test) {
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+    }
   }
 
   const closeItemContainer = () => {
@@ -171,32 +174,32 @@ const Nourriture = (props) => {
     <div>
       <IonItem className="divTitre22">
         <IonAvatar slot="start">
-        <img src= { `/assets/${props.name}.jpg` } alt="" />
+        <img id='moduleImg' src= { `/assets/${ props.name }.jpg` } alt="" />
         </IonAvatar>
         <IonLabel>
-          <h2><b>{ props.name }</b></h2>
+          <h2><b id='moduleName'>{ props.name }</b></h2>
         </IonLabel>
-        <IonInput className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor(props.cssId)}/>
+        <IonInput id='globalConsumption' className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
+        <IonIcon id='proteinArrow' className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor(props.cssId)}/>
       </IonItem> 
       <div id={ props.cssId }>
       <div className="divHyd">
             <div className="sett">
               { macroNutriments.map((macroNutriment, index) => (      
-                <IonItem className="divTitre11" key={macroNutriment.id}>
+                <IonItem id={macroNutriment.id} className="divTitre11" key={macroNutriment.id}>
                   <IonCol size="1">
                   </IonCol>
                   <IonLabel className="nameDscripDashboard"><h2><b>{macroNutriment.name}</b></h2></IonLabel>      
-                  <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(macroNutriment)}>
+                  <IonButton id='decrementButton' className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(macroNutriment)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
-                    <IonInput className='inputTextDashboard' value = {macroNutriment.consumption} readonly></IonInput>  
+                    <IonInput id='unitConsumption' className='inputTextDashboard' value = {macroNutriment.consumption} readonly></IonInput>  
                   </IonCol>
-                  <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(macroNutriment)}>
+                  <IonButton id='incrementButton' className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(macroNutriment)}>
                     <IonIcon  icon={addCircle} />
                   </IonButton>
-                  <IonButton className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
+                  <IonButton id='deleteButton' className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
                     <IonIcon  icon={trash} />
                   </IonButton>
                 </IonItem>
@@ -205,10 +208,10 @@ const Nourriture = (props) => {
             </div>
           </div>
         <div className="ajoutBotton">    
-          <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
+          <IonButton id='addButton' className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
           <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
         </div>
-        {itemContainerDisplayStatus && <MacroNutrimentItem close={closeItemContainer} item={macroNutrimentToEdit} save={(item) => saveItem(item)}/>}       
+        {itemContainerDisplayStatus && <MacroNutrimentItem id='saveItem' close={closeItemContainer} item={macroNutrimentToEdit} save={(item) => saveItem(item)}/>}       
       </div> 
     </div>    
   );
