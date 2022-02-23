@@ -1,17 +1,41 @@
-import React from 'react';
-import { fireEvent, render, screen} from '@testing-library/react';
-import {compilerBilanCSV, compilerBilanPDF} from './pages/Settings/Export';
+import React, { useState } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { compilerBilanCSV, compilerBilanPDF } from './pages/Settings/Export';
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
 import App from './App';
-
+import { BrowserRouter } from 'react-router-dom';
 import Poids from './pages/Dashboard/ItemsList/Poids'
 
-/*
+//Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
+const renderWithRouter = (ui, { route = '/' } = {}) => {
+    window.history.pushState({}, 'Test page', route)
+    return render(ui, { wrapper: BrowserRouter })
+}
+
 test('renders without crashing', () => {
-  const { baseElement } = render(<App />);
+  const { baseElement } = render(<App/>);
   expect(baseElement).toBeDefined();
 });
+
+test('Verifier si le mot LBS existe', async() => {
+  renderWithRouter(<App />, {route: '/ConfigurationPoids'});
+  const mot = screen.getByText('LBS');
+  expect(mot).toBeDefined();
+});
+
+test('Traduction du mot Poids en anglais', async()=>{
+  localStorage.setItem('userLanguage', 'en')
+  render(<Poids poids="dailyPoids: 50"/>);
+  const value = screen.getByText(/Weight/i);
+  expect(value).toBeDefined();
+})
+
+
+
+
+/*
+
 
 test('Check hydratation value', () => {
 var attendu = 5;
@@ -65,21 +89,7 @@ test('Check if PDF export options set correctly', async () => {
 });
 */
 
-// À vérifier car ça ne marche pas
-test('poids translation', async()=>{
-  render(<Poids poids="dailyPoids: 50"/>);
-  const value = screen.getByText(/Poids/i);
-  expect(value).toBeDefined();
-})
 
-// À vérifier car ça ne marche pas
-test('poids translation en englais', async()=>{
-  localStorage.setItem('userLanguage', 'en')
-  render(<Poids poids="dailyPoids: 50"/>);
-  const value = screen.getByText(/Weight/i);
-  expect(value).toBeDefined();
-
-})
 
 /*
 test('poids unite', async()=>{
@@ -94,19 +104,3 @@ test('poids unite', async()=>{
   expect(value).toBeDefined();
 })
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
