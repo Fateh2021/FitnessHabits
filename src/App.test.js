@@ -7,6 +7,8 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import Poids from './pages/Dashboard/ItemsList/Poids'
 
+//--watchAll dans packlage.json peut etre une option aussi
+
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, { route = '/' } = {}) => {
     window.history.pushState({}, 'Test page', route)
@@ -38,10 +40,7 @@ test('Traduction du mot IMC en anglais', async()=>{
   expect(mot).toBeDefined();
 });
 
-
 /*
-
-
 test('Check hydratation value', () => {
 var attendu = 5;
  var something =  {"hydratation":{"dailyTarget":{"value":5,"unit":"","globalConsumption":0},"hydrates":["0"]},"alcool":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"alcools":[]},"nourriture":{"globalConsumption":0},"gras":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"grass":[]},"proteines":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"proteines":[]},"legumes":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"legumes":[]},"cereales":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"cereales":[]},"glycemie":{"dailyGlycemie":0},"poids":{"dailyPoids":0},"toilettes":{"feces":0,"urine":0},"sommeil":{"heure":0,"minute":0},"activities":{"heure":0,"minute":0}};
