@@ -871,28 +871,28 @@
       "fr": "Format de date"
    },
    "SIDEBAR_OPTION_DATE_1": {
-      "en": "MM-JJ-AAAA (02-16-2021)",
-      "es": "MM-JJ-AAAA (02-16-2021)",
+      "en": "MM-DD-YYYY (02-16-2021)",
+      "es": "MM-DD-AAAA (02-16-2021)",
       "fr": "MM-JJ-AAAA (02-16-2021)"
    },
    "SIDEBAR_OPTION_DATE_2": {
-      "en": "JJ-MM-AAAA (16-02-2021)",
-      "es": "JJ-MM-AAAA (16-02-2021)",
+      "en": "DD-MM-YYYY (16-02-2021)",
+      "es": "DD-MM-AAAA (16-02-2021)",
       "fr": "JJ-MM-AAAA (16-02-2021)"
    },
    "SIDEBAR_OPTION_DATE_3": {
-      "en": "AAAA-MM-JJ (2021-02-16)",
-      "es": "AAAA-MM-JJ (2021-02-16)",
+      "en": "YYYY-MM-DD (2021-02-16)",
+      "es": "AAAA-MM-DD (2021-02-16)",
       "fr": "AAAA-MM-JJ (2021-02-16)"
    },
    "SIDEBAR_OPTION_DATE_4": {
-      "en": "AAAA-mmm-JJ (2021-feb-16)",
-      "es": "AAAA-mmm-JJ (2021-feb-16)",
+      "en": "YYYY-mmm-DD (2021-feb-16)",
+      "es": "AAAA-mmm-DD (2021-feb-16)",
       "fr": "AAAA-mmm-JJ (2021-fev-16)"
    },
    "SIDEBAR_OPTION_DATE_5": {
-      "en": "JJ-mmm-AAAA (16-feb-2021)",
-      "es": "JJ-mmm-AAAA (16-feb-2021)",
+      "en": "DD-mmm-YYYY (16-feb-2021)",
+      "es": "DD-mmm-AAAA (16-feb-2021)",
       "fr": "JJ-mmm-AAAA (16-fev-2021)"
    }
 }
