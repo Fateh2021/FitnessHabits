@@ -275,11 +275,9 @@ const Settings = (props) => {
                     }}
                 />
             </div>
-            <div className="headerTitle">
-              &nbsp; À: &nbsp;
-            </div>   
+           
             <div data-testid="endDate">
-            
+            &nbsp;{translate.getText("A")} &nbsp;  
               <DatePicker
                   onChange={onChangeD2}
                   value={d2}
@@ -404,7 +402,7 @@ const Settings = (props) => {
                 <IonLabel>{translate.getText("EXPORT_FORMAT_TITLE")}</IonLabel>
               </IonListHeader>
 
-              <IonItem>
+              <IonItem data-testid="radio-csv">
                 <IonLabel>CSV</IonLabel>
                 <IonRadio slot="start" value="csv" checked="true"/>
               </IonItem>
