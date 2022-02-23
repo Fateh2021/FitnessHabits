@@ -7,8 +7,8 @@ import { arrowRoundBack, logOut } from "ionicons/icons";
 import { TakePicture } from "../../TakePicture/TakePicture";
 import * as translate from "../../../translate/Translator";
 
-
-const Sidebar = ({ handleClose }) => {
+// Note: remove picturedDisabled once TakePicture is properly implemented/fixed.
+const Sidebar = ({ handleClose, pictureDisabled }) => {
     const [sidebarClass, setSidebarClass] = useState("sidebar");
     const [profile, setProfile] = useState({
         pseudo: "",
@@ -81,19 +81,19 @@ const Sidebar = ({ handleClose }) => {
     }
 
     return (
-        <div className={sidebarClass}>
+        <div className={sidebarClass} data-testid="sidebar">
             <IonHeader className="sideBarHeader">
                 <IonGrid >
                     <IonRow >
-                        <TakePicture />
+                        { !pictureDisabled && <TakePicture />}
                         <IonCol size="5">
-                            <IonInput className="userNameProfil" value="" readonly color="danger"><h3>{profile.pseudo}</h3></IonInput>
+                            <IonInput className="userNameProfil" value="" readonly color="danger"><h3 data-testid="username">{profile.pseudo}</h3></IonInput>
                         </IonCol>
                         <IonCol size="1.5">
-                            <button id="close" className="sideBarButton" color="danger" onClick={closeHandler}>
+                            <button id="close" data-testid="btn-close" className="sideBarButton" color="danger" onClick={closeHandler}>
                                 <IonIcon icon={arrowRoundBack} />
                             </button>
-                            <button id="close" className="sideBarButtonLogout" color="danger" onClick={handleUserSignOut}>
+                            <button id="close" className="sideBarButtonLogout" color="danger" onClick={handleUserSignOut} data-testid="btn-signout">
                                 <IonIcon icon={logOut} />
                             </button>
                         </IonCol>
@@ -128,23 +128,23 @@ const Sidebar = ({ handleClose }) => {
 
                     <IonItemDivider color="warning" className="profilText"><h2>{translate.getText("SIDEBAR_LBL_EMAIL")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="email" name="email" value={profile.email} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_EMAIL")} clearInput></IonInput>
+                        <IonInput className="inputProfilText" type="email" name="email" value={profile.email} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_EMAIL")} clearInput data-testid="email"></IonInput>
                     </IonItem>
 
                     <IonItemDivider color="warning" className="profilText"><h2>{translate.getText("SIDEBAR_LBL_TAILLE")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="number" name="size" value={profile.size} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput></IonInput>
+                        <IonInput className="inputProfilText" type="number" name="size" value={profile.size} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"></IonInput>
                     </IonItem>
 
                     <IonItemDivider className="profilText"><h2>{translate.getText("SIDEBAR_LBL_SEXE")}</h2></IonItemDivider>
                     <IonItem>
-                        <IonInput className="inputProfilText" type="text" name="gender" value={profile.gender} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_LBL_SEXE")} clearInput></IonInput>
+                        <IonInput className="inputProfilText" type="text" name="gender" value={profile.gender} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_LBL_SEXE")} clearInput data-testid="gender"></IonInput>
                     </IonItem>
 
                     <IonItemDivider className="profilText">
                         <h2>{translate.getText("SIDEBAR_LBL_DATEFORMAT")}</h2>
                     </IonItemDivider>
-                    <select name="dateFormat" value={profile.dateFormat} onChange={handleInputChange}>
+                    <select name="dateFormat" value={profile.dateFormat} onChange={handleInputChange} data-testid="dateFormat">
                         <option value="LL-dd-yyyy">{translate.getText("SIDEBAR_OPTION_DATE_1")}</option>
                         <option value="dd-LL-yyyy">{translate.getText("SIDEBAR_OPTION_DATE_2")}</option>
                         <option value="yyyy-LL-dd">{translate.getText("SIDEBAR_OPTION_DATE_3")}</option>
