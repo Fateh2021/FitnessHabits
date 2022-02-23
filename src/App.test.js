@@ -26,12 +26,17 @@ test('Verifier si le mot LBS existe', async() => {
 
 test('Traduction du mot Poids en anglais', async()=>{
   localStorage.setItem('userLanguage', 'en')
-  render(<Poids poids="dailyPoids: 50"/>);
-  const value = screen.getByText(/Weight/i);
-  expect(value).toBeDefined();
-})
+  render(<Poids poids/>);
+  const mot = screen.getByText(/Weight/i);
+  expect(mot).toBeDefined();
+});
 
-
+test('Traduction du mot IMC en anglais', async()=>{
+  localStorage.setItem('userLanguage', 'en')
+  render(<Poids poids/>);
+  const mot = screen.getByText(/BMI/i);
+  expect(mot).toBeDefined();
+});
 
 
 /*
