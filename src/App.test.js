@@ -33,6 +33,13 @@ test('Traduction du mot Poids en anglais', async()=>{
   expect(mot).toBeDefined();
 });
 
+test('Traduction du mot Poids en espagnol', async()=>{
+  localStorage.setItem('userLanguage', 'es')
+  render(<Poids poids/>);
+  const mot = screen.getByText(/Peso/i);
+  expect(mot).toBeDefined();
+});
+
 test('Traduction du mot IMC en anglais', async()=>{
   localStorage.setItem('userLanguage', 'en')
   render(<Poids poids/>);
