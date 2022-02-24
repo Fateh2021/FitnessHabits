@@ -8,7 +8,6 @@ import { DateTime } from "luxon";
 import { getLang } from "../../../translate/Translator"
 
 import '../../Tab1.css';
-import {getCurrentUser} from "../../../firebaseConfig";
 
 const AlcoolItem = (props) => {
 
@@ -79,7 +78,7 @@ const AlcoolItem = (props) => {
 
 const Alcool = (props) => {
   //---- Header alcool ---------
-  const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
+  const [, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [alcool, setAlcool] = useState(props.alcools);
   const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
 
@@ -99,7 +98,9 @@ const Alcool = (props) => {
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      divElt.style.display = (!divElt.style.display || divElt.style.display === "none")
+        ? "block"
+        : "none";
     }
   }
 
@@ -109,8 +110,12 @@ const Alcool = (props) => {
 
   const DailyConsumptionIncrement = (item)=>{  
     var array = [...alcool];
-    const index = array.findIndex((event) => event.id === item.id);  
-    index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
+    const index = array.findIndex((event) => event.id === item.id);
+
+    if (index !== 0) {
+      array[index] = item;
+    }
+
     array[item].consumption += 1;
 
     updateCacheAndBD(array);
@@ -127,10 +132,15 @@ const Alcool = (props) => {
   const DailyConsumptionDecrementAlcool = (item)=>{  
     var array = [...alcool];
     const index = array.findIndex((event) => event.id === item.id);  
-    index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
+
+    if (index !== 0) {
+      array[index] = item;
+    }
+
     if (array[item].consumption >=1){
       array[item].consumption -= 1;
     }
+
     updateCacheAndBD(array);
 
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
@@ -146,8 +156,8 @@ const Alcool = (props) => {
     var array = [...alcool];
     var sum = 0;
     var consumption = 0;
-    for (var i = 0; i < array.length; i++ ){
-      consumption = array[i].consumption;
+    for (let item of array){
+      consumption = array[item].consumption;
       sum += consumption; 
     }
     console.log ("la somme ::::: " + sum);
@@ -161,10 +171,16 @@ const Alcool = (props) => {
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
     console.log("index :::::" + array[item].id);
-    index === -1 ? array.splice(item, 1): array[item] = item;
+
+    if (index === -1) {
+      array.splice(item, 1);
+    } else {
+      array[item] = item;
+    }
+
     setAlcool(array);  
-    for (var i = 0; i < array.length; i++ ){
-      consumption = array[i].consumption;
+    for (let value of array){
+      consumption = array[value].consumption;
       sum += consumption; 
     }
     setGlobalConsumption(sum);
@@ -182,7 +198,13 @@ const Alcool = (props) => {
   const saveItem = (item) => {
     var array = [...alcool];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.unshift(item): array[index] = item;
+
+    if (index === -1) {
+      array.unshift(item);
+    } else {
+      array[index] = item;
+    }
+
     setAlcool (array);
     closeItemContainer();
     updateCacheAndBD(array);
@@ -230,10 +252,12 @@ const Alcool = (props) => {
   const checkNotifications = () => {
     // Obtenir les préférences de l'utilisateur
     const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/' + userUID + '/alcool')
+    firebase
+      .database()
+      .ref('settings/' + userUID + '/alcool')
       .once("value", (snapshot) => {
         const sets = snapshot.val();
-        const alcoolSettings = sets ? sets : {
+        const alcoolSettings = sets ?? {
           dailyTarget:{
             value:0,
             unit:''
@@ -254,52 +278,73 @@ const Alcool = (props) => {
         alcoolSettings.limitConsom.notificationMessage = getNotificationMsg()
 
         // Obtenir les consommation jusqu'au dernier lundi
-        firebase
-        .database()
-        .ref('dashboard/' + userUID)
-        .orderByKey()
-        .once("value", (snapshot) => {
-          const consommations = snapshot.val();
-          const currentDate = new Date();
-          // Vérifier s'il respecte ses consommations journalières
-          const dailyCount = getConsumptionsCount(consommations, currentDate);
-          if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
-              alcoolSettings.limitConsom.dailyTarget && dailyCount > alcoolSettings.limitConsom.dailyTarget) {
-            displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage);
-          }
-          
-
-          // Vérifier s'il respecte ses consommations hebdomadaires
-            // Obtenir les formats de date de la semaine
-          let weeklyCount = 0;
-          for (let i = 0; i < currentDate.getDay(); i++) {
-            const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
-            weeklyCount += getConsumptionsCount(consommations, dateDiff)
-          }
-          if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
-              alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
-            displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage)
-          }
-
-          // Vérifier s'il respecte ses jours de consommation de suite 
-          let streak = true;
-          if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.sobrietyDays)
-          {
-            for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
-              const dateDiff = DateTime.fromJSDate(currentDate).minus({ days: i}).toJSDate();
-              if(getConsumptionsCount(consommations, dateDiff) === 0) {
-                streak = false;
-                break;
-              }
-            }
-          }
-          console.log("Nombre de jours de consommation: ", +alcoolSettings.limitConsom.sobrietyDays);
-          if(streak) {
-            console.log("!!notification days streak");
-          }
-        });
+        getConsommationBackToMonday(alcoolSettings, userUID);
         
       });
+  }
+
+  const getConsommationBackToMonday = (alcoolSettings, userUID) =>
+    firebase
+      .database()
+      .ref('dashboard/' + userUID)
+      .orderByKey()
+      .once("value", (snapshot) => {
+        const consommations = snapshot.val();
+        const date = new Date();
+
+        // Vérifier s'il respecte ses consommations journalières
+        respectDailyConsumption(alcoolSettings, consommations, date);
+
+        // Vérifier s'il respecte ses consommations hebdomadaires
+        // Obtenir les formats de date de la semaine
+        respectWeeklyConsumption(alcoolSettings, consommations, date);
+
+        // Vérifier s'il respecte ses jours de consommation de suite 
+        respectConsecutiveConsumption(alcoolSettings, consommations, date);
+
+      });
+
+  const respectDailyConsumption = (alcoolSettings, consommations, date) => {
+    const dailyCount = getConsumptionsCount(consommations, date);
+
+    if (alcoolSettings.notifications.active && 
+      alcoolSettings.limitConsom && 
+      alcoolSettings.limitConsom.dailyTarget && 
+      dailyCount > alcoolSettings.limitConsom.dailyTarget
+    ) {
+      displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage);
+    }
+  }
+
+  const respectWeeklyConsumption = (alcoolSettings, consommations, date) => {
+    let weeklyCount = 0;
+      for (let i = 0; i < date.getDay(); i++) {
+        const dateDiff = DateTime.fromJSDate(date).minus({ days: i}).toJSDate();
+        weeklyCount += getConsumptionsCount(consommations, dateDiff)
+      }
+      if(alcoolSettings.notifications.active && alcoolSettings.limitConsom &&
+          alcoolSettings.limitConsom.weeklyTarget && weeklyCount > alcoolSettings.limitConsom.weeklyTarget) {
+        displayNotification(getLang(), alcoolSettings.limitConsom.notificationMessage)
+      }
+  }
+
+  const respectConsecutiveConsumption = (alcoolSettings, consommations, date) => {
+    let streak = true;
+    if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.sobrietyDays)
+    {
+      for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
+        const dateDiff = DateTime.fromJSDate(date).minus({ days: i}).toJSDate();
+        if(getConsumptionsCount(consommations, dateDiff) === 0) {
+          streak = false;
+          break;
+        }
+      }
+    }
+
+    console.log("Nombre de jours de consommation: ", +alcoolSettings.limitConsom.sobrietyDays);
+    if (streak) {
+      console.log("!!notification days streak");
+    }
   }
 
   const getDbDate = (date) => {
@@ -320,9 +365,9 @@ const Alcool = (props) => {
     const code = getDbDate(date);
     if(consommations[code] && consommations[code].alcool && consommations[code].alcool.alcools)
     {
-      for (const alcool of consommations[code].alcool.alcools) {
-        if(alcool.consumption) {
-          count += alcool.consumption;
+      for (const alc of consommations[code].alcool.alcools) {
+        if(alc.consumption) {
+          count += alc.consumption;
         }
       }
     }
@@ -357,8 +402,7 @@ const Alcool = (props) => {
     toast.duration = 5000;
     toast.position = 'top'
     toast.cssClass = 'toast-alcool'
-    toast.showCloseButton = true
-    toast.closeButtonText = close_msg
+    toast.buttons = [close_msg];
 
     document.body.appendChild(toast);
     toast.present();
