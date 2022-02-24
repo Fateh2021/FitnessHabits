@@ -13,13 +13,13 @@ const LogIn = (props) => {
     const [password, setPassword]= useState('');
     const [busy, setBusy]= useState(false);
     const flags = {
-        email_flag:false,
-        facebook_flag:false,
-        google_flag:false
+        email_flag: false,
+        facebook_flag: false,
+        google_flag: false,
     }
 
     async function handleSubmit() {
-        HandleLogin(username,password,props,setBusy,flags);
+        HandleLogin(username, password, props, setBusy, flags);
     }
 
     return (
@@ -59,7 +59,7 @@ const LogIn = (props) => {
                 <IonRow>
                     <IonCol>
                         <IonLoading message={translate.getText("WAIT")} duration={0} isOpen={busy} />
-                        <IonItem  color="transparent" lines="none">
+                        <IonItem color="transparent" lines="none">
                             <IonInput type="input" className="input-login-name" placeholder={translate.getText("USER_NAME")} onIonChange={(e) => setUsername(e.target.value)}/>
                         </IonItem>
                         <IonItem color="transparent" lines="none" style={{marginBottom:20}}>

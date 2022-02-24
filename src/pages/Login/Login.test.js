@@ -15,16 +15,16 @@ const mockFormFields = {
 }
 
 const flags = {
-  email_flag:false,
-  facebook_flag:false,
-  google_flag:false
+  email_flag: false,
+  facebook_flag: false,
+  google_flag: false,
 }
 
  const mProps = { history: { push: jest.fn() } };
  const setBusy = jest.fn();
 
  it('Invalid user', async () => {
-  let result = await HandleLogin(mockFormFields.username,mockFormFields.password,mProps,setBusy,flags);
+  let result = await HandleLogin(mockFormFields.username, mockFormFields.password, mProps, setBusy, flags);
   expect(result).toBe(false);
 });
 
@@ -42,12 +42,12 @@ it('Mock button press', async  () => {
    wrapper.find('.input-login-click').first().simulate('click');
    wrapper.find('#facebook').first().simulate('click');
   } catch (error){
-    return Promise.reject("wrong")
+    return Promise.reject("wrong");
   }
 });
 
 it('Invalid username', async () => {
-  let response = await userExists(mockFormFields.username,mockFormFields.password,flags);
+  let response = await userExists(mockFormFields.username, mockFormFields.password, flags);
    expect(response !== true);
 });
 
