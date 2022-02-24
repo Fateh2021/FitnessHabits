@@ -91,10 +91,10 @@ const Settings = (props) => {
 
   var toastMessage = translate.getText("SELECT_DATA_REQUIRED_TITLE");
 
-  //Variable indiquant quelles données l'utilisateur souhaite exporter
-  const dataSelected = useRef(userCategories());
-  //var dataSelected = userCategories();
+  // rerender a chaque fois que l'utilisateur fait une nouvelle selection
+  const [dataSelected, changeSelection] = useState(userCategories());
 
+  // fonction qui recupere les objectifs de l'utilisateur
   function userCategories() {
     var categories = [];
     if (settings.hydratation.dailyTarget.value > 0) {
@@ -130,12 +130,14 @@ const Settings = (props) => {
 
   //Logique gérant la liste des catégories sélectionnées par l'utilisateur
   function manageCategories(item) {
-    const index = dataSelected.current.indexOf(item);
+    const index = dataSelected.indexOf(item);
+    let newSelection = dataSelected
     if (index > -1) {
-      dataSelected.current.splice(index, 1);
+      newSelection.splice(index, 1);
     } else {
-      dataSelected.current.push(item);
+      newSelection.push(item);
     }
+    changeSelection([...newSelection])
   }
 
   // variable qui va contenir le format d'exportation désiré, par défaut csv
@@ -293,102 +295,78 @@ const Settings = (props) => {
 
           <IonList>
             <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("activities")} data-testid="checkbox-activities">
+            <div role="checkbox" aria-checked={dataSelected.includes("activities")} data-testid="checkbox-activities">
               <IonItem>
                 <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("activities")}
+                    checked={dataSelected.includes("activities")}
                     onIonChange={(e) => {
                       manageCategories("activities");
                     }}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("nourriture")} data-testid="checkbox-food">
+            <div role="checkbox" aria-checked={dataSelected.includes("nourriture")} data-testid="checkbox-food" onClick={() => {manageCategories("nourriture")}}>
               <IonItem>
                 <IonLabel>{translate.getText("NOURRITURE_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("nourriture")}
-                    onIonChange={(e) => {
-                      manageCategories("nourriture");
-                    }}
+                    checked={dataSelected.includes("nourriture")}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("hydratation")} data-testid="checkbox-hydration">
+            <div role="checkbox" aria-checked={dataSelected.includes("hydratation")} data-testid="checkbox-hydration" onClick={() => {manageCategories("hydratation")}}>
               <IonItem>
                 <IonLabel>{translate.getText("HYDR_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("hydratation")}
-                    onIonChange={(e) => {
-                      manageCategories("hydratation");
-                    }}
+                    checked={dataSelected.includes("hydratation")}
                 />
               </IonItem>
               </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("supplements")} data-testid="checkbox-supplements">
+            <div role="checkbox" aria-checked={dataSelected.includes("supplements")} data-testid="checkbox-supplements" onClick={() => {manageCategories("supplements")}}>
               <IonItem>
                 <IonLabel>{translate.getText("SUPPL_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("supplements")}
-                    onIonChange={(e) => {
-                      manageCategories("supplements");
-                    }}
+                    checked={dataSelected.includes("supplements")}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("sommeil")} data-testid="checkbox-sleep">
+            <div role="checkbox" aria-checked={dataSelected.includes("sommeil")} data-testid="checkbox-sleep" onClick={() => {manageCategories("sommeil")}}>
               <IonItem>
                 <IonLabel>{translate.getText("SLEEP")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("sommeil")}
-                    onIonChange={(e) => {
-                      manageCategories("sommeil");
-                    }}
+                    checked={dataSelected.includes("sommeil")}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("poids")} data-testid="checkbox-weight">
+            <div role="checkbox" aria-checked={dataSelected.includes("poids")} data-testid="checkbox-weight" onClick={() => {manageCategories("poids")}}>
               <IonItem>
                 <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("poids")}
-                    onIonChange={(e) => {
-                      manageCategories("poids");
-                    }}
+                    checked={dataSelected.includes("poids")}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("glycémie")} data-testid="checkbox-glycemia">
+            <div role="checkbox" aria-checked={dataSelected.includes("glycémie")} data-testid="checkbox-glycemia" onClick={() => {manageCategories("glycémie")}}>
               <IonItem>
                 <IonLabel>{translate.getText("GLYC_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("glycémie")}
-                    onIonChange={(e) => {
-                      manageCategories("glycémie");
-                    }}
+                    checked={dataSelected.includes("glycémie")}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("alcool")} data-testid="checkbox-alcool">
+            <div role="checkbox" aria-checked={dataSelected.includes("alcool")} data-testid="checkbox-alcool" onClick={() => {manageCategories("alcool")}}>
               <IonItem>
                 <IonLabel >{translate.getText("ALCOOL_TITLE")}</IonLabel>
                 <IonCheckbox 
-                    checked={dataSelected.current.includes("alcool")}
-                    onIonChange={(e) => {
-                      manageCategories("alcool");
-                    }}
+                    checked={dataSelected.includes("alcool")}
                 />
               </IonItem>
             </div>
-            <div role="checkbox" aria-checked={dataSelected.current.includes("toilettes")} data-testid="checkbox-toilet">
+            <div role="checkbox" aria-checked={dataSelected.includes("toilettes")} data-testid="checkbox-toilet" onClick={() => {manageCategories("toilettes")}}>
               <IonItem>
                 <IonLabel>{translate.getText("TOILETS_TITLE")}</IonLabel>
                 <IonCheckbox
-                    checked={dataSelected.current.includes("toilettes")}
-                    onIonChange={(e) => {
-                      manageCategories("toilettes");
-                    }}
+                    checked={dataSelected.includes("toilettes")}
                 />
               </IonItem>
             </div>
