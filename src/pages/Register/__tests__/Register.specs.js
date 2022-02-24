@@ -2,7 +2,6 @@ import React from 'react';
 import Register from "../Register";
 import { cleanup, render, screen } from "@testing-library/react";
 import { registerUser, signUp, validateFieldsEmpty, validatePasswordsMatching } from '../Register.Utilities';
-import { fn } from 'moment';
 import toast from '../../../Toast';
 import { firebaseCreateUser } from '../firebase.helper';
 
@@ -28,10 +27,6 @@ const mockFormFields = {
     }
 }
 
-const mockedToast = {
-    message: 'Mocked toast message',
-    duration: 0,
-}
 
 describe('Register function', () => {
     const mockToast = jest.fn(() => Promise.resolve())
@@ -165,7 +160,7 @@ describe('Register function', () => {
             test('Should return true', () => {
                 mockFirebaseCreateUser = jest.fn(() => Promise.resolve(true))
                 firebaseCreateUser.mockImplementation(mockFirebaseCreateUser)
-                
+
                 return registerUser(mockFormFields.username, mockFormFields.password).then(data => {
                     expect(data).toBe(true)
                 })
