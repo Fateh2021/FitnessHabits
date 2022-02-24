@@ -9,11 +9,11 @@ const Register = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setconfirmPassword] = useState('')
   let history = useHistory()
-  
+
   async function signUpButtonEnter() {
     const response = await signUp(username, password, confirmPassword)
 
-    if ( response ) history.push('/dashboard')
+    if (response) history.push('/dashboard')
 
   }
 
