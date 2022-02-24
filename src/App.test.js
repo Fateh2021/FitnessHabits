@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
-import {compilerBilan} from './pages/Settings/Export';
+import * as Export from './pages/Settings/Export';
 import {ExportToCsv} from "export-to-csv";
 import {jsPDF} from "jspdf";
 import { configure, shallow, mount } from 'enzyme';
@@ -12,6 +12,7 @@ configure({ adapter: new Adapter() });
 
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import {act} from "react-dom/test-utils";
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, {route = '/'} = {}) => {
@@ -204,6 +205,14 @@ test('ExportModule - TestErrorMessage_ErrorDisplayed', async() => {
   //expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
 });
 
+test('ExportModule - TestClickOnFoodCheckbox', async() => {
+  renderWithRouter(<App />, {route: '/Export'});
+  const checkbox_food=screen.getByTestId("checkbox-food")
+  act(() => {
+    fireEvent.click(checkbox_food)
+  });
+  expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
+});
 
 /* Notes
   fireEvent.click(alcoolCheckbox);
