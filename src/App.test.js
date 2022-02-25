@@ -5,46 +5,47 @@ import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import Poids from './pages/Dashboard/ItemsList/Poids'
+import Poids from './pages/Dashboard/ItemsList/Poids';
 
 //--watchAll dans packlage.json peut etre une option aussi
+//  npm run test a -- Semble donner du résultat !
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, { route = '/' } = {}) => {
-    window.history.pushState({}, 'Test page', route)
-    return render(ui, { wrapper: BrowserRouter })
+	window.history.pushState({}, 'Test page', route);
+	return render(ui, { wrapper: BrowserRouter });
 }
 
 test('renders without crashing', () => {
-  const { baseElement } = render(<App/>);
-  expect(baseElement).toBeDefined();
+	const { baseElement } = render(<App />);
+	expect(baseElement).toBeDefined();
 });
 
 test('Verifier si le mot LBS existe', async() => {
-  renderWithRouter(<App />, {route: '/ConfigurationPoids'});
-  const mot = screen.getByText('LBS');
-  expect(mot).toBeDefined();
+	renderWithRouter(<App />, {route: '/ConfigurationPoids'});
+	const mot = screen.getByText('LBS');
+	expect(mot).toBeDefined();
 });
 
 test('Traduction du mot Poids en anglais', async()=>{
-  localStorage.setItem('userLanguage', 'en')
-  render(<Poids poids/>);
-  const mot = screen.getByText(/Weight/i);
-  expect(mot).toBeDefined();
+	localStorage.setItem('userLanguage', 'en');
+	render(<Poids poids="dailyPoids: 50"/>);
+	const mot = screen.getByText(/Weight/i);
+	expect(mot).toBeDefined();
 });
 
 test('Traduction du mot Poids en espagnol', async()=>{
-  localStorage.setItem('userLanguage', 'es')
-  render(<Poids poids/>);
-  const mot = screen.getByText(/Peso/i);
-  expect(mot).toBeDefined();
+	localStorage.setItem('userLanguage', 'es');
+	render(<Poids poids="dailyPoids: 50"/>);
+	const mot = screen.getByText(/Peso/i);
+	expect(mot).toBeDefined();
 });
 
 test('Traduction du mot IMC en anglais', async()=>{
-  localStorage.setItem('userLanguage', 'en')
-  render(<Poids poids/>);
-  const mot = screen.getByText(/BMI/i);
-  expect(mot).toBeDefined();
+	localStorage.setItem('userLanguage', 'en');
+	render(<Poids poids="dailyPoids: 50"/>);
+	const mot = screen.getByText(/BMI/i);
+	expect(mot).toBeDefined();
 });
 
 /*
