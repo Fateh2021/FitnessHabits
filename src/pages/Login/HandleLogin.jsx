@@ -51,7 +51,6 @@ function getSuccessMessage(flags) {
 export async function userExists (username, password, flags) {
     let res;
     try {
-        console.log(flags.email_flag);
         if (flags.email_flag === true) {
         res = await firebase.auth().signInWithEmailAndPassword(username+EMAIL, password);
         } else if (flags.google_flag === true) {
