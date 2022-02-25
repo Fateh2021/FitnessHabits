@@ -683,6 +683,16 @@
       "en": "To",
       "es": "Al",
       "fr": "À"
+   },
+   "HOME_TITLE": {
+      "en": "Home",
+      "es": "Inicio",
+      "fr": "Acceuil"
+   },
+   "DATE_TITLE":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Date"
    }
 
 }

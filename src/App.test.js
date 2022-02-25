@@ -13,6 +13,8 @@ configure({ adapter: new Adapter() });
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import {act} from "react-dom/test-utils";
+import Settings from "./pages/Settings/Export";
+import DatePicker from "react-datepicker";
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, {route = '/'} = {}) => {
@@ -179,13 +181,39 @@ test('ExportModule - TestDefaultDateBehaviour', async () => {
 //TODO
 /*Test if format selected changes, no change in attributes selected*/
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async() => {
-  renderWithRouter(<App />, {route: '/Export'}); 
+  renderWithRouter(<App />, {route: '/Export'});
+  //to be false
+  const checkbox_food=screen.getByTestId("checkbox-food")
+  const checkbox_sleep=screen.getByTestId("checkbox-sleep")
+  const checkbox_weight=screen.getByTestId("checkbox-weight")
+
+  //to be true
+  const checkbox_toilet=screen.getByTestId("checkbox-toilet")
+  const checkbox_alcool=screen.getByTestId("checkbox-alcool")
+  const checkbox_glycemia=screen.getByTestId("checkbox-glycemia")
+
+  const radio_pdf=screen.getByTestId("radio-pdf")
+
+  act(() => {
+    fireEvent.click(checkbox_food)
+    fireEvent.click(checkbox_sleep)
+    fireEvent.click(checkbox_weight)
+    fireEvent.click(radio_pdf)
+  });
+  expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
+  expect(checkbox_sleep.getAttribute("aria-checked")).toBe("false")
+  expect(checkbox_weight.getAttribute("aria-checked")).toBe("false")
+
+  expect(checkbox_toilet.getAttribute("aria-checked")).toBe("true")
+  expect(checkbox_alcool.getAttribute("aria-checked")).toBe("true")
+  expect(checkbox_glycemia.getAttribute("aria-checked")).toBe("true")
+
 });
 
 
 /*Test if dates changes, no change in attributes selected*/
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
-  renderWithRouter(<App />, {route: '/Export'}); 
+  renderWithRouter(<App />, {route: '/Export'});
 });
 
 
@@ -196,9 +224,35 @@ test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
 });
 
 
-/*Tester les messages d'erreurs -- avec erreur*/
-test('ExportModule - TestErrorMessage_ErrorDisplayed', async() => {
+/*Tester les messages d'erreurs quand il n'y a aucune sélection -- avec erreur*/
+test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() => {
   renderWithRouter(<App />, {route: '/Export'});
+  //to be false
+  const checkbox_activities=screen.getByTestId("checkbox-activities")
+  const checkbox_food=screen.getByTestId("checkbox-food")
+  const checkbox_hydration=screen.getByTestId("checkbox-hydration")
+  const checkbox_supplements=screen.getByTestId("checkbox-supplements")
+  const checkbox_sleep=screen.getByTestId("checkbox-sleep")
+  const checkbox_weight=screen.getByTestId("checkbox-weight")
+  const checkbox_toilet=screen.getByTestId("checkbox-toilet")
+  const checkbox_alcool=screen.getByTestId("checkbox-alcool")
+  const checkbox_glycemia=screen.getByTestId("checkbox-glycemia")
+
+  const radio_pdf=screen.getByTestId("radio-pdf")
+
+  act(() => {
+    fireEvent.click(checkbox_activities)
+    fireEvent.click(checkbox_food)
+    fireEvent.click(checkbox_hydration)
+    fireEvent.click(checkbox_supplements)
+    fireEvent.click(checkbox_sleep)
+    fireEvent.click(checkbox_weight)
+    fireEvent.click(checkbox_toilet)
+    fireEvent.click(checkbox_alcool)
+    fireEvent.click(checkbox_glycemia)
+    fireEvent.click(radio_pdf)
+  });
+
   /* things to do here toget popup error*/
   //expect(screen.queryByRole('alert')).not.toBeNull();  //or
   //expect(screen.queryByText('error message todo')).toBeInTheDocument();

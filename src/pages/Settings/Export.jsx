@@ -36,6 +36,7 @@ import { jsPDF } from "jspdf";
 
 import "../Tab1.css";
 import { render } from "@testing-library/react";
+import {getLang} from "../../translate/Translator";
 
 const Settings = (props) => {
 
@@ -266,6 +267,7 @@ const Settings = (props) => {
               {translate.getText("DE")}: &nbsp;
 
                 <DatePicker
+                    locale={getLang()}
                     onChange={onChangeD1}
                     value={d1}
                     minDate={new Date("01-01-2010")} // A CHANGER ICI POUR LA PLUS PETITE DATE QU'ON VEUT
@@ -281,6 +283,7 @@ const Settings = (props) => {
             <div data-testid="endDate">
             &nbsp;{translate.getText("A")} &nbsp;  
               <DatePicker
+                  locale={getLang()}
                   onChange={onChangeD2}
                   value={d2}
                   minDate={d1}
@@ -385,12 +388,12 @@ const Settings = (props) => {
                 <IonRadio slot="start" value="csv" checked="true"/>
               </IonItem>
 
-              <IonItem>
+              <IonItem data-testid="radio-pdf">
                 <IonLabel>PDF</IonLabel>
                 <IonRadio slot="start" value="pdf" />
               </IonItem>
 
-              <IonItem>
+              <IonItem data-testid="radio-csv-and-pdf">
                 <IonLabel>{translate.getText("CSV_AND_PDF_TITLE")}</IonLabel>
                 <IonRadio slot="start" value="hybride" />
               </IonItem>
@@ -421,20 +424,20 @@ const Settings = (props) => {
                     expand="full"
                     class="ion-text-wrap"
                     onClick={async () => {
-                      if (dataSelected.current.length === 0) {
+                      if (dataSelected.length === 0) {
                         toast(toastMessage);
                       } else {
                       
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        var overviewPdf = await compilerBilan(dataSelected.current, d1, d2);
+                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
                         if (overviewPdf.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
                         } else {
-                            dataSelected.current.forEach((data) => {
+                            dataSelected.forEach((data) => {
                               switch (data) {
                                 case "hydratation":
                                   var hydratation = recupererHydratation();
@@ -494,7 +497,7 @@ const Settings = (props) => {
                         }
 
                       if (selected === "csv" || selected === "hybride") {
-                        var overviewCsv = await compilerBilan(dataSelected.current, d1, d2);
+                        var overviewCsv = await compilerBilan(dataSelected, d1, d2);
                         if (overviewCsv.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
@@ -645,7 +648,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
         case "toilettes":
           var toilettes = dataFormat[i].toilettes;
           retour[i][data] =
-              "Feces: " + toilettes.feces + "; Urine: " + toilettes.urine;
+          translate.getText("FECES_TITLE") + ": " + toilettes.feces + "; "+translate.getText("URINE_TITLE")+": " + toilettes.urine;
           break;
         case "alcool":
           if (dataFormat[i].alcool.alcools) {
@@ -683,7 +686,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
           var supplement = dataFormat[i].supplement;
           if (!supplement)
             retour[i][data] =
-                "Les supplements ne sont pas encore implémentés\n";
+                translate.getText("SUPP_NOT_YET_IMPLEMENTED") +"\n";
           else retour[i][data] = supplement;
           break;
 
@@ -696,7 +699,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
 }
 
 function recupererHydratation() {
-  var retour = "Hydratation: \n";
+  var retour = translate.getText("HYDR_TITLE") +": \n";
   var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
       .hydrates;
   hydratation.forEach((data) => {
@@ -707,7 +710,7 @@ function recupererHydratation() {
 }
 
 function recupererAlcools() {
-  var retour = "Alcool: \n";
+  var retour = translate.getText("ALCOOL_TITLE")+": \n";
   var alcool = JSON.parse(localStorage.getItem("dashboard")).alcool.alcools;
   alcool.forEach((data) => {
     retour =
@@ -717,7 +720,7 @@ function recupererAlcools() {
 }
 
 function recupererActivite() {
-  var retour = "Activites: \n";
+  var retour = translate.getText("ACTIVITES_TITLE")+": \n";
   var activite = JSON.parse(localStorage.getItem("dashboard")).activities;
   retour = retour + " " + activite.heure + "h " + activite.minute + " min\n";
 
@@ -725,7 +728,7 @@ function recupererActivite() {
 }
 
 function recupererNourriture() {
-  var retour = "Nourriture: \n";
+  var retour = translate.getText("NOURRITURE_TITLE")+": \n";
   var nourriture = JSON.parse(localStorage.getItem("dashboard")).nourriture;
   if (nourriture.globalConsumption === "0") {
     return retour + " NO DATA FOUND IN NOURRITURE \n";
@@ -735,7 +738,7 @@ function recupererNourriture() {
 }
 
 function recupererSommeil() {
-  var retour = "Sommeil: \n";
+  var retour = translate.getText("SLEEP")+": \n";
   var sommeil = JSON.parse(localStorage.getItem("dashboard")).sommeil;
   retour = retour + " " + sommeil.heure + "h " + sommeil.minute + " min\n";
 
@@ -743,14 +746,14 @@ function recupererSommeil() {
 }
 
 function recupererToilettes() {
-  var retour = "Toilettes: \n";
+  var retour = translate.getText("TOILETS_TITLE")+": \n";
   var toilettes = JSON.parse(localStorage.getItem("dashboard")).toilettes;
 
   retour =
       retour +
-      " Feces: " +
+      " "+translate.getText("FECES_TITLE")+": " +
       toilettes.feces +
-      "\n Urine: " +
+      "\n "+translate.getText("URINE_TITLE")+": " +
       toilettes.urine +
       "\n";
 
@@ -758,7 +761,7 @@ function recupererToilettes() {
 }
 
 function recupererGlycemie() {
-  var retour = "Glycemie: \n";
+  var retour = translate.getText("GLYC_TITLE")+": \n";
   var glycemie = JSON.parse(localStorage.getItem("dashboard")).glycemie
       .dailyGlycemie;
 
@@ -768,7 +771,7 @@ function recupererGlycemie() {
 }
 
 function recupererPoids() {
-  var retour = "Poids: \n";
+  var retour = translate.getText("POIDS_NOM_SECTION") +": \n";
   var poids = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
   retour = retour + poids + "\n";
 
@@ -776,10 +779,10 @@ function recupererPoids() {
 }
 
 function recupererSupplements() {
-  var retour = "Supplements: \n";
+  var retour = translate.getText("SUPPL_TITLE") +": \n";
   var supplement = JSON.parse(localStorage.getItem("dashboard")).supplement;
   if (!supplement) {
-    retour = retour + "Les supplements ne sont pas encore implémentés\n";
+    retour = retour + translate.getText("SUPP_NOT_YET_IMPLEMENTED") +"\n";
   } else {
     retour = retour + supplement + "\n";
   }
