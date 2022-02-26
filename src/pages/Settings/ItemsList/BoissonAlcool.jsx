@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonCol, IonItem, IonIcon, IonToggle, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonItemGroup, IonCheckbox, IonTextarea, IonRow, IonGrid } from '@ionic/react';
+import { IonCol, IonItem, IonIcon, IonToggle, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonItemGroup, IonCheckbox, IonTextarea, IonRow } from '@ionic/react';
 import { arrowDropdownCircle } from 'ionicons/icons';
 import Alcool from '../Alcool'
 import firebase from 'firebase'
@@ -27,7 +27,8 @@ const BoissonAlcool = (props) => {
   const accorAlcool = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      if(!divElt.style.display || divElt.style.display === "none") divElt.style.display = "block"
+      else divElt.style.display = "none";
     }
   }
 
@@ -45,7 +46,12 @@ const BoissonAlcool = (props) => {
   const handleDailyTargetChangeAlcool = event => {
     const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
-    const updatedDailyTarget = { ...dailyTarget, [name]: value ? value : (name === 'value') ? 0 : '' };
+
+    let nameValue = '';
+    if(value) nameValue = value;
+    else nameValue = (name === 'value') ? 0 : ''
+
+    const updatedDailyTarget = { ...dailyTarget, [name]: nameValue };
     setDailyTarget({ ...dailyTarget, [name]: value});
     // update the cache and persist in DB
     const settings = JSON.parse(localStorage.getItem('settings'));
@@ -77,7 +83,12 @@ const BoissonAlcool = (props) => {
   const handleOnLimitConsom = event => {
     const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
-    const updatedLimitConsom = { ...limitConsom, [name]: value ? value : (name === 'value') ? 0 : '' };
+
+    let nameValue = '';
+    if(value) nameValue = value;
+    else nameValue = (name === 'value') ? 0 : ''
+
+    const updatedLimitConsom = { ...limitConsom, [name]: nameValue };
     setLimitConsom({ ...limitConsom, [name]: value});
     const settings = JSON.parse(localStorage.getItem('settings'));
     settings.alcool.limitConsom = updatedLimitConsom;
