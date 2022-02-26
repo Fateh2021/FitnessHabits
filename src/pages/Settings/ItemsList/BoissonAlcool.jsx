@@ -194,7 +194,7 @@ value={limitConsom.sobrietyDays}
           <IonItem>
             <IonCol size='1'></IonCol>
             <IonCol size='1'>
-              <IonCheckbox onIonChange={handleOnEducAlcool} 
+              <IonCheckbox id="educAlcoolToggle" onIonChange={handleOnEducAlcool} 
 checked={limitConsom.educAlcool} 
 value={limitConsom.educAlcool}
               ></IonCheckbox>
