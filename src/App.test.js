@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/extend-expect';
 import {compilerBilan} from './pages/Settings/Export';
 import {ExportToCsv} from "export-to-csv";
 import {jsPDF} from "jspdf";
 import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-configure({ adapter: new Adapter() });
+//configure({ adapter: new Adapter() });
 
 //import {saveItem} from './pages/Dashoard/ItemsList/Alccol';  //Test non fonctionnel avec cette ligne
 
@@ -48,6 +49,7 @@ test('Check alcool value', () => {
 // });
 
 // -------- EXPORT MODULE SECTION ----------//
+//https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
 test('ExportModule - Check if PDF format done correctly', async () => {
   var date1 = new Date("2021-02-01");
   var date2 = new Date("2021-03-29");
@@ -91,7 +93,7 @@ test('ExportModule - Check if PDF export options set correctly', async () => {
 
 
 /* Tester la présence des composantes dans la page */
-test('ExportModule - TestElementsPresence', async () => {
+test('ExportModule - TestElementsPresence_1', async () => {
   renderWithRouter(<App />, {route: '/Export'});
   const actPhys = screen.getByTestId(/checkbox-activities/i);
   expect(actPhys).toBeInTheDocument();
@@ -123,6 +125,7 @@ test('ExportModule - TestElementsPresence', async () => {
 });
 
 
+
 /*Test all attributes selected byDefault*/
 test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
   renderWithRouter(<App />, {route: '/Export'});
@@ -131,33 +134,119 @@ test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
 });
 
 
-//Todo add other attributes --> PL
+
 test('ExportModule - TestEnglishTranslation', async() => {
   localStorage.setItem('userLanguage', 'en');
   renderWithRouter(<App />, {route: '/Export'});
+
   const nourriture = screen.getByTestId(/checkbox-food/i);
-  expect(nourriture).toBeInTheDocument();
-  expect(nourriture.textContent).toBe('Food')
+  expect(nourriture.textContent).toBe('Food');
+
+  const act = screen.getByTestId(/checkbox-activities/i);
+  expect(act.textContent).toBe('Physical activities');
+
+  const hyd = screen.getByTestId(/checkbox-hydration/i);
+  expect(hyd.textContent).toBe('Hydration');
+
+  const supp = screen.getByTestId(/checkbox-supplements/i);
+  expect(supp.textContent).toBe('Supplements');
+
+  const sleep = screen.getByTestId(/checkbox-sleep/i);
+  expect(sleep.textContent).toBe('Sleep');
+
+  const weight = screen.getByTestId(/checkbox-weight/i);
+  expect(weight.textContent).toBe('Weight');
+
+  const glyc = screen.getByTestId(/checkbox-glycemia/i);
+  expect(glyc.textContent).toBe('Blood sugar level');
+
+  const alcool = screen.getByTestId(/checkbox-alcool/i);
+  expect(alcool.textContent).toBe('Alcohol');
+
+  const toilet = screen.getByTestId(/checkbox-toilet/i);
+  expect(toilet.textContent).toBe('Toilets');
+
 });
 
 
-//Todo add other attributes --> PL
+
 test('ExportModule - TestFrenchTranslation', async() => {
   localStorage.setItem('userLanguage', 'fr');
   renderWithRouter(<App />, {route: '/Export'});
+
   const nourriture = screen.getByTestId(/checkbox-food/i);
-  expect(nourriture).toBeInTheDocument();
   expect(nourriture.textContent).toBe('Nourriture')
+
+  const act = screen.getByTestId(/checkbox-activities/i);
+  expect(act.textContent).toBe('Activités physiques');
+
+  const hyd = screen.getByTestId(/checkbox-hydration/i);
+  expect(hyd.textContent).toBe('Hydratation');
+
+  const supp = screen.getByTestId(/checkbox-supplements/i);
+  expect(supp.textContent).toBe('Suppléments');
+
+  const sleep = screen.getByTestId(/checkbox-sleep/i);
+  expect(sleep.textContent).toBe('Sommeil');
+
+  const weight = screen.getByTestId(/checkbox-weight/i);
+  expect(weight.textContent).toBe('Poids');
+
+  const glyc = screen.getByTestId(/checkbox-glycemia/i);
+  expect(glyc.textContent).toBe('Glycémie');
+
+  const alcool = screen.getByTestId(/checkbox-alcool/i);
+  expect(alcool.textContent).toBe('Alcool');
+
+  const toilet = screen.getByTestId(/checkbox-toilet/i);
+  expect(toilet.textContent).toBe('Toilettes');
+
 });
 
 
-//Todo add other attributes --> PL
+
 test('ExportModule - TestSpanishTranslation', async() => {
   localStorage.setItem('userLanguage', 'es');
   renderWithRouter(<App />, {route: '/Export'});
+
+  //EXPORTAR
+  //Fechas de exportación
+  //Del:
+  //Al
+  //Selección de los datos a exportar
   const nourriture = screen.getByTestId(/checkbox-food/i);
   expect(nourriture).toBeInTheDocument();
   expect(nourriture.textContent).toBe('Alimentos')
+
+  const act = screen.getByTestId(/checkbox-activities/i);
+  expect(act.textContent).toBe('Actividades físicas');
+
+  const hyd = screen.getByTestId(/checkbox-hydration/i);
+  expect(hyd.textContent).toBe('Hidratación');
+
+  const supp = screen.getByTestId(/checkbox-supplements/i);
+  expect(supp.textContent).toBe('Suplementos');
+
+  const sleep = screen.getByTestId(/checkbox-sleep/i);
+  expect(sleep.textContent).toBe('Dormir');
+
+  const weight = screen.getByTestId(/checkbox-weight/i);
+  expect(weight.textContent).toBe('Peso');
+
+  const glyc = screen.getByTestId(/checkbox-glycemia/i);
+  expect(glyc.textContent).toBe('Glucemia');
+
+  const alcool = screen.getByTestId(/checkbox-alcool/i);
+  expect(alcool.textContent).toBe('Alcohol');
+
+  const toilet = screen.getByTestId(/checkbox-toilet/i);
+  expect(toilet.textContent).toBe('Aseos');
+
+  //Formato de exportación
+  //CSV
+  //PDF
+  //CSV Y PDF
+
 });
 
 
@@ -178,7 +267,7 @@ test('ExportModule - TestDefaultDateBehaviour', async () => {
 });
 
 
-//TODO
+
 /*Test if format selected changes, no change in attributes selected*/
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async() => {
   renderWithRouter(<App />, {route: '/Export'});
@@ -211,12 +300,14 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 });
 
 
+//todo
 /*Test if dates changes, no change in attributes selected*/
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
   renderWithRouter(<App />, {route: '/Export'});
 });
 
 
+//todo
 /*Tester les messages d'erreurs -- aucune erreur*/
 test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
   renderWithRouter(<App />, {route: '/Export'});
@@ -258,6 +349,7 @@ test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() =>
   //expect(screen.queryByText('error message todo')).toBeInTheDocument();
   //expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
 });
+
 
 test('ExportModule - TestClickOnFoodCheckbox', async() => {
   renderWithRouter(<App />, {route: '/Export'});
