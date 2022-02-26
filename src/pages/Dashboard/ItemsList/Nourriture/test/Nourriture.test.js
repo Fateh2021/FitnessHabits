@@ -3,6 +3,8 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Nourriture from '../Nourriture';
 
+const dict = require('../../../../../translate/Translation.json');
+
 let container = null;
 
 beforeEach(() => {
@@ -22,9 +24,9 @@ const setUp = (mock, testFunc) => {
     localStorage.setItem('dashboard', JSON.stringify(mock));
 
     render(<Nourriture 
-                name = 'Macronutriment'
-                type = 'macroNutriment'
-                subType = 'macroNutriments'
+                translationKey = 'Macronutriment'
+                dashboardKey = 'macroNutriment'
+                dashboardSubKey = 'macroNutriments'
                 cssId = 'dummy'
                 parentCallback = { (e) => { } }
                 macroNutriment = { mock.macroNutriment }
@@ -85,6 +87,12 @@ const updateToTargetTotal = (buttonId, targetData, targetTotal) => {
     expect(globalConsumption.value).toBe(targetTotal);
 };
 
+const setUpTranslationTest = (testFunc) => {
+    const originalLanguage = localStorage.getItem('userLanguage');
+    testFunc();
+    localStorage.setItem('userLanguage', originalLanguage);
+}
+
 it('test div visibility toggle', () => {
     const dummyDashboard = {
         macroNutriment: 
@@ -126,9 +134,9 @@ it('test div visibility toggle', () => {
         {
             act(() => {
                 render(<Nourriture 
-                            name = { moduleNames[index] }
-                            type = { macroNutrimentTypes[index] }
-                            subType = { macroNutrimentSubTypes[index] }
+                            translationKey = { moduleNames[index] }
+                            dashboardKey = { macroNutrimentTypes[index] }
+                            dashboardSubKey = { macroNutrimentSubTypes[index] }
                             cssId = { div }
                             parentCallback = { undefined }
                             macroNutriment = { dummyDashboard.macroNutriment }
@@ -142,8 +150,6 @@ it('test div visibility toggle', () => {
             });
             const moduleImage = document.getElementById('moduleImg').src;
             expect(moduleImage).toBe(`http://localhost/assets/${ moduleNames[index] }.jpg`);
-            const moduleName = document.getElementById('moduleName').innerHTML;
-            expect(moduleName).toBe(moduleNames[index]);
 
             const arrow = document.getElementById('proteinArrow');
             const elem = document.getElementById(div);
@@ -743,13 +749,113 @@ it('test daily consumption decrement: by a target amount', () => {
     setUp(dummyDashboard, () => { updateToTargetTotal('decrementButton', targetData, 66); });
 });
 
+it('test module translation', () => {    
+    const testFunc = () => {
+        ['en', 'es', 'fr'].forEach(lang => {
+            localStorage.setItem('userLanguage', lang); 
+            
+            ['fats', 'proteins', 'vegetables', 'grain', 'fruits'].forEach(category => {
+    
+                act(() => {
+                    render(<Nourriture 
+                                translationKey = { category }
+                                dashboardKey = 'dummy'
+                                dashboardSubKey = 'dummy'
+                                cssId = 'dummy'
+                                parentCallback = {  (e) => { } }
+                                macroNutriment = { undefined }
+                                macroNutriments = { [] }
+                                globalConsumption = { 0 }
+                                currentDate = { new Date() }
+                                macroNutrimentToEdit = { undefined }
+                                itemContainerDisplayStatus = { false }
+                            />, 
+                            container);
+        
+                        
+                });   
+                const moduleName = document.getElementById('moduleName').innerHTML;
+                expect(moduleName).toBe(dict['FOOD_MODULE']['sub_titles'][category][lang]);
+                const addMacroNutrimentButtonName = document.getElementById('addMacroNutriment').innerHTML;
+                expect(addMacroNutrimentButtonName).toBe(dict['FOOD_MODULE']['functions']['add_macro_nutriment'][lang]);
+                const addButton = document.getElementById('addButton');
+                addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    
+                const measures = document.getElementById('materialSelectAddHyd').children;
+                const gr = measures[1].innerHTML;
+                expect(gr).toBe(dict['UNIT_GR'][lang]);
+                const oz = measures[2].innerHTML;
+                expect(oz).toBe(dict['UNIT_OZ'][lang]);
+                const ml = measures[3].innerHTML;
+                expect(ml).toBe(dict['UNIT_ML'][lang]);
+                const cup = measures[4].innerHTML;
+                expect(cup).toBe(dict['UNIT_CUP'][lang]);
+                const unit = measures[5].innerHTML;
+                expect(unit).toBe(dict['UNIT_TEXT'][lang]);
+    
+                const protQtyBoxValue = document.getElementById('protQty').innerHTML;
+                expect(protQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['proteins'][lang]);
+                const glucQtyBoxValue = document.getElementById('glucQty').innerHTML;
+                expect(glucQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['glucides'][lang]);
+                const fibQtyBoxValue = document.getElementById('fibQty').innerHTML;
+                expect(fibQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['fibre'][lang]);
+                const fatQtyBoxValue = document.getElementById('fatQty').innerHTML;
+                expect(fatQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['fats'][lang]);
+            });
+        });
+    };
+    setUpTranslationTest(testFunc);
+});
 
+it('test translation for non-existent key', () => {
+    const testFunc = () => {
+        ['en', 'es', 'fr'].forEach(lang => {
+            localStorage.setItem('userLanguage', lang); 
+    
+            act(() => {
+                render(<Nourriture 
+                            translationKey = 'UnsupportedKey'
+                            dashboardKey = 'dummy'
+                            dashboardSubKey = 'dummy'
+                            cssId = 'dummy'
+                            parentCallback = {  (e) => { } }
+                            macroNutriment = { undefined }
+                            macroNutriments = { [] }
+                            globalConsumption = { 0 }
+                            currentDate = { new Date() }
+                            macroNutrimentToEdit = { undefined }
+                            itemContainerDisplayStatus = { false }
+                        />, 
+                        container);         
+            });    
+            const moduleName = document.getElementById('moduleName').innerHTML;
+            expect(moduleName).toBe(`Node with key UnsupportedKey is undefined`);
+        });
+    };
+    setUpTranslationTest(testFunc);
+});
 
-
-
-
-
-
-
-
-
+it('test translation for non-supported language', () => {
+    localStorage.setItem('userLanguage', 'it');
+    const testFunc = () => {
+        act(() => {
+            render(<Nourriture 
+                        translationKey = 'proteins'
+                        dashboardKey = 'dummy'
+                        dashboardSubKey = 'dummy'
+                        cssId = 'dummy'
+                        parentCallback = {  (e) => { } }
+                        macroNutriment = { undefined }
+                        macroNutriments = { [] }
+                        globalConsumption = { 0 }
+                        currentDate = { new Date() }
+                        macroNutrimentToEdit = { undefined }
+                        itemContainerDisplayStatus = { false }
+                    />, 
+                    container);         
+        });  
+        const moduleName = document.getElementById('moduleName').innerHTML;
+        expect(moduleName).toBe(`Translation into it for node ${JSON.stringify(dict['FOOD_MODULE']['sub_titles']['proteins'])} is currently not supported`);  
+    };
+    setUpTranslationTest(testFunc);
+});

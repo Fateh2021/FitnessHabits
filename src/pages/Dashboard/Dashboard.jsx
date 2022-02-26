@@ -26,7 +26,7 @@ import FormatDate from '../../DateUtils'
 import '../Tab1.css';
 import Home from "../Footer/Home";
 import Export from "../Footer/Export";
-import Nourriture from "./ItemsList/Nourriture/Nourriture";
+import * as translate from '../../translate/Translator';
 
 const Dashboard = (props) => {
 const [nourriture, setNourriture] = useState(0);
@@ -674,7 +674,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           <div>
             <IonItem className="divTitre2">
               <IonAvatar slot="start"><img src="/assets/nutrition.jpg" alt=""/></IonAvatar>
-              <IonLabel><h2><b>Nourriture</b></h2></IonLabel>
+              <IonLabel><h2><b>{ translate.getText('FOOD_MODULE', ['title']) }</b></h2></IonLabel>
               <IonInput className='inputTextGly' readonly value={dashboard.nourriture.globalConsumption}></IonInput>
               <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV22")} />
             </IonItem>            

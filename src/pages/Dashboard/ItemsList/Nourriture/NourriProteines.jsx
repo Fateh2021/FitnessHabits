@@ -4,9 +4,9 @@ import Nourriture from './Nourriture';
 const NourriProteines = (props) => {
   return (
     <Nourriture
-      name = 'Proteines'
-      type = 'proteines'
-      subType = 'proteines'
+      translationKey = 'proteins'
+      dashboardKey = 'proteines'
+      dashboardSubKey = 'proteines'
       cssId = 'myDIV5'
       parentCallback = {props.parentCallbackProteines}
       macroNutriment = {props.proteine}

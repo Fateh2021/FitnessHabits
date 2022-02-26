@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton } from '@ionic/react';
 import { arrowDropdownCircle, star, addCircle, removeCircle, trash } from 'ionicons/icons';
 import uuid from 'react-uuid';
-import firebase from 'firebase'
-import '../../../Tab1.css'
+import firebase from 'firebase';
+import '../../../Tab1.css';
+import * as translate from '../../../../translate/Translator';
 
 const MacroNutrimentItem = (props) => {
 
@@ -29,6 +30,11 @@ const MacroNutrimentItem = (props) => {
     props.save(item);
   }
 
+  const proteinPlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'proteins']);
+  const glucidePlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'glucides']);
+  const fibrePlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'fibre']);
+  const fatsPlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'fats']);
+
   return (
     <div id="divPopUp1-1">
         <IonCol size="1">
@@ -42,30 +48,30 @@ const MacroNutrimentItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder={ translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']) } name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <select id="materialSelectAddHyd" name="unit" defaultValue={item.unit} onChange={handleChange}>
             <option value="-1"></option>
-            <option value="gr">gr</option>
-            <option value="oz">oz</option>
-            <option value="ml">ml</option>
-            <option value="tasse">tasse</option>
-            <option value="unite">unité</option>
+            <option value="gr">{ translate.getText('UNIT_GR') }</option>
+            <option value="oz">{ translate.getText('UNIT_OZ') }</option>
+            <option value="ml">{ translate.getText('UNIT_ML') }</option>
+            <option value="tasse">{ translate.getText('UNIT_CUP') }</option>
+            <option value="unite">{ translate.getText('UNIT_TEXT') }</option>
           </select>
-          <IonCol className ="colNutProteinesHyd" size="1"><div className ="divMacroAdd">Pro</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+          <IonCol className ="colNutProteinesHyd" size="1"><div id='protQty' className ="divMacroAdd">{ proteinPlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={ proteinPlaceholder } name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutGlucidesHyd" size="1"><div className ="divMacroAdd">Glu</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+          <IonCol className ="colNutGlucidesHyd" size="1"><div id='glucQty' className ="divMacroAdd">{ glucidePlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={glucidePlaceholder} name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutFibresHyd" size="1"><div className ="divMacroAdd">Fib</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+          <IonCol className ="colNutFibresHyd" size="1"><div id='fibQty' className ="divMacroAdd">{ fibrePlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={fibrePlaceholder} name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
           </IonCol>
-          <IonCol className ="colNutGrasHyd" size="1"><div className ="divMacroAdd">Gras</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+          <IonCol className ="colNutGrasHyd" size="1"><div id='fatQty' className ="divMacroAdd">{ fatsPlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={ fatsPlaceholder } name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
           </IonCol>
         </IonItem>        
       </div>
@@ -73,7 +79,7 @@ const MacroNutrimentItem = (props) => {
 }
 
 const Nourriture = (props) => {
-  const [test, setTest] = useState(props.test);
+  const [test] = useState(props.test);
   const [dailyTarget, setDailyTarget] = useState(props.dailyTarget);
   const [macroNutriment, setMacroNutriment] = useState(props.macroNutriment);
   const [macroNutriments, setMacroNutriments] = useState(props.macroNutriments);
@@ -105,7 +111,11 @@ const Nourriture = (props) => {
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      if (!divElt.style.display || divElt.style.display === "none") {
+        divElt.style.display = "block";
+      } else {
+        divElt.style.display = "none";
+      }
     }
   }
 
@@ -122,7 +132,7 @@ const Nourriture = (props) => {
       // et le résultat sera reflété dans le tableau <code> macroNutriments </code>, qui contient le <code> item </code> en question.
       item.consumption--;
       updateCacheAndBD((total) => { return Math.max(--total, 0); });
-    };
+    }
   }
 
   const deleteItem = (index) => {
@@ -146,10 +156,10 @@ const Nourriture = (props) => {
 
   const updateCacheAndBD = (updateTotalFunc) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard[props.type][props.subType] = macroNutriments;
+    dashboard[props.dashboardKey][props.dashboardSubKey] = macroNutriments;
     setMacroNutriments(macroNutriments);
-    const totalConsumption = updateTotalFunc(dashboard[props.type].dailyTarget.globalConsumption);
-    dashboard[props.type].dailyTarget.globalConsumption = totalConsumption;
+    const totalConsumption = updateTotalFunc(dashboard[props.dashboardKey].dailyTarget.globalConsumption);
+    dashboard[props.dashboardKey].dailyTarget.globalConsumption = totalConsumption;
     setGlobalConsumption(totalConsumption);
     props.parentCallback(totalConsumption);
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
@@ -176,10 +186,14 @@ const Nourriture = (props) => {
     <div>
       <IonItem className="divTitre22">
         <IonAvatar slot="start">
-        <img id='moduleImg' src= { `/assets/${ props.name }.jpg` } alt="" />
+        <img id='moduleImg' src= { `/assets/${ props.translationKey }.jpg` } alt="" />
         </IonAvatar>
         <IonLabel>
-          <h2><b id='moduleName'>{ props.name }</b></h2>
+          <h2>
+            <b id='moduleName'>
+              { translate.getText('FOOD_MODULE', ['sub_titles', `${ props.translationKey }`]) } 
+            </b>
+          </h2>
         </IonLabel>
         <IonInput id='globalConsumption' className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
         <IonIcon id='proteinArrow' className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor(props.cssId)}/>
@@ -187,18 +201,18 @@ const Nourriture = (props) => {
       <div id={ props.cssId }>
       <div className="divHyd">
             <div className="sett">
-              { macroNutriments.map((macroNutriment, index) => (      
-                <IonItem id={macroNutriment.id} className="divTitre11" key={macroNutriment.id}>
+              { macroNutriments.map((macroNutr, index) => (      
+                <IonItem id={macroNutr.id} className="divTitre11" key={macroNutr.id}>
                   <IonCol size="1">
                   </IonCol>
-                  <IonLabel className="nameDscripDashboard"><h2><b>{macroNutriment.name}</b></h2></IonLabel>      
-                  <IonButton id='decrementButton' className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(macroNutriment)}>
+                  <IonLabel className="nameDscripDashboard"><h2><b>{macroNutr.name}</b></h2></IonLabel>      
+                  <IonButton id='decrementButton' className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(macroNutr)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
-                    <IonInput id='unitConsumption' className='inputTextDashboard' value = {macroNutriment.consumption} readonly></IonInput>  
+                    <IonInput id='unitConsumption' className='inputTextDashboard' value = {macroNutr.consumption} readonly></IonInput>  
                   </IonCol>
-                  <IonButton id='incrementButton' className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(macroNutriment)}>
+                  <IonButton id='incrementButton' className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(macroNutr)}>
                     <IonIcon  icon={addCircle} />
                   </IonButton>
                   <IonButton id='deleteButton' className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
@@ -210,8 +224,8 @@ const Nourriture = (props) => {
             </div>
           </div>
         <div className="ajoutBotton">    
-          <IonButton id='addButton' className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
-          <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
+          <IonButton id='addButton' className="ajoutbreuvage1" color="danger" size="medium" onClick={() => openAddItemContainer()}>
+          <IonIcon icon={addCircle}/><label id='addMacroNutriment' className="labelAddItem">{ translate.getText('FOOD_MODULE', ['functions', 'add_macro_nutriment']) }</label></IonButton>
         </div>
         {itemContainerDisplayStatus && <MacroNutrimentItem id='saveItem' close={closeItemContainer} item={macroNutrimentToEdit} save={(item) => saveItem(item)}/>}       
       </div> 
