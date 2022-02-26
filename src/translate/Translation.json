@@ -69,30 +69,100 @@
       "es":"+ Hora de notificación",
       "fr":"+ Heure de notification"
    },
-   "HYD_UNITS_GR":{
+   "UNIT_GR":{
       "en":"gram(s)",
       "es":"gramo(s)",
       "fr":"gramme(s)"
    },
-   "HYD_UNIT_OZ":{
+   "UNIT_OZ":{
       "en":"ounce(s)",
       "es":"onza(s)",
       "fr":"once(s)"
    },
-   "HYD_UNIT_ML":{
+   "UNIT_ML":{
       "en":"mililitre(s)",
       "es":"mililitro(s)",
       "fr":"millilitre(s)"
    },
-   "HYD_UNIT_TASSE":{
+   "UNIT_CUP":{
       "en":"cup(s)",
       "es":"taza(s)",
       "fr":"tasse(s)"
    },
-   "HYD_UNIT_TEXT":{
-      "en":"unit",
-      "es":"unidad",
-      "fr":"unité"
+   "UNIT_TEXT":{
+      "en":"unit(s)",
+      "es":"unidad(es)",
+      "fr":"unité(s)"
+   },
+   "FOOD_MODULE": {
+      "title": {
+         "en": "Food",
+         "es": "Comida",
+         "fr": "Nourriture"
+      },
+      "sub_titles": {
+         "proteins": {
+            "en": "Protein Food",
+            "es": "Alimentos proteicos",
+            "fr": "Aliments protéinés"
+         },
+         "grain": {
+            "en": "Grain Food",
+            "es": "Comida de grano",
+            "fr": "Aliments à grain"
+         },
+         "vegetables": {
+            "en": "Vegetables",
+            "es": "Vegetales",
+            "fr": "Légumes"
+         },
+         "fruits": {
+            "en": "Fruits",
+            "es": "Frutas",
+            "fr": "Fruits"
+         },
+         "fats": {
+            "en": "Fats",
+            "es": "Grasas",
+            "fr": "Gras"
+         }
+      },
+      "functions": {
+         "add_macro_nutriment": {
+            "en": "Add macro-nutriment",
+            "es": "Añadir un macronutriente",
+            "fr": "Ajouter un macro-nutriment"
+         },
+         "add_description": {
+            "placeholder": {
+               "en": "Description",
+               "es": "Descripción",
+               "fr": "Description"
+            }
+         }
+      },
+      "macro_nutriments": {
+         "proteins": {
+            "en": "Proteins",
+            "es": "Proteinas", 
+            "fr": "Protéines"
+         },
+         "glucides": {
+            "en": "Glucides",
+            "es": "Glúcidos", 
+            "fr": "Glucides"
+         },
+         "fibre": {
+            "en": "Fibre",
+            "es": "Fibras", 
+            "fr": "Fibres"
+         },
+         "fats": {
+            "en": "Fats",
+            "es": "Grasas", 
+            "fr": "Gras"
+         }
+      }
    },
    "SUPPL_TITLE":{
       "en":"Supplements",
