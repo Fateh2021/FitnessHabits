@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
-import * as Export from './pages/Settings/Export';
+import {compilerBilan} from './pages/Settings/Export';
 import {ExportToCsv} from "export-to-csv";
 import {jsPDF} from "jspdf";
 import { configure, shallow, mount } from 'enzyme';
