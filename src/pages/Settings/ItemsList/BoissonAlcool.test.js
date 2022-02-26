@@ -8,47 +8,20 @@ const dict = require('../../../translate/Translation.json');
 
 let container = null;
 
-jest.mock('firebase/app', () => {
+jest.mock("firebase/app", () => {
+    const data = { name: "unnamed" };
+    const snapshot = { val: () => data };
     return {
-        App: () => ({
-            app: mockGetApp
+      initializeApp: jest.fn().mockReturnValue({
+        database: jest.fn().mockReturnValue({
+          ref: jest.fn().mockReturnThis(),
+          once: jest.fn(() => Promise.resolve(snapshot))
         })
-    }
-})
-
-jest.mock('firebase/auth', () => {
-    return {
-        getAuth: () => mockGetAuth,
-        signInWithEmailAndPassword: () => mockSignIn,
-        createUserWithEmailAndPassword: () => mockSignUp
-    }
-})
-
-const mockSignUp = jest.fn(() => {
-    return Promise.resolve({
-        user: {
-            uid: "fakeuid",
-        },
-    });
-})
-const mockSignIn = jest.fn(() => Promise.resolve({
-    user: {
-        uid: "fakeUid"
-    }
-}))
-
-const mockGetAuth = jest.fn()
-
-const mockGetApp = jest.fn();
+      })
+    };
+  });
 
 beforeEach(() => {
-
-    jest.resetModules();
-
-    jest.mock('firebase', () => {
-        return jest.fn(() => {});
-    });
-
     // setup a DOM element as a render target
     container = document.createElement("div");
     document.body.appendChild(container);
@@ -63,19 +36,15 @@ afterEach(() => {
 
 const setUp = (mock, testFunc) => {
 
-    localStorage.setItem('dashboard', JSON.stringify(mock));
-
     render(<BoissonAlcool
             alcool = { mock.alcool } 
             />, container);
     
     testFunc();
-
-    localStorage.removeItem('dashboard');
 };
 
 
-it('test save item', () => {
+it('test change educ alcool setting', () => {
     const dummyAlcool = {
         alcool: 
         {
@@ -88,7 +57,7 @@ it('test save item', () => {
             },
             limitConsom: {
                 dailyTarget: 0,
-                weeklyTarget: 15
+                weeklyTarget: 0
             },
             alcools: [],
         }
@@ -97,8 +66,11 @@ it('test save item', () => {
         expect(dummyAlcool.alcool.limitConsom.dailyTarget).toBe(0);
         expect(dummyAlcool.alcool.limitConsom.weeklyTarget).toBe(0);
         const educAlcoolToggle = document.getElementById('educAlcoolToggle');
-        
-        educAlcoolToggle.dispatchEvent(new MouseEvent('change'));
+
+        educAlcoolToggle.checked = false;
+
+        educAlcoolToggle.click();
+        // educAlcoolToggle.dispatchEvent(new Event('change', { bubbles: true }));
         
         expect(dummyAlcool.alcool.limitConsom.dailyTarget).toBe(3);
         expect(dummyAlcool.alcool.limitConsom.weeklyTarget).toBe(15);

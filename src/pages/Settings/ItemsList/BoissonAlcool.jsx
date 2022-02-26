@@ -57,6 +57,7 @@ const BoissonAlcool = (props) => {
   const handleOnEducAlcool = event => {
     const userUID = localStorage.getItem('userUid');
     const updatedLimitConsom = { ...limitConsom, "educAlcool": event.detail.checked };
+    updatedLimitConsom.dailyTarget = 3;
     if(event.detail.checked){
       if(gender === "H" || gender === "")
       {
@@ -93,6 +94,7 @@ const BoissonAlcool = (props) => {
           resolve();
       } else {
           const userUID = localStorage.getItem('userUid');
+          
           firebase.database().ref('profiles/'+userUID)
           .once("value", (snapshot) => {
               const prof = snapshot.val();
@@ -103,7 +105,7 @@ const BoissonAlcool = (props) => {
               }               
           });
       }
-    });
+    }).catch(e => {});
   };
 
   return (
