@@ -1,102 +1,235 @@
 import React, {useState, useEffect} from 'react';
-import {IonItem, IonList, IonAvatar, IonLabel, IonIcon, IonInput} from '@ionic/react';
-import NourrGras from './/NourrGras'
-import NourrCereales from './NourrCereales'
-import NourriLegumes from './NourriLegumes'
-import NourriProteines from './NourriProteines'
-import { arrowDropdownCircle } from 'ionicons/icons';
+import { IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton } from '@ionic/react';
+import { arrowDropdownCircle, star, addCircle, removeCircle, trash } from 'ionicons/icons';
+import uuid from 'react-uuid';
+import firebase from 'firebase';
+import '../../../Tab1.css';
+import * as translate from '../../../../translate/Translator';
 
+const MacroNutrimentItem = (props) => {
+
+  const [item, setItem] = useState({
+    id: props.item ? props.item.id : uuid(),
+    favoris: props.item ? props.item.favoris : false, 
+    name:props.item ? props.item.name : '', 
+    qtte:props.item ? props.item.qtte : 0, 
+    proteine:props.item ? props.item.proteine : 0, 
+    glucide:props.item ? props.item.glucide : 0, 
+    fibre:props.item ? props.item.fibre : 0, 
+    gras:props.item ? props.item.gras : 0, 
+    unit: props.item ? props.item.unit : '',
+    consumption: props.item ? props.item.consumption:0
+  });
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+    setItem({ ...item, [name]: value });
+  }
+
+  const saveChanges = () => {
+    props.save(item);
+  }
+
+  const proteinPlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'proteins']);
+  const glucidePlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'glucides']);
+  const fibrePlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'fibre']);
+  const fatsPlaceholder = translate.getText('FOOD_MODULE', ['macro_nutriments', 'fats']);
+
+  return (
+    <div id="divPopUp1-1">
+        <IonCol size="1">
+          <button id='saveButton' className="buttonOK" onClick={saveChanges}>OK</button>
+        </IonCol>  
+        <IonCol size="1">
+          <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
+        </IonCol>                       
+        <IonItem  className="divAdd">
+          <IonCol size="1">
+            <IonIcon className="starFavoris" icon={star}/>
+          </IonCol>
+          <IonCol size="3">
+            <IonInput className = 'divAddText' placeholder={ translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']) } name="name" value={item.name} onIonChange={handleChange}></IonInput>  
+          </IonCol>
+          <IonCol size="2">
+            <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
+          </IonCol>
+          <select id="materialSelectAddHyd" name="unit" defaultValue={item.unit} onChange={handleChange}>
+            <option value="-1"></option>
+            <option value="gr">{ translate.getText('UNIT_GR') }</option>
+            <option value="oz">{ translate.getText('UNIT_OZ') }</option>
+            <option value="ml">{ translate.getText('UNIT_ML') }</option>
+            <option value="tasse">{ translate.getText('UNIT_CUP') }</option>
+            <option value="unite">{ translate.getText('UNIT_TEXT') }</option>
+          </select>
+          <IonCol className ="colNutProteinesHyd" size="1"><div id='protQty' className ="divMacroAdd">{ proteinPlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={ proteinPlaceholder } name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+          </IonCol>
+          <IonCol className ="colNutGlucidesHyd" size="1"><div id='glucQty' className ="divMacroAdd">{ glucidePlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={glucidePlaceholder} name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+          </IonCol>
+          <IonCol className ="colNutFibresHyd" size="1"><div id='fibQty' className ="divMacroAdd">{ fibrePlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={fibrePlaceholder} name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+          </IonCol>
+          <IonCol className ="colNutGrasHyd" size="1"><div id='fatQty' className ="divMacroAdd">{ fatsPlaceholder }</div>
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder={ fatsPlaceholder } name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+          </IonCol>
+        </IonItem>        
+      </div>
+  );
+}
 
 const Nourriture = (props) => {
-  
-  const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
-  const [nourriture, setNourriture] = useState(0);
-  //
-  const [dailyTargetGras, setDailyTargetGras] = useState(props.gras.dailyTarget);
-  const [gras, setGras] = useState(props.gras);
-  const [grass, setGrass] = useState(props.grass);
-  const [globalConsumptionGras, setGlobalConsumptionGras] = useState(props.gras.dailyTarget.globalConsumption);
-  //
-  const [dailyTargetProteines, setDailyTargetProteines] = useState(props.proteine.dailyTarget);
-  const [proteine, setProteine] = useState(props.proteine);
-  const [proteines, setProteines] = useState(props.proteines);
-  const [globalConsumptionProteines, setGlobalConsumptionProteines] = useState(props.proteine.dailyTarget.globalConsumption);
-  //
-  const [dailyTargetLegumes, setDailyTargetLegumes] = useState(props.legume.dailyTarget);
-  const [legume, setLegume] = useState(props.legume);
-  const [legumes, setLegumes] = useState(props.legumes);
-  const [globalConsumptionLegumes, setGlobalConsumptionLegumes] = useState(props.legume.dailyTarget.globalConsumption);
-  //
-  const [dailyTargetCereales, setDailyTargetCereales] = useState(props.cereale.dailyTarget);
-  const [cereale, setCereale] = useState(props.cereale);
-  const [cereales, setCereales] = useState(props.cereales);
-  const [globalConsumptionCereales, setGlobalConsumptionCereales] = useState(props.cereale.dailyTarget.globalConsumption);
-  
-  //
-  // useEffect(()=>{setNourriture()})
-  const callbackFunction = (childData) => {setNourriture({nourriture:childData})};
-  useEffect(() => { setCurrentDate(props.currentDate);}, [props.currentDate]);
-  useEffect(() => { setNourriture(nourriture);}, [nourriture]);
+  const [test] = useState(props.test);
+  const [dailyTarget, setDailyTarget] = useState(props.dailyTarget);
+  const [macroNutriment, setMacroNutriment] = useState(props.macroNutriment);
+  const [macroNutriments, setMacroNutriments] = useState(props.macroNutriments);
+  const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
+  const [currentDate, setCurrentDate] = useState({startDate: props.currentDate}); 
+  const [macroNutrimentToEdit, setMacroNutrimentToEdit] = useState(props.macroNutrimentToEdit);
+  const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(props.itemContainerDisplayStatus);
 
-  //
   useEffect(() => {
-    setDailyTargetGras(props.gras.dailyTarget);
-    setGlobalConsumptionGras(props.gras.dailyTarget.globalConsumption);
-    setGras(props.gras);
-    setGrass(props.grass)
-  }, [props.gras.dailyTarget, props.gras.dailyTarget.globalConsumption, props.gras, props.grass])
+    setCurrentDate(props.currentDate);
+  }, [props.currentDate])
 
-  //
   useEffect(() => {
-    setDailyTargetProteines(props.proteine.dailyTarget);
-    setGlobalConsumptionProteines(props.proteine.dailyTarget.globalConsumption);
-    setProteine(props.proteine);
-    setProteines(props.proteines);
-  }, [props.proteine.dailyTarget, props.proteine.dailyTarget.globalConsumption, props.proteine, props.proteines])
+    setDailyTarget(props.dailyTarget);
+  }, [props.dailyTarget])
 
-  //
   useEffect(() => {
-    setDailyTargetLegumes(props.legume.dailyTarget);
-    setGlobalConsumptionLegumes(props.legume.dailyTarget.globalConsumption);
-    setLegume(props.legume);
-    setLegumes(props.legumes)
-  }, [props.legume.dailyTarget, props.legume.dailyTarget.globalConsumption, props.legume, props.legumes])
+    setGlobalConsumption(props.globalConsumption);
+  }, [props.globalConsumption])
 
-  //
-  useEffect(() => {
-    setDailyTargetCereales(props.cereale.dailyTarget);
-    setGlobalConsumptionCereales(props.cereale.dailyTarget.globalConsumption);
-    setCereale(props.cereale);
-    setCereales(props.cereales)
-  }, [props.cereale.dailyTarget, props.cereale.dailyTarget.globalConsumption, props.cereale, props.cereales])
+  useEffect(()=>{
+    setMacroNutriment(props.macroNutriment)
+  }, [props.macroNutriment])
+
+  useEffect(()=>{
+    setMacroNutriments(props.macroNutriments)
+  }, [props.macroNutriments])
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      if (!divElt.style.display || divElt.style.display === "none") {
+        divElt.style.display = "block";
+      } else {
+        divElt.style.display = "none";
+      }
     }
-   }
+  }
 
-   
+  const DailyConsumptionIncrement = (item)=>{ 
+    // Vu que les objets et les tableaux sont passés par référence en JS, on peut faire l'incrémentation de l'objet passé en argument directement 
+    // et le résultat sera reflété dans le tableau <code> macroNutriments </code>, qui contient le <code> item </code> en question.
+    item.consumption++;
+    updateCacheAndBD((total) => { return ++total; });
+  }
 
-  return (
+  const DailyConsumptionDecrement = (item)=>{  
+    if (item.consumption >= 1) {
+      // Vu que les objets et les tableaux sont passés par référence en JS, on peut faire la décrémentation de l'objet passé en argument directement 
+      // et le résultat sera reflété dans le tableau <code> macroNutriments </code>, qui contient le <code> item </code> en question.
+      item.consumption--;
+      updateCacheAndBD((total) => { return Math.max(--total, 0); });
+    }
+  }
+
+  const deleteItem = (index) => {
+    const itemConsumption = macroNutriments[index].consumption;
+    macroNutriments.splice(index, 1);
+    updateCacheAndBD((total) => { 
+      const newTotal = total - itemConsumption; 
+      return Math.max(newTotal, 0);
+    });
+  }
+
+  const saveItem = (item) => {
+    const index = macroNutriments.findIndex((e) => e.id === item.id);
+    if (index === -1) {
+      macroNutriments.unshift(item);
+      // Dans le cas d'une sauvegarde, le total ne change pas dans l'implémentation courante, alors on ne fait que le retourner tel quel par le foncteur de mise à jour (pour le moment).
+      updateCacheAndBD((total) => { return total; } );
+    }
+    closeItemContainer();
+  }
+
+  const updateCacheAndBD = (updateTotalFunc) => {
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+    dashboard[props.dashboardKey][props.dashboardSubKey] = macroNutriments;
+    setMacroNutriments(macroNutriments);
+    const totalConsumption = updateTotalFunc(dashboard[props.dashboardKey].dailyTarget.globalConsumption);
+    dashboard[props.dashboardKey].dailyTarget.globalConsumption = totalConsumption;
+    setGlobalConsumption(totalConsumption);
+    props.parentCallback(totalConsumption);
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    // Le flag <code> test </code> sert à assurer qu'on ne fait pas appel à la BD dans les tests unitaires, pour lesquels l'utilisation de la cache suffit pour tester la logique du module.
+    // Ce flag-ci est donc mis à vrai uniquement lors du rendu du composant Nourriture simulé dans les tests, mais demeure 'undefined' en production.
+    if (test) {
+      return;
+    }
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  const closeItemContainer = () => {
+    setMacroNutrimentToEdit(undefined);
+    setItemContainerDisplayStatus(false);
+  }
+
+  const openAddItemContainer = () => {
+    setMacroNutrimentToEdit(undefined);
+    setItemContainerDisplayStatus(true);
+  }
+
+   return (
     <div>
-      <IonItem className="divTitre2">
-        <IonAvatar slot="start"><img src="/assets/nutrition.jpg" alt=""/></IonAvatar>
-        <IonLabel><h2><b>Nourriture</b></h2></IonLabel>
-        <IonInput className='inputTextGly' readonly value={nourriture}></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV22")} />
-      </IonItem>
-      <div id="myDIV22">
-      <IonList>
-        <NourrGras parentCallback = {callbackFunction.bind(this)} gras = {gras} grass={grass} currentDate ={currentDate} globalConsumption = {globalConsumptionGras} />
-        <NourriProteines proteine = {proteine} proteines={proteines} currentDate ={currentDate} globalConsumption = {globalConsumptionProteines} />
-        <NourriLegumes legume={legumes} legumes={legumes} globalConsumption = {globalConsumptionLegumes} currentDate ={currentDate} />
-        <NourrCereales cereale = {cereale} cereales={cereales} currentDate ={currentDate} globalConsumption = {globalConsumptionCereales} />
-      </IonList>
-      </div>
-    </div>
-          
+      <IonItem className="divTitre22">
+        <IonAvatar slot="start">
+        <img id='moduleImg' src= { `/assets/${ props.translationKey }.jpg` } alt="" />
+        </IonAvatar>
+        <IonLabel>
+          <h2>
+            <b id='moduleName'>
+              { translate.getText('FOOD_MODULE', ['sub_titles', `${ props.translationKey }`]) } 
+            </b>
+          </h2>
+        </IonLabel>
+        <IonInput id='globalConsumption' className='inputTextNourDasboard' value = {globalConsumption} readonly></IonInput> 
+        <IonIcon id='proteinArrow' className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor(props.cssId)}/>
+      </IonItem> 
+      <div id={ props.cssId }>
+      <div className="divHyd">
+            <div className="sett">
+              { macroNutriments.map((macroNutr, index) => (      
+                <IonItem id={macroNutr.id} className="divTitre11" key={macroNutr.id}>
+                  <IonCol size="1">
+                  </IonCol>
+                  <IonLabel className="nameDscripDashboard"><h2><b>{macroNutr.name}</b></h2></IonLabel>      
+                  <IonButton id='decrementButton' className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrement(macroNutr)}>
+                    <IonIcon  icon={removeCircle} />
+                  </IonButton>
+                  <IonCol size="2" >
+                    <IonInput id='unitConsumption' className='inputTextDashboard' value = {macroNutr.consumption} readonly></IonInput>  
+                  </IonCol>
+                  <IonButton id='incrementButton' className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(macroNutr)}>
+                    <IonIcon  icon={addCircle} />
+                  </IonButton>
+                  <IonButton id='deleteButton' className="trashButton" color="danger" size="small" onClick={() => deleteItem(index)}>
+                    <IonIcon  icon={trash} />
+                  </IonButton>
+                </IonItem>
+                ))
+              } 
+            </div>
+          </div>
+        <div className="ajoutBotton">    
+          <IonButton id='addButton' className="ajoutbreuvage1" color="danger" size="medium" onClick={() => openAddItemContainer()}>
+          <IonIcon icon={addCircle}/><label id='addMacroNutriment' className="labelAddItem">{ translate.getText('FOOD_MODULE', ['functions', 'add_macro_nutriment']) }</label></IonButton>
+        </div>
+        {itemContainerDisplayStatus && <MacroNutrimentItem id='saveItem' close={closeItemContainer} item={macroNutrimentToEdit} save={(item) => saveItem(item)}/>}       
+      </div> 
+    </div>    
   );
 }
 export default Nourriture;
