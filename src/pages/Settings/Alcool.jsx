@@ -78,7 +78,7 @@ const Alcool = (props) => {
   const [alcools, setAlcools] = useState(props.alcools);
   const [alcoolsToEdit, setAlcoolsToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
-  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
+  const [currentDate] = useState({startDate: new Date()});
 
   // update state on prop change
   useEffect(() => {
@@ -109,7 +109,10 @@ const Alcool = (props) => {
   const deleteItem = (item) => {
     var array = [...alcools];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[index] = item;
+
+    if(index === -1)array.splice(item, 1)
+    else array[index] = item;
+
     setAlcools (array);
     closeItemContainer();
 
@@ -139,7 +142,10 @@ const Alcool = (props) => {
   const saveItem = (item) => {
     var array = [...alcools];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.unshift(item): array[index] = item;
+
+    if( index === -1) array.unshift(item)
+    else array[index] = item;
+
     setAlcools (array);
     closeItemContainer();
 
@@ -151,9 +157,9 @@ const Alcool = (props) => {
     firebase.database().ref('settings/'+userUID).update(settings);
   }
 
-  const updateCacheAndBD = (alcools) => {
+  const updateCacheAndBD = (alcoolList) => {
     const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= alcools;
+    settings.alcool.alcools= alcoolList;
     localStorage.setItem('settings', JSON.stringify(settings));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('settings/'+userUID).update(settings);
