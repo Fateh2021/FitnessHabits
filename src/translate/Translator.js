@@ -35,9 +35,24 @@ export function getLang() {
     return localStorage.getItem("userLanguage");
 }
 
-export function getText(key) {
-    if (dict === undefined || dict[key] === undefined || dict[key][getLang()] === undefined) {
+export function getText(key, subKeys = undefined) {
+    if (dict === undefined || dict[key] === undefined) {
         return "";
     }
-    return dict[key][getLang()];
+    return searchKeyAtVariableDepth(dict[key], getLang(), subKeys ? subKeys : []);
 }
+
+const searchKeyAtVariableDepth = (obj, lang, subkeys) => {
+    if (subkeys.length === 0)
+    {
+        return obj[lang] ? obj[lang] : `Translation into ${ lang } for node ${JSON.stringify(obj)} is currently not supported`;
+    }
+    const currentKey = subkeys[0];
+
+    subkeys.splice(0, 1);
+
+    if (obj[currentKey]) {
+        return searchKeyAtVariableDepth(obj[currentKey], lang, subkeys);
+    }
+    return `Node with key ${currentKey} is undefined`;
+  };
