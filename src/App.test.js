@@ -5,9 +5,11 @@ import '@testing-library/jest-dom/extend-expect';
 import {compilerBilan} from './pages/Settings/Export';
 import {ExportToCsv} from "export-to-csv";
 import {jsPDF} from "jspdf";
+/* -- À la demande de équipe qui gère Export & cie
 import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-//configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
+*/
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import {act} from "react-dom/test-utils";
@@ -17,11 +19,11 @@ import Poids from './pages/Dashboard/ItemsList/Poids';
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, {route = '/'} = {}) => {
-  window.history.pushState({}, 'Test page', route)
-  return render(ui, {wrapper: BrowserRouter})
+  window.history.pushState({}, 'Test page', route);
+  return render(ui, {wrapper: BrowserRouter});
 }
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
 	const { baseElement } = render(<App />);
 	expect(baseElement).toBeDefined();
 });
@@ -34,32 +36,32 @@ test('Verifier si le mot LBS existe', async() => {
 
 test('Traduction du mot Poids en anglais', async()=>{
 	localStorage.setItem('userLanguage', 'en');
-	render(<Poids poids="dailyPoids: 50"/>);
+	render(<Poids poids/>);
 	const mot = screen.getByText(/Weight/i);
 	expect(mot).toBeDefined();
 });
 
 test('Traduction du mot Poids en espagnol', async()=>{
 	localStorage.setItem('userLanguage', 'es');
-	render(<Poids poids="dailyPoids: 50"/>);
+	render(<Poids poids/>);
 	const mot = screen.getByText(/Peso/i);
 	expect(mot).toBeDefined();
 });
 
 test('Traduction du mot IMC en anglais', async()=>{
 	localStorage.setItem('userLanguage', 'en');
-	render(<Poids poids="dailyPoids: 50"/>);
+	render(<Poids poids/>);
 	const mot = screen.getByText(/BMI/i);
 	expect(mot).toBeDefined();
 });
 
-test('Check hydratation value', () => {
+test('Check hydratation value', async() => {
 var attendu = 5;
  var something =  {"hydratation":{"dailyTarget":{"value":5,"unit":"","globalConsumption":0},"hydrates":["0"]},"alcool":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"alcools":[]},"nourriture":{"globalConsumption":0},"gras":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"grass":[]},"proteines":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"proteines":[]},"legumes":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"legumes":[]},"cereales":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"cereales":[]},"glycemie":{"dailyGlycemie":0},"poids":{"dailyPoids":0},"toilettes":{"feces":0,"urine":0},"sommeil":{"heure":0,"minute":0},"activities":{"heure":0,"minute":0}};
   expect(something.hydratation.dailyTarget.value).toEqual(attendu);
 });
 
-test('Check alcool value', () => {
+test('Check alcool value', async() => {
   var attendu = 10;
  var something =  {"hydratation":{"dailyTarget":{"value":5,"unit":"","globalConsumption":0},"hydrates":[]},"alcool":{"dailyTarget":{"value":10,"unit":"","globalConsumption":0},"alcools":[]},"nourriture":{"globalConsumption":0},"gras":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"grass":[]},"proteines":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"proteines":[]},"legumes":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"legumes":[]},"cereales":{"dailyTarget":{"value":0,"unit":"","globalConsumption":0},"cereales":[]},"glycemie":{"dailyGlycemie":0},"poids":{"dailyPoids":0},"toilettes":{"feces":0,"urine":0},"sommeil":{"heure":0,"minute":0},"activities":{"heure":0,"minute":0}};
   expect(something.alcool.dailyTarget.value).toEqual(attendu);
@@ -110,7 +112,7 @@ test('ExportModule - TestElementsPresence_1', async () => {
   renderWithRouter(<App />, {route: '/Export'});
   const actPhys = screen.getByTestId(/checkbox-activities/i);
   expect(actPhys).toBeInTheDocument();
-  
+
   const nourriture = screen.getByTestId(/checkbox-food/i);
   expect(nourriture).toBeInTheDocument();
 

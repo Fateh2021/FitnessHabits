@@ -83,8 +83,6 @@
   "devDependencies": {
     "@capacitor/cli": "^2.4.5",
     "@types/firebase": "^3.2.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
     "jest-canvas-mock": "^2.3.1",
     "jest-sonar-reporter": "^2.0.0"
   }
