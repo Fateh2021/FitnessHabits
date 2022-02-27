@@ -87,7 +87,11 @@ const Hydratation = (props) => {
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      if ((!divElt.style.display || divElt.style.display === "none")) {
+        divElt.style.display = "block";
+      } else {
+        divElt.style.display = "none";
+      }
     }
   }
 
@@ -113,8 +117,13 @@ const Hydratation = (props) => {
 
   const DailyConsumptionIncrement = (item)=>{  
     var array = [...hydrates];
-    const index = array.findIndex((event) => event.id === item.id);  
-    index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
+    const index = array.findIndex((event) => event.id === item.id);
+    if (index === 0) {
+      array.find (item === array[item])
+    } else {
+      array[index] = item;
+    }
+
     array[item].consumption += 1;
     updateCacheAndBD(array);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
@@ -126,8 +135,13 @@ const Hydratation = (props) => {
 
   const DailyConsumptionDecrementHydrate = (item)=>{  
     var array = [...hydrates];
-    const index = array.findIndex((event) => event.id === item.id);  
-    index === 0 ? array.find (({ item }) => item === array[item]): array[index] = item;
+    const index = array.findIndex((event) => event.id === item.id); 
+    if (index === 0) {
+      array.find(item === array[item]);
+    } else {
+      array[index] = item
+    }
+
     if (array[item].consumption >=1){
       array[item].consumption -= 1;
     }
@@ -143,9 +157,9 @@ const Hydratation = (props) => {
     var array = [...hydrates];
     var sum = 0;
     var consumption = 0;
-    for (var i = 0; i < array.length; i++ ){
-      consumption = array[i].consumption;
-      sum += consumption; 
+    for (let value of array) {
+      consumption = value.consumption;
+      sum += consumption;
     }
     setGlobalConsumption(sum);
     return sum
@@ -156,11 +170,15 @@ const Hydratation = (props) => {
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[item] = item;
+    if (index === -1) {
+      array.splice(item, 1);
+    } else {
+      array[item] = item;
+    }
     setHydrates(array)
-    for (var i = 0; i < array.length; i++ ){
-      consumption = array[i].consumption;
-      sum += consumption; 
+    for (let value in array) {
+      consumption = array[value].consumption;
+      sum += consumption;
     }
     setGlobalConsumption(sum);
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
@@ -174,7 +192,11 @@ const Hydratation = (props) => {
   const saveItem = (item) => {
     var array = [...hydrates];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.unshift(item): array[index] = item;
+    if (index === -1) {
+      array.unshift(item);
+    } else {
+      array[index] = item;
+    }
     setHydrates (array);
     closeItemContainer();
     updateCacheAndBD(array);
