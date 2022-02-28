@@ -3,7 +3,7 @@ import "firebase/auth";
 import 'firebase/storage';
 
 const config={
-    apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
+   apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
     authDomain: "fitnesshabits-be415.firebaseapp.com",
     projectId: "fitnesshabits-be415",
     storageBucket: "fitnesshabits-be415.appspot.com",
