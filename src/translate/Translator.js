@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import { useEffect } from 'react';
 const dict = require('./Translation.json');
 const supportedLanguages = ["en", "es", "fr"];
 const userUID = localStorage.getItem('userUid');

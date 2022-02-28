@@ -10,7 +10,7 @@ export function initPrefPoids() {
     prefPoidsRef.once("value").then(function(snapshot) {
         if (localStorage["prefUnitePoids"] === "LBS" || localStorage["prefUnitePoids"] === "KG") {
             prefUnitePoids = localStorage.getItem("prefUnitePoids");
-        } else if (snapshot.val() != null && snapshot.val().unitePoids != null) {
+        } else if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
             localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
         } else {
             localStorage.setItem("prefUnitePoids", "KG");
@@ -21,7 +21,7 @@ export function initPrefPoids() {
 
 export function formatPoids(poids) {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
-    if (prefUnitePoids == "LBS") {
+    if (prefUnitePoids === "LBS") {
         return (poids * DIFF_UNITE_POIDS).toFixed(2)
     }
     return poids
@@ -29,7 +29,7 @@ export function formatPoids(poids) {
 
 export function formatToKG(poids) {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
-    if (prefUnitePoids == "LBS") {
+    if (prefUnitePoids === "LBS") {
         return (poids / DIFF_UNITE_POIDS).toFixed(2)
     }
     return poids
@@ -39,15 +39,14 @@ export function getDailyPoids() {
     const userUID = localStorage.getItem('userUid');
     let preferencesPoidsRef = firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear())
     preferencesPoidsRef.once("value").then(function(snapshot) {
-        if (snapshot.val() != null && snapshot.val().dailyPoids != null ) {
+        if (snapshot.val() !== null && snapshot.val().dailyPoids !== null ) {
           return formatPoids(snapshot.val().dailyPoids)
         }
     })
 }
 
 export function getPrefUnitePoids() {
-    let prefUnitePoids = localStorage.getItem('prefUnitePoids');
-    return prefUnitePoids
+    return localStorage.getItem('prefUnitePoids');
 }
 
 export function setPrefUnitePoids(val) {
@@ -58,7 +57,7 @@ export function setPrefUnitePoids(val) {
 
 export function saveEntreeDePoids(dailyPoids) {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
-    if (prefUnitePoids == "LBS") {
+    if (prefUnitePoids === "LBS") {
         dailyPoids = ((dailyPoids / 2.2).toFixed(2))
     }
     const userUID = localStorage.getItem('userUid');
