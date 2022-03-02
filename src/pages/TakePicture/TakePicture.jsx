@@ -87,21 +87,21 @@ export class TakePicture extends Component {
     this.setState({ photo: photoUrl, needsLoading: false });
   }
 
-
-
-  render() {
+  componentDidMount() {
     let { photo, needsLoading } = this.state;
     if (!photo && needsLoading) {
       this.downloadImage();
     }
+  }
 
+  render() {
     return (
       <div>
         <button className="sideBarButtonCamera" onClick={this.takePicture} color="danger">
           <IonIcon icon={aperture} />
         </button>
         <IonAvatar className='avatarProfil'>
-          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={photo} data-testid="profile-picture" ></IonImg>
+          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={this.state.photo} data-testid="profile-picture" ></IonImg>
         </IonAvatar>
       </div>
     );
