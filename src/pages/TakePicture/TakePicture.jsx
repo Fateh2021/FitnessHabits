@@ -90,7 +90,6 @@ export class TakePicture extends Component {
 
 
   render() {
-    // TODO: add a test for method calls (upload/download)
     let { photo, needsLoading } = this.state;
     if (!photo && needsLoading) {
       this.downloadImage();
@@ -102,7 +101,7 @@ export class TakePicture extends Component {
           <IonIcon icon={aperture} />
         </button>
         <IonAvatar className='avatarProfil'>
-          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={photo} ></IonImg>
+          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={photo} data-testid="profile-picture" ></IonImg>
         </IonAvatar>
       </div>
     );
