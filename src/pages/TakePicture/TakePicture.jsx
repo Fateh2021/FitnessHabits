@@ -21,7 +21,7 @@ export class TakePicture extends Component {
     defineCustomElements(window);
   }
 
-  async takePicture() {
+  takePicture = async () => {
     const image = await Camera.getPhoto({
       quality: 70,
       allowEditing: false,
@@ -52,7 +52,6 @@ export class TakePicture extends Component {
     };
     getFileBlob(this.state.photo, blob => {
       firebase.storage().ref(fileName).put(blob).then(function (snapshot) {
-        console.log('Upload réussi !');
         firebase.database().ref("profiles/" + firebase.auth().currentUser.uid).update({
           "profilPicture": fileName
         });
