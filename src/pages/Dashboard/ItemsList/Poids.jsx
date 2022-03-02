@@ -163,9 +163,8 @@ const Poids = (props) => {
         </div>
         <IonInput
           className="poidsActuelReadOnly"
-          type="number"
-          value={dailyPoids}
-          onIonChange={handleChange}
+          value={dailyPoids}              
+          onIonChange={handleChange}          
         ></IonInput>
         <IonSelect
           className="unitePoids"
