@@ -75,7 +75,7 @@ export   function verifier_changement_IMC(v){
     const userUID = localStorage.getItem('userUid');
     let imc_c = localStorage.getItem('IMC_c');
 
-    if (imc_c !== null || imc_category !== imc_c ) {
+    if (imc_c == null || imc_category.localeCompare(imc_c) ) {
         alert(translate.getText(imc_category));
     }
     localStorage.setItem('IMC_c', imc_category);
