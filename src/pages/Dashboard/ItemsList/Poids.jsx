@@ -72,6 +72,8 @@ const Poids = (props) => {
 
   const handleUnitePoidsChange = (e) => {
     let value = e.detail.value;
+    console.log(e)
+    //var value = e.value;
     poidsService.setPrefUnitePoids(value)
     let OldUnitePoids = unitePoids;
     setUnitePoids(value);
@@ -87,6 +89,13 @@ const Poids = (props) => {
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
     CalculImc();
   };
+
+  const handleIMCChange = (event) =>  {
+
+    let change_IMC = event.target.value;
+    if(change_IMC > 10)
+      poidsService.verifier_changement_IMC(change_IMC);
+  }
 
   const handleChange = (event) => {
     let poidsDaily = event.target.value;
@@ -129,9 +138,13 @@ const Poids = (props) => {
     } else {
       indicateur_IMC = dailyPoids / (taille * taille);
     }
-    return indicateur_IMC.toFixed(2);
+    var r_val = indicateur_IMC.toFixed(2);
+    
+    return r_val;
   };
   const IMC = CalculImc();
+
+
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";
@@ -159,6 +172,8 @@ const Poids = (props) => {
             type="number"
             className="IMC"
             readonly
+            onIonChange={handleIMCChange}  
+            
           ></IonInput>
         </div>
         <IonInput
@@ -166,6 +181,7 @@ const Poids = (props) => {
           value={dailyPoids}              
           onIonChange={handleChange}          
         ></IonInput>
+
         <IonSelect
           className="unitePoids"
           value={unitePoids}
@@ -176,6 +192,7 @@ const Poids = (props) => {
           <IonSelectOption value="LBS">LBS</IonSelectOption>
           <IonSelectOption value="KG">KG</IonSelectOption>
         </IonSelect>
+     
         <IonIcon
           className="arrowDashItem"
           icon={arrowDropdownCircle}

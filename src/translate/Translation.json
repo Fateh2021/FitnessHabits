@@ -768,6 +768,37 @@
       "en": "Date",
       "es": "Fecha",
       "fr": "Date"
+   },
+
+   "AA":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Trop maigre"
+   },
+   "BB":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Poids idéal ou optimal"
+   },
+   "CC":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Surpoids"
+   },
+   "DD":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Obésité classe 1"
+   },
+   "EE":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Obésité sévère"
+   },
+   "FF":{
+      "en": "Date",
+      "es": "Fecha",
+      "fr": "Obésité morbide "
    }
 
 }

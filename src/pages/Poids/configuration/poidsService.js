@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
 
@@ -67,3 +68,40 @@ export function saveEntreeDePoids(dailyPoids) {
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
 }
+
+export   function verifier_changement_IMC(v){
+    
+    var imc_category = trouver_category(v);
+    const userUID = localStorage.getItem('userUid');
+    let imc_c = localStorage.getItem('IMC_c');
+
+    if (imc_c !== null || imc_category !== imc_c ) {
+        alert(translate.getText(imc_category));
+    }
+    localStorage.setItem('IMC_c', imc_category);
+
+
+  }
+  /**
+   * Moins de 18,49: Trop maigre
+18,5 à 25: Poids idéal ou optimal A
+25,01 à 30: Surpoids B
+30,01 à 35: Obésité classe 1 C
+35,01 à 40: Obésité sévère (classe 2) D 
+Plus de 40: Obésité morbide E
+   */
+  function trouver_category(i){
+      var val = 'F';
+      if (i < 18.50) {
+        val = 'A';
+      }else if(i < 30.01){
+        val = 'B';       
+      }else if(i < 34.01){
+        val = 'C';       
+      }else if(i < 40.01){
+        val = 'D';  
+      }else{
+        val = 'E';  
+      }
+      return val+val+"";
+  }
