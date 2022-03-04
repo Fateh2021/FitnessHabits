@@ -69,7 +69,7 @@ export function saveEntreeDePoids(dailyPoids) {
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
 }
 
-export   function verifier_changement_IMC(v){
+export function verifier_changement_IMC(v){
     
     var imc_category = trouver_category(v);
     const userUID = localStorage.getItem('userUid');
@@ -94,13 +94,13 @@ Plus de 40: Obésité morbide E
       var val = 'F';
       if (i < 18.50) {
         val = 'A';
-      }else if(i < 30.01){
+      }else if(i < 25.01){
         val = 'B';       
-      }else if(i < 34.01){
+      }else if(i < 30.01){
         val = 'C';       
-      }else if(i < 40.01){
+      }else if(i < 35.01){
         val = 'D';  
-      }else{
+      }else if(i < 40.01){
         val = 'E';  
       }
       return val+val+"";
