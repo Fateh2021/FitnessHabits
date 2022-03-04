@@ -12,6 +12,7 @@ import { pause } from 'ionicons/icons';
 const DIFF_UNITE_POIDS = 2.2;
 //obtenir initialisation
 var arrPoidFirst = 0.0;
+var dateCibleSuppose = null;
 var preferencesPoidUnite = localStorage.getItem('prefUnitePoids');
          
 const Initialisation = () => {
@@ -45,30 +46,35 @@ let poidsRef = firebase.database().ref('dashboard/' + userUID)
     }
     graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
   }
-  if(graphData.length > 0)
-    arrPoidFirst = ((graphData[0].y));
-  //const [e,v] =  Object.entries(arrPoidFirst)
-  //console.log(`initialisation :  ${arrPoidFirst}`);
-  console.log(`initialisation :  ${ arrPoidFirst }`);
-  localStorage.setItem('dataPoids',arrPoidFirst);
-  
+  //trouver 1e jouree
+  if(graphData.length > 0){
+    arrPoidFirst = graphData[0].y;
+    dateCibleSuppose = new Date(graphData[0].x);
+    //calculer date cible supposee, +1 mois;
+    dateCibleSuppose.setMonth(dateCibleSuppose.getMonth()+1);
+  }  
 });
 
 useEffect(() => {
   preferencesPoidsRef.once("value").then(function(snapshot) {
     if (snapshot.val() !== null) {
       var ini = snapshot.val().poidsInitial;
-      let ci = snapshot.val().poidsCible;
-      console.log(`initial dans BD ${ini}`)
-      if(ini == null || ini == 0.00) ini = arrPoidFirst;
-      console.log(`initial dans re-inii ${ini}`)
+      var ci = snapshot.val().poidsCible;
+      
+      if(ini == null || ini == 0.00) 
+        ini = arrPoidFirst;
+
+      if(ci == null || ci == 0.0 )
+        ci = ini*0.9;
+      
       setUnitePoids(snapshot.val().unitePoids);
+      //changement de Unite;
       if (snapshot.val().unitePoids === "LBS") {
         preferencesPoidUnite = "LBS";
         ini *= DIFF_UNITE_POIDS;
         ci *= DIFF_UNITE_POIDS;
+      }
 
-      } 
       setPoidsInitial(parseFloat(ini).toFixed(2));
       setPoidsCible(parseFloat(ci).toFixed(2));
       setDateCible(snapshot.val().dateCible)
@@ -134,8 +140,10 @@ const handleReinitialisation = () => {
 
 const handlerConfirmation = () => {
   let pi = 0.0, pc = 0.0;
+  localStorage.setItem('dateC', dateCible)
 // Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
   if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
+    
     pi = poidsInitial;
     pc = poidsCible;
     if (unitePoids === "LBS") {
@@ -149,9 +157,12 @@ const handlerConfirmation = () => {
   } else {
       alert("Attention, veuiller saisir les informations manquantes !")
   }
-  let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
-  poidsService.setPrefUnitePoids(unitePoids)
-  console.log(`to BD: ${preferencesPoids}`)
+  var dt = dateCible;
+  if(dt == "") dt = dateCibleSuppose;
+  if(pc == "") pc = pi*0.9;
+  let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dt};
+  poidsService.setPrefUnitePoids(unitePoids);
+  
   firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
   localStorage.setItem('preferencesPoidsVaules', preferencesPoids);
   redirectDashboard();
