@@ -32,22 +32,41 @@ const accor = (divId) => {
 };
 
 const Poids = (props) => {
-  const [unitePoids, setUnitePoids] = useState("KG");
+  var u = localStorage.getItem("prefUnitePoids");
+  const [unitePoids, setUnitePoids] = useState(u);
   const [currentDate, ] = useState({ startDate: new Date() });
   //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
-  const [poids, setPoids] = useState(props.poids);
+  var p = props.poids;
+  var pd = props.poids.dailyPoids;
+  if(u == 'LBS') pd = (pd*2.2).toFixed(2);
+  const [poids, setPoids] = useState(p);
+
+  //const [poids, setPoids] = useState(props.poids);
   //const [, setPoids] = useState(props.poids); -- Cette ligne je ne l'a comprends pas, veuiller me l'expliquer
   var [taille, setTaille] = useState("");
 
+  /*
   useEffect(() => {
     setDailyPoids(props.poids.dailyPoids);
   }, [props.poids.dailyPoids]);
+  */
+  useEffect(() => {
+    setDailyPoids(pd)
+   
+  }, [pd]);
 
+
+
+  useEffect(() => {
+    setPoids(p);
+  }, [p]);
+
+  /*
   useEffect(() => {
     setPoids(props.poids);
   }, [props.poids]);
-
+  */
   useEffect(() => {
     poidsService.initPrefPoids()
     const userUID = localStorage.getItem("userUid");
@@ -87,7 +106,7 @@ const Poids = (props) => {
       setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    CalculImc();
+    IMC =CalculImc();
   };
 
   const handleIMCChange = (event) =>  {
@@ -142,9 +161,7 @@ const Poids = (props) => {
     
     return r_val;
   };
-  const IMC = CalculImc();
-
-
+  var IMC = CalculImc();
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";
