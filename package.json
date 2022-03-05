@@ -23,6 +23,8 @@
     "@types/react-router-dom": "^5.1.5",
     "browser-history": "^1.0.1",
     "chart.js": "^2.9.3",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "export-to-csv": "^0.2.1",
     "firebase": "^7.17.1",
     "ionicons": "^4.6.3",
@@ -82,6 +84,7 @@
   "description": "An Ionic project",
   "devDependencies": {
     "@capacitor/cli": "^2.4.5",
+    "@ionic/react-test-utils": "^0.2.1",
     "@types/firebase": "^3.2.1",
     "jest-canvas-mock": "^2.3.1",
     "jest-sonar-reporter": "^2.0.0"
