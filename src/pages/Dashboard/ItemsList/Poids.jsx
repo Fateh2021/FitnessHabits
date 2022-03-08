@@ -5,17 +5,10 @@ import * as translate from "../../../translate/Translator";
 
 import {
   IonInput,
-  //IonText,
-  //IonButton,
-  //IonGrid,
-  //IonContent,
   IonIcon,
   IonLabel,
   IonItem,
   IonAvatar,
-  //IonCol,
-  //IonRow,
-  //IonItemDivider,
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
@@ -109,13 +102,20 @@ const Poids = (props) => {
     IMC =CalculImc();
   };
 
-  const handleIMCChange = (event) =>  {
-
+	// Capture de l'éventement si IMC change
+  const handleIMCChange = (event) => {
     let change_IMC = event.target.value;
-    if(change_IMC > 10)
+    /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
+       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
+       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
+    */
+    if (change_IMC > 10) {
       poidsService.verifier_changement_IMC(change_IMC);
+    }
+
   }
 
+	// Capture de l'éventement si le dailyPoids change
   const handleChange = (event) => {
     let poidsDaily = event.target.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));

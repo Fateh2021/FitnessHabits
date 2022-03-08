@@ -69,39 +69,39 @@ export function saveEntreeDePoids(dailyPoids) {
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
 }
 
-export function verifier_changement_IMC(v){
-    
-    var imc_category = trouver_category(v);
+// Vérification du changement possible de catégorie IMC
+export function verifier_changement_IMC(value) {
+    var new_imc_categorie = trouver_nouvelle_categorie(value);
     const userUID = localStorage.getItem('userUid');
-    let imc_c = localStorage.getItem('IMC_c');
+    let old_imc_categorie = localStorage.getItem('groupe_IMC');
 
-    if (imc_c == null || imc_category.localeCompare(imc_c) ) {
-        alert(translate.getText(imc_category));
+    if (old_imc_categorie == null || new_imc_categorie.localeCompare(old_imc_categorie) ) {
+        alert(translate.getText(new_imc_categorie));
+        localStorage.setItem('groupe_IMC', new_imc_categorie);
     }
-    localStorage.setItem('IMC_c', imc_category);
+}
 
+// Pour trouver la nouvelle catégorie pour IMC
+function trouver_nouvelle_categorie(value){
+    var groupe_IMC = '';
+    if (value <= 18.49) {
+      groupe_IMC = 'CATEGORIE_MAIGRE';
 
-  }
-  /**
-   * Moins de 18,49: Trop maigre
-18,5 à 25: Poids idéal ou optimal A
-25,01 à 30: Surpoids B
-30,01 à 35: Obésité classe 1 C
-35,01 à 40: Obésité sévère (classe 2) D 
-Plus de 40: Obésité morbide E
-   */
-  function trouver_category(i){
-      var val = 'F';
-      if (i < 18.50) {
-        val = 'A';
-      }else if(i < 25.01){
-        val = 'B';       
-      }else if(i < 30.01){
-        val = 'C';       
-      }else if(i < 35.01){
-        val = 'D';  
-      }else if(i < 40.01){
-        val = 'E';  
-      }
-      return val+val+"";
-  }
+    } else if (value >= 18.5 && value <= 25) {
+      groupe_IMC = 'CATEGORIE_IDEAL';
+
+    } else if (value >= 25.01 && value <= 30) {
+      groupe_IMC = 'CATEGORIE_SURPOIDS';
+
+    } else if (value >= 30.01 && value <= 35) {
+      groupe_IMC = 'CATEGORIE_OB_CLASSE_1';
+
+    } else if (value >= 35.01 && value <= 40) {
+      groupe_IMC = 'CATEGORIE_OB_CLASSE_2';
+
+    } else if (value > 40) {
+      groupe_IMC = 'CATEGORIE_OB_CLASSE_3';
+    }
+
+    return groupe_IMC+"";
+}
