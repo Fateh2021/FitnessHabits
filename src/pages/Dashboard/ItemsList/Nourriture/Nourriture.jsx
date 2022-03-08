@@ -23,7 +23,7 @@ const MacroNutrimentItem = (props) => {
 
   const handleChange = event => {
     const { name, value } = event.target;
-      setItem({ ...item, [name]: value });
+    setItem({ ...item, [name]: value });
   }
 
   const handleChangeQtyMacro = event => {
