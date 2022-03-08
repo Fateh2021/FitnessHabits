@@ -15,6 +15,9 @@ const renderWithRouter = (ui, { route = '/' } = {}) => {
     return render(ui, { wrapper: BrowserRouter });
 }
 
+/*
+
+
 test('renders without crashing', async() => {
     const { baseElement } = render(<App />);
     expect(baseElement).toBeDefined();
@@ -70,6 +73,7 @@ test('Traduction du mot Poids en francais page dashboard', async() => {
     const mot = screen.getByText(/Poids/i);
     expect(mot).toBeDefined();
 });
+*/
 
 test('Check hydratation value', async() => {
     var attendu = 5;
