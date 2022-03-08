@@ -28,15 +28,17 @@ import {
   mail,
   download,
 } from "ionicons/icons";
-import DefaultSettings from "./DefaultSettings";
+
+import DefaultSettings from "../Settings/DefaultSettings";
 import DatePicker from "react-date-picker";
-import * as translate from '../../translate/Translator'
+
 import { jsPDF } from "jspdf";
-
-
 import "../Tab1.css";
 import { render } from "@testing-library/react";
+
+import * as translate from '../../translate/Translator'
 import {getLang} from "../../translate/Translator";
+
 
 const Settings = (props) => {
 
