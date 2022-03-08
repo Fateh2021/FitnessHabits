@@ -23,7 +23,16 @@ const MacroNutrimentItem = (props) => {
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setItem({ ...item, [name]: value });
+      setItem({ ...item, [name]: value });
+  }
+
+  const handleChangeQtyMacro = event => {
+    const { name, value } = event.target;
+    if (value >= 0) {
+      setItem({ ...item, [name]: value });
+    } else {
+      setItem({ ...item, [name]: 0});
+    }
   }
 
   const saveChanges = () => {
@@ -62,16 +71,16 @@ const MacroNutrimentItem = (props) => {
             <option value="unite">{ translate.getText('UNIT_TEXT') }</option>
           </select>
           <IonCol className ="colNutProteinesHyd" size="1"><div id='protQty' className ="divMacroAdd">{ proteinPlaceholder }</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder={ proteinPlaceholder } name="proteine" value={item.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' min="0" type= 'number' placeholder={ proteinPlaceholder } name="proteine" value={item.proteine} onIonChange={handleChangeQtyMacro}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGlucidesHyd" size="1"><div id='glucQty' className ="divMacroAdd">{ glucidePlaceholder }</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder={glucidePlaceholder} name="glucide" value={item.glucide} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' min="0" type= 'number' placeholder={glucidePlaceholder} name="glucide" value={item.glucide} onIonChange={handleChangeQtyMacro}></IonInput>  
           </IonCol>
           <IonCol className ="colNutFibresHyd" size="1"><div id='fibQty' className ="divMacroAdd">{ fibrePlaceholder }</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder={fibrePlaceholder} name="fibre" value={item.fibre} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' min="0" type= 'number' placeholder={fibrePlaceholder} name="fibre" value={item.fibre} onIonChange={handleChangeQtyMacro}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGrasHyd" size="1"><div id='fatQty' className ="divMacroAdd">{ fatsPlaceholder }</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder={ fatsPlaceholder } name="gras" value={item.gras} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' min="0" type= 'number' placeholder={ fatsPlaceholder } name="gras" value={item.gras} onIonChange={handleChangeQtyMacro}></IonInput>  
           </IonCol>
         </IonItem>        
       </div>
