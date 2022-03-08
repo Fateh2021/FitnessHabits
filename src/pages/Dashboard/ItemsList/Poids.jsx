@@ -25,14 +25,15 @@ const accor = (divId) => {
 };
 
 const Poids = (props) => {
-  var u = localStorage.getItem("prefUnitePoids");
-  const [unitePoids, setUnitePoids] = useState(u);
+  // Ajout de cette variable dans le but de vérifier quel était la préférence d'affichage du poids.
+  var prefPoids = localStorage.getItem("prefUnitePoids");
+  const [unitePoids, setUnitePoids] = useState(prefPoids);
   const [currentDate, ] = useState({ startDate: new Date() });
   //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var p = props.poids;
   var pd = props.poids.dailyPoids;
-  if(u == 'LBS') pd = (pd*2.2).toFixed(2);
+  if (prefPoids == 'LBS') pd = (pd*2.2).toFixed(2);
   const [poids, setPoids] = useState(p);
 
   //const [poids, setPoids] = useState(props.poids);
@@ -99,7 +100,7 @@ const Poids = (props) => {
       setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    IMC =CalculImc();
+    IMC = CalculImc();
   };
 
 	// Capture de l'éventement si IMC change
