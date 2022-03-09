@@ -83,26 +83,27 @@ export function verifier_changement_IMC(v){
 
 
   }
-  /**
-   * Moins de 18,49: Trop maigre
-18,5 à 25: Poids idéal ou optimal A
-25,01 à 30: Surpoids B
-30,01 à 35: Obésité classe 1 C
-35,01 à 40: Obésité sévère (classe 2) D 
-Plus de 40: Obésité morbide E
-   */
-  function trouver_category(i){
-      var val = 'F';
-      if (i < 18.50) {
-        val = 'A';
-      }else if(i < 25.01){
-        val = 'B';       
-      }else if(i < 30.01){
-        val = 'C';       
-      }else if(i < 35.01){
-        val = 'D';  
-      }else if(i < 40.01){
-        val = 'E';  
-      }
-      return val+val+"";
-  }
+// Pour trouver la nouvelle catégorie pour IMC
+function trouver_nouvelle_categorie(value){
+    var groupe_IMC = '';
+    if (value <= 18.49) {
+      groupe_IMC = 'CATEGORIE_MAIGRE';
+
+    } else if (value >= 18.5 && value <= 25) {
+      groupe_IMC = 'CATEGORIE_IDEAL';
+
+    } else if (value >= 25.01 && value <= 30) {
+      groupe_IMC = 'CATEGORIE_SURPOIDS';
+
+    } else if (value >= 30.01 && value <= 35) {
+      groupe_IMC = 'CATEGORIE_OB_CLASSE_1';
+
+    } else if (value >= 35.01 && value <= 40) {
+      groupe_IMC = 'CATEGORIE_OB_CLASSE_2';
+
+    } else if (value > 40) {
+      groupe_IMC = 'CATEGORIE_OB_CLASSE_3';
+    }
+
+    return groupe_IMC+"";
+}
