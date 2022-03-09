@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from "react-dom/test-utils";
 
 import App from '../../App';
-import { compilerBilan } from './Export';
+import { compilerBilan } from './CompilerBilan';
 import Settings from "./Export";
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";

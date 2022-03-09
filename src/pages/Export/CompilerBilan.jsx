@@ -7,6 +7,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
     d1.setHours(0, 0, 0, 0)
     const userUID = localStorage.getItem("userUid");
     let dataFormat = [];
+    // get la date enre
     if (!window.navigator.onLine) {
         dataFormat = [JSON.parse(localStorage.getItem("dashboard"))];
         let ajd = new Date();
