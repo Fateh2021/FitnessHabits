@@ -35,6 +35,11 @@ const MacroNutrimentItem = (props) => {
     }
   }
 
+  const handleFavoris = event => {
+    item.favoris = !item.favoris;
+    event.currentTarget.classList.toggle("active");
+  }
+
   const saveChanges = () => {
     props.save(item);
   }
@@ -54,7 +59,7 @@ const MacroNutrimentItem = (props) => {
         </IonCol>                       
         <IonItem  className="divAdd">
           <IonCol size="1">
-            <IonIcon className="starFavoris" icon={star}/>
+            <IonIcon className="starFavoris" onClick={handleFavoris} icon={star}/>
           </IonCol>
           <IonCol size="3">
             <IonInput className = 'divAddText' placeholder={ translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']) } name="name" value={item.name} onIonChange={handleChange}></IonInput>  
@@ -88,6 +93,8 @@ const MacroNutrimentItem = (props) => {
 }
 
 const Nourriture = (props) => {
+  props.macroNutriments.sort((a,b) => b.favoris-a.favoris);
+
   const [test] = useState(props.test);
   const [dailyTarget, setDailyTarget] = useState(props.dailyTarget);
   const [macroNutriment, setMacroNutriment] = useState(props.macroNutriment);
