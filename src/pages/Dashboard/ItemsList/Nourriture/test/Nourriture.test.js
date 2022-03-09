@@ -113,59 +113,23 @@ const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
 
 it('test negative quantity on macro-nutriments', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 6,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 2,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 2,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 13,
-                    gras: 0,
-                    id: 1,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 12,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 2,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 30,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 44,
-                    id: 3,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: "",
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 50,
