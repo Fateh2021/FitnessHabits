@@ -12,7 +12,7 @@ const renderWithRouter = (ui, { route = '/' } = {}) => {
     return render(ui, { wrapper: BrowserRouter });
 }
 
-test('Traduction du mot Initial Poids en anglais', async() => {
+test('Traduction du mot Initial Poids en anglais', () => {
   localStorage.setItem('userLanguage', 'en')
   renderWithRouter(<App />, { route: '/ConfigurationPoids' });
   const mot = screen.getByText(/Initial weight/i);

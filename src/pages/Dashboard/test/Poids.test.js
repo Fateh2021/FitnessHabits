@@ -14,21 +14,21 @@ const renderWithRouter = (ui, { route = '/' } = {}) => {
 }
 
 // Les trois tests donne le même % de couverture
-test('Traduction du mot Poids en espagnol', async() => {
+test('Traduction du mot Poids en espagnol', () => {
   localStorage.setItem('userLanguage', 'es')
   render(<Poids poids/>);
   const mot = screen.getByText(/Peso/i);
   expect(mot).toBeDefined();
 });
 
-test('Traduction du mot Poids en anglais', async() => {
+test('Traduction du mot Poids en anglais', () => {
   localStorage.setItem('userLanguage', 'en')
   render(<Poids poids/>);
   const mot = screen.getByText(/Weight/i);
   expect(mot).toBeDefined();
 });
 
-test('Traduction du mot Poids en anglais', async() => {
+test('Traduction du mot Poids en anglais', () => {
   localStorage.setItem('userLanguage', 'en')
   render(<Poids poids/>);
   const mot = screen.getByText(/BMI/i);
