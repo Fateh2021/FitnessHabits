@@ -10,36 +10,36 @@ const dict = require('../../../../../translate/Translation.json');
 let container = null;
 
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+    // setup a DOM element as a render target
+    container = document.createElement("div");
+    document.body.appendChild(container);
 });
 
 afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
+    // cleanup on exiting
+    unmountComponentAtNode(container);
+    container.remove();
+    container = null;
 });
 
 const setUp = (mock, testFunc) => {
     localStorage.setItem('dashboard', JSON.stringify(mock));
 
-    render(<Nourriture 
-                translationKey = 'Macronutriment'
-                dashboardKey = 'macroNutriment'
-                dashboardSubKey = 'macroNutriments'
-                cssId = 'dummy'
-                parentCallback = { (e) => { } }
-                macroNutriment = { mock.macroNutriment }
-                macroNutriments = { mock.macroNutriment.macroNutriments }
-                globalConsumption = { mock.macroNutriment.dailyTarget.globalConsumption }
-                currentDate = { new Date() }
-                macroNutrimentToEdit = { undefined }
-                itemContainerDisplayStatus = { false }
-                test = { true } 
-            />, container);
-    
+    render(<Nourriture
+        translationKey='Macronutriment'
+        dashboardKey='macroNutriment'
+        dashboardSubKey='macroNutriments'
+        cssId='dummy'
+        parentCallback={(e) => { }}
+        macroNutriment={mock.macroNutriment}
+        macroNutriments={mock.macroNutriment.macroNutriments}
+        globalConsumption={mock.macroNutriment.dailyTarget.globalConsumption}
+        currentDate={new Date()}
+        macroNutrimentToEdit={undefined}
+        itemContainerDisplayStatus={false}
+        test={true}
+    />, container);
+
     checkInitialValuesRendering(mock);
     testFunc();
 
@@ -197,23 +197,23 @@ it('test negative quantity on macro-nutriments', () => {
 
 it('test div visibility toggle', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: "",
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: "",
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 0,
@@ -232,43 +232,42 @@ it('test div visibility toggle', () => {
         return i % 2 == 0 ? 'block' : 'none';
     }
 
-    divs.forEach((div, index) => 
-        {
-            act(() => {
-                render(<Nourriture 
-                            translationKey = { moduleNames[index] }
-                            dashboardKey = { macroNutrimentTypes[index] }
-                            dashboardSubKey = { macroNutrimentSubTypes[index] }
-                            cssId = { div }
-                            parentCallback = { undefined }
-                            macroNutriment = { dummyDashboard.macroNutriment }
-                            macroNutriments = { dummyDashboard.macroNutriment.macroNutriments }
-                            globalConsumption = { dummyDashboard.macroNutriment.dailyTarget.globalConsumption }
-                            currentDate = { new Date() }
-                            macroNutrimentToEdit = { undefined }
-                            itemContainerDisplayStatus = { false }
-                        />, 
-                        container);
-            });
-            const moduleImage = document.getElementById('moduleImg').src;
-            expect(moduleImage).toBe(`http://localhost/assets/${ moduleNames[index] }.jpg`);
-
-            const arrow = document.getElementById('proteinArrow');
-            const elem = document.getElementById(div);
-            elem.style.display = 'none';
-        
-            act(() => {
-                for (let i = 0; i < 5; i++) {
-                    arrow.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-                    expect(elem.style.display).toBe(getToggledValue(i));
-                }
-            });
+    divs.forEach((div, index) => {
+        act(() => {
+            render(<Nourriture
+                translationKey={moduleNames[index]}
+                dashboardKey={macroNutrimentTypes[index]}
+                dashboardSubKey={macroNutrimentSubTypes[index]}
+                cssId={div}
+                parentCallback={undefined}
+                macroNutriment={dummyDashboard.macroNutriment}
+                macroNutriments={dummyDashboard.macroNutriment.macroNutriments}
+                globalConsumption={dummyDashboard.macroNutriment.dailyTarget.globalConsumption}
+                currentDate={new Date()}
+                macroNutrimentToEdit={undefined}
+                itemContainerDisplayStatus={false}
+            />,
+                container);
         });
+        const moduleImage = document.getElementById('moduleImg').src;
+        expect(moduleImage).toBe(`http://localhost/assets/${moduleNames[index]}.jpg`);
+
+        const arrow = document.getElementById('proteinArrow');
+        const elem = document.getElementById(div);
+        elem.style.display = 'none';
+
+        act(() => {
+            for (let i = 0; i < 5; i++) {
+                arrow.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+                expect(elem.style.display).toBe(getToggledValue(i));
+            }
+        });
+    });
 });
 
 it('test save item', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments: [],
 
@@ -283,7 +282,7 @@ it('test save item', () => {
     const testFunc = () => {
         expect(dummyDashboard.macroNutriment.macroNutriments.length).toBe(0);
         const addButton = document.getElementById('addButton');
-        
+
         for (let i = 0; i < 5; i++) {
             addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             const saveButton = document.getElementById('saveButton');
@@ -296,71 +295,71 @@ it('test save item', () => {
 
 it('test delete item', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 10,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 67,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 1,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 81,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 2,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 3,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 55,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 4,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 10,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 67,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 1,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 81,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 2,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 3,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 55,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 4,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 213,
@@ -387,29 +386,29 @@ it('test delete item', () => {
             expect(dummyDashboard.macroNutriment.macroNutriments.includes(currentMacroNutriment)).toBe(false);
             expect(globalConsumption.value).toBe(updatedValue);
         }
-    }; 
+    };
     setUp(dummyDashboard, testFunc);
 });
 
 it('test daily consumption increment: by a single unit', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 0,
@@ -423,71 +422,71 @@ it('test daily consumption increment: by a single unit', () => {
 
 it('test daily consumption increment: to a target total', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 1,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 2,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 3,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 4,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 1,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 2,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 3,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 4,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 0,
@@ -523,71 +522,71 @@ it('test daily consumption increment: to a target total', () => {
 
 it('test daily consumption increment: by a target amount', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 75,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 20,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 1,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 3,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 2,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 14,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 3,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 1,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 4,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 75,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 20,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 1,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 3,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 2,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 14,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 3,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 1,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 4,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 113,
@@ -623,23 +622,23 @@ it('test daily consumption increment: by a target amount', () => {
 
 it('test daily consumption decrement: by a single unit', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 5,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 5,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 5,
@@ -653,71 +652,71 @@ it('test daily consumption decrement: by a single unit', () => {
 
 it('test daily consumption decrement: to a target total', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 50,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 11,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 1,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 45,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 2,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 16,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 3,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 9,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 4,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 50,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 11,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 1,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 45,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 2,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 16,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 3,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 9,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 4,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 131,
@@ -725,7 +724,7 @@ it('test daily consumption decrement: to a target total', () => {
                 value: 0
             }
         }
-    };   
+    };
     const targetData = [
         {
             initialAmount: 50,
@@ -753,71 +752,71 @@ it('test daily consumption decrement: to a target total', () => {
 
 it('test daily consumption decrement: by a target amount', () => {
     const dummyDashboard = {
-        macroNutriment: 
+        macroNutriment:
         {
             macroNutriments:
-            [
-                {
-                    consumption: 2,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 0,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 0,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 1,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 12,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 2,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 71,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 3,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                },
-                {
-                    consumption: 15,
-                    favoris: false,
-                    fibre: 0,
-                    glucide: 0,
-                    gras: 0,
-                    id: 4,
-                    name: "",
-                    proteine: 0,
-                    qtte: 0,
-                    unit: ""
-                }
-            ],
+                [
+                    {
+                        consumption: 2,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 0,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 0,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 1,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 12,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 2,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 71,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 3,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    },
+                    {
+                        consumption: 15,
+                        favoris: false,
+                        fibre: 0,
+                        glucide: 0,
+                        gras: 0,
+                        id: 4,
+                        name: "",
+                        proteine: 0,
+                        qtte: 0,
+                        unit: ""
+                    }
+                ],
             dailyTarget:
             {
                 globalConsumption: 100,
@@ -851,38 +850,38 @@ it('test daily consumption decrement: by a target amount', () => {
     setUp(dummyDashboard, () => { updateToTargetTotal('decrementButton', targetData, 66); });
 });
 
-it('test module translation', () => {    
+it('test module translation', () => {
     const testFunc = () => {
         ['en', 'es', 'fr'].forEach(lang => {
-            localStorage.setItem('userLanguage', lang); 
-            
+            localStorage.setItem('userLanguage', lang);
+
             ['fats', 'proteins', 'vegetables', 'grain', 'fruits'].forEach(category => {
-    
+
                 act(() => {
-                    render(<Nourriture 
-                                translationKey = { category }
-                                dashboardKey = 'dummy'
-                                dashboardSubKey = 'dummy'
-                                cssId = 'dummy'
-                                parentCallback = {  (e) => { } }
-                                macroNutriment = { undefined }
-                                macroNutriments = { [] }
-                                globalConsumption = { 0 }
-                                currentDate = { new Date() }
-                                macroNutrimentToEdit = { undefined }
-                                itemContainerDisplayStatus = { false }
-                            />, 
-                            container);
-        
-                        
-                });   
+                    render(<Nourriture
+                        translationKey={category}
+                        dashboardKey='dummy'
+                        dashboardSubKey='dummy'
+                        cssId='dummy'
+                        parentCallback={(e) => { }}
+                        macroNutriment={undefined}
+                        macroNutriments={[]}
+                        globalConsumption={0}
+                        currentDate={new Date()}
+                        macroNutrimentToEdit={undefined}
+                        itemContainerDisplayStatus={false}
+                    />,
+                        container);
+
+
+                });
                 const moduleName = document.getElementById('moduleName').innerHTML;
                 expect(moduleName).toBe(dict['FOOD_MODULE']['sub_titles'][category][lang]);
                 const addMacroNutrimentButtonName = document.getElementById('addMacroNutriment').innerHTML;
                 expect(addMacroNutrimentButtonName).toBe(dict['FOOD_MODULE']['functions']['add_macro_nutriment'][lang]);
                 const addButton = document.getElementById('addButton');
                 addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    
+
                 const measures = document.getElementById('materialSelectAddHyd').children;
                 const gr = measures[1].innerHTML;
                 expect(gr).toBe(dict['UNIT_GR'][lang]);
@@ -894,7 +893,7 @@ it('test module translation', () => {
                 expect(cup).toBe(dict['UNIT_CUP'][lang]);
                 const unit = measures[5].innerHTML;
                 expect(unit).toBe(dict['UNIT_TEXT'][lang]);
-    
+
                 const protQtyBoxValue = document.getElementById('protQty').innerHTML;
                 expect(protQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['proteins'][lang]);
                 const glucQtyBoxValue = document.getElementById('glucQty').innerHTML;
@@ -912,24 +911,24 @@ it('test module translation', () => {
 it('test translation for non-existent key', () => {
     const testFunc = () => {
         ['en', 'es', 'fr'].forEach(lang => {
-            localStorage.setItem('userLanguage', lang); 
-    
+            localStorage.setItem('userLanguage', lang);
+
             act(() => {
-                render(<Nourriture 
-                            translationKey = 'UnsupportedKey'
-                            dashboardKey = 'dummy'
-                            dashboardSubKey = 'dummy'
-                            cssId = 'dummy'
-                            parentCallback = {  (e) => { } }
-                            macroNutriment = { undefined }
-                            macroNutriments = { [] }
-                            globalConsumption = { 0 }
-                            currentDate = { new Date() }
-                            macroNutrimentToEdit = { undefined }
-                            itemContainerDisplayStatus = { false }
-                        />, 
-                        container);         
-            });    
+                render(<Nourriture
+                    translationKey='UnsupportedKey'
+                    dashboardKey='dummy'
+                    dashboardSubKey='dummy'
+                    cssId='dummy'
+                    parentCallback={(e) => { }}
+                    macroNutriment={undefined}
+                    macroNutriments={[]}
+                    globalConsumption={0}
+                    currentDate={new Date()}
+                    macroNutrimentToEdit={undefined}
+                    itemContainerDisplayStatus={false}
+                />,
+                    container);
+            });
             const moduleName = document.getElementById('moduleName').innerHTML;
             expect(moduleName).toBe(`Node with key UnsupportedKey is undefined`);
         });
@@ -941,23 +940,53 @@ it('test translation for non-supported language', () => {
     localStorage.setItem('userLanguage', 'it');
     const testFunc = () => {
         act(() => {
-            render(<Nourriture 
-                        translationKey = 'proteins'
-                        dashboardKey = 'dummy'
-                        dashboardSubKey = 'dummy'
-                        cssId = 'dummy'
-                        parentCallback = {  (e) => { } }
-                        macroNutriment = { undefined }
-                        macroNutriments = { [] }
-                        globalConsumption = { 0 }
-                        currentDate = { new Date() }
-                        macroNutrimentToEdit = { undefined }
-                        itemContainerDisplayStatus = { false }
-                    />, 
-                    container);         
-        });  
+            render(<Nourriture
+                translationKey='proteins'
+                dashboardKey='dummy'
+                dashboardSubKey='dummy'
+                cssId='dummy'
+                parentCallback={(e) => { }}
+                macroNutriment={undefined}
+                macroNutriments={[]}
+                globalConsumption={0}
+                currentDate={new Date()}
+                macroNutrimentToEdit={undefined}
+                itemContainerDisplayStatus={false}
+            />,
+                container);
+        });
         const moduleName = document.getElementById('moduleName').innerHTML;
-        expect(moduleName).toBe(`Translation into it for node ${JSON.stringify(dict['FOOD_MODULE']['sub_titles']['proteins'])} is currently not supported`);  
+        expect(moduleName).toBe(`Translation into it for node ${JSON.stringify(dict['FOOD_MODULE']['sub_titles']['proteins'])} is currently not supported`);
     };
     setUpTranslationTest(testFunc);
 });
+
+it("test favoris button and favoris sorted", () => {
+    const dummyDashboard = {
+        macroNutriment: {
+            macroNutriments: [],
+            dailyTarget: {
+                globalConsumption: 0,
+                unit: "",
+                value: 0
+            }
+        }
+    };
+
+    const testFunc = () => {
+        const addButton = document.getElementById('addButton');
+
+        for (let i = 0; i < 3; i++) {
+            addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            const favButton = document.querySelector(".starFavoris");
+            const saveButton = document.getElementById('saveButton');
+            if (i % 2)
+                favButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            expect(dummyDashboard.macroNutriment.macroNutriments).toBe(dummyDashboard.macroNutriment.macroNutriments.sort((a,b) => a.favoris-b.favoris));
+        }
+    }
+
+    setUp(dummyDashboard, testFunc)
+})
