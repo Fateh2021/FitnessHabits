@@ -122,10 +122,15 @@ const handleReinitialisation = () => {
       // Triage pour avoir les informations de la plus vieille date à la plus récente
       graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
     }
-    // Récupération de la première valeur que le user a saisie à ses début avec l'application
-		setPoidsInitial(graphData[0].y);
-	  // Nous allons laisser l'utilisateur choisir sa propre date cible
 
+    if(graphData.length > 0){
+      // Récupération de la première valeur que le user a saisie à ses début avec l'application
+      setPoidsInitial(parseFloat(graphData[0].y).toFixed(2));
+    } else {
+      setPoidsInitial("0.00");
+    }
+
+	  // Nous allons laisser l'utilisateur choisir sa propre date cible
     //trouver 1e jouree
     /*
     if(graphData.length > 0){
