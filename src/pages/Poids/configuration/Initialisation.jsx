@@ -11,18 +11,27 @@ import { pause } from 'ionicons/icons';
 
 const DIFF_UNITE_POIDS = 2.2;
 //obtenir initialisation
-// var arrPoidFirst = 0.0;
-// var dateCibleSuppose = null; // On va laisser l'utilisateur gérer sa date lui-même
-var preferencesPoidUnite = localStorage.getItem('prefUnitePoids');
-
+//var arrPoidFirst = 0.0; // Non nécessaire
+//var dateCibleSuppose = null; // On va laisser l'utilisateur gérer sa date lui-même // Non nécessaire
 const userUID = localStorage.getItem('userUid'); // Récupération du userID
 
+// Au moment d'afficher la page, nous allons afficher l'information qui se trouve dans «preferencesPoids» du profil de l'utilisateur
 const Initialisation = () => {
+
+// Retour à la page principale de l'application
+const redirectDashboard = () => {
+  window.location.href = "/dashboard"
+}
+
+function formatDate (date) {
+  return moment(date).format('YYYY-MM-DD');
+}
 /*
 const [poidsInitial, setPoidsInitial] = useState(`${arrPoidFirst}`);
 const [poidsCible, setPoidsCible] = useState(`${arrPoidFirst*0.9}`);
 const [unitePoids, setUnitePoids] = useState(preferencesPoidUnite);
 */
+var preferencesPoidUnite = localStorage.getItem('prefUnitePoids');
 
 const [poidsInitial, setPoidsInitial] = useState("");
 const [poidsCible, setPoidsCible] = useState("");
@@ -37,35 +46,51 @@ const handlePoidsCibleChange = (value) => {
   setPoidsCible(value)
 }
 
-const redirectDashboard = () => {
-  window.location.href = "/dashboard"
+const handleDateCibleChange = (value) => {
+  setDateCible(value);
+};
+
+const handleUnitePoidsChange = (e) => {
+  let value = e.detail.value
+  let OldUnitePoids = unitePoids; // On récupère l'ancienne unité de poids
+  setUnitePoids(value);
+  const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+  if (OldUnitePoids === "KG" && value === "LBS") {
+    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
+    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
+  } else if (OldUnitePoids === "LBS" && value === "KG") {
+    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
+    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
+  }
+	// Cette MAJ du Dashboard ne sert à rien vue que le dashboard est dans le fichier Poids.
+  //localStorage.setItem('dashboard', JSON.stringify(dashboard));
 }
 
-function formatDate (date) {
-  return moment(date).format('YYYY-MM-DD');
-}
-
-
-
-// Récupération des informations de la préférence par rapport au poids (unite)
+// Récupération des informations initiale et cible du client pour les afficher
 let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids");
-
-
-
 useEffect(() => {
   preferencesPoidsRef.once("value").then(function(snapshot) {
     if (snapshot.val() !== null) {
       var ini = snapshot.val().poidsInitial;
       var ci = snapshot.val().poidsCible;
-      
-      if(ini == null || ini == 0.00) 
+      /*
+      if(ini == null || ini == 0.00)
         ini = arrPoidFirst;
 
       if(ci == null || ci == 0.0 )
         ci = ini*0.9;
-      
+      */
+      // Nous devons mettre des valeurs de 0 si elle n'éxiste pas encore...
+      if (ini == null){
+        ini = 0;
+      }
+
+      if (ci == null){
+        ci = 0;
+      }
+
       setUnitePoids(snapshot.val().unitePoids);
-      //changement de Unite;
+      // Si le type unité de poids est en livre, nous devons faire x 2.2 (DIFF_UNITE_POIDS)
       if (snapshot.val().unitePoids === "LBS") {
         preferencesPoidUnite = "LBS";
         ini *= DIFF_UNITE_POIDS;
@@ -78,28 +103,6 @@ useEffect(() => {
     }
   })
 },[])
-
-
-
-const handleUnitePoidsChange = (e) => {
-  let value = e.detail.value
-  let OldUnitePoids = unitePoids;
-  setUnitePoids(value);
-  const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-  if (OldUnitePoids === "KG" && value === "LBS") {
-    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
-    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
-  } else if (OldUnitePoids === "LBS" && value === "KG") {
-    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
-    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
-  }
-  
-  localStorage.setItem('dashboard', JSON.stringify(dashboard));
-}
-
-const handleDateCibleChange = (value) => {
-  setDateCible(value);
-};
 
 // Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de poids qui doit etre par défaut KG
 const handleReinitialisation = () => {
@@ -150,7 +153,7 @@ const handlerConfirmation = () => {
   // localStorage.setItem('dateC', dateCible)
 	// Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
   if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
-    
+
     pi = poidsInitial;
     pc = poidsCible;
     // On stock les informations en KG dans la BD
@@ -171,7 +174,7 @@ const handlerConfirmation = () => {
   if(pc == "") pc = pi*0.9;
   let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dt};
   poidsService.setPrefUnitePoids(unitePoids);
-  
+
   firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
   localStorage.setItem('preferencesPoidsVaules', preferencesPoids);
   redirectDashboard();*/
