@@ -54,7 +54,7 @@ const handleUnitePoidsChange = (e) => {
   let value = e.detail.value
   let OldUnitePoids = unitePoids; // On récupère l'ancienne unité de poids
   setUnitePoids(value);
-  const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+  // const dashboard = JSON.parse(localStorage.getItem('dashboard'));
   if (OldUnitePoids === "KG" && value === "LBS") {
     setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
     setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
