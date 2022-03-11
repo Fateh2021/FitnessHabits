@@ -804,6 +804,16 @@
       "es": "Estatura",
       "fr": "Taille"
    },
+   "SIDEBAR_TAILLE_M_DISPLAY": {
+      "en": "meters",
+      "es": "Estatura",
+      "fr": "mètres"
+   },
+   "SIDEBAR_TAILLE_CM_DISPLAY": {
+      "en": "centimeters",
+      "es": "Estatura",
+      "fr": "centimètres"
+   },
    "SIDEBAR_PLCHLDR_TAILLE": {
       "en": "Centimeter",
       "es": "Centímetro",

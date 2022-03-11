@@ -2,13 +2,71 @@ import firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { IonList, IonGrid, IonRow, IonCol, IonHeader, IonIcon, IonInput, IonLabel, IonContent, IonItemDivider, IonItem } from "@ionic/react";
-import { arrowRoundBack, logOut } from "ionicons/icons";
+import { IonList, IonGrid, IonRow, IonCol, IonHeader, IonIcon, IonInput, IonLabel, IonContent, IonItemDivider, IonItem, IonSelect, IonSelectOption } from "@ionic/react";
+import { arrowDropdownCircle, arrowRoundBack, logOut } from "ionicons/icons";
 import { TakePicture } from "../../TakePicture/TakePicture";
 import * as translate from "../../../translate/Translator";
+import {convertToCM,convertToImperial} from "./UnitDisplay"
+
+//CSS
+import "./Sidebar.css"
+
 
 // Note: remove picturedDisabled once TakePicture is properly implemented/fixed.
 const Sidebar = ({ handleClose, pictureDisabled }) => {
+    const [currentUnitDisplay, setUnitSizeDisplay] = useState("M");
+    const [unitSize,setUnitSize] = useState('');
+    const [unitDisplayLong,setUnitDisplayLong] = useState(translate.getText("SIDEBAR_TAILLE_M_DISPLAY"))
+    const [isImperial,setIsImperial] = useState(false);
+    const [imperial,setImperial] = useState({feet:5,inches:6})
+
+    const unitDisplayCalculations = (newUnitDisplay,value) => {
+        (newUnitDisplay === "IMP") ? setIsImperial(true) :setIsImperial(false);
+
+        if (newUnitDisplay === "IMP" && currentUnitDisplay !== "IMP") {
+                setImperial(convertToImperial(currentUnitDisplay,value));
+                setUnitSizeDisplay("IMP");
+        }
+
+        if (newUnitDisplay === "CM") {
+            switch (currentUnitDisplay) {
+                case "M":
+                    setUnitSize(value*100);    
+                    break;
+                case "IMP":
+                    setUnitSize(convertToCM(currentUnitDisplay,value,imperial));
+                    break;
+                default:
+                    setUnitSize(value);
+                    break;
+            }
+            setUnitDisplayLong(translate.getText("SIDEBAR_TAILLE_CM_DISPLAY"));
+            setUnitSizeDisplay("CM");
+        }
+
+        if (newUnitDisplay === "M") {
+            switch (currentUnitDisplay) {
+                case "CM":
+                    setUnitSize(value/100)
+                    break;
+                case "M":
+                    setUnitSize(value)
+                    break;
+                default:
+                    setUnitSize(convertToCM(currentUnitDisplay,(value),imperial)/100);
+                    break;
+            }
+            setUnitDisplayLong(translate.getText("SIDEBAR_TAILLE_M_DISPLAY"));
+            setUnitSizeDisplay("M");
+        }
+    }
+
+
+
+    const handleUniteSizDisplayChange = (event) => {
+        unitDisplayCalculations(event.detail.value,unitSize);
+    }
+
     const [sidebarClass, setSidebarClass] = useState("sidebar");
     const [profile, setProfile] = useState({
         pseudo: "",
@@ -24,6 +82,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
         const localProfile = localStorage.getItem("profile");
         if (localProfile) {
             setProfile(JSON.parse(localProfile));
+            setUnitSize(JSON.parse(localProfile).size/100);
         } else {
             const userUID = localStorage.getItem("userUid");
             console.log("Loading Profile From DB...");
@@ -33,6 +92,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
                     if (dbProfile) {
                         localStorage.setItem("profile", JSON.stringify(dbProfile));
                         setProfile(dbProfile);
+                        setUnitSize(dbProfile.size/100);
                     }
                 });
 
@@ -58,7 +118,17 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
 
     const handleInputChange = (event) => {
         const userUID = localStorage.getItem("userUid");
-        const { name, value } = event.target;
+        var { name, value } = event.target;
+        if (name === "size" && !isImperial) {
+        unitDisplayCalculations(currentUnitDisplay,value);
+        value = convertToCM(currentUnitDisplay,value);
+        }
+        if (currentUnitDisplay === "IMP" && name === "inches") {
+            setImperial({feet:imperial.feet,inches:value});
+            value = ((Number((imperial.feet*12))+Number(value)))*2.54;
+            name = "size";
+            console.log(value);
+        }
         const updatedProfile = { ...profile, [name]: (value ?? "") };
         setProfile({ ...profile, [name]: value ? value : "" });
         localStorage.setItem("profile", JSON.stringify(updatedProfile));
@@ -85,7 +155,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
             <IonHeader className="sideBarHeader">
                 <IonGrid >
                     <IonRow >
-                        { !pictureDisabled && <TakePicture />}
+                        {/* { !pictureDisabled && <TakePicture />} */}
                         <IonCol size="5">
                             <IonInput className="userNameProfil" value="" readonly color="danger"><h3 data-testid="username">{profile.pseudo}</h3></IonInput>
                         </IonCol>
@@ -130,10 +200,32 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
                     <IonItem>
                         <IonInput className="inputProfilText" type="email" name="email" value={profile.email} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_EMAIL")} clearInput data-testid="email"></IonInput>
                     </IonItem>
-
                     <IonItemDivider color="warning" className="profilText"><h2>{translate.getText("SIDEBAR_LBL_TAILLE")}</h2></IonItemDivider>
+                    {!isImperial &&< IonItem className="profilText">
+                    <h6 className="inputProfilText">{unitSize} {unitDisplayLong}</h6>
+                    </IonItem> }
+                    {isImperial &&< IonItem className="profilText">
+                    <h6 className="inputProfilText">{imperial.feet} pieds {imperial.inches} pouces </h6>
+                    </IonItem> }
                     <IonItem>
-                        <IonInput className="inputProfilText" type="number" name="size" value={profile.size} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"></IonInput>
+                    {!isImperial && <IonInput className="inputProfilText"  type="number" name="size" value={unitSize} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"/>}
+                    {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="feet" value={imperial.feet} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>'</span></IonInput>}  
+                    {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="inches" onIonBlur={handleInputChange} value={imperial.inches} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>"</span></IonInput>}
+                      <IonLabel >
+                        <h2 style={{padding:"0px",color:"black"}}>
+                        <b>Unité:</b>
+                        </h2>
+                    </IonLabel>               
+                    <IonSelect
+                    color="black"
+                    okText={translate.getText("POIDS_PREF_CHOISIR")}
+                    cancelText={translate.getText("POIDS_PREF_ANNULER")}
+                    onIonChange={handleUniteSizDisplayChange}
+                    >
+                    <IonSelectOption value="M">M</IonSelectOption>
+                    <IonSelectOption value="CM">CM</IonSelectOption>
+                    <IonSelectOption value="IMP">IMPÉRIALE</IonSelectOption>
+                    </IonSelect>
                     </IonItem>
 
                     <IonItemDivider className="profilText"><h2>{translate.getText("SIDEBAR_LBL_SEXE")}</h2></IonItemDivider>
