@@ -4,7 +4,7 @@ import * as translate from '../../translate/Translator'
 import { getLang } from "../../translate/Translator";
 
 //import React, {Fragment} from 'react';
-import {Text, View, StyleSheet} from '@react-pdf/renderer';
+// import {Text, View, StyleSheet} from '@react-pdf/renderer';
 
 const arrayWeights = [];
 const arraySleeps = [];
