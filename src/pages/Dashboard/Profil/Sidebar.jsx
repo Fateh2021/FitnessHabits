@@ -16,7 +16,7 @@ import "./Sidebar.css"
 const Sidebar = ({ handleClose, pictureDisabled }) => {
     const [currentUnitDisplay, setUnitSizeDisplay] = useState("M");
     const [unitSize,setUnitSize] = useState('');
-    const [unitDisplayLong,setUnitDisplayLong] = useState(translate.getText("SIDEBAR_TAILLE_M_DISPLAY"))
+    const [unitDisplayLong,setUnitDisplayLong] = useState(translate.getText("SIDEBAR_HEIGHT_M_DISPLAY"))
     const [isImperial,setIsImperial] = useState(false);
     const [imperial,setImperial] = useState({feet:5,inches:6})
 
@@ -40,7 +40,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
                     setUnitSize(value);
                     break;
             }
-            setUnitDisplayLong(translate.getText("SIDEBAR_TAILLE_CM_DISPLAY"));
+            setUnitDisplayLong(translate.getText("SIDEBAR_HEIGHT_CM_DISPLAY"));
             setUnitSizeDisplay("CM");
         }
 
@@ -56,12 +56,10 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
                     setUnitSize(convertToCM(currentUnitDisplay,(value),imperial)/100);
                     break;
             }
-            setUnitDisplayLong(translate.getText("SIDEBAR_TAILLE_M_DISPLAY"));
+            setUnitDisplayLong(translate.getText("SIDEBAR_HEIGHT_M_DISPLAY"));
             setUnitSizeDisplay("M");
         }
     }
-
-
 
     const handleUniteSizDisplayChange = (event) => {
         unitDisplayCalculations(event.detail.value,unitSize);
@@ -123,11 +121,18 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
         unitDisplayCalculations(currentUnitDisplay,value);
         value = convertToCM(currentUnitDisplay,value);
         }
-        if (currentUnitDisplay === "IMP" && name === "inches") {
-            setImperial({feet:imperial.feet,inches:value});
-            value = ((Number((imperial.feet*12))+Number(value)))*2.54;
+        if (currentUnitDisplay === "IMP") {
+            switch (name) {
+                case "inches":
+                    setImperial({feet:imperial.feet,inches:value});
+                    value = Math.round(((Number((imperial.feet*12))+Number(value)))*2.54);
+                    break;
+                default:
+                    setImperial({feet:value,inches:imperial.inches});
+                    value = Math.round(((Number((value*12))+Number(imperial.inches)))*2.54);
+                    break;
+            }
             name = "size";
-            console.log(value);
         }
         const updatedProfile = { ...profile, [name]: (value ?? "") };
         setProfile({ ...profile, [name]: value ? value : "" });
@@ -209,7 +214,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
                     </IonItem> }
                     <IonItem>
                     {!isImperial && <IonInput className="inputProfilText"  type="number" name="size" value={unitSize} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"/>}
-                    {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="feet" value={imperial.feet} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>'</span></IonInput>}  
+                    {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="feet" value={imperial.feet} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>'</span></IonInput>}  
                     {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="inches" onIonBlur={handleInputChange} value={imperial.inches} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>"</span></IonInput>}
                       <IonLabel >
                         <h2 style={{padding:"0px",color:"black"}}>

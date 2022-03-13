@@ -804,12 +804,12 @@
       "es": "Estatura",
       "fr": "Taille"
    },
-   "SIDEBAR_TAILLE_M_DISPLAY": {
+   "SIDEBAR_HEIGHT_M_DISPLAY": {
       "en": "meters",
       "es": "Estatura",
       "fr": "mètres"
    },
-   "SIDEBAR_TAILLE_CM_DISPLAY": {
+   "SIDEBAR_HEIGHT_CM_DISPLAY": {
       "en": "centimeters",
       "es": "Estatura",
       "fr": "centimètres"

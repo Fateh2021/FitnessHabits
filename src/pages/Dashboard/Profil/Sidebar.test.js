@@ -60,7 +60,7 @@ describe('How <Sidebar> is rendered', () => {
         const dateFormatElement = getByTestId("dateFormat");
 
         expect(usernameElement.textContent).toEqual(testProfile.pseudo);
-        expect(heightElement.value).toEqual(testProfile.size);
+        expect((heightElement.value*100).toString()).toEqual(testProfile.size);
         expect(genderElement.value).toEqual(testProfile.gender);
         expect(emailElement.value).toEqual(testProfile.email);
         expect(dateFormatElement.value).toEqual(testProfile.dateFormat);
