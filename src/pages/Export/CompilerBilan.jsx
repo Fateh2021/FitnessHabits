@@ -13,9 +13,12 @@ const arrayActivities = [];
 export async function compilerBilan(dataSelected, d1, d2) {
     d1.setHours(0, 0, 0, 0)
     const userUID = localStorage.getItem("userUid");
+    //Aray of all datas in the BD
     let dataFormat = [];
 
-    //On get les datas au complet
+    //Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
+    //to a date in format mm-jj-aaaa
+    //Note: not sure how date < 10 and month <10 are managed....
     if (!window.navigator.onLine) {
         dataFormat = [JSON.parse(localStorage.getItem("dashboard"))];
         let ajd = new Date();
@@ -26,16 +29,11 @@ export async function compilerBilan(dataSelected, d1, d2) {
         let ref = firebase.database().ref("dashboard/" + userUID + "/");
         await ref.once("value", (snap) => {
             snap.forEach((data) => {
-                //On forme une date avec qqChose qui ressemble a 2044, 2046, 2022022
-                //Devrait etre les 4 dernier pour l'année, -- donc on est bon mais les mois et jours pas vraiemtn géré pour les cas de mois 1 a 9 et dates 1 à 9
-                //var date = data.key.toDate();
                 const currentDate = new Date();
-
                 var jour = data.key[0] + data.key[1] + "-";
                 var mois = "0" + data.key[2] + "-";
                 var annee = data.key[3] + data.key[4] + data.key[5] + data.key[6];
                 var date = jour + mois + annee;
-                //on pousse le tout dans un tableau avec la nouvelle date formée
                 var obj = data.val();
                 obj.date = date;
                 dataFormat.push(obj);
@@ -43,7 +41,8 @@ export async function compilerBilan(dataSelected, d1, d2) {
         });
     }
 
-    // Avec le tableau formé avec des dates digestes (comparable avec les dates du datepicker), on filtres pour getter seulement les données selected in datepicker
+    // With the new array(with the good date format), filter the datas with date selected by user
+    // in the datepicker
     let datePickerDates = getDates(d1, d2);
     dataFormat = dataFormat.filter((data) => {
         return !!datePickerDates.find((item) => {
@@ -60,7 +59,9 @@ export async function compilerBilan(dataSelected, d1, d2) {
 
 
 
-    // On prend les données filtrés pour faire des dictionnaires. le front-end sera en mesure de faire des get dessus pour générer le rapprot
+    // With the filtered datas, make a dictionnary for each parameters
+    // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
+    //NOTE: comment are let as the old way. To refactor.
     for (let i = 0; i < dataFormat.length; ++i) {
         retour[i] = {};
         retour[i].date = dataFormat[i].date
@@ -193,8 +194,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
 }
 
 /*
-    // On prend les données filtrés pour faire un affichage qui devrait être géré par le front-end.
-    // Remplacer par i dans un for (de-à) lorsque les dates seront gerees
+    //NOTE: Old way to get datas (string)  -- let here just for reference
     for (let i = 0; i < dataFormat.length; ++i) {
         retour[i] = {};
         retour[i].date = dataFormat[i].date
