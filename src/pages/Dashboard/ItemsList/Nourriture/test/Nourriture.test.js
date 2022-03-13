@@ -94,10 +94,6 @@ const setUpTranslationTest = (testFunc) => {
     localStorage.setItem('userLanguage', originalLanguage);
 }
 
-
-
-
-// TESTING NEGATIVE MACRO NUTR
 const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
     const updateFunc = (id, initialAmount, targetIncrement) => {
 
@@ -200,9 +196,6 @@ it('test negative quantity on macro-nutriments', () => {
     ];
     setUp(dummyDashboard, () => { setUpNegativeMacroNutriment("addButton", targetData, 0); });
 });
-
-
-
 
 it('test div visibility toggle', () => {
     const dummyDashboard = {
