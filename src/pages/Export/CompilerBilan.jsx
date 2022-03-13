@@ -148,42 +148,13 @@ export async function compilerBilan(dataSelected, d1, d2) {
                     */
                     break;
                 case "poids":
-                    let mapWeight = new Map();
-                    mapWeight.set("date", retour[i].date);
-
-                    let weightUnit = localStorage.getItem("prefUnitePoids");
-                    mapWeight.set("weightUnit", weightUnit);
-                    var weight = dataFormat[i].poids.dailyPoids;
-                    if( weightUnit === "LBS"){
-                        mapWeight.set("weight", (weight * 2.2).toFixed(2));
-                    } else {
-                        mapWeight.set("weight", weight);
-                    }
-                    arrayWeights.push(mapWeight);
+                    fetchWeights();
                     break;
                 case "activities":
-                    let mapActivity = new Map();
-                    var activite = dataFormat[i].activities;
-                    mapActivity.set("date", retour[i].date);
-                    mapActivity.set("hour", activite.heure);
-                    mapActivity.set("minute", activite.minute);
-                    var duration = (activite.heure * 60) + (activite.minute);
-                    mapActivity.set("duration", duration);
-                    mapActivity.set("durationUnit", 'min');
-                    //retour[i][data] = activite.heure + "h " + activite.minute + " min";
-                    arrayActivities.push(mapActivity);
+                    fetchActivities();
                     break;
                 case "sommeil":
-                    let mapSleep = new Map();
-                    var sommeil = dataFormat[i].sommeil;
-                    mapSleep.set("date", retour[i].date);
-                    mapSleep.set("startHour", sommeil.heureDebut);
-                    mapSleep.set("endHour", sommeil.heureFin);
-                    mapSleep.set("duration", sommeil.duree);
-                    mapSleep.set("wakeUpQt", sommeil.nbReveils);
-                    mapSleep.set("wakeUpState", sommeil.etatReveil);
-                    //retour[i][data] = sommeil.heure + "h " + sommeil.minute + " min";
-                    arraySleeps.push(mapSleep);
+                    fetchSleeps();
                     break;
                 default:
                     break;
@@ -297,7 +268,8 @@ export async function compilerBilan(dataSelected, d1, d2) {
 */
 
 
-//Donne un array avec toutes les dates à fetcher
+// PRIVATE FONCTIONS
+//Return an array with all dates to fetch
 function getDates(startDate, stopDate) {
     var dateArray = [];
     var currentDate = startDate;
@@ -308,10 +280,62 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
+//TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
+function fetchWeights() {
+    let mapWeight = new Map();
+    mapWeight.set("date", retour[i].date);
 
+    let weightUnit = localStorage.getItem("prefUnitePoids");
+    mapWeight.set("weightUnit", weightUnit);
+    var weight = dataFormat[i].poids.dailyPoids;
+    if( weightUnit === "LBS"){
+        mapWeight.set("weight", (weight * 2.2).toFixed(2));
+    } else {
+        mapWeight.set("weight", weight);
+    }
+    arrayWeights.push(mapWeight);
+    return ;
+}
+
+//TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
+function fetchActivities() {
+    let mapActivity = new Map();
+    var activite = dataFormat[i].activities;
+    mapActivity.set("date", retour[i].date);
+    mapActivity.set("hour", activite.heure);
+    mapActivity.set("minute", activite.minute);
+    var duration = (activite.heure * 60) + (activite.minute);
+    mapActivity.set("duration", duration);
+    mapActivity.set("durationUnit", 'min');
+    //retour[i][data] = activite.heure + "h " + activite.minute + " min";
+    arrayActivities.push(mapActivity);
+    return ;
+}
+
+//TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
+function fetchSleeps() {
+    let mapSleep = new Map();
+    var sommeil = dataFormat[i].sommeil;
+    mapSleep.set("date", retour[i].date);
+    mapSleep.set("startHour", sommeil.heureDebut);
+    mapSleep.set("endHour", sommeil.heureFin);
+    mapSleep.set("duration", sommeil.duree);
+    mapSleep.set("wakeUpQt", sommeil.nbReveils);
+    mapSleep.set("wakeUpState", sommeil.etatReveil);
+    //retour[i][data] = sommeil.heure + "h " + sommeil.minute + " min";
+    arraySleeps.push(mapSleep);
+    return ;
+}
+
+
+
+// PUBLIC FONCTIONS
 //ToUse: arrayActivities[0].get('key');
 //Possible keys: date, hour, minute, duration, durationUnit
 export function getActivities() {
+  return arrayActivities;
+}
+export function getAggregateActivities() {
   return arrayActivities;
 }
 
@@ -320,10 +344,21 @@ export function getActivities() {
 export function getWeights() {
   return arrayWeights;
 }
+export function getAggregateWeights() {
+  return arrayWeights;
+}
 
 //ToUse: arraySleeps[0].get('key');
 //Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
 export function getSleeps() {
   return arraySleeps;
 }
+export function getAggregateSleeps() {
+  return arraySleeps;
+}
+
+
+
+
+
 
