@@ -4,7 +4,7 @@ import * as translate from '../../translate/Translator'
 import { getLang } from "../../translate/Translator";
 
 //import React, {Fragment} from 'react';
-import {Text, View, StyleSheet} from '@react-pdf/renderer';
+// import {Text, View, StyleSheet} from '@react-pdf/renderer';
 
 const arrayWeights = [];
 const arraySleeps = [];
@@ -168,7 +168,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
                     mapActivity.set("minute", activite.minute);
                     var duration = (activite.heure * 60) + (activite.minute);
                     mapActivity.set("duration", duration);
-                    mapActivity.set("durationUnit", 'min');
+                    mapActivity.set("durationUnit", "min");
                     //retour[i][data] = activite.heure + "h " + activite.minute + " min";
                     arrayActivities.push(mapActivity);
                     break;

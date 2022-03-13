@@ -585,8 +585,8 @@ function recupererActivite() {
                                 activities = activities + data.get('date') + " -   "
                                 + data.get('hour') + " - " +
                                 + data.get('minute') + "   - " +
-                                + data.get('duration') + "    -      " +
-                                + data.get('durationUnit')
+                                + data.get('duration') + "    -      " 
+                                + data.get('durationUnit') 
                                 + " \n"
                             });
   return activities;
