@@ -280,6 +280,16 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
+function fetchHydratations(hydratation) {
+    var mapHydratation = new Map();
+    var drinks = dataFormat[i].hydratation.hydrates
+    mapHydratation.set("date", hydratation.date)
+    for (const drink of drinks) {
+        mapHydratation.set("")
+    }
+
+}
+
 //TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
 function fetchWeights() {
     let mapWeight = new Map();
