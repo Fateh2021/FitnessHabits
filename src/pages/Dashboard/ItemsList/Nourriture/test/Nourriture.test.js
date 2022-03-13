@@ -2,6 +2,8 @@ import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import Nourriture from '../Nourriture';
+import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
+
 
 const dict = require('../../../../../translate/Translation.json');
 
@@ -69,7 +71,6 @@ const updateByASingleUnit = (buttonId, start, end) => {
 const updateToTargetTotal = (buttonId, targetData, targetTotal) => {
     const updateFunc = (id, initialAmount, targetIncrement) => {
         const macroNutriment = document.getElementById(`${id}`);
-        
         for (let i = 0; i < Math.abs(targetIncrement); i++) {
             const button = macroNutriment.querySelector(`#${buttonId}`);
             button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -92,6 +93,116 @@ const setUpTranslationTest = (testFunc) => {
     testFunc();
     localStorage.setItem('userLanguage', originalLanguage);
 }
+
+
+
+
+// TESTING NEGATIVE MACRO NUTR
+const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
+    const updateFunc = (id, initialAmount, targetIncrement) => {
+
+        const button = document.getElementById(buttonId);
+        button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        const popup = document.getElementById("divPopUp1-1");
+        const input = popup.getElementsByClassName("divAddTextNut")[id];
+        input.value = initialAmount + targetIncrement;
+        fireEvent.ionChange(input);
+        const currentMacroQty = input.value;
+        expect(currentMacroQty).toBe(targetTotal);
+    };
+
+    for (let i = 0; i < targetData.length; i++) {
+        updateFunc(i, targetData[i].initialAmount, targetData[i].targetIncrement);
+    }
+};
+
+
+it('test negative quantity on macro-nutriments', () => {
+    const dummyDashboard = {
+        macroNutriment: 
+        {
+            macroNutriments:
+            [
+                {
+                    consumption: 6,
+                    favoris: false,
+                    fibre: 0,
+                    glucide: 0,
+                    gras: 0,
+                    id: 0,
+                    name: "",
+                    proteine: 2,
+                    qtte: 0,
+                    unit: ""
+                },
+                {
+                    consumption: 2,
+                    favoris: false,
+                    fibre: 0,
+                    glucide: 13,
+                    gras: 0,
+                    id: 1,
+                    name: "",
+                    proteine: 0,
+                    qtte: 0,
+                    unit: ""
+                },
+                {
+                    consumption: 12,
+                    favoris: false,
+                    fibre: 0,
+                    glucide: 0,
+                    gras: 0,
+                    id: 2,
+                    name: "",
+                    proteine: 0,
+                    qtte: 0,
+                    unit: ""
+                },
+                {
+                    consumption: 30,
+                    favoris: false,
+                    fibre: 0,
+                    glucide: 0,
+                    gras: 44,
+                    id: 3,
+                    name: "",
+                    proteine: 0,
+                    qtte: 0,
+                    unit: ""
+                }
+            ],
+            dailyTarget:
+            {
+                globalConsumption: 50,
+                unit: "",
+                value: 0
+            }
+        }
+    };
+    const targetData = [
+        {
+            initialAmount: 2,
+            targetIncrement: -20
+        },
+        {
+            initialAmount: 13,
+            targetIncrement: -14
+        },
+        {
+            initialAmount: 0,
+            targetIncrement: -5
+        },
+        {
+            initialAmount: 44,
+            targetIncrement: -44
+        }
+    ];
+    setUp(dummyDashboard, () => { setUpNegativeMacroNutriment("addButton", targetData, 0); });
+});
+
+
+
 
 it('test div visibility toggle', () => {
     const dummyDashboard = {
