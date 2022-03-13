@@ -1,5 +1,5 @@
 import firebase from "firebase";
-
+import * as CompilerBilan from "./CompilerBilan"
 import React, { useState, useEffect , useRef} from "react";
 import { ExportToCsv } from "export-to-csv";
 import { toast } from "../../Toast";
@@ -578,7 +578,18 @@ function recupererActivite() {
   var activite = JSON.parse(localStorage.getItem("dashboard")).activities;
   retour = retour + " " + activite.heure + "h " + activite.minute + " min\n";
 
-  return retour;
+  var title = translate.getText("ACTIVITES_TITLE")+": \n";
+  var keys = "date   -       hour - minute - duration(min) - durationUnit \n"
+  var activities = title + keys;
+  CompilerBilan.getActivities().forEach((data) => {
+                                activities = activities + data.get('date') + " -   "
+                                + data.get('hour') + " - " +
+                                + data.get('minute') + "   - " +
+                                + data.get('duration') + "    -      " +
+                                + data.get('durationUnit')
+                                + " \n"
+                            });
+  return activities;
 }
 
 function recupererNourriture() {
