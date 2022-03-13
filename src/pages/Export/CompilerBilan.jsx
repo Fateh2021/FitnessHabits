@@ -13,7 +13,7 @@ const arrayActivities = [];
 export async function compilerBilan(dataSelected, d1, d2) {
     d1.setHours(0, 0, 0, 0)
     const userUID = localStorage.getItem("userUid");
-    //Aray of all datas in the BD
+    //Array of all datas in the BD
     let dataFormat = [];
 
     //Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
@@ -43,6 +43,10 @@ export async function compilerBilan(dataSelected, d1, d2) {
 
     // With the new array(with the good date format), filter the datas with date selected by user
     // in the datepicker
+    // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
+    // dataSelected = Checkbox selected by user
+    // retour =
+
     let datePickerDates = getDates(d1, d2);
     dataFormat = dataFormat.filter((data) => {
         return !!datePickerDates.find((item) => {
@@ -64,7 +68,11 @@ export async function compilerBilan(dataSelected, d1, d2) {
     //NOTE: comment are let as the old way. To refactor.
     for (let i = 0; i < dataFormat.length; ++i) {
         retour[i] = {};
-        retour[i].date = dataFormat[i].date
+        /*retour[i].date = dataFormat[i].date
+            ? dataFormat[i].date
+            : new Date().toISOString().slice(0, 10);*/
+
+        var formatedDate = dataFormat[i].date
             ? dataFormat[i].date
             : new Date().toISOString().slice(0, 10);
 
@@ -148,13 +156,25 @@ export async function compilerBilan(dataSelected, d1, d2) {
                     */
                     break;
                 case "poids":
-                    fetchWeights();
+                    var weight;
+                    if (dataFormat[i].poids.dailyPoids) {
+                        weight = dataFormat[i].poids.dailyPoids;
+                    }
+                    fetchWeights(weight, formatedDate);
                     break;
                 case "activities":
-                    fetchActivities();
+                    var activity;
+                    if (dataFormat[i].activities) {
+                        activity = dataFormat[i].activities;
+                    }
+                    fetchActivities(activity, formatedDate);
                     break;
                 case "sommeil":
-                    fetchSleeps();
+                    var sommeil;
+                    if (dataFormat[i].sommeil) {
+                        sommeil = dataFormat[i].sommeil;
+                    }
+                    fetchSleeps(sommeil, formatedDate);
                     break;
                 default:
                     break;
@@ -280,6 +300,7 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
+
 function fetchHydratations(hydratation) {
     var mapHydratation = new Map();
     var drinks = dataFormat[i].hydratation.hydrates
@@ -291,60 +312,58 @@ function fetchHydratations(hydratation) {
 }
 
 //TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
-function fetchWeights() {
+//TODO: ajouter documentation ?
+function fetchWeights(weight, formatedDate) {
     let mapWeight = new Map();
-    mapWeight.set("date", retour[i].date);
 
-    let weightUnit = localStorage.getItem("prefUnitePoids");
-    mapWeight.set("weightUnit", weightUnit);
-    var weight = dataFormat[i].poids.dailyPoids;
-    if( weightUnit === "LBS"){
-        mapWeight.set("weight", (weight * 2.2).toFixed(2));
-    } else {
-        mapWeight.set("weight", weight);
-    }
-    arrayWeights.push(mapWeight);
+        mapWeight.set("date", formatedDate);
+        let weightUnit = localStorage.getItem("prefUnitePoids");
+        mapWeight.set("weightUnit", weightUnit);
+
+        if( weightUnit === "LBS"){
+            mapWeight.set("weight", (weight * 2.2).toFixed(2));
+        } else {
+            mapWeight.set("weight", weight);
+        }
+        arrayWeights.push(mapWeight);
     return ;
 }
 
-//TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
-function fetchActivities() {
+//TODO: duration should be hh:mm  -- no duration unit
+//TODO: ajouter documentation ?
+function fetchActivities(activity, formatedDate) {
     let mapActivity = new Map();
-    var activite = dataFormat[i].activities;
-    mapActivity.set("date", retour[i].date);
-    mapActivity.set("hour", activite.heure);
-    mapActivity.set("minute", activite.minute);
-    var duration = (activite.heure * 60) + (activite.minute);
-    mapActivity.set("duration", duration);
-    mapActivity.set("durationUnit", 'min');
-    //retour[i][data] = activite.heure + "h " + activite.minute + " min";
-    arrayActivities.push(mapActivity);
-    return ;
+        mapActivity.set("date", formatedDate);
+        mapActivity.set("hour", activity.heure);
+        mapActivity.set("minute", activity.minute);
+        var duration = activity.heure + ":" + activity.minute;
+        mapActivity.set("duration", duration);
+        arrayActivities.push(mapActivity);
 }
 
-//TODO : ajouter robustesse -->  if (dataFormat[i].alcool.alcools)
-function fetchSleeps() {
+//TODO: ajouter documentation ?
+function fetchSleeps(sommeil, formatedDate) {
     let mapSleep = new Map();
-    var sommeil = dataFormat[i].sommeil;
-    mapSleep.set("date", retour[i].date);
-    mapSleep.set("startHour", sommeil.heureDebut);
-    mapSleep.set("endHour", sommeil.heureFin);
-    mapSleep.set("duration", sommeil.duree);
-    mapSleep.set("wakeUpQt", sommeil.nbReveils);
-    mapSleep.set("wakeUpState", sommeil.etatReveil);
+        mapSleep.set("date", formatedDate);
+        mapSleep.set("startHour", sommeil.heureDebut);
+        mapSleep.set("endHour", sommeil.heureFin);
+        //TODO duree shoud be hh:mm
+        mapSleep.set("duration", sommeil.duree);
+        mapSleep.set("wakeUpQt", sommeil.nbReveils);
+        mapSleep.set("wakeUpState", sommeil.etatReveil);
+        arraySleeps.push(mapSleep);
     //retour[i][data] = sommeil.heure + "h " + sommeil.minute + " min";
-    arraySleeps.push(mapSleep);
-    return ;
 }
 
 
 
 // PUBLIC FONCTIONS
 //ToUse: arrayActivities[0].get('key');
-//Possible keys: date, hour, minute, duration, durationUnit
+//Possible keys: date, hour, minute, duration
 export function getActivities() {
   return arrayActivities;
 }
+//TODO: total + average
 export function getAggregateActivities() {
   return arrayActivities;
 }
@@ -354,6 +373,7 @@ export function getAggregateActivities() {
 export function getWeights() {
   return arrayWeights;
 }
+//TODO: initial Weight + gain/perte
 export function getAggregateWeights() {
   return arrayWeights;
 }
@@ -363,12 +383,7 @@ export function getAggregateWeights() {
 export function getSleeps() {
   return arraySleeps;
 }
+//TODO: averageDuree + averageStartHour, averageEndHour, averageWakeUpQt
 export function getAggregateSleeps() {
   return arraySleeps;
 }
-
-
-
-
-
-
