@@ -96,7 +96,6 @@ const setUpTranslationTest = (testFunc) => {
 
 const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
     const updateFunc = (id, initialAmount, targetIncrement) => {
-
         const button = document.getElementById(buttonId);
         button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         const popup = document.getElementById("divPopUp1-1");
@@ -111,7 +110,6 @@ const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
         updateFunc(i, targetData[i].initialAmount, targetData[i].targetIncrement);
     }
 };
-
 
 it('test negative quantity on macro-nutriments', () => {
     const dummyDashboard = {
