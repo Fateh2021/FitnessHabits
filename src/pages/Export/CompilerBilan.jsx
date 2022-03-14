@@ -5,12 +5,21 @@ import { getLang } from "../../translate/Translator";
 
 //import React, {Fragment} from 'react';
 // import {Text, View, StyleSheet} from '@react-pdf/renderer';
-
-const arrayWeights = [];
-const arraySleeps = [];
-const arrayActivities = [];
+let arrayWeights = [];
+let arraySleeps = [];
+let arrayActivities = [];
+let mapAggWeights = new Map();
+let mapAggSleeps = new Map();
+let mapAggActivities = new Map();
+let initialWeight;
 
 export async function compilerBilan(dataSelected, d1, d2) {
+    arrayWeights = [];
+    arraySleeps = [];
+    arrayActivities = [];
+    mapAggWeights = new Map();
+    mapAggSleeps = new Map();
+    mapAggActivities = new Map();
     d1.setHours(0, 0, 0, 0)
     const userUID = localStorage.getItem("userUid");
     //Array of all datas in the BD
@@ -41,11 +50,12 @@ export async function compilerBilan(dataSelected, d1, d2) {
         });
     }
 
-    // With the new array(with the good date format), filter the datas with date selected by user
-    // in the datepicker
+
+    initialWeight = fetchInitialWeight(dataFormat);
+
+    // With the new array(with the good date format), filter the datas with date selected by user in the datepicker
     // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
     // dataSelected = Checkbox selected by user
-    // retour =
 
     let datePickerDates = getDates(d1, d2);
     dataFormat = dataFormat.filter((data) => {
@@ -159,22 +169,28 @@ export async function compilerBilan(dataSelected, d1, d2) {
                     var weight;
                     if (dataFormat[i].poids.dailyPoids) {
                         weight = dataFormat[i].poids.dailyPoids;
+                        if (weight !== "0.00") {
+                            fetchWeights(weight, formatedDate);
+                        }
                     }
-                    fetchWeights(weight, formatedDate);
                     break;
                 case "activities":
                     var activity;
                     if (dataFormat[i].activities) {
-                        activity = dataFormat[i].activities;
+                        var activity = dataFormat[i].activities;
+                        if(parseInt(activity.hour) + parseInt(activity.minute) != 0){
+                            fetchActivities(activity, formatedDate);
+                        }
                     }
-                    fetchActivities(activity, formatedDate);
+
                     break;
                 case "sommeil":
                     var sommeil;
                     if (dataFormat[i].sommeil) {
                         sommeil = dataFormat[i].sommeil;
+                        fetchSleeps(sommeil, formatedDate);
                     }
-                    fetchSleeps(sommeil, formatedDate);
+
                     break;
                 default:
                     break;
@@ -300,78 +316,178 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
-//TODO: ajouter documentation ?
+
 function fetchWeights(weight, formatedDate) {
     let mapWeight = new Map();
+    mapWeight.set("date", formatedDate);
+    let weightUnit = localStorage.getItem("prefUnitePoids");
+    mapWeight.set("weightUnit", weightUnit);
 
-        mapWeight.set("date", formatedDate);
-        let weightUnit = localStorage.getItem("prefUnitePoids");
-        mapWeight.set("weightUnit", weightUnit);
-
-        if( weightUnit === "LBS"){
-            mapWeight.set("weight", (weight * 2.2).toFixed(2));
-        } else {
-            mapWeight.set("weight", weight);
-        }
-        arrayWeights.push(mapWeight);
-    return ;
+    if( weightUnit === "LBS"){
+        mapWeight.set("weight", (weight * 2.2).toFixed(2));
+    } else {
+        mapWeight.set("weight", weight);
+    }
+    arrayWeights.push(mapWeight);
 }
 
-//TODO: duration should be hh:mm  -- no duration unit
-//TODO: ajouter documentation ?
+function fetchInitialWeight(datas) {
+    let mWeights = new Map();
+    let weightUnit = localStorage.getItem("prefUnitePoids");
+    const dates = [];
+
+    datas.forEach((data) => {
+        if (data) {
+           let weight = data.poids.dailyPoids;
+           let date = data.poids.datePoids.slice(0,10).replace("-", "/").replace("-", "/");
+
+           if (weight != "0.00") {
+               weightUnit === "LBS" ? mWeights.set(date, (weight * 2.2).toFixed(2)): mWeights.set(date, weight);
+               dates.push(date);
+           }
+        }
+    });
+
+    const minDate = new Date(
+      Math.min(
+        ...dates.map(element => {
+          return new Date(element);
+        }),
+      ),
+    );
+
+    return mWeights.get(minDate.toISOString().slice(0,10).replace("-", "/").replace("-", "/"));
+}
+
+
 function fetchActivities(activity, formatedDate) {
     let mapActivity = new Map();
-        mapActivity.set("date", formatedDate);
-        mapActivity.set("hour", activity.heure);
-        mapActivity.set("minute", activity.minute);
-        var duration = activity.heure + ":" + activity.minute;
-        mapActivity.set("duration", duration);
-        arrayActivities.push(mapActivity);
+    mapActivity.set("date", formatedDate);
+    var minutes = parseInt(activity.heure*60) + parseInt(activity.minute);
+    var duration = formatDuration(minutes);
+    mapActivity.set("duration", duration);
+    mapActivity.set("hours", duration.slice(0,2));
+    mapActivity.set("minutes", duration.slice(3,5));
+    arrayActivities.push(mapActivity);
 }
 
-//TODO: ajouter documentation ?
-function fetchSleeps(sommeil, formatedDate) {
+
+//Keys: "date", "startHour", "endHour", "wakeUpQt", "wakeUpState"
+function fetchSleeps(sleep, formatedDate) {
     let mapSleep = new Map();
+
+    if(sleep.duree && sleep.duree != 0 ){
         mapSleep.set("date", formatedDate);
-        mapSleep.set("startHour", sommeil.heureDebut);
-        mapSleep.set("endHour", sommeil.heureFin);
-        //TODO duree shoud be hh:mm
-        mapSleep.set("duration", sommeil.duree);
-        mapSleep.set("wakeUpQt", sommeil.nbReveils);
-        mapSleep.set("wakeUpState", sommeil.etatReveil);
+        mapSleep.set("startHour", sleep.heureDebut);
+        mapSleep.set("endHour", sleep.heureFin);
+        mapSleep.set("duration", formatDuration(sleep.duree));
+        sleep.nbReveils < 0 ? mapSleep.set("wakeUpQt", 0) : mapSleep.set("wakeUpQt", sleep.nbReveils);
+        mapSleep.set("wakeUpState", sleep.etatReveil);
         arraySleeps.push(mapSleep);
-    //retour[i][data] = sommeil.heure + "h " + sommeil.minute + " min";
+    }
 }
 
 
+// ---- FONCTIONS UTILS ----------------------------------------------------
+//methode qui prend heures et minutes et sort: 00:00
+function formatDuration(minutes) {
+    minutes = Math.floor(minutes);
+    var hours;
+    var minutes;
+    if (minutes >= 60) {
+        hours = Math.floor(minutes/60);
+        minutes = Math.floor(minutes%60);
+        if (hours   < 10) {hours   = "0"+hours;}
 
-// PUBLIC FONCTIONS
-//ToUse: arrayActivities[0].get('key');
+    } else if (minutes < 60) {
+        hours = "00";
+    }
+
+    if (minutes < 10) {minutes = "0"+minutes;}
+    return hours + ":" + minutes;
+}
+
+//fonction qui prend 00:00 et transforme en minutes
+function getDuration(time) {
+    return ( parseInt(time.slice(0,2) * 60) + parseInt(time.slice(3,5)) )
+}
+
+// ---- PUBLIC FONCTIONS ----------------------------------------------------
+
+//- ACTIVITIES - //
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
-  return arrayActivities;
+    return arrayActivities;
 }
-//TODO: total + average
 export function getAggregateActivities() {
-  return arrayActivities;
+    var totalDuration = 0;
+    var totalDays = 0;
+
+    getActivities().forEach((data) => {
+        totalDuration = totalDuration + parseInt(data.get('minutes')) + parseInt(data.get('hours')*60);
+        totalDays = totalDays + 1;
+    });
+
+    mapAggActivities.set("TotalDuration", formatDuration(totalDuration));
+    mapAggActivities.set("AverageDuration", formatDuration(totalDuration/totalDays));
+    return mapAggActivities;
 }
 
-//ToUse: arrayWeights[0].get('key');
+
+//- WEIGHTS - //
 //Possible keys: weightUnit, weight
 export function getWeights() {
-  return arrayWeights;
+    return arrayWeights;
 }
-//TODO: initial Weight + gain/perte
 export function getAggregateWeights() {
-  return arrayWeights;
+    var finalWeight = getWeights()[getWeights().length -1].get("weight");
+    mapAggWeights.set("initalWeight", initialWeight);
+    mapAggWeights.set("finalWeight", finalWeight);
+    mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
+    mapAggWeights.set("prefUnitePoids",localStorage.getItem("prefUnitePoids"));
+    return mapAggWeights;
 }
 
-//ToUse: arraySleeps[0].get('key');
+
+//- SLEEPs - //
 //Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
 export function getSleeps() {
-  return arraySleeps;
+    return arraySleeps;
 }
-//TODO: averageDuree + averageStartHour, averageEndHour, averageWakeUpQt
 export function getAggregateSleeps() {
-  return arraySleeps;
+    var minTotalStartHours = 0;
+    var minTotalEndHours = 0;
+    var minTotalDuration = 0;
+    var totalWakeUp = 0;
+
+    var totalDaysStart = 0;
+    var totalDaysEnd = 0;
+    var totalDaysDuration = 0;
+    var totalDaysWakeUp = 0;
+
+    getSleeps().forEach((data) => {
+            if (data.get("startHour")) {
+               minTotalStartHours += getDuration(data.get("startHour"));
+               totalDaysStart += 1;
+            }
+
+            if (data.get("endHour")) {
+                minTotalEndHours += getDuration(data.get("endHour"));
+                totalDaysEnd += 1
+            }
+
+            if (getDuration(data.get("duration")) != 0) {
+                minTotalDuration +=  getDuration(data.get("duration"));
+                totalDaysDuration += 1;
+            }
+            totalWakeUp += parseInt(data.get("wakeUpQt"));
+            totalDaysWakeUp +=1;
+
+    });
+
+    mapAggSleeps.set("averageStartHour", formatDuration(minTotalStartHours/totalDaysStart));
+    mapAggSleeps.set("averageEndHour", formatDuration(minTotalEndHours/totalDaysEnd));
+    mapAggSleeps.set("averageDuree", formatDuration(minTotalDuration/totalDaysDuration));
+    mapAggSleeps.set("averageWakeUpQt", totalWakeUp/totalDaysWakeUp);
+    return mapAggSleeps;
 }

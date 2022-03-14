@@ -573,25 +573,6 @@ function recupererAlcools() {
   return retour;
 }
 
-function recupererActivite() {
-  var retour = translate.getText("ACTIVITES_TITLE")+": \n";
-  var activite = JSON.parse(localStorage.getItem("dashboard")).activities;
-  retour = retour + " " + activite.heure + "h " + activite.minute + " min\n";
-
-  var title = translate.getText("ACTIVITES_TITLE")+": \n";
-  var keys = "date   -       hour - minute - duration(min) - durationUnit \n"
-  var activities = title + keys;
-  CompilerBilan.getActivities().forEach((data) => {
-                                activities = activities + data.get('date') + " -   "
-                                + data.get('hour') + " - " +
-                                + data.get('minute') + "   - " +
-                                + data.get('duration') + "    -      " 
-                                + data.get('durationUnit') 
-                                + " \n"
-                            });
-  return activities;
-}
-
 function recupererNourriture() {
   var retour = translate.getText("NOURRITURE_TITLE")+": \n";
   var nourriture = JSON.parse(localStorage.getItem("dashboard")).nourriture;
@@ -600,14 +581,6 @@ function recupererNourriture() {
   } else {
     return retour + nourriture.globalConsumption;
   }
-}
-
-function recupererSommeil() {
-  var retour = translate.getText("SLEEP")+": \n";
-  var sommeil = JSON.parse(localStorage.getItem("dashboard")).sommeil;
-  retour = retour + " " + sommeil.heure + "h " + sommeil.minute + " min\n";
-
-  return retour;
 }
 
 function recupererToilettes() {
@@ -635,14 +608,6 @@ function recupererGlycemie() {
   return retour;
 }
 
-function recupererPoids() {
-  var retour = translate.getText("POIDS_NOM_SECTION") +": \n";
-  var poids = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
-  retour = retour + poids + "\n";
-
-  return retour;
-}
-
 function recupererSupplements() {
   var retour = translate.getText("SUPPL_TITLE") +": \n";
   var supplement = JSON.parse(localStorage.getItem("dashboard")).supplement;
@@ -653,6 +618,82 @@ function recupererSupplements() {
   }
 
   return retour;
+}
+
+//TODO: refactoring to put it in a proper table !
+function recupererActivite() {
+  //var retour = translate.getText("ACTIVITES_TITLE")+": \n";
+  //var activite = JSON.parse(localStorage.getItem("dashboard")).activities;
+  //retour = retour + " " + activite.heure + "h " + activite.minute + " min\n";
+
+  var title = translate.getText("ACTIVITES_TITLE")+": \n";
+  var keys = "DATE               HOUR    MINUTES     DURATION\n"
+  var activities = title + keys;
+  CompilerBilan.getActivities().forEach((data) => {
+                                activities = activities
+                                + data.get('date') +     "      "
+                                + data.get('hours') +     "           "
+                                + data.get('minutes') +   "                 "
+                                + data.get('duration') + "\n"
+                            });
+  activities =  activities + "\n Total Duration : " + CompilerBilan.getAggregateActivities().get("TotalDuration");
+  activities =  activities + "\n Average Duration : " + CompilerBilan.getAggregateActivities().get("AverageDuration");
+
+  return activities;
+}
+
+
+//TODO: refactoring to put it in a proper table !
+function recupererPoids() {
+  //var retour = translate.getText("POIDS_NOM_SECTION") +": \n";
+  //var poids = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
+  //retour = retour + poids + "\n";
+
+  var title = translate.getText("POIDS_NOM_SECTION")+": \n";
+  var aggregateWeight = CompilerBilan.getAggregateWeights()
+  var prefUnitePoids = aggregateWeight.get("prefUnitePoids");
+  var keys = "DATE               WEIGHT(" + prefUnitePoids + ")\n"
+  var weights = title + keys;
+  CompilerBilan.getWeights().forEach((data) => {
+                                weights = weights
+                                + data.get('date') +     "      "
+                                + data.get('weight') +     "           "
+                                + "\n"
+                            });
+  weights =  weights + "\nInitial weight : " + aggregateWeight.get("initalWeight");
+  weights =  weights + "\nFinal weight : " + aggregateWeight.get("finalWeight");
+  weights =  weights + "\nDifference : " + aggregateWeight.get("deltaWeight") + "\n\n";
+  return weights;
+}
+
+
+//TODO: refactoring to put it in a proper table !
+//averageDuree + averageStartHour, averageEndHour, averageWakeUpQt
+function recupererSommeil() {
+  //var retour = translate.getText("SLEEP")+": \n";
+  //var sommeil = JSON.parse(localStorage.getItem("dashboard")).sommeil;
+  //retour = retour + " " + sommeil.heure + "h " + sommeil.minute + " min\n";
+
+  var title = translate.getText("SLEEP")+": \n";
+  var keys =    "DATE               START     END       DURATION   WAKEUP WAKEUP\n"
+  var keys_2 =  "                        HOUR       HOUR                          QT            STATE\n"
+  var sleeps = title + keys +keys_2;
+  CompilerBilan.getSleeps().forEach((data) => {
+                                sleeps = sleeps
+                                + data.get('date') +        "      "
+                                + data.get('startHour') +   "       "
+                                + data.get('endHour')   +   "       "
+                                + data.get('duration')  +   "             "
+                                + data.get('wakeUpQt')  +   "               "
+                                + data.get('wakeUpState')
+                                + "\n"
+                            });
+
+  sleeps +=  "\n Average start hour : " + CompilerBilan.getAggregateSleeps().get("averageStartHour");
+  sleeps +=  "\n Average end hour : " + CompilerBilan.getAggregateSleeps().get("averageEndHour");
+  sleeps +=  "\n Average duration : " + CompilerBilan.getAggregateSleeps().get("averageDuree");
+  sleeps +=  "\n Average wake up per night : " + CompilerBilan.getAggregateSleeps().get("averageWakeUpQt") + "\n\n";
+  return sleeps;
 }
 
 export default Settings;
