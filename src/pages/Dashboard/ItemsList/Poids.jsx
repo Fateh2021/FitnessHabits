@@ -113,7 +113,6 @@ const Poids = (props) => {
     if (change_IMC > 10) {
       poidsService.verifier_changement_IMC(change_IMC);
     }
-
   }
 
 	// Capture de l'éventement si le dailyPoids change
