@@ -38,7 +38,7 @@ const TableauPoids = () => {
   var graphData = []
   if (refData != null) {
   // On doit comprendre à quoi sert la variable _
-   if (value.poids.datePoids !== undefined) {
+   for (const [_,value] of Object.entries(refData)) {
         if (value.poids.datePoids !== undefined) {
             let datePoids = formatDate(value.poids.datePoids)
             let poids = poidsService.formatPoids(value.poids.dailyPoids)
