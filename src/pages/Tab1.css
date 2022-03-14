@@ -588,9 +588,14 @@ color: #ffffff;
 }
 
 .divAddTextNut{
-
   font-size: 10px;
   text-align: center;
+}
+
+.nourTextInput input::-webkit-outer-spin-button,
+.nourTextInput input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
  .labelSettings header h3 .IonItem{
@@ -2121,4 +2126,4 @@ h2{
   font-weight: bold;
   color: black;
   right: 50px;
-}
+}
