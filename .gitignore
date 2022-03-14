@@ -34,3 +34,4 @@ yarn-error.log*
 .scannerwork
 test-report.xml
 
+.scannerwork/report-task.txt

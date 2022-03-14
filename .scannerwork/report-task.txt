@@ -1,6 +1,6 @@
 projectKey=FitnessHabits
 serverUrl=http://localhost:9000
-serverVersion=9.3.0.51899
+serverVersion=9.2.4.50792
 dashboardUrl=http://localhost:9000/dashboard?id=FitnessHabits
-ceTaskId=AX83XWuiTmW4_B_QEzjw
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AX83XWuiTmW4_B_QEzjw
+ceTaskId=AX-Jp-UYGqgYhMwOmWGD
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AX-Jp-UYGqgYhMwOmWGD
