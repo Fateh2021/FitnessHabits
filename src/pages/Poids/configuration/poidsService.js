@@ -20,12 +20,20 @@ export function initPrefPoids() {
     })
 }
 
-export function formatPoids(poids) {    
-    return (poids * DIFF_UNITE_POIDS).toFixed(2);
+export function formatPoids(poids) {
+    let prefUnitePoids = localStorage.getItem('prefUnitePoids');
+    if (prefUnitePoids === "LBS") {
+        return (poids * DIFF_UNITE_POIDS).toFixed(2)
+    }
+    return poids
 }
 
 export function formatToKG(poids) {
-    return (poids / DIFF_UNITE_POIDS).toFixed(2);
+    let prefUnitePoids = localStorage.getItem('prefUnitePoids');
+    if (prefUnitePoids === "LBS") {
+        return (poids / DIFF_UNITE_POIDS).toFixed(2)
+    }
+    return poids
 }
 
 export function getDailyPoids() {
