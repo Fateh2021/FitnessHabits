@@ -18,7 +18,6 @@ export function initPrefPoids() {
         }
         localStorage.setItem("prefUnitePoids", prefUnitePoids);
     })
-    localStorage.setItem("prefUnitePoids", prefUnitePoids);
 }
 
 export function formatPoids(poids) {
