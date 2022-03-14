@@ -1,17 +1,23 @@
 import React, {Fragment} from 'react';
 import firebase from "firebase";
 import * as translate from '../../translate/Translator'
-import { getLang } from "../../translate/Translator";
+import {getLang} from "../../translate/Translator";
 
 //import React, {Fragment} from 'react';
 // import {Text, View, StyleSheet} from '@react-pdf/renderer';
 let arrayWeights = [];
 let arraySleeps = [];
 let arrayActivities = [];
+const arrayHydratations = [];
+const arrayAlcohol = [];
+const arrayToilets = [];
+const arrayGlycemia = [];
+
 let mapAggWeights = new Map();
 let mapAggSleeps = new Map();
 let mapAggActivities = new Map();
 let initialWeight;
+
 
 export async function compilerBilan(dataSelected, d1, d2) {
     arrayWeights = [];
@@ -38,10 +44,31 @@ export async function compilerBilan(dataSelected, d1, d2) {
         let ref = firebase.database().ref("dashboard/" + userUID + "/");
         await ref.once("value", (snap) => {
             snap.forEach((data) => {
-                const currentDate = new Date();
-                var jour = data.key[0] + data.key[1] + "-";
-                var mois = "0" + data.key[2] + "-";
-                var annee = data.key[3] + data.key[4] + data.key[5] + data.key[6];
+                var annee = data.key.slice(-4);
+                var dayAndMonth = data.key.slice(0, -4);
+                var mois;
+                var jour;
+                // if there's only 2 char for the day and month, then day and month are 1 char each
+                if (dayAndMonth.length === 2) {
+                    jour = '0' + data.key[0] + '-';
+                    mois = '0' + data.key[1] + '-';
+                    // if dayAndMonth has length of 4, then day and month have 2 chars each
+                } else if (dayAndMonth.length === 4) {
+                    jour = data.key.slice(0,2) + '-';
+                    mois = data.key.slice(2,4) + '-';
+                    // if dayAndMonth has a length of 3, 2 options:
+                } else if (dayAndMonth.length === 3) {
+                    // day 2 chars, month 1 char
+                    if ( dayAndMonth.slice(0, 2) in [...Array(32).keys()]
+                        && !(dayAndMonth.slice(1, 3) in [...Array(12).keys()]) ) {
+                        jour = data.key.slice(0,2) + '-';
+                        mois = '0' + data.key[2] + '-';
+                        // day 1 char, month 1 char
+                    } else {
+                        jour = '0' + data.key[0] + '-';
+                        mois = data.key.slice(1,3) + '-';
+                    }
+                }
                 var date = jour + mois + annee;
                 var obj = data.val();
                 obj.date = date;
@@ -60,17 +87,12 @@ export async function compilerBilan(dataSelected, d1, d2) {
     let datePickerDates = getDates(d1, d2);
     dataFormat = dataFormat.filter((data) => {
         return !!datePickerDates.find((item) => {
-            return (
-                item.getTime() ==
-                new Date(
-                    data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-                ).getTime()
+            return (item.getTime() == new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
             );
         });
     });
 
     let retour = [];
-
 
 
     // With the filtered datas, make a dictionnary for each parameters
@@ -86,32 +108,16 @@ export async function compilerBilan(dataSelected, d1, d2) {
             ? dataFormat[i].date
             : new Date().toISOString().slice(0, 10);
 
+
         for (const data of dataSelected) {
             switch (data) {
                 case "hydratation":
-                /*
                     if (dataFormat[i].hydratation.hydrates) {
-                        for (const hydr of dataFormat[i].hydratation.hydrates) {
-                            if (retour[i][data])
-                                retour[i][data] +=
-                                    (hydr.name ? hydr.name : "NO-NAME") +
-                                    ": " +
-                                    hydr.qtte +
-                                    " " +
-                                    hydr.unit +
-                                    "; ";
-                            else
-                                retour[i][data] =
-                                    (hydr.name ? hydr.name : "NO-NAME") +
-                                    ": " +
-                                    hydr.qtte +
-                                    " " +
-                                    hydr.unit +
-                                    "; ";
-                        }
-                    } else {
-                        retour[i][data] = "empty";
-                    }*/
+                        let hydratations = dataFormat[i].hydratation.hydrates
+                        console.log(hydratations)
+                        fetchHydratations(hydratations, formatedDate);
+                        // console.log(arrayHydratations);
+                    }
                     break;
 
                 case "nourriture":/*
@@ -317,6 +323,30 @@ function getDates(startDate, stopDate) {
 }
 
 
+function fetchHydratations(hydratations, formatedDate) {
+    if (arrayHydratations.length !== 0) {
+        arrayHydratations.splice(0);
+    }
+    for (const drink of hydratations) {
+        if (drink.consumption === 0) {
+            continue;
+        }
+        let mapHydratation = new Map();
+        mapHydratation.set("date", formatedDate);
+        mapHydratation.set("consumption", drink.name);
+        mapHydratation.set("quantity", drink.consumption);
+        mapHydratation.set("volume", drink.qtte);
+        mapHydratation.set("unit", drink.unit);
+        mapHydratation.set("protein", drink.proteine);
+        mapHydratation.set("glucide", drink.glucide);
+        mapHydratation.set("fibre", drink.fibre);
+        mapHydratation.set("gras", drink.gras);
+
+        arrayHydratations.push(mapHydratation);
+    }
+}
+
+
 function fetchWeights(weight, formatedDate) {
     let mapWeight = new Map();
     mapWeight.set("date", formatedDate);
@@ -414,11 +444,17 @@ function getDuration(time) {
 
 // ---- PUBLIC FONCTIONS ----------------------------------------------------
 
-//- ACTIVITIES - //
+// PUBLIC FONCTIONS
+
+export function getHydratations() {
+    return arrayHydratations;
+}
+
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
     return arrayActivities;
 }
+
 export function getAggregateActivities() {
     var totalDuration = 0;
     var totalDays = 0;
@@ -433,12 +469,12 @@ export function getAggregateActivities() {
     return mapAggActivities;
 }
 
-
 //- WEIGHTS - //
 //Possible keys: weightUnit, weight
 export function getWeights() {
     return arrayWeights;
 }
+
 export function getAggregateWeights() {
     var finalWeight = getWeights()[getWeights().length -1].get("weight");
     mapAggWeights.set("initalWeight", initialWeight);
@@ -448,12 +484,12 @@ export function getAggregateWeights() {
     return mapAggWeights;
 }
 
-
 //- SLEEPs - //
 //Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
 export function getSleeps() {
     return arraySleeps;
 }
+
 export function getAggregateSleeps() {
     var minTotalStartHours = 0;
     var minTotalEndHours = 0;
@@ -488,6 +524,7 @@ export function getAggregateSleeps() {
     mapAggSleeps.set("averageStartHour", formatDuration(minTotalStartHours/totalDaysStart));
     mapAggSleeps.set("averageEndHour", formatDuration(minTotalEndHours/totalDaysEnd));
     mapAggSleeps.set("averageDuree", formatDuration(minTotalDuration/totalDaysDuration));
-    mapAggSleeps.set("averageWakeUpQt", totalWakeUp/totalDaysWakeUp);
+    mapAggSleeps.set("averageWakeUpQt", (totalWakeUp/totalDaysWakeUp).toFixed(1));
     return mapAggSleeps;
 }
+
