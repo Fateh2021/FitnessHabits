@@ -71,11 +71,11 @@ export function saveEntreeDePoids(dailyPoids) {
 
 export function verifier_changement_IMC(v){
     
-    var imc_category = trouver_category(v);
+    var imc_category = trouver_nouvelle_categorie(v);
     const userUID = localStorage.getItem('userUid');
-    let imc_c = localStorage.getItem('IMC_c');
+    let imc_c = localStorage.getItem('groupe_IMC');
 
-    localStorage.setItem('IMC_c', imc_category);
+    localStorage.setItem('groupe_IMC', imc_category);
     if (imc_c !== null && imc_category.localeCompare(imc_c) ) {
         alert(translate.getText(imc_category));
     }
@@ -83,25 +83,29 @@ export function verifier_changement_IMC(v){
 
 
   }
-// Pour trouver la nouvelle catégorie pour IMC
-function trouver_nouvelle_categorie(value){
+  function trouver_nouvelle_categorie(value){
     var groupe_IMC = '';
     if (value <= 18.49) {
       groupe_IMC = 'CATEGORIE_MAIGRE';
 
-    } else if (value >= 18.5 && value <= 25) {
+    } 
+    if (value >= 18.5 && value <= 25) {
       groupe_IMC = 'CATEGORIE_IDEAL';
 
-    } else if (value >= 25.01 && value <= 30) {
+    } 
+    if (value >= 25.01 && value <= 30) {
       groupe_IMC = 'CATEGORIE_SURPOIDS';
 
-    } else if (value >= 30.01 && value <= 35) {
+    } 
+    if (value >= 30.01 && value <= 35) {
       groupe_IMC = 'CATEGORIE_OB_CLASSE_1';
 
-    } else if (value >= 35.01 && value <= 40) {
+    } 
+    if (value >= 35.01 && value <= 40) {
       groupe_IMC = 'CATEGORIE_OB_CLASSE_2';
 
-    } else if (value > 40) {
+    } 
+    if (value > 40) {
       groupe_IMC = 'CATEGORIE_OB_CLASSE_3';
     }
 
