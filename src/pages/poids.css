@@ -3,19 +3,24 @@
   height: 60%;
   background-color: #e7dcdc;
   border-radius: 5px;
-  margin-left: 20px;
-  padding: 20px;
-  text-align: begin;
 }
+
+.icone{
+  cursor: pointer;
+}
+
 .dailyPoids {
   width: 60px;
 }
+
 .titrePoids {
   width: 20px;
 }
+
 .titreImc {
-  width: 60px;
+  width: 80px;
 }
+
 .IMC {
   color: #ffd31a;
 }
@@ -23,6 +28,7 @@
 .unitePoids {
   color: #ffd31a;
 }
+
 .poids-text-md {
   font-size: 16px;
   line-height: 100%;
@@ -35,7 +41,6 @@
 
 .rowPoids {
   border-color: rgb(236, 236, 236);
-
   border-width: 1px;
   border-top: 0px;
   border-left: 0px;

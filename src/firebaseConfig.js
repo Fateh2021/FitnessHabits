@@ -2,6 +2,7 @@ import firebase from 'firebase'
 import "firebase/auth";
 import 'firebase/storage';
 
+// la nouvelle base de donnée !
 const config={
     apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
     authDomain: "fitnesshabits-be415.firebaseapp.com",

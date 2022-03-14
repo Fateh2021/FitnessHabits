@@ -1,10 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-
 /android
 /ios
 /.idea
 /.gradle
+
+# scanner
+/.scannerwork
 
 # dependencies
 /node_modules
@@ -31,3 +33,4 @@ yarn-error.log*
 
 .scannerwork
 test-report.xml
+
