@@ -29,10 +29,38 @@ const Poids = (props) => {
   var prefPoids = localStorage.getItem("prefUnitePoids");
   const [unitePoids, setUnitePoids] = useState(prefPoids);
   const [currentDate, ] = useState({ startDate: new Date() });
+  //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
-  var [taille, setTaille] = useState("");
-  var [imc, setImc] = useState("");
+  var p = props.poids;
+  var pd = props.poids.dailyPoids;
+  if (prefPoids == 'LBS') pd = (pd*2.2).toFixed(2);
+  const [poids, setPoids] = useState(p);
 
+  //const [poids, setPoids] = useState(props.poids);
+  //const [, setPoids] = useState(props.poids); -- Cette ligne je ne l'a comprends pas, veuiller me l'expliquer
+  var [taille, setTaille] = useState("");
+
+  /*
+  useEffect(() => {
+    setDailyPoids(props.poids.dailyPoids);
+  }, [props.poids.dailyPoids]);
+  */
+  useEffect(() => {
+    setDailyPoids(pd)
+   
+  }, [pd]);
+
+
+
+  useEffect(() => {
+    setPoids(p);
+  }, [p]);
+
+  /*
+  useEffect(() => {
+    setPoids(props.poids);
+  }, [props.poids]);
+  */
   useEffect(() => {
     poidsService.initPrefPoids()
     const userUID = localStorage.getItem("userUid");
@@ -42,6 +70,9 @@ const Poids = (props) => {
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setUnitePoids(snapshot.val().unitePoids);
+        if (snapshot.val().unitePoids === "LBS") {
+          props.poids.dailyPoids = props.poids.dailyPoids * 2.2;
+        }
       }
     });
     var taille_l = firebase.database().ref("profiles/" + userUID);
@@ -50,35 +81,26 @@ const Poids = (props) => {
         setTaille(snapshot.val().size);
       }
     });
-
-    var poids = firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear());
-    poids.once("value").then(function(snapshot) {
-      if(snapshot.val() != null) {
-        setDailyPoids(snapshot.val().poids.dailyPoids);        
-        CalculImc();
-      }
-    });
-
   }, []);
 
   const handleUnitePoidsChange = (e) => {
     let value = e.detail.value;
+    console.log(e)
+    //var value = e.value;
     poidsService.setPrefUnitePoids(value)
-    let old_poids = unitePoids;
-    let new_poids = 0;
+    let OldUnitePoids = unitePoids;
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    if (old_poids === "KG" && value === "LBS") {      
-      new_poids = poidsService.formatPoids(dashboard.poids.dailyPoids);
-      setDailyPoids(new_poids);
-    } else if (old_poids === "LBS" && value === "KG") {
-      new_poids = poidsService.formatToKG(dashboard.poids.dailyPoids);
-      setDailyPoids(new_poids);
+    if (OldUnitePoids === "KG" && value === "LBS") {
+      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
+      setDailyPoids((dailyPoids * 2.2).toFixed(2));
+    } else if (OldUnitePoids === "LBS" && value === "KG") {
+      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(2);
+      setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }
-
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    CalculImc();
+    IMC = CalculImc();
   };
 
 	// Capture de l'éventement si IMC change
@@ -99,12 +121,14 @@ const Poids = (props) => {
     let poidsDaily = event.target.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    dashboard.poids.dailyPoids = poidsDaily;
+    dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
     setDailyPoids(poidsDaily);
-    CalculImc();
+    if (unitePoids == "LBS") {
+      dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
+    }
 
     const userUID = localStorage.getItem("userUid");
     firebase
@@ -117,23 +141,28 @@ const Poids = (props) => {
           (currentDate.startDate.getMonth() + 1) +
           currentDate.startDate.getFullYear()
       )
-      .update(dashboard);      
-  };
+      .update(dashboard);
 
+      
+  };
   var CalculImc = () => {
     taille = taille / 100;
-    var indicateur_IMC;
+    var p = dailyPoids;
 
+    //var IMC;
+    var indicateur_IMC;
     if (unitePoids == "LBS") {
-      indicateur_IMC = ((dailyPoids / 2.2).toFixed(2)) / (taille * taille);
+
+      p = (p / 2.2).toFixed(2);
+      indicateur_IMC = p / (taille * taille);
     } else {
       indicateur_IMC = dailyPoids / (taille * taille);
     }
-
-    var r_val = indicateur_IMC.toFixed(2);   
-    setImc(r_val); 
+    var r_val = indicateur_IMC.toFixed(2);
+    
     return r_val;
   };
+  var IMC = CalculImc();
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";
@@ -157,11 +186,12 @@ const Poids = (props) => {
             </h2>
           </IonLabel>
           <IonInput
-            value={imc}
+            value={IMC}
             type="number"
             className="IMC"
             readonly
-            //onIonChange={handleIMCChange}              
+            onIonChange={handleIMCChange}  
+            
           ></IonInput>
         </div>
         <IonInput
