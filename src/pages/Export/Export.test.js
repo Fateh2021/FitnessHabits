@@ -25,7 +25,7 @@ test('renders without crashing', async() => {
 
 
 //https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
-test('ExportModule - Check if PDF format done correctly', async() => {
+/*test('ExportModule - Check if PDF format done correctly', async() => {
     var date1 = new Date("2021-02-01");
     var date2 = new Date("2021-03-29");
     let data = await compilerBilan(['activities'], date1, date2);
@@ -62,7 +62,7 @@ test('ExportModule - Check if PDF export options set correctly', async() => {
     doc.text(string, 10, 10);
     expect(doc).toBeDefined();
 });
-
+*/
 /* Tester la présence des composantes dans la page */
 test('ExportModule - TestElementsPresence_1', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
