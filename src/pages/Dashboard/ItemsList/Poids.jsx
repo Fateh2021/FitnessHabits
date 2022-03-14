@@ -142,26 +142,26 @@ const Poids = (props) => {
           currentDate.startDate.getFullYear()
       )
       .update(dashboard);
-
-      
   };
+
+  // La fonction qui calcul IMC en fonction de la taille et le poids
   var CalculImc = () => {
-    taille = taille / 100;
-    var p = dailyPoids;
+    var valeur_IMC;
+    // Création d'une variable dans le but de ne pas toucher à la valeur de la variable taille
+    var taille_ajuste = taille / 100;
+    var poids_ajuste = dailyPoids; // Renommage de la variable
 
-    //var IMC;
-    var indicateur_IMC;
     if (unitePoids == "LBS") {
-
-      p = (p / 2.2).toFixed(2);
-      indicateur_IMC = p / (taille * taille);
+      poids_ajuste = (poids_ajuste / 2.2).toFixed(2); // IMC se calcul avec le poids en kilo seulement
+      valeur_IMC = poids_ajuste / (taille_ajuste * taille_ajuste);
     } else {
-      indicateur_IMC = dailyPoids / (taille * taille);
+      valeur_IMC = poids_ajuste / (taille_ajuste * taille_ajuste);
     }
-    var r_val = indicateur_IMC.toFixed(2);
-    
-    return r_val;
+
+    return valeur_IMC.toFixed(2);
   };
+
+  // Récupération de la valeur IMC calculée à l'intérieur de la fonction
   var IMC = CalculImc();
 
   const handleRouteToConfigurationPoids = () => {
