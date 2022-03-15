@@ -4,21 +4,19 @@ const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
 
 // Cette fonction est inutile pour l'instant car c'est plutot setPrefUnitePoids qui est utilisée
-/*
+
 export function initPrefPoids() {
-    var prefUnitePoids = "bla";
+		// Néttoyage des variables non nécessaire
     const userUID = localStorage.getItem('userUid');
     let prefPoidsRef = firebase.database().ref('profiles/' + userUID +"/preferencesPoids")
     prefPoidsRef.once("value").then(function(snapshot) {
-        if (localStorage["prefUnitePoids"] === "LBS" || localStorage["prefUnitePoids"] === "KG") {
-            //prefUnitePoids = localStorage.getItem("prefUnitePoids");
-        } else if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
-            //localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
+        if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
+            localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
         } else {
-            //localStorage.setItem("prefUnitePoids", "KG");
+            localStorage.setItem("prefUnitePoids", "KG");
         }
     })
-}*/
+}
 
 export function formatPoids(poids) {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
@@ -71,7 +69,6 @@ export function saveEntreeDePoids(dailyPoids) {
 
 export function verifier_changement_IMC(valeur_imc){
     var imc_category = trouver_nouvelle_categorie(valeur_imc);
-    // const userUID = localStorage.getItem('userUid'); // variable non utilisé
     let imc_category_local = localStorage.getItem('groupe_IMC');
 
     localStorage.setItem('groupe_IMC', imc_category);

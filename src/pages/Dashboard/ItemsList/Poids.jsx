@@ -63,7 +63,7 @@ const Poids = (props) => {
   */
 
   useEffect(() => {
-    //poidsService.initPrefPoids() // Mise en commentaire de la fonction qui semble inutile...
+    poidsService.initPrefPoids() // Mise en commentaire de la fonction qui semble inutile...
     const userUID = localStorage.getItem("userUid");
     let preferencesPoidsRef = firebase
       .database()
