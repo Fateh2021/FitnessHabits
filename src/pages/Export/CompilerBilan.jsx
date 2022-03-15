@@ -8,7 +8,7 @@ import {getLang} from "../../translate/Translator";
 let arrayWeights = [];
 let arraySleeps = [];
 let arrayActivities = [];
-const arrayHydratations = [];
+let arrayHydratations = [];
 const arrayAlcohol = [];
 const arrayToilets = [];
 const arrayGlycemia = [];
@@ -23,6 +23,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
     arrayWeights = [];
     arraySleeps = [];
     arrayActivities = [];
+    arrayHydratations = [];
     mapAggWeights = new Map();
     mapAggSleeps = new Map();
     mapAggActivities = new Map();
@@ -114,10 +115,9 @@ export async function compilerBilan(dataSelected, d1, d2) {
                 case "hydratation":
                     if (dataFormat[i].hydratation.hydrates) {
                         let hydratations = dataFormat[i].hydratation.hydrates
-                        console.log(hydratations)
                         fetchHydratations(hydratations, formatedDate);
-                        // console.log(arrayHydratations);
                     }
+                    console.log(arrayHydratations);
                     break;
 
                 case "nourriture":/*
@@ -324,9 +324,6 @@ function getDates(startDate, stopDate) {
 
 
 function fetchHydratations(hydratations, formatedDate) {
-    if (arrayHydratations.length !== 0) {
-        arrayHydratations.splice(0);
-    }
     for (const drink of hydratations) {
         if (drink.consumption === 0) {
             continue;
@@ -446,6 +443,7 @@ function getDuration(time) {
 
 // PUBLIC FONCTIONS
 
+// keys :
 export function getHydratations() {
     return arrayHydratations;
 }

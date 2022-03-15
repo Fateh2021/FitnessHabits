@@ -551,16 +551,24 @@ Date.prototype.addDays = function (days) {
   return date;
 };
 
-
+// TO REMOVE, ONLY FOR TEST PURPOSES
 function recupererHydratation() {
   var retour = translate.getText("HYDR_TITLE") +": \n";
-  var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
-      .hydrates;
-  hydratation.forEach((data) => {
-    retour =
-        retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
+  retour += 'Exemple hydratation';
+  CompilerBilan.getHydratations().forEach((data) => {
+    retour = retour + 'Date ' + data.get("date") + '\n' +
+              'Nom ' + data.get("consumption") + '\n' +
+              'Volume ' + data.get("volume") + '\n';
   });
   return retour;
+
+  // var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
+  //     .hydrates;
+  // hydratation.forEach((data) => {
+  //   retour =
+  //       retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
+  // });
+  // return retour;
 }
 
 function recupererAlcools() {
