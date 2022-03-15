@@ -8,18 +8,18 @@ const dict = require('../../../translate/Translation.json');
 
 let container = null;
 
-jest.mock("firebase/app", () => {
-    const data = { name: "unnamed" };
-    const snapshot = { val: () => data };
-    return {
-      initializeApp: jest.fn().mockReturnValue({
-        database: jest.fn().mockReturnValue({
-          ref: jest.fn().mockReturnThis(),
-          once: jest.fn(() => Promise.resolve(snapshot))
-        })
-      })
-    };
-  });
+// jest.mock("firebase/app", () => {
+//     const data = { name: "unnamed" };
+//     const snapshot = { val: () => data };
+//     return {
+//       initializeApp: jest.fn().mockReturnValue({
+//         database: jest.fn().mockReturnValue({
+//           ref: jest.fn().mockReturnThis(),
+//           once: jest.fn(() => Promise.resolve(snapshot))
+//         })
+//       })
+//     };
+//   });
 
 beforeEach(() => {
     // setup a DOM element as a render target
@@ -46,31 +46,50 @@ const setUp = (mock, testFunc) => {
 
 it('test change educ alcool setting', () => {
     const dummyAlcool = {
-        alcool: 
-        {
-            notifications: [],
+        alcool: {
+            notifications: {
+                active: false,
+            },
             dailyTarget:
             {
-                globalConsumption: 0,
-                unit: "",
                 value: 0
             },
             limitConsom: {
                 dailyTarget: 0,
-                weeklyTarget: 0
+                weeklyTarget: 0,
+                educAlcool: false,
+                sobrietyDays: 4,
+                notificationMessage: "Good job"
             },
-            alcools: [],
+            alcools: [
+                {
+                    id: 0,
+                    favoris: false,
+                    name: '',
+                    qtte: 0,
+                    proteine: 0,
+                    glucide: 0,
+                    fibre: 0,
+                    gras: 0,
+                    unit: '',
+                    consumption: 0,
+                }
+            ],
         }
     };
     const testFunc = () => {
+        
+        localStorage.setItem('userUid', '435f4rcev42');
+        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
+
         expect(dummyAlcool.alcool.limitConsom.dailyTarget).toBe(0);
         expect(dummyAlcool.alcool.limitConsom.weeklyTarget).toBe(0);
         const educAlcoolToggle = document.getElementById('educAlcoolToggle');
 
-        educAlcoolToggle.checked = false;
+        // educAlcoolToggle.click();
+        educAlcoolToggle.dispatchEvent(new MouseEvent('click'));
 
-        educAlcoolToggle.click();
-        // educAlcoolToggle.dispatchEvent(new Event('change', { bubbles: true }));
+        const sets = JSON.parse(localStorage.getItem('settings'));
         
         expect(dummyAlcool.alcool.limitConsom.dailyTarget).toBe(3);
         expect(dummyAlcool.alcool.limitConsom.weeklyTarget).toBe(15);

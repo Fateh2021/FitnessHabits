@@ -18,10 +18,10 @@ const BoissonAlcool = (props) => {
   // update state on prop change
   useEffect(() => {
     setNotifications(props.alcool.notifications);
-    defineGender().then(() =>{
+    // defineGender().then(() =>{
       setDailyTarget(props.alcool.dailyTarget); 
       setLimitConsom(props.alcool.limitConsom);
-    });
+    // });
   }, [props.alcool.dailyTarget, props.alcool.limitConsom, props.alcool.notifications])
 
   const accorAlcool = (divId) => {

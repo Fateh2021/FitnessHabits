@@ -88,6 +88,8 @@ const Nourriture = (props) => {
   const [macroNutrimentToEdit, setMacroNutrimentToEdit] = useState(props.macroNutrimentToEdit);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(props.itemContainerDisplayStatus);
 
+  console.log("NOURRITURE");
+
   useEffect(() => {
     setCurrentDate(props.currentDate);
   }, [props.currentDate])
