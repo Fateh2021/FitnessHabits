@@ -189,12 +189,12 @@ const Poids = (props) => {
           ></IonInput>
         </div>
         <IonInput
-          className="poidsActuelReadOnly"
+          className="input poidsActuel"
           value={dailyPoids}              
           onIonChange={handleChange}          
         ></IonInput>
 
-        <select value={unitePoids} onChange={handleUnitePoidsChange} >
+        <select className="input" value={unitePoids} onChange={handleUnitePoidsChange} >
           <option value="LBS">LBS</option>
           <option value="KG">KG</option>
         </select>
