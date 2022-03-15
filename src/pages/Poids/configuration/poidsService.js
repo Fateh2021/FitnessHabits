@@ -3,7 +3,8 @@ import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
 
-
+// Cette fonction est inutile pour l'instant car c'est plutot setPrefUnitePoids qui est utilisée
+/*
 export function initPrefPoids() {
     var prefUnitePoids = "bla";
     const userUID = localStorage.getItem('userUid');
@@ -17,7 +18,7 @@ export function initPrefPoids() {
             //localStorage.setItem("prefUnitePoids", "KG");
         }
     })
-}
+}*/
 
 export function formatPoids(poids) {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
