@@ -83,6 +83,8 @@ const Poids = (props) => {
       }
     });
 
+  // Ce bloc est mise en commentaire, car il faisait une division du poids lorsqu'on avait LBS en préférence de poids.
+	/*
     firebase.database().ref(
         "dashboard/" +
           userUID +
@@ -93,7 +95,7 @@ const Poids = (props) => {
       )
       .once("value").then(function (snapshot) {
         setDailyPoids(snapshot.val().poids.dailyPoids);
-      });
+      });*/
     
   }, []);
 

@@ -6,9 +6,8 @@ const DIFF_UNITE_POIDS = 2.2;
 // Cette fonction est inutile pour l'instant car c'est plutot setPrefUnitePoids qui est utilisée
 
 export function initPrefPoids() {
-		// Néttoyage des variables non nécessaire
     const userUID = localStorage.getItem('userUid');
-    let prefPoidsRef = firebase.database().ref('profiles/' + userUID +"/preferencesPoids")
+    let prefPoidsRef = firebase.database().ref('profiles/'+ userUID +"/preferencesPoids")
     prefPoidsRef.once("value").then(function(snapshot) {
         if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
             localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
