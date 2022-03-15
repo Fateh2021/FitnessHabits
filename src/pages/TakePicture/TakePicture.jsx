@@ -1,20 +1,20 @@
 import { IonImg, IonIcon, IonAvatar } from '@ionic/react';
 import React, { Component } from 'react';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
-import { aperture } from 'ionicons/icons';
-import firebase from "firebase";// import ajouté par GEFRAL
-
-
+import { aperture, closeCircleOutline } from 'ionicons/icons';
+import firebase from "firebase";
 import { Plugins, CameraResultType } from '@capacitor/core';
 
-  const { Camera } = Plugins;
-  const INITIAL_STATE = {
-    photo: '',
-  };
+const { Camera } = Plugins;
+
+const INITIAL_STATE = {
+  photo: '',
+  needsLoading: true,
+  canDelete: false,
+};
 
 
 export class TakePicture extends Component {
-  
 
   constructor(props) {
     super(props);
@@ -22,82 +22,126 @@ export class TakePicture extends Component {
     defineCustomElements(window);
   }
 
-  async takePicture() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.Uri
-    });
-    var imageUrl = image.webPath;
-    this.setState({
-      photo: imageUrl
-    })
-    this.uploadToStorage();
+  takePicture = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 70,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        targetHeight: 200,
+        targetWidth: 200,
+      });
 
+      this.setState({
+        photo: image.webPath,
+        needsLoading: false,
+        canDelete: false,
+      });
+
+      this.uploadToStorage();
+    } catch (error) {
+      // User cancelled operation.
+    }
+  }
+
+  removePicture = async () => {
+    const fileName = "profilPictures/" + firebase.auth().currentUser.uid;
+    try {
+      firebase.storage().ref(fileName).delete();
+      this.setState({
+        photo: '',
+        needsLoading: false,
+        canDelete: false,
+      });
+      localStorage.removeItem("profile-picture-cache");
+      firebase.database().ref("profiles/" + firebase.auth().currentUser.uid).update({
+        "profilPicture": '',
+      });
+    } catch (error) {
+    }
   }
 
 
-  uploadToStorage() {
-    // Conversion de l'image en blob -- AJOUT TEAM APY
-    const fileName = firebase.auth().currentUser.uid + "/profilPictures";
+  uploadToStorage = () => {
+    const fileName = "profilPictures/" + firebase.auth().currentUser.uid;
     var getFileBlob = function (url, cb) {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url);
       xhr.responseType = "blob";
-      xhr.addEventListener('load', function() {
+      xhr.addEventListener('load', function () {
         cb(xhr.response);
       });
       xhr.send();
     };
-    getFileBlob(this.state.photo, blob =>{
-        // Upload l'image avec comme path l'ID firebase de l'utilisateur avec comme filename profilPicture -- AJOUT TEAM APY
-        firebase.storage().ref(fileName).put(blob).then(function(snapshot) {
-        console.log('Upload réussi !');
-        firebase.database().ref("profiles/" + firebase.auth().currentUser.uid).update({
-          "profilPicture" : fileName
+    getFileBlob(this.state.photo, blob => {
+      firebase.storage().ref(fileName).put(blob).then((snapshot) => {
+        this.setState({
+          ...this.state,
+          needsLoading: false,
+          canDelete: true,
         });
-     });
-   })
-}
-
-// Downlad image from firebase storage and set photo state
-  downloadImage(){
-    console.log("downloadImage");
-    var storageRef = firebase.storage().ref();
-    var imageRef = storageRef.child(firebase.auth().currentUser.uid + "/profilPictures");
-    imageRef.getDownloadURL().then(function(url) {
-      console.log(url);
-      this.setState({
-        photo: url
-      })
-    }.bind(this));
+        firebase.database().ref("profiles/" + firebase.auth().currentUser.uid).update({
+          "profilPicture": fileName
+        }).catch(() => { });
+      }).catch((err) => {
+        this.setState({
+          photo: '',
+          needsLoading: false,
+          canDelete: false,
+        });
+      });
+    })
   }
 
+  // Download image from firebase storage and set photo state
+  async downloadImage() {
+    // Si l'URL est connu.
+    const cachedURL = localStorage.getItem("profile-picture-cache");
+    if (cachedURL) {
+      this.setState({ photo: cachedURL, needsLoading: false, canDelete: true });
+      return;
+    }
 
-  
-  render() {
-    
-    let { photo } = this.state;
-    /*GEFRAL: Dans le cas où l'utilisateur se connecte avec Google ou Facebook,
-    sa photo de profil de son compte utilisé pour la connexion est automatique ajouté à son profil
-    */
-    if (!photo ){ 
-      this.downloadImage();
-      /*
-      const user = firebase.auth().currentUser;
-      if (user != null) {
-        photo = user.photoURL;//on récupère la photo de profil de son compte google
+    // Fetch image from storage or provider profile
+    var storageRef = firebase.storage().ref();
+    var imageRef = storageRef.child("profilPictures/" + firebase.auth().currentUser.uid);
+    let photoUrl = '';
+
+    let canDelete = false;
+    try {
+      photoUrl = await imageRef.getDownloadURL();
+      canDelete = true;
+    } catch (err) {
+      // Si aucune photo custom, on utilise la photo de Fb/Google
+      if (!photoUrl && firebase.auth().currentUser?.photoURL) {
+        photoUrl = firebase.auth().currentUser.photoURL;
       }
-      */
-    } 
-    
-    return (       
+    }
+
+    localStorage.setItem("profile-picture-cache", photoUrl);
+    this.setState({ photo: photoUrl, needsLoading: false, canDelete });
+  }
+
+  componentDidMount() {
+    let { photo, needsLoading } = this.state;
+    if (!photo && needsLoading) {
+      this.downloadImage();
+    }
+  }
+
+  render() {
+    return (
       <div>
-        <button className="sideBarButtonCamera" onClick={() => this.takePicture()} color="danger">
-          <IonIcon icon={aperture}/>
+        <button className="sideBarButtonCamera" onClick={this.takePicture} color="danger">
+          <IonIcon icon={aperture} />
         </button>
+        { this.state.canDelete &&
+          <button className="sideBarButtonDelete" onClick={this.removePicture} color="danger">
+            <IonIcon icon={closeCircleOutline} />
+          </button>
+        }
         <IonAvatar className='avatarProfil'>
-          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={photo} ></IonImg>
+          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={this.state.photo} data-testid="profile-picture" ></IonImg>
         </IonAvatar>
       </div>
     );
