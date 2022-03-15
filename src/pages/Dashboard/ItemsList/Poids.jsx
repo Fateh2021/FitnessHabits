@@ -56,14 +56,8 @@ const Poids = (props) => {
     setPoids(p);
   }, [p]);
 
-  /*
   useEffect(() => {
-    setPoids(props.poids);
-  }, [props.poids]);
-  */
-
-  useEffect(() => {
-    poidsService.initPrefPoids() // Mise en commentaire de la fonction qui semble inutile...
+    poidsService.initPrefPoids();
     const userUID = localStorage.getItem("userUid");
     let preferencesPoidsRef = firebase
       .database()
@@ -76,43 +70,27 @@ const Poids = (props) => {
         }
       }
     });
+
     var taille_l = firebase.database().ref("profiles/" + userUID);
     taille_l.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setTaille(snapshot.val().size);
       }
     });
-
-  // Ce bloc est mise en commentaire, car il faisait une division du poids lorsqu'on avait LBS en préférence de poids.
-	/*
-    firebase.database().ref(
-        "dashboard/" +
-          userUID +
-          "/" +
-          currentDate.startDate.getDate() +
-          (currentDate.startDate.getMonth() + 1) +
-          currentDate.startDate.getFullYear()
-      )
-      .once("value").then(function (snapshot) {
-        setDailyPoids(snapshot.val().poids.dailyPoids);
-      });*/
-    
   }, []);
 
-  const handleUnitePoidsChange = (e) => {    
-    //let value = e.detail.value;
-    let value = e.target.value;
-    console.log(e)
-    //var value = e.value;
-    poidsService.setPrefUnitePoids(value)
-    let OldUnitePoids = unitePoids;
-    setUnitePoids(value);
+	// Capture de l'éventement si unite de préférence du poids change
+  const handleUnitePoidsChange = (event) => {
+    let newUnitePoids = event.target.value;
+    poidsService.setPrefUnitePoids(newUnitePoids);
+    let oldUnitePoids = unitePoids;
+    setUnitePoids(newUnitePoids);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    if (OldUnitePoids === "KG" && value === "LBS") {
+    if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
       dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
       setDailyPoids((dailyPoids * 2.2).toFixed(2));
-    } else if (OldUnitePoids === "LBS" && value === "KG") {
+    } else if (oldUnitePoids === "LBS" && newUnitePoids === "KG") {
       dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(2);
       setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }

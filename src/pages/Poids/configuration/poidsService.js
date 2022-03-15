@@ -3,12 +3,11 @@ import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
 
-// Cette fonction est inutile pour l'instant car c'est plutot setPrefUnitePoids qui est utilisée
-
 export function initPrefPoids() {
     const userUID = localStorage.getItem('userUid');
     let prefPoidsRef = firebase.database().ref('profiles/'+ userUID +"/preferencesPoids")
     prefPoidsRef.once("value").then(function(snapshot) {
+    // Permet de récupération de la préférence de poids que nous avons dans firebase avant de mettre ça dans le localstorage
         if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
             localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
         } else {
