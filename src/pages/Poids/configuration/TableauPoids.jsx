@@ -38,13 +38,16 @@ const TableauPoids = () => {
   var graphData = []
   if (refData != null) {
   // On doit comprendre à quoi sert la variable _
-   for (const [_,value] of Object.entries(refData)) {
-        if (value.poids.datePoids !== undefined) {
-            let datePoids = formatDate(value.poids.datePoids)
-            let poids = poidsService.formatPoids(value.poids.dailyPoids)
-            graphData.push ({x: datePoids, y: poids})
-        }
+   for (const [,value] of Object.entries(refData)) {
+      
+      if (value.poids.datePoids !== undefined) {
+        let datePoids = formatDate(value.poids.datePoids)
+        let poids = poidsService.formatPoids(value.poids.dailyPoids)
+        graphData.push ({x: datePoids, y: poids})
+      }
     }
+        
+    
     graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
   }
   let start = new Date(),

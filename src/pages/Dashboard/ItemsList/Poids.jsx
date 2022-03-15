@@ -81,10 +81,24 @@ const Poids = (props) => {
         setTaille(snapshot.val().size);
       }
     });
+
+    firebase.database().ref(
+        "dashboard/" +
+          userUID +
+          "/" +
+          currentDate.startDate.getDate() +
+          (currentDate.startDate.getMonth() + 1) +
+          currentDate.startDate.getFullYear()
+      )
+      .once("value").then(function (snapshot) {
+        setDailyPoids(snapshot.val().poids.dailyPoids);
+      });
+    
   }, []);
 
-  const handleUnitePoidsChange = (e) => {
-    let value = e.detail.value;
+  const handleUnitePoidsChange = (e) => {    
+    //let value = e.detail.value;
+    let value = e.target.value;
     console.log(e)
     //var value = e.value;
     poidsService.setPrefUnitePoids(value)
@@ -200,7 +214,12 @@ const Poids = (props) => {
           onIonChange={handleChange}          
         ></IonInput>
 
-        <IonSelect
+        <select value={unitePoids} onChange={handleUnitePoidsChange} >
+          <option value="LBS">LBS</option>
+          <option value="KG">KG</option>
+        </select>
+
+        {/* <IonSelect
           className="unitePoids"
           value={unitePoids}
           okText={translate.getText("POIDS_PREF_CHOISIR")}
@@ -209,7 +228,7 @@ const Poids = (props) => {
         >
           <IonSelectOption value="LBS">LBS</IonSelectOption>
           <IonSelectOption value="KG">KG</IonSelectOption>
-        </IonSelect>
+        </IonSelect> */}
      
         <IonIcon
           className="arrowDashItem"
