@@ -235,7 +235,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
 
   useEffect(() => {
     const localDashboard = localStorage['dashboard'];
-    console.log("Loading Dashboard test..."+JSON.stringify(dashboard));
     FormatDate(currentDate.startDate).then(dt => {
       setFormatedCurrentDate(dt);
     });
@@ -244,7 +243,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       const sets = addMissingDashboard(JSON.parse(localDashboard));
       localStorage.setItem('dashboard', JSON.stringify(sets));
       setDashboard(JSON.parse(localDashboard));
-      console.log("Loading Dashboard From localStorage 1st time..."+JSON.stringify(dashboard));
     } else {
       const userUID = localStorage.getItem('userUid');
       console.log("Loading Dashboard From DB...");

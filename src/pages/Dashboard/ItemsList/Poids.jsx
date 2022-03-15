@@ -8,9 +8,7 @@ import {
   IonIcon,
   IonLabel,
   IonItem,
-  IonAvatar,
-  IonSelect,
-  IonSelectOption,
+  IonAvatar
 } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
@@ -29,7 +27,6 @@ const Poids = (props) => {
   var prefPoids = localStorage.getItem("prefUnitePoids");
   const [unitePoids, setUnitePoids] = useState(prefPoids);
   const [currentDate, ] = useState({ startDate: new Date() });
-  //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var p = props.poids;
   var pd = props.poids.dailyPoids;
@@ -40,11 +37,6 @@ const Poids = (props) => {
   //const [, setPoids] = useState(props.poids); -- Cette ligne je ne l'a comprends pas, veuiller me l'expliquer
   var [taille, setTaille] = useState("");
 
-  /*
-  useEffect(() => {
-    setDailyPoids(props.poids.dailyPoids);
-  }, [props.poids.dailyPoids]);
-  */
   useEffect(() => {
     setDailyPoids(pd)
    
@@ -199,17 +191,6 @@ const Poids = (props) => {
           <option value="KG">KG</option>
         </select>
 
-        {/* <IonSelect
-          className="unitePoids"
-          value={unitePoids}
-          okText={translate.getText("POIDS_PREF_CHOISIR")}
-          cancelText={translate.getText("POIDS_PREF_ANNULER")}
-          onIonChange={handleUnitePoidsChange}
-        >
-          <IonSelectOption value="LBS">LBS</IonSelectOption>
-          <IonSelectOption value="KG">KG</IonSelectOption>
-        </IonSelect> */}
-     
         <IonIcon
           className="arrowDashItem"
           icon={arrowDropdownCircle}

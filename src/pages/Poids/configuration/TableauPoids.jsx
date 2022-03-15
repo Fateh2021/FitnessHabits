@@ -5,7 +5,6 @@ import firebase from 'firebase'
 import * as poidsService from "../../Poids/configuration/poidsService"
 import * as translate from "../../../translate/Translator";
 
-
 const TableauPoids = () => {
   const [refData, setRefData] = useState()
   const [poidsInitial, setPoidsInitial] = useState("");
@@ -34,7 +33,6 @@ const TableauPoids = () => {
       });
   }, [])
 
-
   var graphData = []
   if (refData != null) {
   // On doit comprendre à quoi sert la variable _
@@ -46,8 +44,7 @@ const TableauPoids = () => {
         graphData.push ({x: datePoids, y: poids})
       }
     }
-        
-    
+
     graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
   }
   let start = new Date(),
@@ -59,7 +56,6 @@ const TableauPoids = () => {
   let poidsCib = poidsService.formatPoids(poidsCible)
   let dataPoidsInitial = [{x: start, y: poidsIni},{x: end, y: poidsIni}]
   let dataPoidsCible = [{x: start, y: poidsCib},{x: end, y: poidsCib}]
-
 
   const data = {
     datasets: [
@@ -113,8 +109,6 @@ const TableauPoids = () => {
   }
 
   return (<Line className="ionTableau poidsGraph" data={data} options={options} />)
-
 }
-
 
 export default TableauPoids;
