@@ -72,6 +72,7 @@ const Poids = (props) => {
 
   const handleUnitePoidsChange = (e) => {
     let value = e.detail.value;
+    console.log(value);
     poidsService.setPrefUnitePoids(value)
     let OldUnitePoids = unitePoids;
     setUnitePoids(value);
@@ -169,10 +170,11 @@ const Poids = (props) => {
         ></IonInput>
         <IonSelect
           className="unitePoids"
-          value={unitePoids}
+          // value={unitePoids}
+          aria-label="LBS"
           okText={translate.getText("POIDS_PREF_CHOISIR")}
           cancelText={translate.getText("POIDS_PREF_ANNULER")}
-          onIonChange={handleUnitePoidsChange}
+           onIonChange={handleUnitePoidsChange}
         >
           <IonSelectOption value="LBS">LBS</IonSelectOption>
           <IonSelectOption value="KG">KG</IonSelectOption>
