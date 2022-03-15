@@ -117,7 +117,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
                         let hydratations = dataFormat[i].hydratation.hydrates
                         fetchHydratations(hydratations, formatedDate);
                     }
-                    console.log(arrayHydratations);
                     break;
 
                 case "nourriture":/*
@@ -322,7 +321,7 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
-
+// Fonctions pour gérer la catégorie hydratation
 function fetchHydratations(hydratations, formatedDate) {
     for (const drink of hydratations) {
         if (drink.consumption === 0) {
@@ -334,10 +333,10 @@ function fetchHydratations(hydratations, formatedDate) {
         mapHydratation.set("quantity", drink.consumption);
         mapHydratation.set("volume", drink.qtte);
         mapHydratation.set("unit", drink.unit);
-        mapHydratation.set("protein", drink.proteine);
-        mapHydratation.set("glucide", drink.glucide);
-        mapHydratation.set("fibre", drink.fibre);
-        mapHydratation.set("gras", drink.gras);
+        mapHydratation.set("protein", parseInt(drink.proteine));
+        mapHydratation.set("glucide", parseInt(drink.glucide));
+        mapHydratation.set("fiber", parseInt(drink.fibre));
+        mapHydratation.set("fat", parseInt(drink.gras));
 
         arrayHydratations.push(mapHydratation);
     }
@@ -443,9 +442,38 @@ function getDuration(time) {
 
 // PUBLIC FONCTIONS
 
-// keys :
+// keys : date, consumption, quantity, volume, unit, protein, glucide, fiber, fat
 export function getHydratations() {
     return arrayHydratations;
+}
+
+// Function used to calculate the macros total and the average per day.
+// Return a map with a total for each macro (protein, glucide, fiber, fat) as
+// well as their average.
+function getMacrosTotalAndAveragePerDay(arrayMap) {
+    let totalFiber = 0;
+    let totalProtein = 0;
+    let totalFat = 0;
+    let totalGlucide = 0;
+    let days = arrayMap.length;
+    let macrosMap = new Map();
+    arrayMap.forEach((data) => {
+        totalFiber += data.get("fiber") * data.get("quantity");
+        totalProtein += data.get("protein") * data.get("quantity");
+        totalFat += data.get("fat") * data.get("quantity");
+        totalGlucide += data.get("fat") * data.get("quantity");
+
+    });
+    macrosMap.set("totalFiber", totalFiber);
+    macrosMap.set("totalProtein", totalProtein);
+    macrosMap.set("totalFat", totalFat);
+    macrosMap.set("totalGlucide", totalGlucide);
+    macrosMap.set("averageFiber", +(totalFiber/days).toFixed(2));
+    macrosMap.set("averageProtein", +(totalProtein/days).toFixed(2));
+    macrosMap.set("averageFat", +(totalFat/days).toFixed(2));
+    macrosMap.set("averageGlucide", +(totalGlucide/days).toFixed(2));
+
+    return macrosMap;
 }
 
 //Possible keys: date, hour, minute, duration
