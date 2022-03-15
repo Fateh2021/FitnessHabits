@@ -7,12 +7,8 @@ import * as translate from "../../../translate/Translator";
 import * as poidsService from "../../Poids/configuration/poidsService"
 
 import moment from "moment"
-import { pause } from 'ionicons/icons';
 
 const DIFF_UNITE_POIDS = 2.2;
-//obtenir initialisation
-//var arrPoidFirst = 0.0; // Non nécessaire
-//var dateCibleSuppose = null; // On va laisser l'utilisateur gérer sa date lui-même // Non nécessaire
 const userUID = localStorage.getItem('userUid'); // Récupération du userID
 
 // Au moment d'afficher la page, nous allons afficher l'information qui se trouve dans «preferencesPoids» du profil de l'utilisateur
@@ -26,11 +22,7 @@ const redirectDashboard = () => {
 function formatDate (date) {
   return moment(date).format('YYYY-MM-DD');
 }
-/*
-const [poidsInitial, setPoidsInitial] = useState(`${arrPoidFirst}`);
-const [poidsCible, setPoidsCible] = useState(`${arrPoidFirst*0.9}`);
-const [unitePoids, setUnitePoids] = useState(preferencesPoidUnite);
-*/
+
 var preferencesPoidUnite = localStorage.getItem('prefUnitePoids');
 
 const [poidsInitial, setPoidsInitial] = useState("");
@@ -54,7 +46,7 @@ const handleUnitePoidsChange = (e) => {
   let value = e.detail.value
   let OldUnitePoids = unitePoids; // On récupère l'ancienne unité de poids
   setUnitePoids(value);
-  // const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+
   if (OldUnitePoids === "KG" && value === "LBS") {
     setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
     setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
@@ -62,8 +54,6 @@ const handleUnitePoidsChange = (e) => {
     setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
     setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
   }
-	// Cette MAJ du Dashboard ne sert à rien vue que le dashboard est dans le fichier Poids.
-  //localStorage.setItem('dashboard', JSON.stringify(dashboard));
 }
 
 // Récupération des informations initiale et cible du client pour les afficher
@@ -73,13 +63,6 @@ useEffect(() => {
     if (snapshot.val() !== null) {
       var ini = snapshot.val().poidsInitial;
       var ci = snapshot.val().poidsCible;
-      /*
-      if(ini == null || ini == 0.00)
-        ini = arrPoidFirst;
-
-      if(ci == null || ci == 0.0 )
-        ci = ini*0.9;
-      */
       // Nous devons mettre des valeurs de 0 si elle n'éxiste pas encore...
       if (ini == null){
         ini = 0;
@@ -106,6 +89,9 @@ useEffect(() => {
 
 // Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de poids qui doit etre par défaut KG
 const handleReinitialisation = () => {
+	setPoidsCible("0.00");
+  setUnitePoids(preferencesPoidUnite); // On met par défaut KG, maintenant à la demande de Sylvie
+  setDateCible("");
 	// Récupération de la première donnée par rapport au poids, comme nous avons fait un reset des informations de base.
 	// Déplacement de la récupération de l'info du poids via firebase ici, car ailleurs la BD est callé plusieurs fois.
   let poidsRef = firebase.database().ref('dashboard/' + userUID)
@@ -129,36 +115,14 @@ const handleReinitialisation = () => {
     } else {
       setPoidsInitial("0.00");
     }
-
-	  // Nous allons laisser l'utilisateur choisir sa propre date cible
-    //trouver 1e jouree
-    /*
-    if(graphData.length > 0){
-      arrPoidFirst = graphData[0].y;
-      dateCibleSuppose = new Date(graphData[0].x);
-      //calculer date cible supposee, +1 mois;
-      dateCibleSuppose.setMonth(dateCibleSuppose.getMonth()+1);
-    }
-    */
   });
-	setPoidsCible("0.00");
-	setUnitePoids(preferencesPoidUnite); // On met par défaut KG, maintenant à la demande de Sylvie
-	setDateCible("")
-	// Nous allons updater la BD selon lorsque l'utilisateur aura fourni toutes les données nécessaire
-	/*
-	let preferencesPoids = {poidsInitial: 0.0, poidsCible : 0.0, unitePoids: "KG", dateCible: null}
-	poidsService.setPrefUnitePoids("KG")
-	firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
-	*/
 }
 
 // Event qui viendra confirmer les informations sur les objectifs de l'utilisateur
 const handlerConfirmation = () => {
   let pi = 0.0, pc = 0.0;
-  // localStorage.setItem('dateC', dateCible)
 	// Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
   if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
-
     pi = poidsInitial;
     pc = poidsCible;
     // On stock les informations en KG dans la BD
@@ -173,16 +137,6 @@ const handlerConfirmation = () => {
   } else {
       alert("Attention, veuiller saisir les informations manquantes !")
   }
-  /*
-  var dt = dateCible;
-  if(dt == "") dt = dateCibleSuppose;
-  if(pc == "") pc = pi*0.9;
-  let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dt};
-  poidsService.setPrefUnitePoids(unitePoids);
-
-  firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
-  localStorage.setItem('preferencesPoidsVaules', preferencesPoids);
-  redirectDashboard();*/
 }
 
   return (
