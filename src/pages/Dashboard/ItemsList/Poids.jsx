@@ -61,8 +61,9 @@ const Poids = (props) => {
     setPoids(props.poids);
   }, [props.poids]);
   */
+
   useEffect(() => {
-    poidsService.initPrefPoids()
+    //poidsService.initPrefPoids() // Mise en commentaire de la fonction qui semble inutile...
     const userUID = localStorage.getItem("userUid");
     let preferencesPoidsRef = firebase
       .database()
@@ -127,7 +128,6 @@ const Poids = (props) => {
     if (change_IMC > 10) {
       poidsService.verifier_changement_IMC(change_IMC);
     }
-
   }
 
 	// Capture de l'éventement si le dailyPoids change

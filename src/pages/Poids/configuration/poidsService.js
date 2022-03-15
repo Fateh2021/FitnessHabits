@@ -3,21 +3,22 @@ import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
 
-
+// Cette fonction est inutile pour l'instant car c'est plutot setPrefUnitePoids qui est utilisée
+/*
 export function initPrefPoids() {
     var prefUnitePoids = "bla";
     const userUID = localStorage.getItem('userUid');
     let prefPoidsRef = firebase.database().ref('profiles/' + userUID +"/preferencesPoids")
     prefPoidsRef.once("value").then(function(snapshot) {
         if (localStorage["prefUnitePoids"] === "LBS" || localStorage["prefUnitePoids"] === "KG") {
-            prefUnitePoids = localStorage.getItem("prefUnitePoids");
+            //prefUnitePoids = localStorage.getItem("prefUnitePoids");
         } else if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
-            localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
+            //localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
         } else {
-            localStorage.setItem("prefUnitePoids", "KG");
+            //localStorage.setItem("prefUnitePoids", "KG");
         }
     })
-}
+}*/
 
 export function formatPoids(poids) {
     let prefUnitePoids = localStorage.getItem('prefUnitePoids');
@@ -68,43 +69,35 @@ export function saveEntreeDePoids(dailyPoids) {
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
 }
 
-export function verifier_changement_IMC(v){
-    
-    var imc_category = trouver_nouvelle_categorie(v);
-    const userUID = localStorage.getItem('userUid');
-    let imc_c = localStorage.getItem('groupe_IMC');
+export function verifier_changement_IMC(valeur_imc){
+    var imc_category = trouver_nouvelle_categorie(valeur_imc);
+    // const userUID = localStorage.getItem('userUid'); // variable non utilisé
+    let imc_category_local = localStorage.getItem('groupe_IMC');
 
     localStorage.setItem('groupe_IMC', imc_category);
-    if (imc_c !== null && imc_category.localeCompare(imc_c) ) {
+    if (imc_category_local !== null && imc_category.localeCompare(imc_category_local) ) {
         alert(translate.getText(imc_category));
     }
-    
-
-
   }
-  function trouver_nouvelle_categorie(value){
+
+  function trouver_nouvelle_categorie(valeur_imc){
     var groupe_IMC = '';
-    if (value <= 18.49) {
+    if (valeur_imc <= 18.49) {
       groupe_IMC = 'CATEGORIE_MAIGRE';
 
-    } 
-    if (value >= 18.5 && value <= 25) {
+    } else if (valeur_imc >= 18.5 && valeur_imc <= 25) {
       groupe_IMC = 'CATEGORIE_IDEAL';
 
-    } 
-    if (value >= 25.01 && value <= 30) {
+    } else if (valeur_imc >= 25.01 && valeur_imc <= 30) {
       groupe_IMC = 'CATEGORIE_SURPOIDS';
 
-    } 
-    if (value >= 30.01 && value <= 35) {
+    } else if (valeur_imc >= 30.01 && valeur_imc <= 35) {
       groupe_IMC = 'CATEGORIE_OB_CLASSE_1';
 
-    } 
-    if (value >= 35.01 && value <= 40) {
+    } else if (valeur_imc >= 35.01 && valeur_imc <= 40) {
       groupe_IMC = 'CATEGORIE_OB_CLASSE_2';
 
-    } 
-    if (value > 40) {
+    } else if (valeur_imc > 40) {
       groupe_IMC = 'CATEGORIE_OB_CLASSE_3';
     }
 
