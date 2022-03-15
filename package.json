@@ -26,7 +26,6 @@
     "export-to-csv": "^0.2.1",
     "firebase": "^7.17.1",
     "ionicons": "^4.6.3",
-    "jest-dom": "^4.0.0",
     "jspdf": "^2.3.1",
     "luxon": "^1.27.0",
     "mime": "^1.6.0",
