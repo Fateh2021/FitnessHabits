@@ -17,6 +17,7 @@ let mapAggWeights = new Map();
 let mapAggSleeps = new Map();
 let mapAggActivities = new Map();
 let initialWeight;
+const userUID = localStorage.getItem("userUid");
 
 
 export async function compilerBilan(dataSelected, d1, d2) {
@@ -31,7 +32,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
     mapAggSleeps = new Map();
     mapAggActivities = new Map();
     d1.setHours(0, 0, 0, 0)
-    const userUID = localStorage.getItem("userUid");
     //Array of all datas in the BD
     let dataFormat = [];
 
@@ -138,9 +138,9 @@ export async function compilerBilan(dataSelected, d1, d2) {
                         fetchDrinks("alcool", alcools, formatedDate);
                     }
                     break;
-                    //case "glycémie":
-                    var glycemie = dataFormat[i].glycemie.dailyGlycemie;
-                    retour[i][data] = glycemie;
+                case "glycémie":
+                    let glycemie = dataFormat[i].glycemie.dailyGlycemie;
+                    fetchGlycemia(glycemie, formatedDate);
                     break;
 
                 case "supplements":/*
@@ -183,114 +183,8 @@ export async function compilerBilan(dataSelected, d1, d2) {
             }
         }
     }
-    console.log(arrayToilets);
-    console.log(getAverageToilets());
     return retour;
 }
-
-/*
-    //NOTE: Old way to get datas (string)  -- let here just for reference
-    for (let i = 0; i < dataFormat.length; ++i) {
-        retour[i] = {};
-        retour[i].date = dataFormat[i].date
-            ? dataFormat[i].date
-            : new Date().toISOString().slice(0, 10);
-
-        for (const data of dataSelected) {
-            switch (data) {
-                case "hydratation":
-                    if (dataFormat[i].hydratation.hydrates) {
-                        for (const hydr of dataFormat[i].hydratation.hydrates) {
-                            if (retour[i][data])
-                                retour[i][data] +=
-                                    (hydr.name ? hydr.name : "NO-NAME") +
-                                    ": " +
-                                    hydr.qtte +
-                                    " " +
-                                    hydr.unit +
-                                    "; ";
-                            else
-                                retour[i][data] =
-                                    (hydr.name ? hydr.name : "NO-NAME") +
-                                    ": " +
-                                    hydr.qtte +
-                                    " " +
-                                    hydr.unit +
-                                    "; ";
-                        }
-                    } else {
-                        retour[i][data] = "empty";
-                    }
-                    break;
-                case "activities":
-                    var activite = dataFormat[i].activities;
-                    retour[i][data] = activite.heure + "h " + activite.minute + " min";
-                    break;
-                case "nourriture":
-                    var nourriture = dataFormat[i].nourriture;
-                    if (nourriture.globalConsumption === "0")
-                        retour[i][data] = " NO DATA FOUND IN NOURRITURE";
-                    else retour[i][data] = nourriture.globalConsumption;
-                    break;
-                case "sommeil":
-                    var sommeil = dataFormat[i].sommeil;
-                    retour[i][data] = sommeil.heure + "h " + sommeil.minute + " min";
-                    break;
-                case "toilettes":
-                    var toilettes = dataFormat[i].toilettes;
-                    retour[i][data] =
-                        translate.getText("FECES_TITLE") + ": " + toilettes.feces + "; " + translate.getText("URINE_TITLE") + ": " + toilettes.urine;
-                    break;
-                case "alcool":
-                    if (dataFormat[i].alcool.alcools) {
-                        dataFormat[i].alcool.alcools.forEach((alc) => {
-                            if (retour[i][data])
-                                retour[i][data] +=
-                                    (alc.name ? alc.name : "NO-NAME") +
-                                    ": " +
-                                    alc.qtte +
-                                    " " +
-                                    alc.unit +
-                                    "; ";
-                            else
-                                retour[i][data] =
-                                    (alc.name ? alc.name : "NO-NAME") +
-                                    ": " +
-                                    alc.qtte +
-                                    " " +
-                                    alc.unit +
-                                    "; ";
-                        });
-                    } else {
-                        retour[i][data] = "empty";
-                    }
-                    break;
-                case "glycémie":
-                    var glycemie = dataFormat[i].glycemie.dailyGlycemie;
-                    retour[i][data] = glycemie;
-                    break;
-                case "poids":
-                    var poids = dataFormat[i].poids.dailyPoids;
-                    mapWeight.set(weight, dataFormat[i].poids.dailyPoids);
-                    retour[i][data] = poids;
-                    break;
-                case "supplements":
-                    var supplement = dataFormat[i].supplement;
-                    if (!supplement)
-                        retour[i][data] =
-                            translate.getText("SUPP_NOT_YET_IMPLEMENTED") + "\n";
-                    else retour[i][data] = supplement;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    }
-    return retour;
-}
-*/
-
 
 // PRIVATE FONCTIONS
 //Return an array with all dates to fetch
@@ -311,15 +205,15 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
             continue;
         }
         let mapHydratation = new Map();
-        mapHydratation.set("date", formatedDate);
-        mapHydratation.set("consumption", drink.name);
-        mapHydratation.set("quantity", drink.consumption);
-        mapHydratation.set("volume", drink.qtte);
-        mapHydratation.set("unit", drink.unit);
-        mapHydratation.set("protein", parseInt(drink.proteine) * drink.consumption);
-        mapHydratation.set("glucide", parseInt(drink.glucide) * drink.consumption);
-        mapHydratation.set("fiber", parseInt(drink.fibre) * drink.consumption);
-        mapHydratation.set("fat", parseInt(drink.gras) * drink.consumption);
+        mapHydratation.set("Date", formatedDate);
+        mapHydratation.set("Boisson", drink.name);
+        mapHydratation.set("Quantité", drink.consumption);
+        mapHydratation.set("Volume", drink.qtte);
+        mapHydratation.set("Unité", drink.unit);
+        mapHydratation.set("Protéine", parseInt(drink.proteine) * drink.consumption);
+        mapHydratation.set("Glucide", parseInt(drink.glucide) * drink.consumption);
+        mapHydratation.set("Fibre", parseInt(drink.fibre) * drink.consumption);
+        mapHydratation.set("Gras", parseInt(drink.gras) * drink.consumption);
 
         if (typeOfDrink === "hydratation") {
             arrayHydratations.push(mapHydratation);
@@ -332,11 +226,19 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
 function fetchToilets(toilets, formatedDate) {
     let mapToilets = new Map();
 
-    mapToilets.set("date", formatedDate);
-    mapToilets.set("urine", toilets.urine);
-    mapToilets.set("feces", toilets.feces);
+    mapToilets.set("Date", formatedDate);
+    mapToilets.set("Urine", toilets.urine);
+    mapToilets.set("Transit", toilets.feces);
 
     arrayToilets.push(mapToilets);
+}
+
+function fetchGlycemia(glycemia, formatedDate) {
+    let mapGlycemia = new Map();
+    mapGlycemia["Date"] = formatedDate;
+    mapGlycemia["Glycémie"] = parseInt(glycemia);
+
+    arrayGlycemia.push(mapGlycemia);
 }
 
 
@@ -511,6 +413,23 @@ export function getAverageToilets() {
     return mapToilets;
 }
 
+// keys : Date, Glycemie
+export function getGlycemia() {
+    return arrayGlycemia;
+}
+
+// return the average glycemia for the last few days
+export function getAverageGlycemia() {
+    let total = 0;
+    arrayGlycemia.forEach((data) => {
+        total += data["Glycemie"];
+    });
+    let mapAverageGlycemia = new Map();
+    mapAverageGlycemia["Moyenne"] = (total/arrayGlycemia.length).toFixed(2) + " mmol/L";
+    mapAverageGlycemia["Référence"] = "4.7 - 6.8 mmol/L";
+
+    return mapAverageGlycemia;
+}
 
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
