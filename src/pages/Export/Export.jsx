@@ -574,13 +574,7 @@ function recupererAlcools() {
 }
 
 function recupererNourriture() {
-  var retour = translate.getText("NOURRITURE_TITLE")+": \n";
-  var nourriture = JSON.parse(localStorage.getItem("dashboard")).nourriture;
-  if (nourriture.globalConsumption === "0") {
-    return retour + " NO DATA FOUND IN NOURRITURE \n";
-  } else {
-    return retour + nourriture.globalConsumption;
-  }
+ CompilerBilan.getAggregateNourriture()
 }
 
 function recupererToilettes() {
