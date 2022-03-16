@@ -10,10 +10,7 @@ let arraySleeps = [];
 let arrayActivities = [];
 const arrayHydratations = [];
 let arrayNourriture = []
-let arrayCereales = []
-let arrayLegumes = []
-let arrayProteines = []
-let arrayGras= []
+
 
 const arrayAlcohol = [];
 const arrayToilets = [];
@@ -29,10 +26,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
     arrayWeights = [];
     arraySleeps = [];
     arrayActivities = [];
-    arrayProteines=[]
-    arrayLegumes=[]
-    arrayCereales=[]
-    arrayGras=[]
     arrayNourriture=[]
     mapAggWeights = new Map();
     mapAggSleeps = new Map();
@@ -136,27 +129,10 @@ export async function compilerBilan(dataSelected, d1, d2) {
                    let proteines = dataFormat[i].proteines.proteines;
                    let gras = dataFormat[i].gras.grass;
                     
-                //    console.log(formatedDate)
-                //    console.log("un gras",gras)
-                //    console.log("un nourriture",nourriture)
-                //    console.log("un legume",legumes)
-                //    console.log("un protein",proteines)
-                  if(cereales!=null){
-                    fetchCereales(cereales,formatedDate);
-                  }
-                //   if(nourriture!=null){
-                //     fetchNourriture(nourriture,formatedDate);
-                //   }
-                  if(legumes!=null){
-                    fetchLegumes(legumes,formatedDate);
-                  }
-                  if(proteines!=null){
-                    fetchProteines(proteines,formatedDate);
-                  }
-                  if(gras!=null){
-                    fetchGras(gras,formatedDate)
-                  }
-
+                    fetchNourriture(cereales,formatedDate);
+                    fetchNourriture(legumes,formatedDate);
+                    fetchNourriture(proteines,formatedDate);
+                    fetchNourriture(gras,formatedDate);
                    break;
                 case "toilettes":/*
                     var toilettes = dataFormat[i].toilettes;
@@ -388,116 +364,30 @@ function fetchHydratations(hydratations, formatedDate) {
 
 function fetchNourriture(array_nourriture,array_result,formatedDate){
 
-    for (const element of array_nourriture) {
-        if (element.consumption === 0) {
-            continue;
-        }
-        let mapResult = new Map();
-        mapResult.set("date", formatedDate);
-        mapResult.set("name", element.name);
-        mapResult.set("consumption", element.consumption);
-        mapResult.set("quantity", element.qtte);
-        mapResult.set("unit", element.unit);
-        mapResult.set("protein", element.proteine);
-        mapResult.set("glucide", element.glucide);
-        mapResult.set("fibre", element.fibre);
-        mapResult.set("gras", element.gras);
+    if(array_nourriture!=null){
 
-        arrayNourriture.push(mapResult);
-        // console.log("arrayCereales",arrayCereales)
-    }
+        for (const element of array_nourriture) {
+                if (element.consumption === 0) {
+                    continue;
+                }
+                let mapResult = new Map();
+                mapResult.set("date", formatedDate);
+                mapResult.set("name", element.name);
+                mapResult.set("consumption", element.consumption);
+                mapResult.set("quantity", element.qtte);
+                mapResult.set("unit", element.unit);
+                mapResult.set("protein", element.proteine);
+                mapResult.set("glucide", element.glucide);
+                mapResult.set("fibre", element.fibre);
+                mapResult.set("gras", element.gras);
+
+                arrayNourriture.push(mapResult);
+                // console.log("arrayCereales",arrayCereales)
+        }
+    }   
 }
 
 
-function fetchCereales(array_cereales,formatedDate){
-
-    for (const cereale of array_cereales) {
-        if (cereale.consumption === 0) {
-            continue;
-        }
-        let mapCereales = new Map();
-        mapCereales.set("date", formatedDate);
-        mapCereales.set("name", cereale.name);
-        mapCereales.set("consumption", cereale.consumption);
-        mapCereales.set("quantity", cereale.qtte);
-        mapCereales.set("unit", cereale.unit);
-        mapCereales.set("protein", cereale.proteine);
-        mapCereales.set("glucide", cereale.glucide);
-        mapCereales.set("fibre", cereale.fibre);
-        mapCereales.set("gras", cereale.gras);
-
-        arrayCereales.push(mapCereales);
-        // console.log("arrayCereales",arrayCereales)
-    }
-}
-
-
-function fetchLegumes(array_legumes,formatedDate){
-
-    for (const legume of array_legumes) {
-        if (legume.consumption === 0) {
-            continue;
-        }
-        let mapLegumes = new Map();
-        mapLegumes.set("date", formatedDate);
-        mapLegumes.set("name", legume.name);
-        mapLegumes.set("consumption", legume.consumption);
-        mapLegumes.set("quantity", legume.qtte);
-        mapLegumes.set("unit", legume.unit);
-        mapLegumes.set("protein", legume.proteine);
-        mapLegumes.set("glucide", legume.glucide);
-        mapLegumes.set("fibre", legume.fibre);
-        mapLegumes.set("gras", legume.gras);
-
-        arrayLegumes.push(mapLegumes);
-        // console.log("arrayLegumes",arrayLegumes)
-    }
-}
-
-function fetchProteines(array_proteines,formatedDate){
-
-    for (const protein of array_proteines) {
-        if (protein.consumption === 0) {
-            continue;
-        }
-        let mapProteines = new Map();
-        mapProteines.set("date", formatedDate);
-        mapProteines.set("name", protein.name);
-        mapProteines.set("consumption", protein.consumption);
-        mapProteines.set("quantity", protein.qtte);
-        mapProteines.set("unit", protein.unit);
-        mapProteines.set("protein", protein.proteine);
-        mapProteines.set("glucide", protein.glucide);
-        mapProteines.set("fibre", protein.fibre);
-        mapProteines.set("gras", protein.gras);
-
-        arrayProteines.push(mapProteines);
-
-        // console.log("Proteines",arrayProteines)
-    }
-}
-
-function fetchGras(array_gras,formatedDate){
- 
-    for (const gras of array_gras) {
-        if (gras.consumption === 0) {
-            continue;
-        }
-        let mapGras = new Map();
-        mapGras.set("date", formatedDate);
-        mapGras.set("name", gras.name);
-        mapGras.set("consumption", gras.consumption);
-        mapGras.set("quantity", gras.qtte);
-        mapGras.set("unit", gras.unit);
-        mapGras.set("protein", gras.proteine);
-        mapGras.set("glucide", gras.glucide);
-        mapGras.set("fibre", gras.fibre);
-        mapGras.set("gras", gras.gras);
-
-        arrayGras.push(mapGras);
-        // console.log("arrayGras",arrayGras)
-    }
-}
 
 
 function fetchWeights(weight, formatedDate) {
@@ -692,16 +582,12 @@ function convertToDateObject(formated_date){
 
 export function getAggregateNourriture(){
     
-
-    let array_nourriture=arrayProteines.concat(arrayLegumes,arrayCereales,arrayGras);
-    
-
     let totalFibres=0
     let totalGlucide=0
     let totalGras=0
     let totalProtein=0
-    let sommeConsumption=0
-    array_nourriture.forEach(objet => {
+    let totalConsumption=0
+    arrayNourriture.forEach(objet => {
         
         objet.set('protein',(objet.get('consumption') * objet.get('protein')));
         objet.set('glucide',(objet.get('consumption') * objet.get('glucide')));
@@ -714,16 +600,12 @@ export function getAggregateNourriture(){
         totalGlucide+=objet.get('glucide')
         totalGras+=objet.get('gras')
         totalProtein+=objet.get('protein')
-        sommeConsumption+=objet.get('consumption')
+        totalConsumption+=objet.get('consumption')
 
     });
 
-
-
-
-    array_nourriture.sort((a, b) => a.get('date') - b.get('date'))    
-
-    let intervalle= array_nourriture[array_nourriture.length-1].get('date') - array_nourriture[0].get('date')
+    arrayNourriture.sort((a, b) => a.get('date') - b.get('date'))    
+    let intervalle= arrayNourriture[arrayNourriture.length-1].get('date') - arrayNourriture[0].get('date')
     //86400000 nombre de milisecondes en 1 journee
     let day_interval=Math.floor(intervalle/86400000)
 
@@ -731,7 +613,7 @@ export function getAggregateNourriture(){
     let mapTotaux = new Map();
     mapTotaux.set("date", 'N/A');
     mapTotaux.set("name", 'Total');
-    mapTotaux.set("consumption", sommeConsumption);
+    mapTotaux.set("consumption", totalConsumption);
     mapTotaux.set("quantity", 'N/A');
     mapTotaux.set("unit", 'N/A');
     mapTotaux.set("protein", totalProtein);
@@ -742,7 +624,7 @@ export function getAggregateNourriture(){
     let mapMoyenne = new Map();
     mapMoyenne.set("date", 'N/A');
     mapMoyenne.set("name", 'Total');
-    mapMoyenne.set("consumption", (sommeConsumption/day_interval).toFixed(2));
+    mapMoyenne.set("consumption", (totalConsumption/day_interval).toFixed(2));
     mapMoyenne.set("quantity", 'N/A');
     mapMoyenne.set("unit", 'N/A');
     mapMoyenne.set("protein", (totalProtein/day_interval).toFixed(2));
@@ -751,8 +633,8 @@ export function getAggregateNourriture(){
     mapMoyenne.set("gras", (totalGras/day_interval).toFixed(2));
 
 
-    array_nourriture.push(mapTotaux,mapMoyenne)
-    console.log(array_nourriture)
+    arrayNourriture.push(mapTotaux,mapMoyenne)
+    console.log(arrayNourriture)
 
 
 }
