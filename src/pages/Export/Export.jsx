@@ -436,7 +436,8 @@ const Settings = (props) => {
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
                         var overviewPdf = await compilerBilan(dataSelected, d1, d2);
-                        if (overviewPdf.length <= 0) {
+                        // todo: propablement a refactor, pas necessaire
+/*                        if (overviewPdf.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
@@ -483,7 +484,7 @@ const Settings = (props) => {
                                 default:
                                   break;
                               }
-                            });
+                            });*/
                             //TODO
 /*                            const doc = new jsPDF();
                             var splitTitle = doc.splitTextToSize(retour, 270);
@@ -500,7 +501,7 @@ const Settings = (props) => {
                             doc.save("FitnessHabits-data-" + date + ".pdf");*/
                            creerPdf(date);
                           }
-                        }
+                        //}
 
                       if (selected === "csv" || selected === "hybride") {
                         var overviewCsv = await compilerBilan(dataSelected, d1, d2);

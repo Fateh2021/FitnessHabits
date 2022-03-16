@@ -1,5 +1,5 @@
 import { jsPDF } from "jspdf";
-// import  "jspdf-autotable";
+import  "jspdf-autotable";
 import {getWeights} from "./CompilerBilan";
 
 export async function creerPdf(date){
