@@ -231,15 +231,8 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
     }
 }
 
-// function fetchNourriture(nourriture,formatedDate){
-//     // console.log("un nourriture",nourriture)
-//     let mapNourriture = new Map();       
-//     mapNourriture.set("date",formatedDate);
-//     mapNourriture.set("consumption",nourriture)
-//     arrayNourriture.push(mapNourriture)
-// }
 
-function fetchNourriture(array_nourriture,array_result,formatedDate){
+function fetchNourriture(array_nourriture,formatedDate){
 
     if(array_nourriture!=null){
 
@@ -259,7 +252,7 @@ function fetchNourriture(array_nourriture,array_result,formatedDate){
                 mapResult.set("gras", element.gras);
 
                 arrayNourriture.push(mapResult);
-                // console.log("arrayCereales",arrayCereales)
+
         }
     }   
 }
@@ -604,7 +597,7 @@ export function getAggregateNourriture(){
 
     let mapMoyenne = new Map();
     mapMoyenne.set("date", 'N/A');
-    mapMoyenne.set("name", 'Total');
+    mapMoyenne.set("name", 'Moyenne');
     mapMoyenne.set("consumption", (totalConsumption/day_interval).toFixed(2));
     mapMoyenne.set("quantity", 'N/A');
     mapMoyenne.set("unit", 'N/A');
@@ -615,10 +608,42 @@ export function getAggregateNourriture(){
 
 
     arrayNourriture.push(mapTotaux,mapMoyenne);
-    console.log(arrayNourriture);
+    //console.log(arrayNourriture);
     return arrayNourriture;
+
+}
+//function pour tester l'affichage de la nourriture dans les tableaux
+/*
+export function nourriture_test(){
+    
+ let retour="Day   Month   Year      Name    Consumption     Quantity    Unit    Protein   Glucide    Fibre  Gras\n";
+
+ getAggregateNourriture().forEach(element=>{
+
+  if(element.get('date')!='N/A'){  
+
+    retour+= new Date(element.get('date')).getDay() + "|" +  new Date(element.get('date')).getMonth() + "|" 
+    +  new Date(element.get('date')).getFullYear() + "|"
+    + element.get('name') + "|" + element.get('consumption') 
+    + "|" + element.get('quantity') + "|" + element.get('unit') + "|" + element.get('protein') + "|"
+    + element.get('glucide') + "|"  + element.get('fibre') + "|" + element.get('gras') + "|" +'\n'
+  }else {
+
+    retour+= element.get('date') + "|" + element.get('name') + "|" + element.get('consumption') 
+    + "|" + element.get('quantity') + "|" + element.get('unit') + "|" + element.get('protein') + "|"
+    + element.get('glucide') + "|"  + element.get('fibre') + "|" + element.get('gras') + "|" +'\n'
+    
+
+  }
+  
+ });
+ 
+ console.log("retour",retour);
+ return retour;
 
 
 }
+*/
+
 
 
