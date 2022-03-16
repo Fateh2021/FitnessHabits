@@ -976,16 +976,34 @@ it("test favoris button and favoris sorted", () => {
     const testFunc = () => {
         const addButton = document.getElementById('addButton');
 
-        for (let i = 0; i < 3; i++) {
+        const iteration = 7;
+        for (let i = 0; i < iteration; i++) {
             addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             const favButton = document.querySelector(".starFavoris");
             const saveButton = document.getElementById('saveButton');
-            if (i % 2)
+            if (i % 2) {
                 favButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            }
+            // Test toggle button
+            else if(i === (iteration - 1)) {
+                favButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+                favButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            }
             saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-
-            expect(dummyDashboard.macroNutriment.macroNutriments).toBe(dummyDashboard.macroNutriment.macroNutriments.sort((a,b) => a.favoris-b.favoris));
         }
+
+        // Test favorites button
+        dummyDashboard.macroNutriment.macroNutriments.forEach((aliment, i) => {
+            if (i < (iteration >> 1)) {
+                expect(aliment.favoris).toBeTruthy();
+            }
+            else {
+                expect(aliment.favoris).toBeFalsy();
+            }
+        });
+
+        // Test if list is sorted
+        expect(dummyDashboard.macroNutriment.macroNutriments).toBe(dummyDashboard.macroNutriment.macroNutriments.sort((a, b) => a.favoris - b.favoris));
     }
 
     setUp(dummyDashboard, testFunc)
