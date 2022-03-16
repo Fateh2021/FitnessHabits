@@ -39,6 +39,7 @@ import { render } from "@testing-library/react";
 import * as translate from '../../translate/Translator'
 import { getLang } from "../../translate/Translator";
 import {compilerBilan} from "./CompilerBilan";
+import {creerPdf} from "./RapportCreateur";
 
 
 const Settings = (props) => {
@@ -426,7 +427,7 @@ const Settings = (props) => {
                 <IonButton
                     expand="full"
                     class="ion-text-wrap"
-                    onClick={async () => {
+                    onClick= {async () => {
                       if (dataSelected.length === 0) {
                         toast(toastMessage);
                       } else {
@@ -435,7 +436,8 @@ const Settings = (props) => {
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
                         var overviewPdf = await compilerBilan(dataSelected, d1, d2);
-                        if (overviewPdf.length <= 0) {
+                        // todo: propablement a refactor, pas necessaire
+/*                        if (overviewPdf.length <= 0) {
                           toast(
                               translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
                           );
@@ -482,8 +484,9 @@ const Settings = (props) => {
                                 default:
                                   break;
                               }
-                            });
-                            const doc = new jsPDF();
+                            });*/
+                            //TODO
+/*                            const doc = new jsPDF();
                             var splitTitle = doc.splitTextToSize(retour, 270);
                             var y = 7;
                             for (var i = 0; i < splitTitle.length; i++) {
@@ -495,9 +498,10 @@ const Settings = (props) => {
                               y = y + 7;
                             }
 
-                            doc.save("FitnessHabits-data-" + date + ".pdf");
+                            doc.save("FitnessHabits-data-" + date + ".pdf");*/
+                           creerPdf(date);
                           }
-                        }
+                        //}
 
                       if (selected === "csv" || selected === "hybride") {
                         var overviewCsv = await compilerBilan(dataSelected, d1, d2);
@@ -551,16 +555,24 @@ Date.prototype.addDays = function (days) {
   return date;
 };
 
-
+// TO REMOVE, ONLY FOR TEST PURPOSES
 function recupererHydratation() {
   var retour = translate.getText("HYDR_TITLE") +": \n";
-  var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
-      .hydrates;
-  hydratation.forEach((data) => {
-    retour =
-        retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
+  retour += 'Exemple hydratation';
+  CompilerBilan.getHydratations().forEach((data) => {
+    retour = retour + 'Date ' + data.get("date") + '\n' +
+              'Nom ' + data.get("consumption") + '\n' +
+              'Volume ' + data.get("volume") + '\n';
   });
   return retour;
+
+  // var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
+  //     .hydrates;
+  // hydratation.forEach((data) => {
+  //   retour =
+  //       retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
+  // });
+  // return retour;
 }
 
 function recupererAlcools() {
