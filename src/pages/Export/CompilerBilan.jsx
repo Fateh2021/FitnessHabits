@@ -9,9 +9,9 @@ let arrayWeights = [];
 let arraySleeps = [];
 let arrayActivities = [];
 let arrayHydratations = [];
-const arrayAlcohol = [];
-const arrayToilets = [];
-const arrayGlycemia = [];
+let arrayAlcohol = [];
+let arrayToilets = [];
+let arrayGlycemia = [];
 
 let mapAggWeights = new Map();
 let mapAggSleeps = new Map();
@@ -24,6 +24,9 @@ export async function compilerBilan(dataSelected, d1, d2) {
     arraySleeps = [];
     arrayActivities = [];
     arrayHydratations = [];
+    arrayAlcohol = [];
+    arrayToilets = [];
+    arrayGlycemia = [];
     mapAggWeights = new Map();
     mapAggSleeps = new Map();
     mapAggActivities = new Map();
@@ -115,7 +118,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
                 case "hydratation":
                     if (dataFormat[i].hydratation.hydrates) {
                         let hydratations = dataFormat[i].hydratation.hydrates
-                        fetchHydratations(hydratations, formatedDate);
+                        fetchDrinks("hydratation", hydratations, formatedDate);
                     }
                     break;
 
@@ -125,41 +128,19 @@ export async function compilerBilan(dataSelected, d1, d2) {
                         retour[i][data] = " NO DATA FOUND IN NOURRITURE";
                     else retour[i][data] = nourriture.globalConsumption;*/
                     break;
-                case "toilettes":/*
-                    var toilettes = dataFormat[i].toilettes;
-                    retour[i][data] =
-                        translate.getText("FECES_TITLE") + ": " + toilettes.feces + "; " + translate.getText("URINE_TITLE") + ": " + toilettes.urine;
-                    */
+                case "toilettes":
+                    let toilets = dataFormat[i].toilettes;
+                    fetchToilets(toilets, formatedDate);
                     break;
-                case "alcool":/*
+                case "alcool":
                     if (dataFormat[i].alcool.alcools) {
-                        dataFormat[i].alcool.alcools.forEach((alc) => {
-                            if (retour[i][data])
-                                retour[i][data] +=
-                                    (alc.name ? alc.name : "NO-NAME") +
-                                    ": " +
-                                    alc.qtte +
-                                    " " +
-                                    alc.unit +
-                                    "; ";
-                            else
-                                retour[i][data] =
-                                    (alc.name ? alc.name : "NO-NAME") +
-                                    ": " +
-                                    alc.qtte +
-                                    " " +
-                                    alc.unit +
-                                    "; ";
-                        });
-                    } else {
-                        retour[i][data] = "empty";
+                        let alcools = dataFormat[i].alcool.alcools;
+                        fetchDrinks("alcool", alcools, formatedDate);
                     }
-                    */
                     break;
-                case "glycémie":/*
+                    //case "glycémie":
                     var glycemie = dataFormat[i].glycemie.dailyGlycemie;
                     retour[i][data] = glycemie;
-                    */
                     break;
 
                 case "supplements":/*
@@ -183,7 +164,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
                     var activity;
                     if (dataFormat[i].activities) {
                         var activity = dataFormat[i].activities;
-                        if(parseInt(activity.hour) + parseInt(activity.minute) != 0){
+                        if (parseInt(activity.hour) + parseInt(activity.minute) != 0) {
                             fetchActivities(activity, formatedDate);
                         }
                     }
@@ -202,6 +183,8 @@ export async function compilerBilan(dataSelected, d1, d2) {
             }
         }
     }
+    console.log(arrayToilets);
+    console.log(getAverageToilets());
     return retour;
 }
 
@@ -321,9 +304,9 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
-// Fonctions pour gérer la catégorie hydratation
-function fetchHydratations(hydratations, formatedDate) {
-    for (const drink of hydratations) {
+// Function to fetch datas for hydratation and alcohol.
+function fetchDrinks(typeOfDrink, drinks, formatedDate) {
+    for (const drink of drinks) {
         if (drink.consumption === 0) {
             continue;
         }
@@ -333,13 +316,27 @@ function fetchHydratations(hydratations, formatedDate) {
         mapHydratation.set("quantity", drink.consumption);
         mapHydratation.set("volume", drink.qtte);
         mapHydratation.set("unit", drink.unit);
-        mapHydratation.set("protein", parseInt(drink.proteine));
-        mapHydratation.set("glucide", parseInt(drink.glucide));
-        mapHydratation.set("fiber", parseInt(drink.fibre));
-        mapHydratation.set("fat", parseInt(drink.gras));
+        mapHydratation.set("protein", parseInt(drink.proteine) * drink.consumption);
+        mapHydratation.set("glucide", parseInt(drink.glucide) * drink.consumption);
+        mapHydratation.set("fiber", parseInt(drink.fibre) * drink.consumption);
+        mapHydratation.set("fat", parseInt(drink.gras) * drink.consumption);
 
-        arrayHydratations.push(mapHydratation);
+        if (typeOfDrink === "hydratation") {
+            arrayHydratations.push(mapHydratation);
+        } else {
+            arrayAlcohol.push(mapHydratation);
+        }
     }
+}
+
+function fetchToilets(toilets, formatedDate) {
+    let mapToilets = new Map();
+
+    mapToilets.set("date", formatedDate);
+    mapToilets.set("urine", toilets.urine);
+    mapToilets.set("feces", toilets.feces);
+
+    arrayToilets.push(mapToilets);
 }
 
 
@@ -375,11 +372,11 @@ function fetchInitialWeight(datas) {
     });
 
     const minDate = new Date(
-      Math.min(
-        ...dates.map(element => {
-          return new Date(element);
-        }),
-      ),
+        Math.min(
+            ...dates.map(element => {
+                return new Date(element);
+            }),
+        ),
     );
 
     return mWeights.get(minDate.toISOString().slice(0,10).replace("-", "/").replace("-", "/"));
@@ -450,20 +447,34 @@ export function getHydratations() {
 // Function used to calculate the macros total and the average per day.
 // Return a map with a total for each macro (protein, glucide, fiber, fat) as
 // well as their average.
-function getMacrosTotalAndAveragePerDay(arrayMap) {
+// category can be : "hydratation", "alcool", "nourriture"
+// todo: find a way to get the interval days and not just the days chosen
+// todo: add category food when the array will be made
+export function getMacrosTotalAndAveragePerDay(category) {
     let totalFiber = 0;
     let totalProtein = 0;
     let totalFat = 0;
     let totalGlucide = 0;
-    let days = arrayMap.length;
-    let macrosMap = new Map();
-    arrayMap.forEach((data) => {
-        totalFiber += data.get("fiber") * data.get("quantity");
-        totalProtein += data.get("protein") * data.get("quantity");
-        totalFat += data.get("fat") * data.get("quantity");
-        totalGlucide += data.get("fat") * data.get("quantity");
+    var days;
 
-    });
+    if (category === "hydratation") {
+        arrayHydratations.forEach((data) => {
+            totalFiber += data.get("fiber");
+            totalProtein += data.get("protein");
+            totalFat += data.get("fat");
+            totalGlucide += data.get("fat");
+        });
+        days = arrayHydratations.length;
+    } else { // for alcohol
+        arrayAlcohol.forEach((data) => {
+            totalFiber += data.get("fiber");
+            totalProtein += data.get("protein");
+            totalFat += data.get("fat");
+            totalGlucide += data.get("fat");
+        });
+        days = arrayAlcohol.length;
+    }
+    let macrosMap = new Map();
     macrosMap.set("totalFiber", totalFiber);
     macrosMap.set("totalProtein", totalProtein);
     macrosMap.set("totalFat", totalFat);
@@ -475,6 +486,31 @@ function getMacrosTotalAndAveragePerDay(arrayMap) {
 
     return macrosMap;
 }
+
+// keys : urine, feces
+export function getToilets() {
+    return arrayToilets;
+}
+
+// todo: changer days pour avoir les jours de l'intervalle seulement
+export function getAverageToilets() {
+    let totalUrine = 0;
+    let totalFeces = 0;
+    let days = arrayToilets.length;
+    arrayToilets.forEach((data) => {
+        totalUrine += data.get("urine");
+        totalFeces += data.get("feces");
+    });
+
+    let mapToilets = new Map();
+    mapToilets["totalUrine"] = totalUrine;
+    mapToilets["totalFeces"] = totalFeces;
+    mapToilets["averageUrinePerDay"] = totalUrine/days;
+    mapToilets["averageFecesPerDay"] = totalFeces/days;
+
+    return mapToilets;
+}
+
 
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
