@@ -39,6 +39,7 @@ import { render } from "@testing-library/react";
 import * as translate from '../../translate/Translator'
 import { getLang } from "../../translate/Translator";
 import {compilerBilan} from "./CompilerBilan";
+import {creerPdf} from "./RapportCreateur";
 
 
 const Settings = (props) => {
@@ -426,7 +427,7 @@ const Settings = (props) => {
                 <IonButton
                     expand="full"
                     class="ion-text-wrap"
-                    onClick={async () => {
+                    onClick= {async () => {
                       if (dataSelected.length === 0) {
                         toast(toastMessage);
                       } else {
@@ -483,7 +484,8 @@ const Settings = (props) => {
                                   break;
                               }
                             });
-                            const doc = new jsPDF();
+                            //TODO
+/*                            const doc = new jsPDF();
                             var splitTitle = doc.splitTextToSize(retour, 270);
                             var y = 7;
                             for (var i = 0; i < splitTitle.length; i++) {
@@ -495,7 +497,8 @@ const Settings = (props) => {
                               y = y + 7;
                             }
 
-                            doc.save("FitnessHabits-data-" + date + ".pdf");
+                            doc.save("FitnessHabits-data-" + date + ".pdf");*/
+                           creerPdf(date);
                           }
                         }
 
