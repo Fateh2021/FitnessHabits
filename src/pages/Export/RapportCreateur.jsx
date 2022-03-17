@@ -2,9 +2,10 @@ import { jsPDF } from "jspdf";
 import  "jspdf-autotable";
 import {getWeights, getAggregateWeights, getActivities, getAggregateActivities, getSleeps, getAggregateSleeps} from "./CompilerBilan";
 import "./CompilerBilan"
-
 import * as translate from '../../translate/Translator';
 //import {nourriture_test} from "./CompilerBilan";
+import {getMacrosTotalAndAveragePerDay, getNourriture} from "./CompilerBilan";
+
 
 export async function creerPdf(date){
     const doc = new jsPDF();
@@ -16,6 +17,10 @@ export async function creerPdf(date){
     let lineFooter_2 = [];
     let lineFooter_3 = [];
     let lineFooter_4 = [];
+
+    // getNourriture()
+    // getMacrosTotalAndAveragePerDay("nourriture")
+
 
     //Le titre du tableau //TODO Find a way to add the title
     var title = translate.getText("POIDS_NOM_SECTION");

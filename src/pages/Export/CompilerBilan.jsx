@@ -191,7 +191,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
             }
         }
     }
-    console.log(getHydratations());
     return retour;
 }
 
@@ -215,9 +214,9 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
         }
         let mapHydratation = new Map();
         mapHydratation.set("Date", formatedDate);
-        mapHydratation.set("Boisson", drink.name);
-        mapHydratation.set("Quantité", drink.consumption);
-        mapHydratation.set("Volume", drink.qtte);
+        mapHydratation.set("Nom", drink.name);
+        mapHydratation.set("Consommation", drink.consumption);
+        mapHydratation.set("Quantité", drink.qtte);
         mapHydratation.set("Unité", drink.unit);
         mapHydratation.set("Protéine", parseInt(drink.proteine) * drink.consumption);
         mapHydratation.set("Glucide", parseInt(drink.glucide) * drink.consumption);
@@ -242,15 +241,15 @@ function fetchNourriture(array_nourriture,formatedDate){
                     continue;
                 }
                 let mapResult = new Map();
-                mapResult.set("date", formatedDate);
-                mapResult.set("name", element.name);
-                mapResult.set("consumption", element.consumption);
-                mapResult.set("quantity", element.qtte);
-                mapResult.set("unit", element.unit);
-                mapResult.set("protein", element.proteine);
-                mapResult.set("glucide", element.glucide);
-                mapResult.set("fibre", element.fibre);
-                mapResult.set("gras", element.gras);
+                mapResult.set("Date", formatedDate);
+                mapResult.set("Nom", element.name);
+                mapResult.set("Consommation", element.consumption);
+                mapResult.set("Quantité", element.qtte);
+                mapResult.set("Unité", element.unit);
+                mapResult.set("Protéine", element.proteine * element.consumption);
+                mapResult.set("Glucide", element.glucide * element.consumption);
+                mapResult.set("Fibre", element.fibre * element.consumption);
+                mapResult.set("Gras", element.gras * element.consumption);
 
                 arrayNourriture.push(mapResult);
 
@@ -383,6 +382,11 @@ export function getHydratations() {
     return arrayHydratations;
 }
 
+export function getNourriture(){
+    sortEntries(arrayNourriture);
+    return arrayNourriture;
+}
+
 // Function used to calculate the macros total and the average per day.
 // Return a map with a total for each macro (protein, glucide, fiber, fat) as
 // well as their average.
@@ -394,24 +398,32 @@ export function getMacrosTotalAndAveragePerDay(category) {
     let totalProtein = 0;
     let totalFat = 0;
     let totalGlucide = 0;
-    var days;
+    let days;
 
     if (category === "hydratation") {
         arrayHydratations.forEach((data) => {
-            totalFiber += data.get("fiber");
-            totalProtein += data.get("protein");
-            totalFat += data.get("fat");
-            totalGlucide += data.get("fat");
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
         });
-        days = arrayHydratations.length;
-    } else { // for alcohol
+        days = getNumberOfUniqueDate(arrayHydratations)
+    } else if(category === "nourriture"){
+        arrayNourriture.forEach((data) => {
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
+        });
+        days = getNumberOfUniqueDate(arrayNourriture)
+    }else { // for alcohol
         arrayAlcohol.forEach((data) => {
-            totalFiber += data.get("fiber");
-            totalProtein += data.get("protein");
-            totalFat += data.get("fat");
-            totalGlucide += data.get("fat");
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
         });
-        days = arrayAlcohol.length;
+        days = getNumberOfUniqueDate(arrayAlcohol)
     }
     let macrosMap = new Map();
     macrosMap.set("totalFiber", totalFiber);
@@ -423,6 +435,8 @@ export function getMacrosTotalAndAveragePerDay(category) {
     macrosMap.set("averageFat", +(totalFat/days).toFixed(2));
     macrosMap.set("averageGlucide", +(totalGlucide/days).toFixed(2));
 
+    // console.log('Days',days)
+    // console.log("Nourriture",macrosMap)
     return macrosMap;
 }
 
@@ -549,112 +563,23 @@ export function getAggregateSleeps() {
 }
 
 
-
-function convertToDateObject(formated_date){
-    let date_split =formated_date.split('-');
-    return new Date(date_split[2], date_split[1] - 1, date_split[0])
-
-}
-
-
-export function getAggregateNourriture(){
-    
-    let totalFibres=0;
-    let totalGlucide=0;
-    let totalGras=0;
-    let totalProtein=0;
-    let totalConsumption=0;
-
-    arrayNourriture.forEach(objet => {
-        
-        objet.set('protein',(objet.get('consumption') * objet.get('protein')));
-        objet.set('glucide',(objet.get('consumption') * objet.get('glucide')));
-        objet.set('gras',(objet.get('consumption') * objet.get('gras')));
-        objet.set('fibre',(objet.get('consumption') * objet.get('fibre')));
-        
-        objet.set('date',convertToDateObject(objet.get('date')));
-        
-        totalFibres+=objet.get('fibre');
-        totalGlucide+=objet.get('glucide');
-        totalGras+=objet.get('gras');
-        totalProtein+=objet.get('protein');
-        totalConsumption+=objet.get('consumption');
-
-    });
-
-    arrayNourriture.sort((a, b) => a.get('date') - b.get('date'));    
-    let intervalle= arrayNourriture[arrayNourriture.length-1].get('date') - arrayNourriture[0].get('date');
-    //86400000 nombre de milisecondes en 1 journee
-    let day_interval=Math.floor(intervalle/86400000);
-
-
-    let mapTotaux = new Map();
-    mapTotaux.set("date", 'N/A');
-    mapTotaux.set("name", 'Total');
-    mapTotaux.set("consumption", totalConsumption);
-    mapTotaux.set("quantity", 'N/A');
-    mapTotaux.set("unit", 'N/A');
-    mapTotaux.set("protein", totalProtein);
-    mapTotaux.set("glucide",totalGlucide);
-    mapTotaux.set("fibre",totalFibres);
-    mapTotaux.set("gras", totalGras);
-
-    let mapMoyenne = new Map();
-    mapMoyenne.set("date", 'N/A');
-    mapMoyenne.set("name", 'Moyenne');
-    mapMoyenne.set("consumption", (totalConsumption/day_interval).toFixed(2));
-    mapMoyenne.set("quantity", 'N/A');
-    mapMoyenne.set("unit", 'N/A');
-    mapMoyenne.set("protein", (totalProtein/day_interval).toFixed(2));
-    mapMoyenne.set("glucide",(totalGlucide/day_interval).toFixed(2));
-    mapMoyenne.set("fibre",(totalFibres/day_interval).toFixed(2));
-    mapMoyenne.set("gras", (totalGras/day_interval).toFixed(2));
-
-
-    arrayNourriture.push(mapTotaux,mapMoyenne);
-    //console.log(arrayNourriture);
-    return arrayNourriture;
-
-}
-
 // sort the entries from the most recent date to the oldest one
 // Note : the key containing the date value must be called Date
 function sortEntries(arrayToSort) {
     arrayToSort.sort((a,b) => new Date(b.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
         - new Date(a.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")));
 }
-//function pour tester l'affichage de la nourriture dans les tableaux
-/*
-export function nourriture_test(){
-    
- let retour="Day   Month   Year      Name    Consumption     Quantity    Unit    Protein   Glucide    Fibre  Gras\n";
-
- getAggregateNourriture().forEach(element=>{
-
-  if(element.get('date')!='N/A'){  
-
-    retour+= new Date(element.get('date')).getDay() + "|" +  new Date(element.get('date')).getMonth() + "|" 
-    +  new Date(element.get('date')).getFullYear() + "|"
-    + element.get('name') + "|" + element.get('consumption') 
-    + "|" + element.get('quantity') + "|" + element.get('unit') + "|" + element.get('protein') + "|"
-    + element.get('glucide') + "|"  + element.get('fibre') + "|" + element.get('gras') + "|" +'\n'
-  }else {
-
-    retour+= element.get('date') + "|" + element.get('name') + "|" + element.get('consumption') 
-    + "|" + element.get('quantity') + "|" + element.get('unit') + "|" + element.get('protein') + "|"
-    + element.get('glucide') + "|"  + element.get('fibre') + "|" + element.get('gras') + "|" +'\n'
-    
-
-  }
-  
- });
- 
- console.log("retour",retour);
- return retour;
 
 
+function getNumberOfUniqueDate(array_aliments){
+    let set_date = new Set();
+    array_aliments.forEach((data)=>{
+        set_date.add(data.get('Date'))
+    });
+    return set_date.size;
 }
-*/
+
+
 
 
 
