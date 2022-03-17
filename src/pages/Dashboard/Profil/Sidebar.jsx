@@ -31,7 +31,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
         if (newUnitDisplay === "CM") {
             switch (currentUnitDisplay) {
                 case "M":
-                    setUnitSize(value*100);    
+                    setUnitSize(value*100);
                     break;
                 case "IMP":
                     setUnitSize(convertToCM(currentUnitDisplay,value,imperial));
@@ -160,7 +160,7 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
             <IonHeader className="sideBarHeader">
                 <IonGrid >
                     <IonRow >
-                        {/* { !pictureDisabled && <TakePicture />} */}
+                        {!pictureDisabled && <TakePicture />}
                         <IonCol size="5">
                             <IonInput className="userNameProfil" value="" readonly color="danger"><h3 data-testid="username">{profile.pseudo}</h3></IonInput>
                         </IonCol>
@@ -214,13 +214,13 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
                     </IonItem> }
                     <IonItem>
                     {!isImperial && <IonInput className="inputProfilText"  type="number" name="size" value={unitSize} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"/>}
-                    {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="feet" value={imperial.feet} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>'</span></IonInput>}  
+                    {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="feet" value={imperial.feet} onIonBlur={handleInputChange} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>'</span></IonInput>}
                     {isImperial && <IonInput className="inputProfilText" style={{maxWidth:"150px"}} type="number" name="inches" onIonBlur={handleInputChange} value={imperial.inches} placeholder={translate.getText("SIDEBAR_PLCHLDR_TAILLE")} clearInput data-testid="height"><span>"</span></IonInput>}
                       <IonLabel >
                         <h2 style={{padding:"0px",color:"black"}}>
                         <b>Unité:</b>
                         </h2>
-                    </IonLabel>               
+                    </IonLabel>
                     <IonSelect
                     color="black"
                     okText={translate.getText("POIDS_PREF_CHOISIR")}

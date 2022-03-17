@@ -47,15 +47,15 @@ export class TakePicture extends Component {
   removePicture = async () => {
     const fileName = "profilPictures/" + firebase.auth().currentUser.uid;
     try {
+      localStorage.removeItem("profile-picture-cache");
       firebase.storage().ref(fileName).delete();
+      firebase.database().ref("profiles/" + firebase.auth().currentUser.uid).update({
+        "profilPicture": '',
+      });
       this.setState({
         photo: '',
         needsLoading: false,
         canDelete: false,
-      });
-      localStorage.removeItem("profile-picture-cache");
-      firebase.database().ref("profiles/" + firebase.auth().currentUser.uid).update({
-        "profilPicture": '',
       });
     } catch (error) {
     }
@@ -141,7 +141,7 @@ export class TakePicture extends Component {
           </button>
         }
         <IonAvatar className='avatarProfil'>
-          <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={this.state.photo} data-testid="profile-picture" ></IonImg>
+          {this.state.photo && <IonImg style={{ 'border': '1px solid black', 'minHeight': '100px' }} src={this.state.photo} data-testid="profile-picture" ></IonImg>}
         </IonAvatar>
       </div>
     );
