@@ -82,6 +82,7 @@
   "devDependencies": {
     "@capacitor/cli": "^2.4.5",
     "@types/firebase": "^3.2.1",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "jest-canvas-mock": "^2.3.1",
     "jest-sonar-reporter": "^2.0.0"
   }

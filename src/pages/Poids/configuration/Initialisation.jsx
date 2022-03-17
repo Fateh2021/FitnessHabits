@@ -97,17 +97,17 @@ const handleReinitialisation = () => {
   let poidsRef = firebase.database().ref('dashboard/' + userUID)
   poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
     var graphData = []
-    if (snapshot.val() != null) {
-      for (const [_,value] of Object.entries(snapshot.val())) {
-          if (value.poids.datePoids !== undefined) {
-              let datePoids = formatDate(value.poids.datePoids)
-              let poids = poidsService.formatPoids(value.poids.dailyPoids)
-              graphData.push ({x: datePoids, y: poids})
-          }
-      }
-      // Triage pour avoir les informations de la plus vieille date à la plus récente
-      graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
+    // J'ai retiré la validation si le retour de fireball contenait ou pas des données pour enlever un code smell
+    // Si le résultat est null, le graphique restera null et mettra 0 comme valeur par défault
+    for (const [_,value] of Object.entries(snapshot.val())) {
+        if (value.poids.datePoids !== undefined) {
+            let datePoids = formatDate(value.poids.datePoids)
+            let poids = poidsService.formatPoids(value.poids.dailyPoids)
+            graphData.push ({x: datePoids, y: poids})
+        }
     }
+    // Triage pour avoir les informations de la plus vieille date à la plus récente
+    graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
 
     if(graphData.length > 0){
       // Récupération de la première valeur que le user a saisie à ses début avec l'application

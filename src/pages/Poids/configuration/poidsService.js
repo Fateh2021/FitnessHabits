@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import moment from "moment";
 import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
@@ -75,7 +76,7 @@ export function verifier_changement_IMC(valeur_imc){
     }
   }
 
-  function trouver_nouvelle_categorie(valeur_imc){
+export function trouver_nouvelle_categorie(valeur_imc){
     var groupe_IMC = '';
     if (valeur_imc <= 18.49) {
       groupe_IMC = 'CATEGORIE_MAIGRE';
@@ -97,4 +98,8 @@ export function verifier_changement_IMC(valeur_imc){
     }
 
     return groupe_IMC+"";
+}
+
+export function formatDate (date) {
+    return moment(date).format('YYYY-MM-DD');
 }

@@ -42,6 +42,8 @@ const Sidebar = (props) => {
         const updatedProfile = { ...profile, [name]: value ? value : "" };
         setProfile({ ...profile, [name]: value ? value : "" });
         localStorage.setItem('profile', JSON.stringify(updatedProfile));
+        // Pour capturer le changement dans le modules Poids
+        localStorage.setItem('size', JSON.stringify(updatedProfile.size));
         firebase.database().ref('profiles/'+userUID).update({
             "pseudo": updatedProfile.pseudo,
             "email": updatedProfile.email,
