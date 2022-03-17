@@ -57,10 +57,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
         // With the filtered datas, make a dictionnary for each parameters
         // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
         for (let i = 0; i < dataFormat.length; ++i) {
-            var formatedDate = dataFormat[i].date
-                ? dataFormat[i].date
-                : new Date().toISOString().slice(0, 10);
-
+            let formatedDate = dataFormat[i].date
             fetchData(dataFormat[i], formatedDate, dataSelected);
         }
     }
