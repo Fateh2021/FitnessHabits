@@ -56,6 +56,17 @@ test('Traduction du mot Poids en anglais', async() => {
   expect(mot).toBeDefined();
 });
 
+test('select down', async() => {
+  render(<Poids poids/>);
+  const s = screen.getByTestId('select');
+
+  act(() => {fireEvent.click(s)})
+
+  expect('LBS').toBeDefined();
+  expect('KG').toBeDefined();
+
+});
+
 
 //test pour poidsService
 
@@ -174,7 +185,7 @@ test('valeur de poids', async() => {
   //const mot = document.getElementsByName('ion-input-20').value;
   //expect(mot).toBe("77.00");
 
-  const mot = document.getElementsByName('ion-input-20').values;
+  const mot = document.getElementsByClassName('native-input sc-ion-input-md');
   expect(mot).toBeDefined();
 });
 
@@ -187,6 +198,8 @@ test('go to page de configuration', async() => {
   const pop_up_elem_kg = screen.getByText(/KG/i);
   expect(pop_up_elem_kg).toBeInTheDocument();
 });
+
+
 
 
 

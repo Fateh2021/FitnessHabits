@@ -173,7 +173,7 @@ const Poids = (props) => {
           </IonLabel>
           <IonInput
             value={(IMC == Infinity? "": IMC)}
- 
+            data-testid = "IMC_value" 
             className="IMC"
             readonly
             onIonChange={handleIMCChange}  
@@ -187,7 +187,7 @@ const Poids = (props) => {
           onIonChange={handleChange}          
         ></IonInput>
 
-        <select className="input" value={unitePoids} onChange={handleUnitePoidsChange} >
+        <select data-testid = "select" className="input" value={unitePoids} onChange={handleUnitePoidsChange} >
           <option value="LBS">LBS</option>
           <option value="KG">KG</option>
         </select>
