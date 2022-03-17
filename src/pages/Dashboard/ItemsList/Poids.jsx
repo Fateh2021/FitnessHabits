@@ -29,13 +29,13 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var [taille, setTaille] = useState("");
-  var p = props.poids;
+  // var p = props.poids; // en attente de Xuquan - car variable non utilisée
   var pd = props.poids.dailyPoids;
   // Réajustement du daily poids
   if (prefPoids == 'LBS'){
     pd = (pd * 2.2).toFixed(2);
   }
-  // const [poids, setPoids] = useState(p); // en attente de Xuquan
+  // const [poids, setPoids] = useState(p); // en attente de Xuquan - car variable non utilisée
 
 	// MAJ de l'ajustement
   useEffect(() => {
@@ -44,7 +44,7 @@ const Poids = (props) => {
 
 /* // en attente de Xuquan
   useEffect(() => {
-    setPoids(p);
+    setPoids(p); // car variable non utilisée
   }, [p]);
 */
 
