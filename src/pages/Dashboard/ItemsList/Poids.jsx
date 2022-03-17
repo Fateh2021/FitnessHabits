@@ -28,25 +28,25 @@ const Poids = (props) => {
   const [unitePoids, setUnitePoids] = useState(prefPoids);
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
+  var [taille, setTaille] = useState("");
   var p = props.poids;
   var pd = props.poids.dailyPoids;
-  if (prefPoids == 'LBS') pd = (pd*2.2).toFixed(2);
-  const [poids, setPoids] = useState(p);
+  // Réajustement du daily poids
+  if (prefPoids == 'LBS'){
+    pd = (pd * 2.2).toFixed(2);
+  }
+  // const [poids, setPoids] = useState(p); // en attente de Xuquan
 
-  //const [poids, setPoids] = useState(props.poids);
-  //const [, setPoids] = useState(props.poids); -- Cette ligne je ne l'a comprends pas, veuiller me l'expliquer
-  var [taille, setTaille] = useState("");
-
+	// MAJ de l'ajustement
   useEffect(() => {
-    setDailyPoids(pd)
-   
+    setDailyPoids(pd);
   }, [pd]);
 
-
-
+/* // en attente de Xuquan
   useEffect(() => {
     setPoids(p);
   }, [p]);
+*/
 
   useEffect(() => {
     poidsService.initPrefPoids();
