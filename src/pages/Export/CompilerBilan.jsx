@@ -26,7 +26,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
     arraySleeps = [];
     arrayActivities = [];
     arrayHydratations = [];
-    arrayNourriture=[];
+    arrayNourriture = [];
     arrayAlcohol = [];
     arrayToilets = [];
     arrayGlycemia = [];
@@ -41,11 +41,9 @@ export async function compilerBilan(dataSelected, d1, d2) {
     //to a date in format mm-jj-aaaa
     //Note: not sure how date < 10 and month <10 are managed....
     if (!window.navigator.onLine) {
-        dataFormat = [JSON.parse(localStorage.getItem("dashboard"))];
-        let ajd = new Date();
-        dataFormat[0].date = ('0' + ajd.getDate()).slice(-2) + '-'
-            + ('0' + (ajd.getMonth() + 1)).slice(-2) + '-'
-            + ajd.getFullYear();
+        let localStorageData = JSON.parse(localStorage.getItem("dashboard"));
+        let ajd = '17-03-2022';
+        fetchData(localStorageData, ajd, dataSelected)
     } else {
         let ref = firebase.database().ref("dashboard/" + userUID + "/");
         await ref.once("value", (snap) => {
@@ -81,117 +79,32 @@ export async function compilerBilan(dataSelected, d1, d2) {
                 dataFormat.push(obj);
             });
         });
-    }
+        initialWeight = fetchInitialWeight(dataFormat);
 
+        // With the new array(with the good date format), filter the datas with date selected by user in the datepicker
+        // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
+        // dataSelected = Checkbox selected by user
 
-    initialWeight = fetchInitialWeight(dataFormat);
-
-    // With the new array(with the good date format), filter the datas with date selected by user in the datepicker
-    // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
-    // dataSelected = Checkbox selected by user
-
-    let datePickerDates = getDates(d1, d2);
-    dataFormat = dataFormat.filter((data) => {
-        return !!datePickerDates.find((item) => {
-            return (item.getTime() == new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
-            );
+        let datePickerDates = getDates(d1, d2);
+        dataFormat = dataFormat.filter((data) => {
+            return !!datePickerDates.find((item) => {
+                return (item.getTime() == new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
+                );
+            });
         });
-    });
 
-    let retour = [];
+        // With the filtered datas, make a dictionnary for each parameters
+        // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
+        //NOTE: comment are let as the old way. To refactor.
+        for (let i = 0; i < dataFormat.length; ++i) {
+            var formatedDate = dataFormat[i].date
+                ? dataFormat[i].date
+                : new Date().toISOString().slice(0, 10);
 
-
-    // With the filtered datas, make a dictionnary for each parameters
-    // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
-    //NOTE: comment are let as the old way. To refactor.
-    for (let i = 0; i < dataFormat.length; ++i) {
-        retour[i] = {};
-        /*retour[i].date = dataFormat[i].date
-            ? dataFormat[i].date
-            : new Date().toISOString().slice(0, 10);*/
-
-        var formatedDate = dataFormat[i].date
-            ? dataFormat[i].date
-            : new Date().toISOString().slice(0, 10);
-
-
-        for (const data of dataSelected) {
-            switch (data) {
-                case "hydratation":
-                    if (dataFormat[i].hydratation.hydrates) {
-                        let hydratations = dataFormat[i].hydratation.hydrates
-                        fetchDrinks("hydratation", hydratations, formatedDate);
-                    }
-                    break;
-
-                case "nourriture":
-                    //let nourriture = dataFormat[i].nourriture;
-                    let cereales = dataFormat[i].cereales.cereales;
-                    let legumes = dataFormat[i].legumes.legumes;
-                    let proteines = dataFormat[i].proteines.proteines;
-                    let gras = dataFormat[i].gras.grass;
-                     
-                     fetchNourriture(cereales,formatedDate);
-                     fetchNourriture(legumes,formatedDate);
-                     fetchNourriture(proteines,formatedDate);
-                     fetchNourriture(gras,formatedDate);
-                    break;
-                case "toilettes":
-                    let toilets = dataFormat[i].toilettes;
-                    fetchToilets(toilets, formatedDate);
-                    break;
-                case "alcool":
-                    if (dataFormat[i].alcool.alcools) {
-                        let alcools = dataFormat[i].alcool.alcools;
-                        fetchDrinks("alcool", alcools, formatedDate);
-                    }
-                    break;
-                case "glycémie":
-                    let glycemie = dataFormat[i].glycemie.dailyGlycemie;
-                    fetchGlycemia(glycemie, formatedDate);
-                    break;
-
-                case "supplements":/*
-                    var supplement = dataFormat[i].supplement;
-                    if (!supplement)
-                        retour[i][data] =
-                            translate.getText("SUPP_NOT_YET_IMPLEMENTED") + "\n";
-                    else retour[i][data] = supplement;
-                    */
-                    break;
-                case "poids":
-                    var weight;
-                    if (dataFormat[i].poids.dailyPoids) {
-                        weight = dataFormat[i].poids.dailyPoids;
-                        if (weight !== "0.00") {
-                            fetchWeights(weight, formatedDate);
-                        }
-                    }
-                    break;
-                case "activities":
-                    var activity;
-                    if (dataFormat[i].activities) {
-                        var activity = dataFormat[i].activities;
-                        if (parseInt(activity.hour) + parseInt(activity.minute) != 0) {
-                            fetchActivities(activity, formatedDate);
-                        }
-                    }
-
-                    break;
-                case "sommeil":
-                    var sommeil;
-                    if (dataFormat[i].sommeil) {
-                        sommeil = dataFormat[i].sommeil;
-                        fetchSleeps(sommeil, formatedDate);
-                    }
-
-                    break;
-                default:
-                    break;
-            }
+            fetchData(dataFormat[i], formatedDate, dataSelected);
         }
     }
-    return retour;
+
 }
 
 // PRIVATE FONCTIONS
@@ -206,7 +119,80 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
-// Function to fetch datas for hydratation and alcohol.
+// fetches all the data for the selected categories
+function fetchData(data, formatedDate, categorySelected) {
+    for (const category of categorySelected) {
+        switch (category) {
+            case "hydratation":
+                if (data.hydratation.hydrates) {
+                    let hydratations = data.hydratation.hydrates
+                    fetchDrinks("hydratation", hydratations, formatedDate);
+                }
+                break;
+            case "nourriture":
+                let cereales = data.cereales.cereales;
+                let legumes = data.legumes.legumes;
+                let proteines = data.proteines.proteines;
+                let gras = data.gras.grass;
+                fetchNourriture(cereales,formatedDate);
+                fetchNourriture(legumes,formatedDate);
+                fetchNourriture(proteines,formatedDate);
+                fetchNourriture(gras,formatedDate);
+                break;
+            case "toilettes":
+                let toilets = data.toilettes;
+                fetchToilets(toilets, formatedDate);
+                break;
+            case "alcool":
+                if (data.alcool.alcools) {
+                    let alcools = data.alcool.alcools;
+                    fetchDrinks("alcool", alcools, formatedDate);
+                }
+                break;
+            case "glycémie":
+                let glycemie = data.glycemie.dailyGlycemie;
+                fetchGlycemia(glycemie, formatedDate);
+                break;
+            case "supplements":/*
+                    var supplement = dataFormat[i].supplement;
+                    if (!supplement)
+                        retour[i][data] =
+                            translate.getText("SUPP_NOT_YET_IMPLEMENTED") + "\n";
+                    else retour[i][data] = supplement;
+                    */
+                break;
+            case "poids":
+                var weight;
+                if (data.poids.dailyPoids) {
+                    weight = data.poids.dailyPoids;
+                    if (weight !== "0.00") {
+                        fetchWeights(weight, formatedDate);
+                    }
+                }
+                break;
+            case "activities":
+                var activity;
+                if (data.activities) {
+                    var activity = data.activities;
+                    if (parseInt(activity.hour) + parseInt(activity.minute) != 0) {
+                        fetchActivities(activity, formatedDate);
+                    }
+                }
+                break;
+            case "sommeil":
+                var sommeil;
+                if (data.sommeil) {
+                    sommeil = data.sommeil;
+                    fetchSleeps(sommeil, formatedDate);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+// Function that fetches datas for hydratation and alcohol.
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
     for (const drink of drinks) {
         if (drink.consumption === 0) {
@@ -578,7 +564,6 @@ function getNumberOfUniqueDate(array_aliments){
     });
     return set_date.size;
 }
-
 
 
 
