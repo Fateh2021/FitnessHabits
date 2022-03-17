@@ -586,7 +586,7 @@ function recupererAlcools() {
 }
 
 function recupererNourriture() {
- CompilerBilan.getAggregateNourriture()
+
 }
 
 function recupererToilettes() {

@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 import  "jspdf-autotable";
-import {getWeights} from "./CompilerBilan";
-//import {nourriture_test} from "./CompilerBilan";
+import {getMacrosTotalAndAveragePerDay, getNourriture, getWeights} from "./CompilerBilan";
+
 
 export async function creerPdf(date){
 
@@ -10,7 +10,9 @@ export async function creerPdf(date){
     let headers = []
     let values = []
 
-    //let nourriture = nourriture_test()
+    // getNourriture()
+    // getMacrosTotalAndAveragePerDay("nourriture")
+
 
     // réccupérer les headers et les données (à changer)
     //TODO
