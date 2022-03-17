@@ -435,7 +435,7 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        //var overviewPdf = await compilerBilan(dataSelected, d1, d2);
+                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
                         // todo: propablement a refactor, pas necessaire
 /*                        if (overviewPdf.length <= 0) {
                           toast(
@@ -499,7 +499,7 @@ const Settings = (props) => {
                             }
 
                             doc.save("FitnessHabits-data-" + date + ".pdf");*/
-                           creerPdf(date);
+                           // await creerPdf(date);
                           }
                         //}
 
