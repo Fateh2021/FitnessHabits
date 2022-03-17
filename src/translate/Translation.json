@@ -674,6 +674,26 @@
       "es":"Alimentos",
       "fr":"Nourriture"
    },
+      "GLYC_TITLE":{
+      "en":"Blood sugar level",
+      "es":"Glucemia",
+      "fr":"Glycémie"
+   },
+   "TOILETS_TITLE":{
+      "en":"Toilets",
+      "es":"Aseos",
+      "fr":"Toilettes"
+   },
+   "FECES_TITLE":{
+      "en":"Feces",
+      "es":"Heces",
+      "fr":"Feces"
+   },
+   "URINE_TITLE":{
+      "en":"Urine",
+      "es":"Orina",
+      "fr":"Urine"
+   },
    "EXPORT_TITLE":{
       "en":"Export",
       "es":"Exportar",
@@ -689,20 +709,10 @@
       "es":"Selección de los datos a exportar",
       "fr":"Sélection des données à exporter"
    },
-   "ACTIVITES_TITLE":{
+   "EXPORT_ACTIVITES_TITLE":{
       "en":"Physical activities",
       "es":"Actividades físicas",
       "fr":"Activités physiques"
-   },
-   "GLYC_TITLE":{
-      "en":"Blood sugar level",
-      "es":"Glucemia",
-      "fr":"Glycémie"
-   },
-   "TOILETS_TITLE":{
-      "en":"Toilets",
-      "es":"Aseos",
-      "fr":"Toilettes"
    },
    "EXPORT_FORMAT_TITLE":{
       "en":"Export format",
@@ -729,18 +739,8 @@
       "es":"Los suplementos aún no están implementados",
       "fr":"Les suppléments ne sont pas encore implémentés"
    },
-   "FECES_TITLE":{
-      "en":"Feces",
-      "es":"Heces",
-      "fr":"Feces"
-   },
-   "URINE_TITLE":{
-      "en":"Urine",
-      "es":"Orina",
-      "fr":"Urine"
-   },
    "SEND_MAIL": {
-      "en":"Send by email",
+      "en": "Send by email",
       "es": "Enviar por correo elec.",
       "fr": "Envoyer par courriel"
    },
@@ -758,6 +758,76 @@
       "en": "To",
       "es": "Al",
       "fr": "À"
+   },
+   "EXP_REPORT_UNIT":{
+      "en":"Unit",
+      "es":"Unidad",
+      "fr":"Unité"
+   },
+   "EXP_REPORT_WEIGHT": {
+      "en": "Weight",
+      "es": "Peso",
+      "fr": "Poids"
+   },
+   "EXP_REPORT_INITIAL_WEIGHT": {
+      "en": "Initial weight",
+      "es": "Peso original",
+      "fr": "Poids initial"
+   },
+   "EXP_REPORT_FINAL_WEIGHT": {
+      "en": "Final weight",
+      "es": "Peso final",
+      "fr": "Poids final"
+   },
+   "EXP_REPORT_DIFF_WEIGHT": {
+      "en": "Weight difference",
+      "es": "Diferencia de peso",
+      "fr": "Différence de poids"
+   },
+   "EXP_REPORT_DURATION": {
+      "en": "Duration",
+      "es": "Duración",
+      "fr": "Durée"
+   },
+   "EXP_REPORT_AVERAGE_DURATION_ACTIVITY": {
+      "en": "Average duration",
+      "es": "Duración promedio",
+      "fr": "Durée moyenne"
+   },
+   "EXP_REPORT_START_HOUR_SLEEP": {
+      "en": "Bedtime",
+      "es": "Hora de acostarse",
+      "fr": "Heure de coucher"
+   },
+   "EXP_REPORT_END_HOUR_SLEEP": {
+      "en": "Waking hour",
+      "es": "Hora de despertar",
+      "fr": "Heure de réveil"
+   },
+   "EXP_REPORT_WAKEUP_QT_SLEEP": {
+      "en": "Woke up quantity",
+      "es": "Despertador cantidad",
+      "fr": "Quantité de réveil"
+   },
+   "EXP_REPORT_AVG_END_HOUR_SLEEP": {
+      "en": "Average waking hour",
+      "es": "Tiempo hora de despertar",
+      "fr": "Moyenne de l'heure de réveil"
+   },
+   "EXP_REPORT_AVG_START_HOUR_SLEEP": {
+      "en": "Average bedtime",
+      "es": "Hora de acostarse promedio",
+      "fr": "Heure de coucher moyenne"
+   },
+   "EXP_REPORT_AVG_DURATION_SLEEP": {
+      "en": "Average sleep duration",
+      "es": "Duración media del sueño",
+      "fr": "Durée moyenne de sommeil"
+   },
+   "EXP_REPORT_AVG_WAKEUP_QT": {
+      "en": "Wake up(s) per night",
+      "es": "Despertar(es) por noche",
+      "fr": "Réveil(s) par nuit"
    },
    "HOME_TITLE": {
       "en": "Home",
