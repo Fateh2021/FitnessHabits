@@ -191,6 +191,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
             }
         }
     }
+    console.log(getHydratations());
     return retour;
 }
 
@@ -378,6 +379,7 @@ function getDuration(time) {
 
 // keys : date, consumption, quantity, volume, unit, protein, glucide, fiber, fat
 export function getHydratations() {
+    sortEntries(arrayHydratations);
     return arrayHydratations;
 }
 
@@ -426,6 +428,7 @@ export function getMacrosTotalAndAveragePerDay(category) {
 
 // keys : urine, feces
 export function getToilets() {
+    sortEntries(arrayToilets);
     return arrayToilets;
 }
 
@@ -450,6 +453,7 @@ export function getAverageToilets() {
 
 // keys : Date, Glycemie
 export function getGlycemia() {
+    sortEntries(arrayGlycemia);
     return arrayGlycemia;
 }
 
@@ -611,6 +615,13 @@ export function getAggregateNourriture(){
     //console.log(arrayNourriture);
     return arrayNourriture;
 
+}
+
+// sort the entries from the most recent date to the oldest one
+// Note : the key containing the date value must be called Date
+function sortEntries(arrayToSort) {
+    arrayToSort.sort((a,b) => new Date(b.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
+        - new Date(a.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")));
 }
 //function pour tester l'affichage de la nourriture dans les tableaux
 /*
