@@ -191,7 +191,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
             }
         }
     }
-    console.log(getHydratations());
+    console.log(getNourriture());
     return retour;
 }
 
@@ -215,9 +215,9 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
         }
         let mapHydratation = new Map();
         mapHydratation.set("Date", formatedDate);
-        mapHydratation.set("Boisson", drink.name);
-        mapHydratation.set("Quantité", drink.consumption);
-        mapHydratation.set("Volume", drink.qtte);
+        mapHydratation.set("Nom", drink.name);
+        mapHydratation.set("Consommation", drink.consumption);
+        mapHydratation.set("Quantité", drink.qtte);
         mapHydratation.set("Unité", drink.unit);
         mapHydratation.set("Protéine", parseInt(drink.proteine) * drink.consumption);
         mapHydratation.set("Glucide", parseInt(drink.glucide) * drink.consumption);
@@ -243,14 +243,14 @@ function fetchNourriture(array_nourriture,formatedDate){
                 }
                 let mapResult = new Map();
                 mapResult.set("Date", formatedDate);
-                mapResult.set("name", element.name);
-                mapResult.set("consumption", element.consumption);
-                mapResult.set("quantity", element.qtte);
-                mapResult.set("unit", element.unit);
-                mapResult.set("protein", element.proteine * element.consumption);
-                mapResult.set("glucide", element.glucide * element.consumption);
-                mapResult.set("fiber", element.fibre * element.consumption);
-                mapResult.set("fat", element.gras * element.consumption);
+                mapResult.set("Nom", element.name);
+                mapResult.set("Consommation", element.consumption);
+                mapResult.set("Quantité", element.qtte);
+                mapResult.set("Unité", element.unit);
+                mapResult.set("Protéine", element.proteine * element.consumption);
+                mapResult.set("Glucide", element.glucide * element.consumption);
+                mapResult.set("Fibre", element.fibre * element.consumption);
+                mapResult.set("Gras", element.gras * element.consumption);
 
                 arrayNourriture.push(mapResult);
 
@@ -399,30 +399,30 @@ export function getMacrosTotalAndAveragePerDay(category) {
     let totalProtein = 0;
     let totalFat = 0;
     let totalGlucide = 0;
-    var days;
+    let days;
 
     if (category === "hydratation") {
         arrayHydratations.forEach((data) => {
-            totalFiber += data.get("fiber");
-            totalProtein += data.get("protein");
-            totalFat += data.get("fat");
-            totalGlucide += data.get("glucide");
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
         });
         days = getNumberOfUniqueDate(arrayHydratations)
     } else if(category === "nourriture"){
         arrayNourriture.forEach((data) => {
-            totalFiber += data.get("fiber");
-            totalProtein += data.get("protein");
-            totalFat += data.get("fat");
-            totalGlucide += data.get("glucide");
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
         });
         days = getNumberOfUniqueDate(arrayNourriture)
     }else { // for alcohol
         arrayAlcohol.forEach((data) => {
-            totalFiber += data.get("fiber");
-            totalProtein += data.get("protein");
-            totalFat += data.get("fat");
-            totalGlucide += data.get("glucide");
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
         });
         days = getNumberOfUniqueDate(arrayAlcohol)
     }
