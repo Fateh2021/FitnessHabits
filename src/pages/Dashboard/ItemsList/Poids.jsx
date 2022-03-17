@@ -172,8 +172,8 @@ const Poids = (props) => {
             </h2>
           </IonLabel>
           <IonInput
-            value={IMC}
-            type="number"
+            value={(IMC == Infinity? "": IMC)}
+ 
             className="IMC"
             readonly
             onIonChange={handleIMCChange}  
