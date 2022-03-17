@@ -37,65 +37,25 @@ export async function compilerBilan(dataSelected, d1, d2) {
     //Array of all datas in the BD
     let dataFormat = [];
 
-    //Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
-    //to a date in format mm-jj-aaaa
-    //Note: not sure how date < 10 and month <10 are managed....
+    // if offline, fetches from local storage of the user
     if (!window.navigator.onLine) {
         let localStorageData = JSON.parse(localStorage.getItem("dashboard"));
-        let ajd = '17-03-2022';
-        fetchData(localStorageData, ajd, dataSelected)
+        let today = new Date();
+        let month = today.getMonth().toString().length === 1 ? '0'+ today.getMonth() : today.getMonth();
+        let formatedDate = today.getDate()+'-'+month+'-'+today.getFullYear();
+        fetchData(localStorageData, formatedDate, dataSelected)
     } else {
-        let ref = firebase.database().ref("dashboard/" + userUID + "/");
-        await ref.once("value", (snap) => {
-            snap.forEach((data) => {
-                var annee = data.key.slice(-4);
-                var dayAndMonth = data.key.slice(0, -4);
-                var mois;
-                var jour;
-                // if there's only 2 char for the day and month, then day and month are 1 char each
-                if (dayAndMonth.length === 2) {
-                    jour = '0' + data.key[0] + '-';
-                    mois = '0' + data.key[1] + '-';
-                    // if dayAndMonth has length of 4, then day and month have 2 chars each
-                } else if (dayAndMonth.length === 4) {
-                    jour = data.key.slice(0,2) + '-';
-                    mois = data.key.slice(2,4) + '-';
-                    // if dayAndMonth has a length of 3, 2 options:
-                } else if (dayAndMonth.length === 3) {
-                    // day 2 chars, month 1 char
-                    if ( dayAndMonth.slice(0, 2) in [...Array(32).keys()]
-                        && !(dayAndMonth.slice(1, 3) in [...Array(12).keys()]) ) {
-                        jour = data.key.slice(0,2) + '-';
-                        mois = '0' + data.key[2] + '-';
-                        // day 1 char, month 1 char
-                    } else {
-                        jour = '0' + data.key[0] + '-';
-                        mois = data.key.slice(1,3) + '-';
-                    }
-                }
-                var date = jour + mois + annee;
-                var obj = data.val();
-                obj.date = date;
-                dataFormat.push(obj);
-            });
-        });
+        //Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
+        // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
+        // dataSelected = Checkbox selected by user
+        dataFormat = await getDataFromFirebase(dataFormat);
         initialWeight = fetchInitialWeight(dataFormat);
 
         // With the new array(with the good date format), filter the datas with date selected by user in the datepicker
-        // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
-        // dataSelected = Checkbox selected by user
-
-        let datePickerDates = getDates(d1, d2);
-        dataFormat = dataFormat.filter((data) => {
-            return !!datePickerDates.find((item) => {
-                return (item.getTime() == new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
-                );
-            });
-        });
+        dataFormat = filterDataByDate(dataFormat, d1, d2);
 
         // With the filtered datas, make a dictionnary for each parameters
         // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
-        //NOTE: comment are let as the old way. To refactor.
         for (let i = 0; i < dataFormat.length; ++i) {
             var formatedDate = dataFormat[i].date
                 ? dataFormat[i].date
@@ -104,11 +64,61 @@ export async function compilerBilan(dataSelected, d1, d2) {
             fetchData(dataFormat[i], formatedDate, dataSelected);
         }
     }
-
 }
 
 // PRIVATE FONCTIONS
-//Return an array with all dates to fetch
+//Return an array (dataFormat) with all the datas from the user
+async function getDataFromFirebase(dataFormat) {
+    let ref = firebase.database().ref("dashboard/" + userUID + "/");
+    await ref.once("value", (snap) => {
+        snap.forEach((data) => {
+            let annee = data.key.slice(-4);
+            let dayAndMonth = data.key.slice(0, -4);
+            let mois;
+            let jour;
+            // if there's only 2 char for the day and month, then day and month are 1 char each
+            if (dayAndMonth.length === 2) {
+                jour = '0' + data.key[0] + '-';
+                mois = '0' + data.key[1] + '-';
+                // if dayAndMonth has length of 4, then day and month have 2 chars each
+            } else if (dayAndMonth.length === 4) {
+                jour = data.key.slice(0,2) + '-';
+                mois = data.key.slice(2,4) + '-';
+                // if dayAndMonth has a length of 3, 2 options:
+            } else if (dayAndMonth.length === 3) {
+                // day 2 chars, month 1 char
+                if ( dayAndMonth.slice(0, 2) in [...Array(32).keys()]
+                    && !(dayAndMonth.slice(1, 3) in [...Array(12).keys()]) ) {
+                    jour = data.key.slice(0,2) + '-';
+                    mois = '0' + data.key[2] + '-';
+                    // day 1 char, month 1 char
+                } else {
+                    jour = '0' + data.key[0] + '-';
+                    mois = data.key.slice(1,3) + '-';
+                }
+            }
+            let date = jour + mois + annee;
+            let obj = data.val();
+            obj.date = date;
+            dataFormat.push(obj);
+        });
+    });
+    return dataFormat;
+}
+
+// Filter the array of data by date between date debut and date fin
+function filterDataByDate(dataFormat, d1, d2) {
+    let datePickerDates = getDates(d1, d2);
+    dataFormat = dataFormat.filter((data) => {
+        return !!datePickerDates.find((item) => {
+            return (item.getTime() == new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
+            );
+        });
+    });
+    return dataFormat;
+}
+
+// Return an array containing all the possible dates between startDate and stopDate
 function getDates(startDate, stopDate) {
     var dateArray = [];
     var currentDate = startDate;
@@ -377,8 +387,6 @@ export function getNourriture(){
 // Return a map with a total for each macro (protein, glucide, fiber, fat) as
 // well as their average.
 // category can be : "hydratation", "alcool", "nourriture"
-// todo: find a way to get the interval days and not just the days chosen
-// todo: add category food when the array will be made
 export function getMacrosTotalAndAveragePerDay(category) {
     let totalFiber = 0;
     let totalProtein = 0;
@@ -394,7 +402,7 @@ export function getMacrosTotalAndAveragePerDay(category) {
             totalGlucide += data.get("Glucide");
         });
         days = getNumberOfUniqueDate(arrayHydratations)
-    } else if(category === "nourriture"){
+    } else if (category === "nourriture") {
         arrayNourriture.forEach((data) => {
             totalFiber += data.get("Fibre");
             totalProtein += data.get("Protéine");
@@ -402,7 +410,7 @@ export function getMacrosTotalAndAveragePerDay(category) {
             totalGlucide += data.get("Glucide");
         });
         days = getNumberOfUniqueDate(arrayNourriture)
-    }else { // for alcohol
+    } else { // for alcohol
         arrayAlcohol.forEach((data) => {
             totalFiber += data.get("Fibre");
             totalProtein += data.get("Protéine");
@@ -421,8 +429,6 @@ export function getMacrosTotalAndAveragePerDay(category) {
     macrosMap.set("averageFat", +(totalFat/days).toFixed(2));
     macrosMap.set("averageGlucide", +(totalGlucide/days).toFixed(2));
 
-    // console.log('Days',days)
-    // console.log("Nourriture",macrosMap)
     return macrosMap;
 }
 
@@ -432,11 +438,10 @@ export function getToilets() {
     return arrayToilets;
 }
 
-// todo: changer days pour avoir les jours de l'intervalle seulement
 export function getAverageToilets() {
     let totalUrine = 0;
     let totalFeces = 0;
-    let days = arrayToilets.length;
+    let days = getNumberOfUniqueDate(arrayToilets);
     arrayToilets.forEach((data) => {
         totalUrine += data.get("urine");
         totalFeces += data.get("feces");
@@ -460,11 +465,12 @@ export function getGlycemia() {
 // return the average glycemia for the last few days
 export function getAverageGlycemia() {
     let total = 0;
+    let days = getNumberOfUniqueDate(arrayGlycemia)
     arrayGlycemia.forEach((data) => {
         total += data["Glycemie"];
     });
     let mapAverageGlycemia = new Map();
-    mapAverageGlycemia["Moyenne"] = (total/arrayGlycemia.length).toFixed(2) + " mmol/L";
+    mapAverageGlycemia["Moyenne"] = (total/days).toFixed(2) + " mmol/L";
     mapAverageGlycemia["Référence"] = "4.7 - 6.8 mmol/L";
 
     return mapAverageGlycemia;
