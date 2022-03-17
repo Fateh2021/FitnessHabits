@@ -191,7 +191,6 @@ export async function compilerBilan(dataSelected, d1, d2) {
             }
         }
     }
-    console.log(getNourriture());
     return retour;
 }
 
