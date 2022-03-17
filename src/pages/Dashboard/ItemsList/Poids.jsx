@@ -158,7 +158,7 @@ const Poids = (props) => {
     <div>
       <IonItem className="divTitre9" lines="none">
         <IonAvatar class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
-          <img src="/assets/Poids.jpg" alt="" />
+          <img data-testid = "img_sauter" src="/assets/Poids.jpg" alt="" />
         </IonAvatar>{" "}
         <IonLabel classeName="titrePoids" style={{ width: 60 }}>
           <h2 color="warning">
@@ -181,6 +181,7 @@ const Poids = (props) => {
           ></IonInput>
         </div>
         <IonInput
+          data-testid = "poids_input"  
           className="input poidsActuel"
           value={dailyPoids}              
           onIonChange={handleChange}          

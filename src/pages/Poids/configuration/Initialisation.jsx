@@ -145,11 +145,15 @@ const handlerConfirmation = () => {
         <IonCardContent>
           <IonItemGroup>
             <IonItemDivider>
+
               <IonLabel slot="start">{translate.getText("POIDS_PREF_UNITE_POIDS")}</IonLabel>
-              <IonSelect slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
-              <IonSelectOption value="LBS">LBS</IonSelectOption>
-              <IonSelectOption value="KG">KG</IonSelectOption>
-            </IonSelect>
+            {/*<IonSelect slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
+*/}
+              <IonSelect data-testid = "pop_up_unite" slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
+                <IonSelectOption value="LBS">LBS</IonSelectOption>
+                <IonSelectOption value="KG">KG</IonSelectOption>
+              </IonSelect>
+
             </IonItemDivider>
             <IonItemDivider>
               <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_INITIAL")}</IonLabel>
