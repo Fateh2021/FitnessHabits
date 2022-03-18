@@ -824,6 +824,26 @@
       "es": "Sexo",
       "fr": "Sexe"
    },
+   "SIDEBAR_LBL_SEXE_MAN": {
+      "en": "Man",
+      "es": "Hombre",
+      "fr": "Homme"
+   },
+   "SIDEBAR_LBL_SEXE_WOMAN": {
+      "en": "Woman",
+      "es": "Mujer",
+      "fr": "Femme"
+   },
+   "SIDEBAR_LBL_SEXE_OTHER": {
+      "en": "Other",
+      "es": "Otro",
+      "fr": "Autre"
+   },
+   "SIDEBAR_LBL_SEXE_NO_ANSWER": {
+      "en": "Prefer not to answer",
+      "es": "prefieren no contestar",
+      "fr": "Préfère ne pas répondre"
+   },
    "SIDEBAR_LBL_DATEFORMAT": {
       "en": "Date Format",
       "es": "Formato de fecha",

@@ -9,7 +9,7 @@ const testProfile = {
     pseudo: "testUser",
     email: "testUser@fitnesshabit.com",
     size: "999",
-    gender: "T",
+    gender: "N",
     dateFormat: "dd-LLL-yyyy",
 };
 
@@ -83,12 +83,10 @@ describe('How <Sidebar> behaves', () => {
 
         const inputEmail = getByTestId("email");
         ionFireEvent.ionBlur(inputEmail);
-        const inputGender = getByTestId("gender");
-        ionFireEvent.ionBlur(inputGender);
         const inputHeight = getByTestId("height");
         ionFireEvent.ionBlur(inputHeight);
-
-        expect(mockUpdate).toBeCalledTimes(3);
+        //expect(mockUpdate).toBeCalledTimes(3);
+        expect(mockUpdate).toBeCalledTimes(2);
     });
 
     it('should sign out on click', () => {

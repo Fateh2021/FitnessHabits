@@ -1,3 +1,4 @@
+
 .or-format {
     text-align: center;
 }
@@ -267,7 +268,7 @@ color: #d66437;
 
 .button-left {
   padding-left: 0px;
-  padding-right: 70px;
+  padding-right: 70px;  
 }
 
 .buttonHeaderDash{
@@ -277,7 +278,7 @@ color: #d66437;
   background-color: #aabb99;
 }
 
-.buttonTimeLeft{
+.buttonTimeLeft{ 
   font-size: 26px;
   color: #d66437;
   text-shadow: black;
@@ -358,19 +359,20 @@ color: #ffffff;
  }
 
  .datePicker {
-  margin: -40px;
+  margin: -40px; 
   background-color: #f7e8ca;
   width: 120px;
   font-weight: bolder;
  }
 
  .headerTitleDashboard h3{
-   padding-top: 5px;
+   /* padding-top: 5px; */
   font-size: 18px;
   font-family: fantasy;
   font-weight: bolder;
   color:#f7e8ca;
-  margin-left: 130px;
+  text-align: center;
+  /* margin-left: 130px; */
  }
 
  .profilTitleDashboard h3{
@@ -387,7 +389,7 @@ color: #ffffff;
   background-color: #684b11;
   width: 50px;
   height: 50px;
-
+ 
  }
  .veg-box{
   z-index: 0;
@@ -412,7 +414,7 @@ color: #ffffff;
  .headerTitle h1{
   color: #1a5a5a;
  }
-
+ 
  #materialSelectSupp{
   margin-top: 0px;
   margin-right: 10px;
@@ -442,7 +444,7 @@ color: #ffffff;
   font-size: 13px;
   font-weight: bold;
  }
-
+ 
  #PopUpUnitSelect{
   margin-top: 0px;
   margin-left: -28px;
@@ -453,7 +455,7 @@ color: #ffffff;
  .ajoutBotton{
    width: 100%;
    padding-top: 4px;
-   display: inline-block;
+   display: inline-block; 
    vertical-align: middle;
    background-color: #fcf0c9;
    --ion-background-color:#faf2d9;
@@ -494,14 +496,14 @@ color: #ffffff;
 .description h3{
   font-size:12px;
   font-weight: bolder;
-  margin-top: 5px;
+  margin-top: 5px; 
   font-stretch: semi-condensed;
 }
 
 .divHyd{
   height: 122px;
   width: 100%;
-  overflow-y:
+  overflow-y: 
   scroll;
 }
 
@@ -1452,18 +1454,18 @@ background-color: #ffffff;
 
 .profilText h2{
   font-size:18px;
- padding-top: 0px;
- font-stretch: semi-condensed;
- margin-top: 0px;
+ /* padding-top: 0px; */
+ /* font-stretch: semi-condensed; */
+ /* margin-top: 0px; */
  color: #1a5a5a;
 }
 
-.profilText{
+.profilText {
  background-color: #f7e8ca;
 }
 
-.contentProfil{
-height: 58%;
+.noPadding{
+  padding: 0px;
 }
 
 .profilImage{
@@ -1640,7 +1642,7 @@ height: 58%;
   margin: 5px;
 }
 
-.sideBarButtonCamera {
+.sideBarButtonCamera{
   width: 30px;
   height: 30px;
   background-color: #f7e8ca;
@@ -1648,17 +1650,6 @@ height: 58%;
   padding-top: 4px;
   margin-left: 10px;
   margin-top: 5px;
-}
-
-.sideBarButtonDelete {
-  width: 30px;
-  height: 30px;
-  background-color: #d31515;
-  border-radius: 72%;
-  padding-top: 4px;
-  margin-left: 80px;
-  margin-top: 0px;
-  color: white;
 }
 
 .sideBarButtonLogout{
@@ -1683,9 +1674,18 @@ height: 58%;
   background-color: #0e3530;
 }
 
+.sideBarHeaderTitle{
+  background-color: #0e3530;
+}
+.whiteBackground{
+  --ion-background-color: white;
+  background-color: white;
+}
+
+
 .sidebar {
-  height: 100vh;
-  background-color:#90a17f;
+  height: 100%;
+  background-color:#6f7e61;
   color: white;
   width: 350px;
   position: fixed;
@@ -1694,6 +1694,11 @@ height: 58%;
   animation: slide-open 0.75s forwards;
   background-size: 2em 2em;
   flex: 1 1 auto;
+  --ion-background-color:#90a17f;
+}
+
+.sidebarfooter{
+  height: 20px;
 }
 
 .alert {
@@ -1765,7 +1770,7 @@ body {
   overflow: hidden;
 }
 
-.ocean {
+.ocean { 
   height: 5%;
   width:100%;
   position:absolute;
@@ -1775,7 +1780,7 @@ body {
 }
 
 .wave {
-  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
   position: absolute;
   top: -198px;
   width: 6400px;
@@ -1911,7 +1916,7 @@ h2{
 }
 
 .ionlistNourrSettings {
-  padding: 0px;
+  padding: 0px;  
 }
 
 .divTitre3 {
@@ -1951,7 +1956,7 @@ h2{
 }
 
 .divTitre9 {
-
+  
   width: 100%;
   --ion-background-color: #113d37;
 }
@@ -1974,44 +1979,44 @@ h2{
   --ion-background-color:  #eed996;
 }
 
-.multipleSelection {
+.multipleSelection { 
   position: fixed;
   /* width: 300px;  */
-  background-color: #BCC2C1;
-}
+  background-color: #BCC2C1; 
+} 
 
-.selectBox {
-  position: fixed;
-}
+.selectBox { 
+  position: fixed; 
+} 
 
-.selectBox select {
+.selectBox select { 
   /* width: 100%;  */
-  font-weight: bold;
-}
+  font-weight: bold; 
+} 
 
-.overSelect {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
+.overSelect { 
+  position: fixed; 
+  left: 0; 
+  right: 0; 
+  top: 0; 
+  bottom: 0; 
+} 
 
-#checkBoxes {
-  display: none;
-  border: 1px #8DF5E4 solid;
+#checkBoxes { 
+  display: none; 
+  border: 1px #8DF5E4 solid; 
   overflow: hidden;
   height: 60px;
   width: 120px;
-}
+} 
 
-#checkBoxes label {
-  display: block;
-}
+#checkBoxes label { 
+  display: block; 
+} 
 
-#checkBoxes label:hover {
-  background-color: #4F615E;
-}
+#checkBoxes label:hover { 
+  background-color: #4F615E; 
+} 
 
 .scrollActivities {
   z-index: 1;
@@ -2086,10 +2091,10 @@ h2{
   justify-content: center;
 }
 
-@media only screen
+@media only screen 
   and (min-device-width: 375px){
     .grid-container{
-      margin-top: 30px;
+      margin-top: 30px; 
     }
     .sideBarHeader{
       margin-top: 30px;
