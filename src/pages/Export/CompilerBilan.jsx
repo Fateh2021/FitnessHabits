@@ -475,6 +475,7 @@ export function getAverageGlycemia() {
 
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
+    sortEntries(arrayActivities);
     return arrayActivities;
 }
 
@@ -495,6 +496,7 @@ export function getAggregateActivities() {
 //- WEIGHTS - //
 //Possible keys: weightUnit, weight
 export function getWeights() {
+    sortEntries(arrayWeights);
     return arrayWeights;
 }
 
@@ -510,6 +512,7 @@ export function getAggregateWeights() {
 //- SLEEPs - //
 //Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
 export function getSleeps() {
+    sortEntries(arraySleeps);
     return arraySleeps;
 }
 
