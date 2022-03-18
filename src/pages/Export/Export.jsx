@@ -304,7 +304,7 @@ const Settings = (props) => {
             <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
             <div role="checkbox" aria-checked={dataSelected.includes("activities")} data-testid="checkbox-activities">
               <IonItem>
-                <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
+                <IonLabel>{translate.getText("EXPORT_ACTIVITES_TITLE")}</IonLabel>
                 <IonCheckbox
                     checked={dataSelected.includes("activities")}
                     onIonChange={(e) => {
@@ -435,7 +435,7 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        //var overviewPdf = await compilerBilan(dataSelected, d1, d2);
+                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
                         // todo: propablement a refactor, pas necessaire
 /*                        if (overviewPdf.length <= 0) {
                           toast(
