@@ -446,15 +446,15 @@ export function getAverageToilets() {
     let totalFeces = 0;
     let days = getNumberOfUniqueDate(arrayToilets);
     arrayToilets.forEach((data) => {
-        totalUrine += data.get("urine");
-        totalFeces += data.get("feces");
+        totalUrine += data.get("Urine");
+        totalFeces += data.get("Transit");
     });
 
     let mapToilets = new Map();
-    mapToilets["totalUrine"] = totalUrine;
-    mapToilets["totalFeces"] = totalFeces;
-    mapToilets["averageUrinePerDay"] = totalUrine/days;
-    mapToilets["averageFecesPerDay"] = totalFeces/days;
+    mapToilets.set("totalUrine", totalUrine);
+    mapToilets.set("totalFeces", totalFeces);
+    mapToilets.set("averageUrinePerDay", (totalUrine/days).toFixed(2));
+    mapToilets.set("averageFecesPerDay", (totalFeces/days).toFixed(2));
 
     return mapToilets;
 }
@@ -470,11 +470,11 @@ export function getAverageGlycemia() {
     let total = 0;
     let days = getNumberOfUniqueDate(arrayGlycemia)
     arrayGlycemia.forEach((data) => {
-        total += data["Glycemie"];
+        total += data.get("Glycémie");
     });
     let mapAverageGlycemia = new Map();
-    mapAverageGlycemia["Moyenne"] = (total/days).toFixed(2) + " mmol/L";
-    mapAverageGlycemia["Référence"] = "4.7 - 6.8 mmol/L";
+    mapAverageGlycemia.set("Moyenne", (total/days).toFixed(2) + " mmol/L");
+    mapAverageGlycemia.set("Référence", "4.7 - 6.8 mmol/L");
 
     return mapAverageGlycemia;
 }

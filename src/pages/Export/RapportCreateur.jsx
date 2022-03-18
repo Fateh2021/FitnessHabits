@@ -731,17 +731,17 @@ function addGlycimiaTable(document){
 }
 
 function addAverageGlycimiaTable(document){
-    let averageGlycimia = getAverageGlycemia();
+    let averageGlycemia = getAverageGlycemia();
     let line_1 = [];
     let line_2 = [];
     let footerTable = [];
 
     var moyenneTitle = translate.getText("EXP_REPORT_DURATION");
-    var moyenne = averageGlycimia["Moyenne"];
+    var moyenne = averageGlycemia.get("Moyenne");
     line_1.push(moyenneTitle, moyenne);
 
     var referenceActTitle = translate.getText("EXP_REF_GLY");
-    var reference = averageGlycimia["Référence"];
+    var reference = averageGlycemia.get("Référence");
     line_2.push(referenceActTitle, reference);
 
     footerTable.push(line_1, line_2);
