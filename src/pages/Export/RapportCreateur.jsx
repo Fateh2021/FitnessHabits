@@ -28,10 +28,7 @@ export async function creerPdf(date, dataSelected) {
         alternateRowStyles: {fillColor: "#ffffff"},
         didDrawCell: (data) => {
             if (data.section === 'body' && data.column.index === 0) {
-                var image = new Image();
-                image.src = '/assets/Logo2.png';
-                console.log(image);
-                doc.addImage(image.src,'png',10,2,78,20);
+                doc.addImage('/assets/Logo2.png','png',10,2,78,20);
             }
         }
     });
@@ -500,7 +497,6 @@ function addHydratationMacrosTable(document) {
 }
 
 function addToiletsTable(document) {
-    //TODO
     let toilets = getToilets();
     let headers = [];
     let values = [];
@@ -533,7 +529,6 @@ function addToiletsTable(document) {
 }
 
 function addAverageToiletsTable(document) {
-    //TODO
     let averageToilets = getAverageToilets();
 
     let line_1 = [];
@@ -566,7 +561,6 @@ function addAverageToiletsTable(document) {
     });
 }
 
-//TODO : fonctions alcool
 function addAlcoolTable(document){
     let alcool = getAlcohol();
     let headers = [];
@@ -678,10 +672,33 @@ function addAlcoolMacrosTable(document){
 //TODO : fonctions supléments
 
 function addGlycimiaTable(document){
-    //TODO
-    //let glycimia = getGlycemia();
+    let glycimia = getGlycemia();
+    let headers = [];
+    let values = [];
 
-    //console.log(glycimia)
+    glycimia.forEach((data) => {
+        values.push([{content: data.get('Date')}, {content: data.get('Glycémie')}]);
+    });
+
+    var Date = translate.getText("DATE_TITLE")
+    var glycemie = translate.getText("GLYC_TITLE");
+    headers.push(Date, glycemie);
+
+    document.autoTable({
+        head: [headers],
+        body: values,
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: "#6e233d"
+        },
+        bodyStyles: {
+            minCellHeight: 9,
+            halign: "left",
+            valign: "center",
+            fontSize: 11,
+            fillColor: "#ff9bbd"
+        },
+    });
 }
 
 function addAverageGlycimiaTable(document){
@@ -703,6 +720,5 @@ function addAverageGlycimiaTable(document){
     document.autoTable({
         body: footerTable,
         tableWidth: 'wrap',
-        startY: document.lastAutoTable.finalY + 20, // temporaire. à enlever quand Glycémie fonctionne.
     });
 }
