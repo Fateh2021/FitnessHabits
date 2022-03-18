@@ -264,8 +264,8 @@ function fetchToilets(toilets, formatedDate) {
 
 function fetchGlycemia(glycemia, formatedDate) {
     let mapGlycemia = new Map();
-    mapGlycemia["Date"] = formatedDate;
-    mapGlycemia["Glycémie"] = parseInt(glycemia);
+    mapGlycemia.set("Date", formatedDate);
+    mapGlycemia.set("Glycémie", parseInt(glycemia));
 
     arrayGlycemia.push(mapGlycemia);
 }
@@ -379,6 +379,11 @@ export function getHydratations() {
 export function getNourriture(){
     sortEntries(arrayNourriture);
     return arrayNourriture;
+}
+
+export function getAlcohol() {
+    sortEntries(arrayAlcohol);
+    return arrayAlcohol;
 }
 
 // Function used to calculate the macros total and the average per day.

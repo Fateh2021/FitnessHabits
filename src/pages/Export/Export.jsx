@@ -434,7 +434,7 @@ const Settings = (props) => {
                       var date = new Date().toISOString().slice(0, 10);
                       if (selected === "pdf" || selected === "hybride") {
                         await compilerBilan(dataSelected, d1, d2);
-                        await creerPdf(date);
+                        await creerPdf(date,dataSelected);
                       }
                       if (selected === "csv" || selected === "hybride") {
                         var overviewCsv = await compilerBilan(dataSelected, d1, d2);
