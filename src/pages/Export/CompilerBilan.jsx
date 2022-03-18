@@ -380,6 +380,11 @@ export function getNourriture(){
     return arrayNourriture;
 }
 
+export function getAlcohol() {
+    sortEntries(arrayAlcohol);
+    return arrayAlcohol;
+}
+
 // Function used to calculate the macros total and the average per day.
 // Return a map with a total for each macro (protein, glucide, fiber, fat) as
 // well as their average.
