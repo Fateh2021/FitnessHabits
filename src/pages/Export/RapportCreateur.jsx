@@ -100,7 +100,7 @@ function addWeightTable(document) {
     document.autoTable({
         head: [headers],
         body: values,
-        margin: {top: 25},
+        startY: document.lastAutoTable.finalY + 15,
         headStyles: {
             fillColor: "#113d37"
         },
