@@ -785,14 +785,14 @@
       "fr": "Différence de poids"
    },
    "EXP_REPORT_DURATION": {
-      "en": "Duration",
+      "en": "Average",
       "es": "Duración",
-      "fr": "Durée"
+      "fr": "Moyenne"
    },
    "EXP_REPORT_AVERAGE_DURATION_ACTIVITY": {
-      "en": "Average duration",
-      "es": "Duración promedio",
-      "fr": "Durée moyenne"
+      "en": "Total",
+      "es": "promedio",
+      "fr": "Total"
    },
    "EXP_REPORT_START_HOUR_SLEEP": {
       "en": "Bedtime",
@@ -812,17 +812,17 @@
    "EXP_REPORT_AVG_END_HOUR_SLEEP": {
       "en": "Average waking hour",
       "es": "Tiempo hora de despertar",
-      "fr": "Moyenne de l'heure de réveil"
+      "fr": "Heure de réveil moyen"
    },
    "EXP_REPORT_AVG_START_HOUR_SLEEP": {
       "en": "Average bedtime",
       "es": "Hora de acostarse promedio",
-      "fr": "Heure de coucher moyenne"
+      "fr": "Heure de coucher moyen"
    },
    "EXP_REPORT_AVG_DURATION_SLEEP": {
-      "en": "Average sleep duration",
-      "es": "Duración media del sueño",
-      "fr": "Durée moyenne de sommeil"
+      "en": "Average duration",
+      "es": "Duración promedio",
+      "fr": "Durée moyenne"
    },
    "EXP_REPORT_AVG_WAKEUP_QT": {
       "en": "Wake up(s) per night",

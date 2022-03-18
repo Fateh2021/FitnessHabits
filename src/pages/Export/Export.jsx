@@ -304,7 +304,7 @@ const Settings = (props) => {
             <IonItemDivider>{translate.getText("EXPORT_DATA_SELECTION_TITLE")}</IonItemDivider>
             <div role="checkbox" aria-checked={dataSelected.includes("activities")} data-testid="checkbox-activities">
               <IonItem>
-                <IonLabel>{translate.getText("ACTIVITES_TITLE")}</IonLabel>
+                <IonLabel>{translate.getText("EXPORT_ACTIVITES_TITLE")}</IonLabel>
                 <IonCheckbox
                     checked={dataSelected.includes("activities")}
                     onIonChange={(e) => {
@@ -431,78 +431,11 @@ const Settings = (props) => {
                       if (dataSelected.length === 0) {
                         toast(toastMessage);
                       } else {
-                      
                       var date = new Date().toISOString().slice(0, 10);
-                      var retour = "";
                       if (selected === "pdf" || selected === "hybride") {
-                        var overviewPdf = await compilerBilan(dataSelected, d1, d2);
-                        // todo: propablement a refactor, pas necessaire
-/*                        if (overviewPdf.length <= 0) {
-                          toast(
-                              translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
-                          );
-                        } else {
-                            dataSelected.forEach((data) => {
-                              switch (data) {
-                                case "hydratation":
-                                  var hydratation = recupererHydratation();
-                                  retour = retour + hydratation + "\n";
-                                  break;
-                                case "activities":
-                                  var activite = recupererActivite();
-                                  retour = retour + activite + "\n";
-                                  break;
-                                case "nourriture":
-                                  var nourriture = recupererNourriture();
-                                  retour = retour + nourriture + "\n";
-                                  break;
-                                case "sommeil":
-                                  var sommeil = recupererSommeil();
-                                  retour = retour + sommeil + "\n";
-                                  break;
-                                case "toilettes":
-                                  var toilettes = recupererToilettes();
-                                  retour = retour + toilettes + "\n";
-                                  break;
-                                case "alcool":
-                                  var alcool = recupererAlcools();
-                                  retour = retour + alcool + "\n";
-                                  break;
-                                case "glycémie":
-                                  var glycemie = recupererGlycemie();
-                                  retour = retour + glycemie + "\n";
-                                  break;
-                                case "poids":
-                                  var poids = recupererPoids();
-                                  retour = retour + poids + "\n";
-                                  break;
-                                case "supplements":
-                                  var supplements = recupererSupplements();
-                                  retour = retour + supplements + "\n";
-                                  break;
-
-                                default:
-                                  break;
-                              }
-                            });*/
-                            //TODO
-/*                            const doc = new jsPDF();
-                            var splitTitle = doc.splitTextToSize(retour, 270);
-                            var y = 7;
-                            for (var i = 0; i < splitTitle.length; i++) {
-                              if (y > 280) {
-                                y = 10;
-                                doc.addPage();
-                              }
-                              doc.text(15, y, splitTitle[i]);
-                              y = y + 7;
-                            }
-
-                            doc.save("FitnessHabits-data-" + date + ".pdf");*/
-                           creerPdf(date);
-                          }
-                        //}
-
+                        await compilerBilan(dataSelected, d1, d2);
+                        await creerPdf(date);
+                      }
                       if (selected === "csv" || selected === "hybride") {
                         var overviewCsv = await compilerBilan(dataSelected, d1, d2);
                         if (overviewCsv.length <= 0) {
@@ -554,152 +487,5 @@ Date.prototype.addDays = function (days) {
   date.setDate(date.getDate() + days);
   return date;
 };
-
-// TO REMOVE, ONLY FOR TEST PURPOSES
-function recupererHydratation() {
-  var retour = translate.getText("HYDR_TITLE") +": \n";
-  retour += 'Exemple hydratation';
-  CompilerBilan.getHydratations().forEach((data) => {
-    retour = retour + 'Date ' + data.get("date") + '\n' +
-              'Nom ' + data.get("consumption") + '\n' +
-              'Volume ' + data.get("volume") + '\n';
-  });
-  return retour;
-
-  // var hydratation = JSON.parse(localStorage.getItem("dashboard")).hydratation
-  //     .hydrates;
-  // hydratation.forEach((data) => {
-  //   retour =
-  //       retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
-  // });
-  // return retour;
-}
-
-function recupererAlcools() {
-  var retour = translate.getText("ALCOOL_TITLE")+": \n";
-  var alcool = JSON.parse(localStorage.getItem("dashboard")).alcool.alcools;
-  alcool.forEach((data) => {
-    retour =
-        retour + " " + data.name + ": " + data.qtte + " " + data.unit + "\n";
-  });
-  return retour;
-}
-
-function recupererNourriture() {
-
-}
-
-function recupererToilettes() {
-  var retour = translate.getText("TOILETS_TITLE")+": \n";
-  var toilettes = JSON.parse(localStorage.getItem("dashboard")).toilettes;
-
-  retour =
-      retour +
-      " "+translate.getText("FECES_TITLE")+": " +
-      toilettes.feces +
-      "\n "+translate.getText("URINE_TITLE")+": " +
-      toilettes.urine +
-      "\n";
-
-  return retour;
-}
-
-function recupererGlycemie() {
-  var retour = translate.getText("GLYC_TITLE")+": \n";
-  var glycemie = JSON.parse(localStorage.getItem("dashboard")).glycemie
-      .dailyGlycemie;
-
-  retour = retour + glycemie + "\n";
-
-  return retour;
-}
-
-function recupererSupplements() {
-  var retour = translate.getText("SUPPL_TITLE") +": \n";
-  var supplement = JSON.parse(localStorage.getItem("dashboard")).supplement;
-  if (!supplement) {
-    retour = retour + translate.getText("SUPP_NOT_YET_IMPLEMENTED") +"\n";
-  } else {
-    retour = retour + supplement + "\n";
-  }
-
-  return retour;
-}
-
-//TODO: refactoring to put it in a proper table !
-function recupererActivite() {
-  //var retour = translate.getText("ACTIVITES_TITLE")+": \n";
-  //var activite = JSON.parse(localStorage.getItem("dashboard")).activities;
-  //retour = retour + " " + activite.heure + "h " + activite.minute + " min\n";
-
-  var title = translate.getText("ACTIVITES_TITLE")+": \n";
-  var keys = "DATE               HOUR    MINUTES     DURATION\n"
-  var activities = title + keys;
-  CompilerBilan.getActivities().forEach((data) => {
-                                activities = activities
-                                + data.get('date') +     "      "
-                                + data.get('hours') +     "           "
-                                + data.get('minutes') +   "                 "
-                                + data.get('duration') + "\n"
-                            });
-  activities =  activities + "\n Total Duration : " + CompilerBilan.getAggregateActivities().get("TotalDuration");
-  activities =  activities + "\n Average Duration : " + CompilerBilan.getAggregateActivities().get("AverageDuration");
-
-  return activities;
-}
-
-
-//TODO: refactoring to put it in a proper table !
-function recupererPoids() {
-  //var retour = translate.getText("POIDS_NOM_SECTION") +": \n";
-  //var poids = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
-  //retour = retour + poids + "\n";
-
-  var title = translate.getText("POIDS_NOM_SECTION")+": \n";
-  var aggregateWeight = CompilerBilan.getAggregateWeights()
-  var prefUnitePoids = aggregateWeight.get("prefUnitePoids");
-  var keys = "DATE               WEIGHT(" + prefUnitePoids + ")\n"
-  var weights = title + keys;
-  CompilerBilan.getWeights().forEach((data) => {
-                                weights = weights
-                                + data.get('date') +     "      "
-                                + data.get('weight') +     "           "
-                                + "\n"
-                            });
-  weights =  weights + "\nInitial weight : " + aggregateWeight.get("initalWeight");
-  weights =  weights + "\nFinal weight : " + aggregateWeight.get("finalWeight");
-  weights =  weights + "\nDifference : " + aggregateWeight.get("deltaWeight") + "\n\n";
-  return weights;
-}
-
-
-//TODO: refactoring to put it in a proper table !
-//averageDuree + averageStartHour, averageEndHour, averageWakeUpQt
-function recupererSommeil() {
-  //var retour = translate.getText("SLEEP")+": \n";
-  //var sommeil = JSON.parse(localStorage.getItem("dashboard")).sommeil;
-  //retour = retour + " " + sommeil.heure + "h " + sommeil.minute + " min\n";
-
-  var title = translate.getText("SLEEP")+": \n";
-  var keys =    "DATE               START     END       DURATION   WAKEUP WAKEUP\n"
-  var keys_2 =  "                        HOUR       HOUR                          QT            STATE\n"
-  var sleeps = title + keys +keys_2;
-  CompilerBilan.getSleeps().forEach((data) => {
-                                sleeps = sleeps
-                                + data.get('date') +        "      "
-                                + data.get('startHour') +   "       "
-                                + data.get('endHour')   +   "       "
-                                + data.get('duration')  +   "             "
-                                + data.get('wakeUpQt')  +   "               "
-                                + data.get('wakeUpState')
-                                + "\n"
-                            });
-
-  sleeps +=  "\n Average start hour : " + CompilerBilan.getAggregateSleeps().get("averageStartHour");
-  sleeps +=  "\n Average end hour : " + CompilerBilan.getAggregateSleeps().get("averageEndHour");
-  sleeps +=  "\n Average duration : " + CompilerBilan.getAggregateSleeps().get("averageDuree");
-  sleeps +=  "\n Average wake up per night : " + CompilerBilan.getAggregateSleeps().get("averageWakeUpQt") + "\n\n";
-  return sleeps;
-}
 
 export default Settings;

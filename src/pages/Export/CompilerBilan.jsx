@@ -272,7 +272,7 @@ function fetchGlycemia(glycemia, formatedDate) {
 
 function fetchWeights(weight, formatedDate) {
     let mapWeight = new Map();
-    mapWeight.set("date", formatedDate);
+    mapWeight.set("Date", formatedDate);
     let weightUnit = localStorage.getItem("prefUnitePoids");
     mapWeight.set("weightUnit", weightUnit);
 
@@ -315,7 +315,7 @@ function fetchInitialWeight(datas) {
 
 function fetchActivities(activity, formatedDate) {
     let mapActivity = new Map();
-    mapActivity.set("date", formatedDate);
+    mapActivity.set("Date", formatedDate);
     var minutes = parseInt(activity.heure*60) + parseInt(activity.minute);
     var duration = formatDuration(minutes);
     mapActivity.set("duration", duration);
@@ -330,7 +330,7 @@ function fetchSleeps(sleep, formatedDate) {
     let mapSleep = new Map();
 
     if(sleep.duree && sleep.duree != 0 ){
-        mapSleep.set("date", formatedDate);
+        mapSleep.set("Date", formatedDate);
         mapSleep.set("startHour", sleep.heureDebut);
         mapSleep.set("endHour", sleep.heureFin);
         mapSleep.set("duration", formatDuration(sleep.duree));
@@ -475,6 +475,7 @@ export function getAverageGlycemia() {
 
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
+    sortEntries(arrayActivities);
     return arrayActivities;
 }
 
@@ -495,6 +496,7 @@ export function getAggregateActivities() {
 //- WEIGHTS - //
 //Possible keys: weightUnit, weight
 export function getWeights() {
+    sortEntries(arrayWeights);
     return arrayWeights;
 }
 
@@ -510,6 +512,7 @@ export function getAggregateWeights() {
 //- SLEEPs - //
 //Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
 export function getSleeps() {
+    sortEntries(arraySleeps);
     return arraySleeps;
 }
 
