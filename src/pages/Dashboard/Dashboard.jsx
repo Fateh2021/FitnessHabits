@@ -4,13 +4,14 @@ import DatePicker from 'react-datepicker'
 import { arrowDropleftCircle, arrowDroprightCircle, arrowDropdownCircle, settings} from 'ionicons/icons';
 import {
   IonContent, IonList, IonPage, IonTabBar, IonIcon, IonTabButton, IonLabel, IonFooter,
-  IonGrid, IonCol, IonRow, IonAlert, IonItem, IonAvatar, IonInput
+  IonGrid, IonCol, IonRow, IonAlert, IonItem, IonAvatar, IonInput, IonButton
 } from '@ionic/react';
 import Profil from './Profil/Profil';
-import NourrGras from './ItemsList/Nourriture/NourrGras'
-import NourriProteines from './ItemsList/Nourriture/NourriProteines'
-import NourriLegumes from './ItemsList/Nourriture/NourriLegumes'
-import NourrCereales from './ItemsList/Nourriture/NourrCereales'
+import Fruit from './ItemsList/Nourriture/Fruit'
+import ProteinFood from './ItemsList/Nourriture/ProteinFood'
+import Vegetables from './ItemsList/Nourriture/Vegetables'
+import GrainFood from './ItemsList/Nourriture/GrainFood'
+import DairyProducts from "./ItemsList/Nourriture/DairyProducts";
 
 import Hydratation from './ItemsList/Hydratation';
 import Glycemie from './ItemsList/Glycemie'
@@ -29,11 +30,11 @@ import Export from "../Footer/Export";
 import * as translate from '../../translate/Translator';
 
 const Dashboard = (props) => {
-const [nourriture, setNourriture] = useState(0);
-const [gras, setGras] = useState(0);
-const [proteines, setProteines] = useState(0);
-const [legumes, setLegumes] = useState(0);
-const [cereales, setLCereales] = useState(0);
+const [proteinFood, setProteinFood] = useState(0);
+const [fruit, setFruit] = useState(0);
+const [grainFood, setGrainFood] = useState(0);
+const [vegetables, setVegetables] = useState(0);
+const [dairyProducts, setDairyProducts] = useState(0);
 const [showAlert6, setShowAlert6] = useState(false);
 const [toDay, setToDaye] = useState({startDate: new Date()});
 const [currentDate, setCurrentDate] = useState({startDate: new Date()});
@@ -58,6 +59,63 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       setFormatedCurrentDate(dt);
     });
   }
+  const SUPPORTED_FOOD_CATEGORIES = ['proteinFood', 'grainFood', 'vegetables', 'fruit', 'dairyProducts'];
+
+  const foodDashboard = {
+    globalMacroNutrimentConsumption: {
+      proteins: 0,
+      glucides: 0,
+      fibre: 0,
+      fats: 0
+    },
+    categories: {
+      proteinFood: {
+        macroNutrimentConsumption: {
+          proteins: 0,
+          glucides: 0,
+          fibre: 0,
+          fats: 0
+        },
+        items: DefaultDashboard.proteinFoodItems
+      },
+      grainFood: {
+        macroNutrimentConsumption: {
+          proteins: 0,
+          glucides: 0,
+          fibre: 0,
+          fats: 0
+        },
+        items: DefaultDashboard.grainFoodItems
+      }, 
+      vegetables: {
+        macroNutrimentConsumption: {
+          proteins: 0,
+          glucides: 0,
+          fibre: 0,
+          fats: 0
+        },
+        items: DefaultDashboard.vegetableItems
+      },
+      fruit: {
+        macroNutrimentConsumption: {
+          proteins: 0,
+          glucides: 0,
+          fibre: 0,
+          fats: 0
+        },
+        items: DefaultDashboard.fruitItems
+      },
+      dairyProducts: {
+        macroNutrimentConsumption: {
+          proteins: 0,
+          glucides: 0,
+          fibre: 0,
+          fats: 0
+        },
+        items: DefaultDashboard.dairyProductItems
+      }
+    }
+  };
 
   const [dashboard, setDashboard] = useState({
     hydratation: {
@@ -76,41 +134,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       },
       alcools: DefaultDashboard.alcools
     },
-    nourriture: {
-      globalConsumption: 0,
-    },
-    gras: {
-      dailyTarget: {
-        value: 0,
-        unit: '',
-        globalConsumption: 0
-      },
-      grass: DefaultDashboard.gras
-    },
-    proteines: {
-      dailyTarget: {
-        value: 0,
-        unit: '',
-        globalConsumption: 0
-      },
-      proteines: DefaultDashboard.proteines
-    },
-    legumes: {
-      dailyTarget: {
-        value: 0,
-        unit: '',
-        globalConsumption: 0
-      },
-      legumes: DefaultDashboard.legumes
-    },
-    cereales: {
-      dailyTarget: {
-        value: 0,
-        unit: '',
-        globalConsumption: 0
-      },
-      cereales: DefaultDashboard.cereales
-    },
+    food: foodDashboard,
     glycemie: {
       dailyGlycemie: 0,
     },
@@ -135,6 +159,45 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     },
   });
 
+  const checkAllFoodCategoriesAreDefined = (dashboard) => {
+    if (!dashboard.food) {
+      dashboard.food = foodDashboard;
+      return true;
+    }
+    if (!dashboard.food.globalMacroNutrimentConsumption) {
+      dashboard.food.globalMacroNutrimentConsumption = foodDashboard.globalMacroNutrimentConsumption;
+    }
+    if (!dashboard.food.categories || Object.keys(dashboard.food.categories).length === 0) {
+      dashboard.food.categories = foodDashboard.categories;
+      return true;
+    }
+    SUPPORTED_FOOD_CATEGORIES.forEach(category => {
+      if (!dashboard.food.categories[category]) {
+        dashboard.food.categories[category] = {
+          macroNutrimentConsumption: {
+            proteins: 0,
+            glucides: 0,
+            fibre: 0,
+            fats: 0
+          },
+          items: []
+        };
+      }
+      if (!dashboard.food.categories[category].macroNutrimentConsumption) {
+        dashboard.food.categories[category].macroNutrimentConsumption = {
+          proteins: 0,
+          glucides: 0,
+          fibre: 0,
+          fats: 0
+        };
+      }
+      if (!dashboard.food.categories[category].items) {
+        dashboard.food.categories[category].items = [];
+      }
+    });
+    return true;
+  };
+
   const addMissingDashboard = (dashboard) => {
     if (!dashboard.hydratation) {
       dashboard.hydratation = {
@@ -156,52 +219,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
         alcools: DefaultDashboard.alcools
       }
     }
-    if (!dashboard.nourriture) {
-      dashboard.nourriture = {
-        globalConsumption: 0
-      }
-    }
-    if (!dashboard.gras) {
-      dashboard.gras = {
-        dailyTarget: {
-          value: 0,
-          unit: '',
-          globalConsumption: 0
-        },
-        grass: DefaultDashboard.gras
-      };
-    }
-    if (!dashboard.proteines) {
-      dashboard.proteines = {
-        dailyTarget: {
-          value: 0,
-          unit: '',
-          globalConsumption: 0
-        },
-        proteines: DefaultDashboard.proteines
-      };
-    }
-    if (!dashboard.legumes) {
-      dashboard.legumes = {
-        dailyTarget: {
-          value: 0,
-          unit: '',
-          globalConsumption: 0
-        },
-        legumes: DefaultDashboard.legumes
-      };
-    }
-    if (!dashboard.cereales) {
-      dashboard.cereales = {
-        dailyTarget: {
-          value: 0,
-          unit: '',
-          globalConsumption: 0
-        },
-        cereales: DefaultDashboard.cereales
-      };
-    }
-
+    checkAllFoodCategoriesAreDefined(dashboard);
     if (!dashboard.glycemie) {
       dashboard.glycemie = {
         dailyGlycemie: 0,
@@ -257,34 +275,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           if(!(sets.alcool.alcools)){
             sets.alcool.alcools=[]
           }
-          if(!(sets.gras.grass)){
-            sets.gras.grass=[]
-          }
-          if(!(sets.proteines.proteines)){
-            sets.proteines.proteines=[]
-          }
-          if(!(sets.legumes.legumes)){
-            sets.legumes.legumes=[]
-          }
-          if(!(sets.cereales.cereales)){
-            sets.cereales.cereales=[]
-          }
-          if(!(sets.cereales.cereales)){
-            sets.cereales.cereales=[]
-          }
-          // if(!(sets.nourriture.globalConsumption)){
-          //   sets.nourriture.globalConsumption=0
-          // }
-          //  if(!(sets.nourriture.globalConsumption)){
-          // sets.nourriture.globalConsumption=sets.gras.dailyTarget.globalConsumption + sets.proteines.dailyTarget.globalConsumption
-          // + sets.legumes.dailyTarget.globalConsumption + sets.cereales.dailyTarget.globalConsumption;
-          // }
-          // if(!(sets.gras.dailyTarget.globalConsumption)){
-          //   sets.gras.dailyTarget.globalConsumption=0
-          // }
-          // if(!(sets.proteines.dailyGlycemie.globalConsumption)){
-          //   sets.proteines.dailyGlycemie.globalConsumption=[]
-          // }
           const updatedSets = addMissingDashboard(sets);
           localStorage.setItem('dashboard', JSON.stringify(updatedSets));
           setDashboard(updatedSets);
@@ -296,6 +286,21 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       });
     }
   }, []);
+
+  const updateGlobalMacroNutrimentConsumption = (sets) => {
+    sets.food.globalMacroNutrimentConsumption = {
+      proteins: 0,
+      glucides: 0,
+      fibre: 0,
+      fats: 0
+    };
+    Object.keys(sets.food.categories).forEach(category => {
+      sets.food.globalMacroNutrimentConsumption.proteins += sets.food.categories[category].macroNutrimentConsumption.proteins;
+      sets.food.globalMacroNutrimentConsumption.glucides += sets.food.categories[category].macroNutrimentConsumption.glucides;
+      sets.food.globalMacroNutrimentConsumption.fibre += sets.food.categories[category].macroNutrimentConsumption.fibre;
+      sets.food.globalMacroNutrimentConsumption.fats += sets.food.categories[category].macroNutrimentConsumption.fats;
+    })
+  };
 
   const NourritureUpdate = () => {
     const userUID = localStorage.getItem('userUid');
@@ -310,21 +315,8 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
         if(!(sets.alcool.alcools)){
           sets.alcool.alcools=[]
         }
-        if(!(sets.gras.grass)){
-          sets.gras.grass=[]
-        }
-        if(!(sets.proteines.proteines)){
-          sets.proteines.proteines=[]
-        }
-        if(!(sets.legumes.legumes)){
-          sets.legumes.legumes=[]
-        }
-        if(!(sets.cereales.cereales)){
-          sets.cereales.cereales=[]
-        }
-        sets.nourriture.globalConsumption = sets.gras.dailyTarget.globalConsumption + sets.proteines.dailyTarget.globalConsumption
-        + sets.legumes.dailyTarget.globalConsumption + sets.cereales.dailyTarget.globalConsumption;        
         const updatedSets = addMissingDashboard(sets);
+        updateGlobalMacroNutrimentConsumption(updatedSets);
         localStorage.setItem('dashboard', JSON.stringify(updatedSets));
         setDashboard(updatedSets);
         //console.log("sa marche::" + sets.nourriture.globalConsumption);
@@ -338,25 +330,31 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     })
   };
   
-  const parentCallbackGras = (childData) => {  
-    setGras(childData);
+  const parentCallbackFruit = (childData) => {  
+    setFruit(childData);
     NourritureUpdate();
   };
 
-  const parentCallbackProteines = (childData) => {     
-    setProteines(childData);
+  const parentCallbackProteinFood = (childData) => {     
+    setProteinFood(childData);
     NourritureUpdate();
   };
 
-  const parentCallbackLegumes = (childData) => {  
-    setLegumes(childData);
+  const parentCallbackVegetables = (childData) => {  
+    setVegetables(childData);
     NourritureUpdate();
   };
 
-  const parentCallbackCereales = (childData) => {  
-    setLCereales(childData);
+  const parentCallbackGrainFood = (childData) => {  
+    setGrainFood(childData);
     NourritureUpdate();
   };
+
+  const parentCallbackDairyProducts = (childData) => {  
+    setDairyProducts(childData);
+    NourritureUpdate();
+  };
+
 
   const nextDay = () => {
 
@@ -396,41 +394,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               },
               alcools:DefaultDashboard.alcools
             },
-            nourriture:{
-              globalConsumption:0,
-            },
-            gras: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              grass:DefaultDashboard.gras
-            },
-            proteines: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              proteines:DefaultDashboard.proteines
-            },
-            legumes: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              legumes:DefaultDashboard.legumes
-            },
-            cereales: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              cereales:DefaultDashboard.cereales
-            },
+            food: foodDashboard,
             glycemie : {
               dailyGlycemie:0,
             },
@@ -486,18 +450,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       if(!(sets.alcool.alcools)){
         sets.alcool.alcools=[]
       }
-      if(!(sets.gras.grass)){
-        sets.gras.grass=[]
-      }
-      if(!(sets.proteines.proteines)){
-        sets.proteines.proteines=[]
-      }
-      if(!(sets.legumes.legumes)){
-        sets.legumes.legumes=[]
-      }
-      if(!(sets.cereales.cereales)){
-        sets.cereales.cereales=[]
-      }
       const updatedSets = addMissingDashboard(sets);
       // localStorage.setItem('dashboard', JSON.stringify(updatedSets));
       setDashboard(updatedSets);
@@ -537,41 +489,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
               },
               alcools:DefaultDashboard.alcools
             },
-            nourriture:{
-              globalConsumption:0,
-            },
-            gras: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              grass:DefaultDashboard.gras
-            },
-            proteines: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              proteines:DefaultDashboard.proteines
-            },
-            legumes: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              legumes:DefaultDashboard.legumes
-            },
-            cereales: {
-              dailyTarget:{
-                value:0,
-                unit:'',
-                globalConsumption:0
-              },
-              cereales:DefaultDashboard.cereales
-            },
+            food: foodDashboard,
             glycemie : {
               dailyGlycemie:0,
             },
@@ -613,18 +531,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       }
       if(!(sets.alcool.alcools)){
         sets.alcool.alcools=[]
-      }
-      if(!(sets.gras.grass)){
-        sets.gras.grass=[]
-      }
-      if(!(sets.proteines.proteines)){
-        sets.proteines.proteines=[]
-      }
-      if(!(sets.legumes.legumes)){
-        sets.legumes.legumes=[]
-      }
-      if(!(sets.cereales.cereales)){
-        sets.cereales.cereales=[]
       }
       const updatedSets = addMissingDashboard(sets);
       // localStorage.setItem('dashboard', JSON.stringify(updatedSets));
@@ -673,40 +579,57 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
             <IonItem className="divTitre2">
               <IonAvatar slot="start"><img src="/assets/nutrition.jpg" alt=""/></IonAvatar>
               <IonLabel><h2><b>{ translate.getText('FOOD_MODULE', ['title']) }</b></h2></IonLabel>
-              <IonInput className='inputTextGly' readonly value={dashboard.nourriture.globalConsumption}></IonInput>
+              <IonGrid>
+                <IonRow>
+                  <IonCol>
+                    <IonButton color='primary' shape='round' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeProteins'])}: {dashboard.food.globalMacroNutrimentConsumption.proteins}</IonButton>
+                  </IonCol>
+                  <IonCol>
+                    <IonButton color='primary' shape='round' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeGlucides'])}: {dashboard.food.globalMacroNutrimentConsumption.glucides}</IonButton>
+                  </IonCol>
+                  <IonCol>
+                    <IonButton color='primary'shape='round' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeFibre'])}: {dashboard.food.globalMacroNutrimentConsumption.fibre}</IonButton>
+                  </IonCol>
+                  <IonCol>
+                    <IonButton color='primary' shape='round' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeFats'])}: {dashboard.food.globalMacroNutrimentConsumption.fats}</IonButton>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
               <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV22")} />
             </IonItem>            
           </div>
 
           <div id="myDIV22">
             <IonList id = "listNourriture">
-            <NourrGras 
-              parentCallbackGras = {parentCallbackGras.bind(this)} 
-              gras={dashboard.gras} 
-              grass={dashboard.gras.grass} 
-              globalConsumption = {dashboard.gras.dailyTarget.globalConsumption} 
-              currentDate ={currentDate}
+            <Fruit 
+              parentCallback = {parentCallbackFruit.bind(this)} 
+              macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.fruit.macroNutrimentConsumption }
+              foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.fruit.items }
+              currentDate = {currentDate}
             />
-            <NourriProteines 
-              parentCallbackProteines = {parentCallbackProteines.bind(this)} 
-              proteine={dashboard.proteines} 
-              proteines={dashboard.proteines.proteines} 
-              globalConsumption = {dashboard.proteines.dailyTarget.globalConsumption} 
-              currentDate ={currentDate}
+            <ProteinFood 
+              parentCallback = {parentCallbackProteinFood.bind(this)} 
+              macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.proteinFood.macroNutrimentConsumption }
+              foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.proteinFood.items }
+              currentDate = {currentDate}
             />
-            <NourriLegumes 
-              parentCallbackLegumes = {parentCallbackLegumes.bind(this)}
-              legume={dashboard.legumes} 
-              legumes={dashboard.legumes.legumes} 
-              globalConsumption = {dashboard.legumes.dailyTarget.globalConsumption} 
-              currentDate ={currentDate}
+            <Vegetables 
+              parentCallback = {parentCallbackVegetables.bind(this)}
+              macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.vegetables.macroNutrimentConsumption }
+              foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.vegetables.items }
+              currentDate = {currentDate}
             />
-            <NourrCereales 
-              parentCallbackCereales = {parentCallbackCereales.bind(this)}
-              cereale={dashboard.cereales} 
-              cereales={dashboard.cereales.cereales} 
-              globalConsumption = {dashboard.cereales.dailyTarget.globalConsumption} 
-              currentDate ={currentDate}
+            <GrainFood 
+              parentCallback = {parentCallbackGrainFood.bind(this)}
+              macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.grainFood.macroNutrimentConsumption }
+              foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.grainFood.items }
+              currentDate = {currentDate}
+            />
+            <DairyProducts 
+              parentCallback = {parentCallbackDairyProducts.bind(this)}
+              macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.dairyProducts.macroNutrimentConsumption }
+              foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.dairyProducts.items }
+              currentDate = {currentDate}
             />
             </IonList>
           </div>

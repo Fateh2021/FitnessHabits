@@ -1,107 +1,91 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import Nourriture from '../Nourriture';
-import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
-
+import Food from '../Food';
+import { ionFireEvent } from '@ionic/react-test-utils';
+import { fireEvent } from '@testing-library/react';
 
 const dict = require('../../../../../translate/Translation.json');
 
 let container = null;
 
+let originalDashboard;
+let originalLanguage;
+
+beforeAll(() => {
+    originalDashboard = localStorage.getItem('dashboard');
+    originalLanguage = localStorage.getItem('userLanguage')
+});
+
+afterAll(() => {
+    localStorage.setItem('dashboard', originalDashboard);
+    localStorage.setItem('userLanguage', originalLanguage);
+});
+
 beforeEach(() => {
-    // setup a DOM element as a render target
-    container = document.createElement("div");
-    document.body.appendChild(container);
+  container = document.createElement('div');
+  document.body.appendChild(container);
 });
 
 afterEach(() => {
-    // cleanup on exiting
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
 });
 
 const setUp = (mock, testFunc) => {
     localStorage.setItem('dashboard', JSON.stringify(mock));
+    const categoryKey = 'someFoodCategory';
 
-    render(<Nourriture
-        translationKey='Macronutriment'
-        dashboardKey='macroNutriment'
-        dashboardSubKey='macroNutriments'
-        cssId='dummy'
-        parentCallback={(e) => { }}
-        macroNutriment={mock.macroNutriment}
-        macroNutriments={mock.macroNutriment.macroNutriments}
-        globalConsumption={mock.macroNutriment.dailyTarget.globalConsumption}
-        currentDate={new Date()}
-        macroNutrimentToEdit={undefined}
-        itemContainerDisplayStatus={false}
-        test={true}
-    />, container);
+    render(<Food 
+                categoryKey = { categoryKey }
+                cssId = 'dummy'
+                parentCallback = { (e) => { } }
+                macroNutrimentConsumption = { mock.food.categories[categoryKey].macroNutrimentConsumption }
+                foodItems = {mock.food.categories[categoryKey].items}
+                currentDate = { new Date() }
+                foodItemToEdit = { undefined }
+                itemContainerDisplayStatus = { false }
+                test = { true } 
+            />, container);
 
-    checkInitialValuesRendering(mock);
     testFunc();
-
     localStorage.removeItem('dashboard');
 };
 
-const checkInitialValuesRendering = (mock) => {
-    for (let i = 0; i < mock.macroNutriment.macroNutriments.length; i++) {
-        const macroNutriment = document.getElementById(`${i}`);
-        const unitConsumption = macroNutriment.querySelector('#unitConsumption');
-        expect(unitConsumption.value).toBe(mock.macroNutriment.macroNutriments[i].consumption);
-    }
-};
-
-const updateByASingleUnit = (buttonId, start, end) => {
-    const button = document.getElementById(`${buttonId}`);
-    const unitConsumption = document.getElementById('unitConsumption');
-    const globalConsumption = document.getElementById('globalConsumption');
-    const direction = end - start;
-    const increment = direction > 0;
-
-    for (let i = start; increment ? i < end : i > end; increment ? i++ : i--) {
-        button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        expect(unitConsumption.value).toBe(increment ? i + 1 : i - 1);
-        expect(globalConsumption.value).toBe(unitConsumption.value);
-    }
-}
-
-const updateToTargetTotal = (buttonId, targetData, targetTotal) => {
-    const updateFunc = (id, initialAmount, targetIncrement) => {
-        const macroNutriment = document.getElementById(`${id}`);
-        for (let i = 0; i < Math.abs(targetIncrement); i++) {
-            const button = macroNutriment.querySelector(`#${buttonId}`);
-            button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+const initDummyDashboard = () => {
+    const dummyDashboard = {
+        food: {
+            globalMacroNutrimentConsumption: {
+                proteins: 0,
+                glucides: 0,
+                fibre: 0,
+                fats: 0
+            },
+            categories: {
+                someFoodCategory: {
+                    macroNutrimentConsumption: {
+                        proteins: 0,
+                        glucides: 0,
+                        fibre: 0,
+                        fats: 0
+                    },
+                    items: []
+                }
+            }
         }
-        const unitConsumption = macroNutriment.querySelector('#unitConsumption');
-        const expected = Math.max(initialAmount + targetIncrement, 0);
-        expect(unitConsumption.value).toBe(expected);
     };
-
-    for (let i = 0; i < targetData.length; i++) {
-        updateFunc(i, targetData[i].initialAmount, targetData[i].targetIncrement);
-    }
-
-    const globalConsumption = document.getElementById('globalConsumption');
-    expect(globalConsumption.value).toBe(targetTotal);
+    return dummyDashboard;
 };
-
-const setUpTranslationTest = (testFunc) => {
-    const originalLanguage = localStorage.getItem('userLanguage');
-    testFunc();
-    localStorage.setItem('userLanguage', originalLanguage);
-}
 
 const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
     const updateFunc = (id, initialAmount, targetIncrement) => {
         const button = document.getElementById(buttonId);
         button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        const popup = document.getElementById("divPopUp1-1");
-        const input = popup.getElementsByClassName("divAddTextNut")[id];
+        const popup = document.getElementById('divPopUp1-1');
+        const input = popup.getElementsByClassName('divAddTextNut')[id];
         input.value = initialAmount + targetIncrement;
-        fireEvent.ionChange(input);
+        ionFireEvent.ionChange(input);
         const currentMacroQty = input.value;
         expect(currentMacroQty).toBe(targetTotal);
     };
@@ -111,33 +95,52 @@ const setUpNegativeMacroNutriment = (buttonId, targetData, targetTotal) => {
     }
 };
 
+const populateFoodItems = (start, end, expected, expectationFunc = (e) => {}) => {
+    const addButton = document.getElementById('addButton');
+    for (let i = start; i < end; i++) {
+        addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+        const foodItemPopup = document.getElementById('divPopUp1-1');
+
+        const name = foodItemPopup.getElementsByClassName('divAddText')[0];
+        const qty = foodItemPopup.getElementsByClassName('divAddText')[1];
+        const unit = foodItemPopup.querySelector('#materialSelectAddHyd');
+        const proteins = foodItemPopup.getElementsByClassName('divAddTextNut')[0];
+        const glucides = foodItemPopup.getElementsByClassName('divAddTextNut')[1];
+        const fibre = foodItemPopup.getElementsByClassName('divAddTextNut')[2];
+        const fats = foodItemPopup.getElementsByClassName('divAddTextNut')[3];
+
+        name.value = expected[i].name;
+        ionFireEvent.ionChange(name);
+
+        qty.value = expected[i].qty;
+        ionFireEvent.ionChange(qty);
+
+        unit.value = expected[i].unit;
+        fireEvent.change(unit);
+
+        proteins.value = expected[i].proteins;
+        ionFireEvent.ionChange(proteins);
+
+        glucides.value = expected[i].glucides;
+        ionFireEvent.ionChange(glucides);
+
+        fibre.value = expected[i].fibre;
+        ionFireEvent.ionChange(fibre);
+
+        fats.value = expected[i].fats;
+        ionFireEvent.ionChange(fats);
+
+        const saveButton = foodItemPopup.querySelector('#saveButton');
+        saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+        expectationFunc(i);
+    }
+};
+
 it('test negative quantity on macro-nutriments', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: "",
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 50,
-                unit: "",
-                value: 0
-            }
-        }
-    };
+    const dummyDashboard = initDummyDashboard();
+
     const targetData = [
         {
             initialAmount: 2,
@@ -156,65 +159,35 @@ it('test negative quantity on macro-nutriments', () => {
             targetIncrement: -44
         }
     ];
-    setUp(dummyDashboard, () => { setUpNegativeMacroNutriment("addButton", targetData, 0); });
+    setUp(dummyDashboard, () => { setUpNegativeMacroNutriment('addButton', targetData, 0); });
 });
 
 it('test div visibility toggle', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: "",
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 0,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-
-    const moduleNames = ['Gras', 'Cereales', 'Legumes', 'Proteines'];
-    const macroNutrimentTypes = ['gras', 'cereales', 'legumes', 'proteines'];
-    const macroNutrimentSubTypes = ['grass'].concat(macroNutrimentTypes.slice(1));
-    const divs = ['myDIV2', 'myDIV3', 'myDIV4', 'myDIV5'];
+    const dummyDashboard = initDummyDashboard();
+    const moduleNames = ['proteinFood', 'grainFood', 'vegetables', 'fruit', 'dairyProducts'];
+    const divs = ['myDIV2', 'myDIV3', 'myDIV4', 'myDIV5', 'myDIV6'];
 
     const getToggledValue = (i) => {
         return i % 2 == 0 ? 'block' : 'none';
     }
 
-    divs.forEach((div, index) => {
-        act(() => {
-            render(<Nourriture
-                translationKey={moduleNames[index]}
-                dashboardKey={macroNutrimentTypes[index]}
-                dashboardSubKey={macroNutrimentSubTypes[index]}
-                cssId={div}
-                parentCallback={undefined}
-                macroNutriment={dummyDashboard.macroNutriment}
-                macroNutriments={dummyDashboard.macroNutriment.macroNutriments}
-                globalConsumption={dummyDashboard.macroNutriment.dailyTarget.globalConsumption}
-                currentDate={new Date()}
-                macroNutrimentToEdit={undefined}
-                itemContainerDisplayStatus={false}
-            />,
-                container);
-        });
-        const moduleImage = document.getElementById('moduleImg').src;
-        expect(moduleImage).toBe(`http://localhost/assets/${moduleNames[index]}.jpg`);
+    divs.forEach((div, index) => 
+        {
+            act(() => {
+                render(<Food 
+                            categoryKey = { moduleNames[index] }
+                            cssId = { div }
+                            parentCallback = { (e) => {} }
+                            macroNutrimentConsumption = { dummyDashboard.food.categories.someFoodCategory.macroNutrimentConsumption }
+                            foodItems = { dummyDashboard.food.categories.someFoodCategory.items }
+                            currentDate = { new Date() }
+                            foodItemToEdit = { undefined }
+                            itemContainerDisplayStatus = { false }
+                        />, 
+                        container);
+            });
+            const moduleImage = document.getElementById('moduleImg').src;
+            expect(moduleImage).toBe(`http://localhost/assets/${ moduleNames[index] }.jpg`);
 
         const arrow = document.getElementById('proteinArrow');
         const elem = document.getElementById(div);
@@ -230,619 +203,412 @@ it('test div visibility toggle', () => {
 });
 
 it('test save item', () => {
-    const dummyDashboard = {
-        macroNutriment:
+    const dummyDashboard = initDummyDashboard();
+
+    const expected = [
         {
-            macroNutriments: [],
-
-            dailyTarget:
-            {
-                globalConsumption: 0,
-                unit: "",
-                value: 0
-            }
+            name: 'food item 0',
+            qty: 34,
+            unit: 'unit',
+            proteins: 12,
+            glucides: 56,
+            fibre: 456,
+            fats: 3
+        },
+        { 
+            name: 'food item 1',
+            qty: 45,
+            unit: 'unit',
+            proteins: 0,
+            glucides: 14,
+            fibre: 9,
+            fats: 0
+        },
+        {
+            name: 'food item 2',
+            qty: 200,
+            unit: 'unit',
+            proteins: 45,
+            glucides: 21,
+            fibre: 34,
+            fats: 18
+        },
+        {
+            name: 'food item 3',
+            qty: 78,
+            unit: 'unit',
+            proteins: 90,
+            glucides: 110,
+            fibre: 0,
+            fats: 0
+        },
+        {
+            name: 'food item 4',
+            qty: 1,
+            unit: 'unit',
+            proteins: 67,
+            glucides: 900,
+            fibre: 121,
+            fats: 450
         }
-    };
+    ];
+
+    const items = dummyDashboard.food.categories.someFoodCategory.items;
+
     const testFunc = () => {
-        expect(dummyDashboard.macroNutriment.macroNutriments.length).toBe(0);
-        const addButton = document.getElementById('addButton');
+        expect(items.length).toBe(0);
+    
+        const expectationFunc = (index) => {
+            expect(items.length).toBe(index + 1);
+            expect(document.getElementById(items[index].id) === undefined && document.getElementById(items[index].id) === null).toBe(false);
+            // Vu que chaque nouvel aliment est ajouté au début du tableau <code> items </code> (avec la fonction unshift()), on doit tester les valeurs de l'élément à l'indice 0 à chaque tour de boucle.  
+            expect(items[0].name).toBe(expected[index].name);
+            expect(items[0].qty).toBe(expected[index].qty);
+            expect(items[0].unit).toBe(expected[index].unit);
+            expect(items[0].proteins).toBe(expected[index].proteins);
+            expect(items[0].glucides).toBe(expected[index].glucides);
+            expect(items[0].fibre).toBe(expected[index].fibre);
+            expect(items[0].fats).toBe(expected[index].fats);
+        };
+        
+        populateFoodItems(0, 5, expected, expectationFunc);
 
-        for (let i = 0; i < 5; i++) {
-            addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-            const saveButton = document.getElementById('saveButton');
-            saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-            expect(dummyDashboard.macroNutriment.macroNutriments.length).toBe(i + 1);
-        }
+        expect(items.length).toBe(5);
+
+        const localStorageDashboard = JSON.parse(localStorage.getItem('dashboard'));
+
+        expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(214);
+        expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(1101);
+        expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(620);
+        expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(471);
+
+        expect(document.getElementById('proteinConsumptionPerCategory').innerHTML).toBe('214');
+        expect(document.getElementById('glucideConsumptionPerCategory').innerHTML).toBe('1101');
+        expect(document.getElementById('fibreConsumptionPerCategory').innerHTML).toBe('620');
+        expect(document.getElementById('fatConsumptionPerCategory').innerHTML).toBe('471');
     };
     setUp(dummyDashboard, testFunc);
 });
 
 it('test delete item', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 10,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 67,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 1,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 81,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 2,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 3,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 55,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 4,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 213,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-    const testFunc = () => {
-        const globalConsumption = document.getElementById('globalConsumption');
-        let updatedValue = globalConsumption.value;
+    const dummyDashboard = initDummyDashboard();
 
-        for (let i = 0; i < dummyDashboard.macroNutriment.macroNutriments.length; i++) {
-            // La fonction <code> splice </code> utilisée dans <code> deleteItem </code> du module Nourriture modifie le tableau <code> macroNutriments </code> 'in place' 
-            // et décale les éléments à chaque fois après en avoir enlevé un. Donc, l'indice de l'élément courant va demeurer 0 à chaque fois.
-            // Par contre, dans HDOM, chaque <code> macroNutriment </code> a son propre identifiant qui demeure en place, d'où la nécessité de maintenir l'indice <code> i </code> à jour
-            // pour récupérer l'élément HDOM correspondant.
-            const currentMacroNutriment = dummyDashboard.macroNutriment.macroNutriments[0];
-            const macroNutrimentHDOM = document.getElementById(`${i}`);
-            const unitConsumption = macroNutrimentHDOM.querySelector('#unitConsumption');
-            const deleteButton = macroNutrimentHDOM.querySelector('#deleteButton');
-            deleteButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-            updatedValue -= unitConsumption.value;
-            expect(dummyDashboard.macroNutriment.macroNutriments.includes(currentMacroNutriment)).toBe(false);
-            expect(globalConsumption.value).toBe(updatedValue);
+    const expected = [
+        {
+            name: 'food item 0',
+            qty: 1,
+            unit: 'unit',
+            proteins: 12,
+            glucides: 34,
+            fibre: 56,
+            fats: 36
+        },
+        {
+            name: 'food item 1',
+            qty: 1,
+            unit: 'unit',
+            proteins: 6,
+            glucides: 73,
+            fibre: 11,
+            fats: 2
+        },
+        {
+            name: 'food item 2',
+            qty: 1,
+            unit: 'unit',
+            proteins: 440,
+            glucides: 156,
+            fibre: 67,
+            fats: 0
+        },
+        {
+            name: 'food item 3',
+            qty: 1,
+            unit: 'unit',
+            proteins: 0,
+            glucides: 16,
+            fibre: 24,
+            fats: 1
+        },
+        {
+            name: 'food item 4',
+            qty: 1,
+            unit: 'unit',
+            proteins: 45,
+            glucides: 0,
+            fibre: 0,
+            fats: 100
         }
-    };
+    ];
+
+    const items = dummyDashboard.food.categories.someFoodCategory.items;
+
+    const testFunc = () => {
+        populateFoodItems(0, 5, expected);
+
+        expect(items.length).toBe(5);
+
+        let proteinConsumptionPerCategory = 503;
+        let glucideConsumptionPerCategory = 279;
+        let fibreConsumptionPerCategory = 158;
+        let fatConsumptionPerCategory = 139;
+
+        let nbItems = items.length;
+
+        for (let i = 0; i < 5; i++) {
+            const localStorageDashboard = JSON.parse(localStorage.getItem('dashboard'));
+            expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(proteinConsumptionPerCategory);
+            expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(glucideConsumptionPerCategory);
+            expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(fibreConsumptionPerCategory);
+            expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(fatConsumptionPerCategory);
+            // La fonction <code> splice </code> utilisée dans <code> deleteItem </code> du module Nourriture modifie le tableau <code> items </code> 'in place' 
+            // et décale les éléments à chaque fois après en avoir enlevé un. Donc, l'indice de l'élément courant va demeurer 0 à chaque fois.
+            const currentFoodItem = items[0];   
+            const currentFoodItemHDOM = document.getElementById(items[0].id);
+
+            const showButton = currentFoodItemHDOM.querySelector('#showButton');
+            showButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            const foodItemPopup = document.getElementById('divPopUp1-1')
+            const proteins = foodItemPopup.getElementsByClassName('divAddTextNut')[0];
+            const glucides = foodItemPopup.getElementsByClassName('divAddTextNut')[1];
+            const fibre = foodItemPopup.getElementsByClassName('divAddTextNut')[2];
+            const fats = foodItemPopup.getElementsByClassName('divAddTextNut')[3];
+            // Il est nécessaire de déclencher la fermeture du popup ici afin de ne pas avoir le même popup s'ouvrir à la prochaine itération.
+            const closeButton = foodItemPopup.querySelector('#closeButton');
+            closeButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            const deleteButton = document.getElementById('deleteButton');
+            deleteButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            expect(items.includes(currentFoodItem)).toBe(false);
+            expect(items.length).toBe(--nbItems);
+
+            proteinConsumptionPerCategory -= proteins.value;
+            glucideConsumptionPerCategory -= glucides.value;
+            fibreConsumptionPerCategory -= fibre.value;
+            fatConsumptionPerCategory -= fats.value;
+        }
+        expect(items.length).toBe(0);
+    }; 
     setUp(dummyDashboard, testFunc);
 });
 
-it('test daily consumption increment: by a single unit', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 0,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-    setUp(dummyDashboard, () => { updateByASingleUnit('incrementButton', 0, 5); });
-});
+it('test edit and save', () => {
+    const dummyDashboard = initDummyDashboard();
 
-it('test daily consumption increment: to a target total', () => {
-    const dummyDashboard = {
-        macroNutriment:
+    const expected = [
         {
-            macroNutriments:
-                [
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 1,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 2,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 3,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 4,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 0,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-    const targetData = [
-        {
-            initialAmount: 0,
-            targetIncrement: 5
+            name: 'food item 0',
+            qty: 1,
+            unit: 'unit',
+            proteins: 189,
+            glucides: 567,
+            fibre: 80,
+            fats: 11
         },
         {
-            initialAmount: 0,
-            targetIncrement: 12
+            name: 'food item 1',
+            qty: 1,
+            unit: 'unit',
+            proteins: 14,
+            glucides: 1,
+            fibre: 0,
+            fats: 39
         },
         {
-            initialAmount: 0,
-            targetIncrement: 6
+            name: 'food item 2',
+            qty: 1,
+            unit: 'unit',
+            proteins: 41,
+            glucides: 111,
+            fibre: 222,
+            fats: 17
         },
         {
-            initialAmount: 0,
-            targetIncrement: 11
+            name: 'food item 3',
+            qty: 1,
+            unit: 'unit',
+            proteins: 0,
+            glucides: 0,
+            fibre: 0,
+            fats: 34
         },
         {
-            initialAmount: 0,
-            targetIncrement: 3
+            name: 'food item 4',
+            qty: 1,
+            unit: 'unit',
+            proteins: 22,
+            glucides: 78,
+            fibre: 0,
+            fats: 100
         }
     ];
-    setUp(dummyDashboard, () => { updateToTargetTotal('incrementButton', targetData, 37); });
+
+    const items = dummyDashboard.food.categories.someFoodCategory.items;
+
+    const testFunc = () => {
+        populateFoodItems(0, 5, expected);
+
+        expect(items.length).toBe(5);
+
+        const units = ['gr', 'ml', 'oz', 'unit', 'cup'];
+
+        for (let i = 0; i < items.length; i++) {
+            let cachedDashboard = JSON.parse(localStorage.getItem('dashboard'));
+            let proteinConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins;
+            let glucideConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides;
+            let fibreConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre;
+            let fatConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats;
+
+            const currentFoodItemHDOM = document.getElementById(items[i].id);
+            const showButton = currentFoodItemHDOM.querySelector('#showButton');
+            
+            showButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            const foodItemPopup = document.getElementById('divPopUp1-1');
+
+            const name = foodItemPopup.getElementsByClassName('divAddText')[0];
+            const qty = foodItemPopup.getElementsByClassName('divAddText')[1];
+            const unit = foodItemPopup.querySelector('#materialSelectAddHyd');
+
+            const proteins = foodItemPopup.getElementsByClassName('divAddTextNut')[0];
+            const proteinsOld = proteins.value;
+
+            const glucides = foodItemPopup.getElementsByClassName('divAddTextNut')[1];
+            const glucidesOld = glucides.value;
+
+            const fibre = foodItemPopup.getElementsByClassName('divAddTextNut')[2];
+            const fibreOld = fibre.value;
+
+            const fats = foodItemPopup.getElementsByClassName('divAddTextNut')[3];
+            const fatsOld = fats.value;
+
+            name.value = `new name ${i}`;
+            ionFireEvent.ionChange(name);
+
+            qty.value = (i + 1) * 2;
+            ionFireEvent.ionChange(qty);
+
+            unit.value = units[i];
+            fireEvent.change(unit);
+            
+            proteins.value = i;
+            ionFireEvent.ionChange(proteins);
+
+            glucides.value = i + 1;
+            ionFireEvent.ionChange(glucides);
+
+            fibre.value = i + 2;
+            ionFireEvent.ionChange(fibre);
+
+            fats.value = i + 3;
+            ionFireEvent.ionChange(fats);
+
+            const saveButton = foodItemPopup.querySelector('#saveButton');
+            saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            proteinConsumptionPerCategory = proteinConsumptionPerCategory - proteinsOld + proteins.value;
+            glucideConsumptionPerCategory = glucideConsumptionPerCategory - glucidesOld + glucides.value;
+            fibreConsumptionPerCategory = fibreConsumptionPerCategory - fibreOld + fibre.value;
+            fatConsumptionPerCategory = fatConsumptionPerCategory - fatsOld + fats.value;
+
+            cachedDashboard = JSON.parse(localStorage.getItem('dashboard'));
+            expect(cachedDashboard.food.categories.someFoodCategory.items[i].name).toBe(`new name ${i}`);
+            expect(cachedDashboard.food.categories.someFoodCategory.items[i].qty).toBe((i + 1) * 2);
+            expect(cachedDashboard.food.categories.someFoodCategory.items[i].unit).toBe(units[i]);
+
+            expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(proteinConsumptionPerCategory);
+            expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(glucideConsumptionPerCategory);
+            expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(fibreConsumptionPerCategory);
+            expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(fatConsumptionPerCategory);
+        }
+        const cachedDashboard = JSON.parse(localStorage.getItem('dashboard'));
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(10);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(15);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(20);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(25);
+
+        expect(items.length).toBe(5);
+    };
+
+    setUp(dummyDashboard, testFunc);
 });
 
-it('test daily consumption increment: by a target amount', () => {
-    const dummyDashboard = {
-        macroNutriment:
+it('test no edit and save', () => {
+    const dummyDashboard = initDummyDashboard();
+
+    const expected = [
         {
-            macroNutriments:
-                [
-                    {
-                        consumption: 75,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 20,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 1,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 3,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 2,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 14,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 3,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 1,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 4,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 113,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-    const targetData = [
-        {
-            initialAmount: 75,
-            targetIncrement: 7
-        },
-        {
-            initialAmount: 20,
-            targetIncrement: 12
-        },
-        {
-            initialAmount: 3,
-            targetIncrement: 105
-        },
-        {
-            initialAmount: 14,
-            targetIncrement: 9
-        },
-        {
-            initialAmount: 1,
-            targetIncrement: 33
+            name: 'food item',
+            qty: 1,
+            unit: 'unit',
+            proteins: 14,
+            glucides: 0,
+            fibre: 0,
+            fats: 12
         }
     ];
-    setUp(dummyDashboard, () => { updateToTargetTotal('incrementButton', targetData, 279) });
-});
 
-it('test daily consumption decrement: by a single unit', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 5,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 5,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-    setUp(dummyDashboard, () => { updateByASingleUnit('decrementButton', 5, 0); });
-});
+    const items = dummyDashboard.food.categories.someFoodCategory.items;
 
-it('test daily consumption decrement: to a target total', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 50,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 11,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 1,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 45,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 2,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 16,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 3,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 9,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 4,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 131,
-                unit: "",
-                value: 0
-            }
-        }
-    };
-    const targetData = [
-        {
-            initialAmount: 50,
-            targetIncrement: -50
-        },
-        {
-            initialAmount: 11,
-            targetIncrement: -11
-        },
-        {
-            initialAmount: 45,
-            targetIncrement: -45
-        },
-        {
-            initialAmount: 16,
-            targetIncrement: -16
-        },
-        {
-            initialAmount: 9,
-            targetIncrement: -9
-        }
-    ];
-    setUp(dummyDashboard, () => { updateToTargetTotal('decrementButton', targetData, 0); });
-});
+    const testFunc = () => {
+        populateFoodItems(0, 1, expected);
 
-it('test daily consumption decrement: by a target amount', () => {
-    const dummyDashboard = {
-        macroNutriment:
-        {
-            macroNutriments:
-                [
-                    {
-                        consumption: 2,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 0,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 0,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 1,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 12,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 2,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 71,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 3,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    },
-                    {
-                        consumption: 15,
-                        favoris: false,
-                        fibre: 0,
-                        glucide: 0,
-                        gras: 0,
-                        id: 4,
-                        name: "",
-                        proteine: 0,
-                        qtte: 0,
-                        unit: ""
-                    }
-                ],
-            dailyTarget:
-            {
-                globalConsumption: 100,
-                unit: "",
-                value: 0
-            }
-        }
+        expect(items.length).toBe(1);
+
+        let cachedDashboard = JSON.parse(localStorage.getItem('dashboard'));
+        let proteinConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins;
+        let glucideConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides;
+        let fibreConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre;
+        let fatConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats;
+
+        const currentFoodItemHDOM = document.getElementById(items[0].id);
+        const showButton = currentFoodItemHDOM.querySelector('#showButton');    
+        showButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        // Aucune modification n'a lieu - on ne fait que visualiser l'item et appuyer sur le bouton de sauvegarde pour fermer le popup.
+        const foodItemPopup = document.getElementById('divPopUp1-1');
+        const saveButton = foodItemPopup.querySelector('#saveButton');
+        saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+        // À ce moment-ci, on ne s'attend à aucun changement.
+        cachedDashboard = JSON.parse(localStorage.getItem('dashboard'));
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(proteinConsumptionPerCategory);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(glucideConsumptionPerCategory);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(fibreConsumptionPerCategory);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(fatConsumptionPerCategory);
+
+        expect(items.length).toBe(1);
     };
-    const targetData = [
-        {
-            initialAmount: 2,
-            targetIncrement: -1
-        },
-        {
-            initialAmount: 0,
-            targetIncrement: -2
-        },
-        {
-            initialAmount: 12,
-            targetIncrement: -5
-        },
-        {
-            initialAmount: 71,
-            targetIncrement: -13
-        },
-        {
-            initialAmount: 15,
-            targetIncrement: -45
-        }
-    ];
-    setUp(dummyDashboard, () => { updateToTargetTotal('decrementButton', targetData, 66); });
+    setUp(dummyDashboard, testFunc);
 });
 
 it('test module translation', () => {
     const testFunc = () => {
         ['en', 'es', 'fr'].forEach(lang => {
-            localStorage.setItem('userLanguage', lang);
-
-            ['fats', 'proteins', 'vegetables', 'grain', 'fruits'].forEach(category => {
-
+            localStorage.setItem('userLanguage', lang); 
+            
+            ['proteinFood', 'grainFood', 'vegetables', 'fruit', 'dairyProducts'].forEach(category => {
+    
                 act(() => {
-                    render(<Nourriture
-                        translationKey={category}
-                        dashboardKey='dummy'
-                        dashboardSubKey='dummy'
-                        cssId='dummy'
-                        parentCallback={(e) => { }}
-                        macroNutriment={undefined}
-                        macroNutriments={[]}
-                        globalConsumption={0}
-                        currentDate={new Date()}
-                        macroNutrimentToEdit={undefined}
-                        itemContainerDisplayStatus={false}
-                    />,
-                        container);
-
-
-                });
+                    render(<Food 
+                                categoryKey = { category }
+                                cssId = 'dummy'
+                                parentCallback = {  (e) => { } }
+                                macroNutrimentConsumption = { {} }
+                                foodItems = { [] }
+                                currentDate = { new Date() }
+                                macroNutrimentToEdit = { undefined }
+                                itemContainerDisplayStatus = { false }
+                            />, 
+                            container);
+        
+                        
+                });   
                 const moduleName = document.getElementById('moduleName').innerHTML;
-                expect(moduleName).toBe(dict['FOOD_MODULE']['sub_titles'][category][lang]);
-                const addMacroNutrimentButtonName = document.getElementById('addMacroNutriment').innerHTML;
-                expect(addMacroNutrimentButtonName).toBe(dict['FOOD_MODULE']['functions']['add_macro_nutriment'][lang]);
+                expect(moduleName).toBe(dict['FOOD_MODULE']['foodCategories'][category][lang]);
+                const addFoodItem = document.getElementById('addFoodItem').innerHTML;
+                expect(addFoodItem).toBe(dict['FOOD_MODULE']['functions']['addFoodItem'][lang]);
                 const addButton = document.getElementById('addButton');
                 addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
@@ -858,18 +624,20 @@ it('test module translation', () => {
                 const unit = measures[5].innerHTML;
                 expect(unit).toBe(dict['UNIT_TEXT'][lang]);
 
+                const itemQtyBoxValue = document.getElementById('foodItemQty').getAttribute('placeholder');
+                expect(itemQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['qty'][lang]);
                 const protQtyBoxValue = document.getElementById('protQty').innerHTML;
-                expect(protQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['proteins'][lang]);
+                expect(protQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['proteins'][lang]);
                 const glucQtyBoxValue = document.getElementById('glucQty').innerHTML;
-                expect(glucQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['glucides'][lang]);
+                expect(glucQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['glucides'][lang]);
                 const fibQtyBoxValue = document.getElementById('fibQty').innerHTML;
-                expect(fibQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['fibre'][lang]);
+                expect(fibQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['fibre'][lang]);
                 const fatQtyBoxValue = document.getElementById('fatQty').innerHTML;
-                expect(fatQtyBoxValue).toBe(dict['FOOD_MODULE']['macro_nutriments']['fats'][lang]);
+                expect(fatQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['fats'][lang]);
             });
         });
     };
-    setUpTranslationTest(testFunc);
+    testFunc();
 });
 
 it('test translation for non-existent key', () => {
@@ -878,73 +646,84 @@ it('test translation for non-existent key', () => {
             localStorage.setItem('userLanguage', lang);
 
             act(() => {
-                render(<Nourriture
-                    translationKey='UnsupportedKey'
-                    dashboardKey='dummy'
-                    dashboardSubKey='dummy'
-                    cssId='dummy'
-                    parentCallback={(e) => { }}
-                    macroNutriment={undefined}
-                    macroNutriments={[]}
-                    globalConsumption={0}
-                    currentDate={new Date()}
-                    macroNutrimentToEdit={undefined}
-                    itemContainerDisplayStatus={false}
-                />,
-                    container);
-            });
+                render(<Food 
+                            categoryKey = { 'UnsupportedKey' }
+                            cssId = 'dummy'
+                            parentCallback = {  (e) => { } }
+                            macroNutrimentConsumption = { {} }
+                            foodItems = { [] }
+                            currentDate = { new Date() }
+                            macroNutrimentToEdit = { undefined }
+                            itemContainerDisplayStatus = { false }
+                        />, 
+                        container);         
+            });    
             const moduleName = document.getElementById('moduleName').innerHTML;
             expect(moduleName).toBe(`Node with key UnsupportedKey is undefined`);
         });
     };
-    setUpTranslationTest(testFunc);
+    testFunc();
 });
 
 it('test translation for non-supported language', () => {
     localStorage.setItem('userLanguage', 'it');
     const testFunc = () => {
         act(() => {
-            render(<Nourriture
-                translationKey='proteins'
-                dashboardKey='dummy'
-                dashboardSubKey='dummy'
-                cssId='dummy'
-                parentCallback={(e) => { }}
-                macroNutriment={undefined}
-                macroNutriments={[]}
-                globalConsumption={0}
-                currentDate={new Date()}
-                macroNutrimentToEdit={undefined}
-                itemContainerDisplayStatus={false}
-            />,
-                container);
-        });
+            render(<Food 
+                        categoryKey = 'proteinFood'
+                        dashboardKey = 'dummy'
+                        dashboardSubKey = 'dummy'
+                        cssId = 'dummy'
+                        parentCallback = {  (e) => { } }
+                        macroNutrimentConsumption = { {} }
+                        foodItems = { [] }
+                        currentDate = { new Date() }
+                        macroNutrimentToEdit = { undefined }
+                        itemContainerDisplayStatus = { false }
+                    />, 
+                    container);         
+        });  
         const moduleName = document.getElementById('moduleName').innerHTML;
-        expect(moduleName).toBe(`Translation into it for node ${JSON.stringify(dict['FOOD_MODULE']['sub_titles']['proteins'])} is currently not supported`);
+        expect(moduleName).toBe(`Translation into it for node ${JSON.stringify(dict['FOOD_MODULE']['foodCategories']['proteinFood'])} is currently not supported`);  
     };
-    setUpTranslationTest(testFunc);
+    testFunc();
 });
 
-it("test favoris button and favoris sorted", () => {
-    const dummyDashboard = {
-        macroNutriment: {
-            macroNutriments: [],
-            dailyTarget: {
-                globalConsumption: 0,
-                unit: "",
-                value: 0
-            }
-        }
-    };
+it("test favorites button and favorites sorted", () => {
+    const dummyDashboard = initDummyDashboard();
+    let expected = [];
+    const iteration = 7;
+
+    for (let i = 0; i < iteration; i++) {
+        const foodItem = {
+            name: `some name`,
+            favorite: false,
+            qty: 1,
+            unit: 'unit',
+            proteins: 1,
+            glucides: 2,
+            fibre: 3,
+            fats: 4
+        };
+        expected.push(foodItem);
+    }
+
+    const items = dummyDashboard.food.categories.someFoodCategory.items;
 
     const testFunc = () => {
-        const addButton = document.getElementById('addButton');
+        populateFoodItems(0, 7, expected);
+        expect(items.length).toBe(iteration);
+        
+        for (let i = 0; i < items.length; i++) {
+            const currentFoodItemHDOM = document.getElementById(items[i].id);
+            const showButton = currentFoodItemHDOM.querySelector('#showButton');   
 
-        const iteration = 7;
-        for (let i = 0; i < iteration; i++) {
-            addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-            const favButton = document.querySelector(".starFavoris");
-            const saveButton = document.getElementById('saveButton');
+            showButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            const foodItemPopup = document.getElementById('divPopUp1-1');
+
+            const favButton = foodItemPopup.querySelector('#favoriteButton');
+            const saveButton = foodItemPopup.querySelector('#saveButton');
             if (i % 2) {
                 favButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             }
@@ -955,20 +734,19 @@ it("test favoris button and favoris sorted", () => {
             }
             saveButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         }
-
         // Test favorites button
-        dummyDashboard.macroNutriment.macroNutriments.forEach((aliment, i) => {
+        items.forEach((item, i) => {
             if (i < (iteration >> 1)) {
-                expect(aliment.favoris).toBeTruthy();
+                expect(item.favorite).toBeTruthy();
             }
             else {
-                expect(aliment.favoris).toBeFalsy();
+                expect(item.favorite).toBeFalsy();
             }
         });
 
         // Test if list is sorted
-        expect(dummyDashboard.macroNutriment.macroNutriments).toBe(dummyDashboard.macroNutriment.macroNutriments.sort((a, b) => a.favoris - b.favoris));
+        expect(items).toBe(items.sort((a, b) => a.favorite - b.favorite));
     }
 
-    setUp(dummyDashboard, testFunc)
+    setUp(dummyDashboard, testFunc);
 })
