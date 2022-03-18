@@ -87,7 +87,7 @@ function addWeightTable(document) {
     let unite = "";
 
     poid.forEach((data) => {
-        values.push([{content: data.get('date')}, {content: data.get('weight')}]);
+        values.push([{content: data.get('Date')}, {content: data.get('weight')}]);
         unite = data.get('weightUnit');
     });
 
@@ -153,7 +153,7 @@ function addActivitiesTable(document) {
     let values = [];
 
     activities.forEach((data) => {
-        values.push([{content: data.get('date')}, {content: data.get('duration')}]);
+        values.push([{content: data.get('Date')}, {content: data.get('duration')}]);
     });
 
 
@@ -207,7 +207,7 @@ function addSleepTable(document) {
     let values = [];
 
     sleeps.forEach((data) => {
-        values.push([{content: data.get('date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}]);
+        values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}]);
     });
 
 
