@@ -881,6 +881,26 @@
     "es": "Tránsito",
     "fr": "Transit"
   },
+  "EXP_TOT_UR": {
+    "en": "Total urine",
+    "es": "Orina total",
+    "fr": "Total urine"
+  },
+  "EXP_TOT_FEC": {
+    "en": "Total faeces",
+    "es": "Excrementos total",
+    "fr": "Total feces"
+  },
+  "EXP_AVG_UR": {
+    "en": "Average urine per day",
+    "es": "Orina promedio por día",
+    "fr": "Moyenne urine par jour"
+  },
+  "EXP_AVG_FEC": {
+    "en": "Average faeces per day",
+    "es": "Excrementos promedio por día",
+    "fr": "Moyenne feces par jour"
+  },
   "HOME_TITLE": {
     "en": "Home",
     "es": "Inicio",

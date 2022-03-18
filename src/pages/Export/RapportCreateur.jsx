@@ -18,39 +18,62 @@ import {
 
 import * as translate from '../../translate/Translator';
 
-export async function creerPdf(date) {
+export async function creerPdf(date, dataSelected) {
     const doc = new jsPDF();
 
-    // Poids
-    doc.text(translate.getText("POIDS_NOM_SECTION"), 10, 20);
-    addWeightTable(doc);
-    addWeightAggregateTable(doc);
+    // tableau vide pour la position Y.
+    doc.autoTable({
+        body: [[' ']],
+        alternateRowStyles: {fillColor: "#ffffff"}
+    });
+    dataSelected.forEach((data) => {
+        switch (data) {
+            case "hydratation":
+                doc.text(translate.getText("HYDR_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+                addHydratationTable(doc);
+                addHydratationMacrosTable(doc);
+                break;
+            case "activities":
+                doc.text(translate.getText("EXPORT_ACTIVITES_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+                addActivitiesTable(doc);
+                addActivitiesAggregateTable(doc);
+                break;
+            case "nourriture":
+                doc.text(translate.getText("NOURRITURE_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+                addNourritureTable(doc);
+                addNourritureMacros(doc);
+                break;
+            case "sommeil":
+                doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
+                addSleepTable(doc);
+                addSleepAggregateTable(doc);
+                break;
+            case "toilettes":
+                doc.text(translate.getText("TOILETS_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+                addToiletsTable(doc);
+                addAverageToiletsTable(doc);
+                break;
+            case "alcool":
+                // TODO
+                break;
+            case "glycémie":
+/*                doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+                addGlycimiaTable(doc);
+                addAverageGlycimiaTable(doc);*/
+                break;
+            case "poids":
+                doc.text(translate.getText("POIDS_NOM_SECTION"), 10, doc.lastAutoTable.finalY + 10);
+                addWeightTable(doc);
+                addWeightAggregateTable(doc);
+                break;
+            case "supplements":
+                // TODO
+                break;
 
-    // Activité physiques
-    doc.text(translate.getText("EXPORT_ACTIVITES_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-    addActivitiesTable(doc);
-    addActivitiesAggregateTable(doc);
-
-    // Sommeil
-    doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
-    addSleepTable(doc);
-    addSleepAggregateTable(doc);
-
-    doc.text(translate.getText("NOURRITURE_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-    addNourritureTable(doc);
-    addNourritureMacros(doc);
-
-    doc.text(translate.getText("HYDR_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-    addHydratationTable(doc);
-    addHydratationMacrosTable(doc);
-
-    doc.text(translate.getText("TOILETS_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-    addToiletsTable(doc);
-    addAverageToiletsTable(doc);
-
-/*    doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-    addGlycimiaTable(doc);
-    addAverageGlycimiaTable(doc);*/
+            default:
+                break;
+        }
+    });
 
     //Finaly save the document
     doc.save("FitnessHabits-data-" + date + ".pdf");
@@ -261,11 +284,11 @@ function addNourritureTable(document) {
     var consomation = translate.getText("HYD_TEXT_COUNT");
     var quantite = translate.getText("EXP_REPORT_QT");
     var unity = translate.getText("EXP_REPORT_UNIT");
-    var proteine = translate.getText("FOOD_MODULE",["macro_nutriments","proteins"]);
-    var glucide = translate.getText("FOOD_MODULE",["macro_nutriments","glucides"]);
-    var fibre = translate.getText("FOOD_MODULE",["macro_nutriments","fibre"]);
-    var gras = translate.getText("FOOD_MODULE",["macro_nutriments","fats"]);
-    headers.push(Date, name, consomation, quantite,unity,proteine,glucide,fibre,gras);
+    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
+    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
+    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
+    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
+    headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
 
     document.autoTable({
         head: [headers],
@@ -298,39 +321,39 @@ function addNourritureMacros(document) {
     let line_8 = [];
     let footerTable = [];
 
-    var totFiberTitle = translate.getText("EXP_REPORT_MACROS",["TOT_FIB"]);
+    var totFiberTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FIB"]);
     var totalFiber = nourritureMacros.get("totalFiber");
     line_1.push(totFiberTitle, totalFiber);
 
-    var totProteinTitle = translate.getText("EXP_REPORT_MACROS",["TOT_PROT"]);
+    var totProteinTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_PROT"]);
     var totalProtein = nourritureMacros.get("totalProtein");
     line_2.push(totProteinTitle, totalProtein);
 
-    var totFatTitle = translate.getText("EXP_REPORT_MACROS",["TOT_FAT"]);
+    var totFatTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FAT"]);
     var totalFat = nourritureMacros.get("totalFat");
     line_3.push(totFatTitle, totalFat);
 
-    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS",["TOT_GLUC"]);
+    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_GLUC"]);
     var totalGlucide = nourritureMacros.get("totalGlucide");
     line_4.push(totGlucideTitle, totalGlucide);
 
-    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS",["AVG_FIB"]);
+    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FIB"]);
     var averageFiber = nourritureMacros.get("averageFiber");
     line_5.push(avgFiberTitle, averageFiber);
 
-    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS",["AVG_PROT"]);
+    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_PROT"]);
     var averageProtein = nourritureMacros.get("averageProtein");
     line_6.push(avgProteinTitle, averageProtein);
 
-    var avgFatTitle = translate.getText("EXP_REPORT_MACROS",["AVG_FAT"]);
+    var avgFatTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FAT"]);
     var averageFat = nourritureMacros.get("totalFat");
     line_7.push(avgFatTitle, averageFat);
 
-    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS",["AVG_GLUC"]);
+    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_GLUC"]);
     var averageGlucide = nourritureMacros.get("totalGlucide");
     line_8.push(avgGlucideTitle, averageGlucide);
 
-    footerTable.push(line_1, line_2, line_3, line_4,line_5,line_6,line_7,line_8);
+    footerTable.push(line_1, line_2, line_3, line_4, line_5, line_6, line_7, line_8);
 
     document.autoTable({
         body: footerTable,
@@ -339,8 +362,8 @@ function addNourritureMacros(document) {
 
 }
 
-function addHydratationTable(document){
- let hydratation = getHydratations();
+function addHydratationTable(document) {
+    let hydratation = getHydratations();
     let headers = [];
     let values = [];
 
@@ -349,16 +372,16 @@ function addHydratationTable(document){
     });
 
 
-    var Date = translate.getText("DATE_TITLE")
+    var Date = translate.getText("DATE_TITLE");
     var name = translate.getText("SUPPL_NOM");
     var consomation = translate.getText("HYD_TEXT_COUNT");
     var quantite = translate.getText("EXP_REPORT_QT");
     var unity = translate.getText("EXP_REPORT_UNIT");
-    var proteine = translate.getText("FOOD_MODULE",["macro_nutriments","proteins"]);
-    var glucide = translate.getText("FOOD_MODULE",["macro_nutriments","glucides"]);
-    var fibre = translate.getText("FOOD_MODULE",["macro_nutriments","fibre"]);
-    var gras = translate.getText("FOOD_MODULE",["macro_nutriments","fats"]);
-    headers.push(Date, name, consomation, quantite,unity,proteine,glucide,fibre,gras);
+    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
+    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
+    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
+    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
+    headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
 
     document.autoTable({
         head: [headers],
@@ -377,7 +400,7 @@ function addHydratationTable(document){
     });
 }
 
-function addHydratationMacrosTable(document){
+function addHydratationMacrosTable(document) {
     let hydratationMacros = getMacrosTotalAndAveragePerDay("hydratation");
     let line_1 = [];
     let line_2 = [];
@@ -389,39 +412,39 @@ function addHydratationMacrosTable(document){
     let line_8 = [];
     let footerTable = [];
 
-    var totFiberTitle = translate.getText("EXP_REPORT_MACROS",["TOT_FIB"]);
+    var totFiberTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FIB"]);
     var totalFiber = hydratationMacros.get("totalFiber");
     line_1.push(totFiberTitle, totalFiber);
 
-    var totProteinTitle = translate.getText("EXP_REPORT_MACROS",["TOT_PROT"]);
+    var totProteinTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_PROT"]);
     var totalProtein = hydratationMacros.get("totalProtein");
     line_2.push(totProteinTitle, totalProtein);
 
-    var totFatTitle = translate.getText("EXP_REPORT_MACROS",["TOT_FAT"]);
+    var totFatTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FAT"]);
     var totalFat = hydratationMacros.get("totalFat");
     line_3.push(totFatTitle, totalFat);
 
-    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS",["TOT_GLUC"]);
+    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_GLUC"]);
     var totalGlucide = hydratationMacros.get("totalGlucide");
     line_4.push(totGlucideTitle, totalGlucide);
 
-    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS",["AVG_FIB"]);
+    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FIB"]);
     var averageFiber = hydratationMacros.get("averageFiber");
     line_5.push(avgFiberTitle, averageFiber);
 
-    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS",["AVG_PROT"]);
+    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_PROT"]);
     var averageProtein = hydratationMacros.get("averageProtein");
     line_6.push(avgProteinTitle, averageProtein);
 
-    var avgFatTitle = translate.getText("EXP_REPORT_MACROS",["AVG_FAT"]);
+    var avgFatTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FAT"]);
     var averageFat = hydratationMacros.get("totalFat");
     line_7.push(avgFatTitle, averageFat);
 
-    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS",["AVG_GLUC"]);
+    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_GLUC"]);
     var averageGlucide = hydratationMacros.get("totalGlucide");
     line_8.push(avgGlucideTitle, averageGlucide);
 
-    footerTable.push(line_1, line_2, line_3, line_4,line_5,line_6,line_7,line_8);
+    footerTable.push(line_1, line_2, line_3, line_4, line_5, line_6, line_7, line_8);
 
     document.autoTable({
         body: footerTable,
@@ -429,21 +452,21 @@ function addHydratationMacrosTable(document){
     });
 }
 
-function addToiletsTable(document){
+function addToiletsTable(document) {
     //TODO
     let toilets = getToilets();
     let headers = [];
     let values = [];
 
     toilets.forEach((data) => {
-        values.push([{content: data.get('Date')}, {content: data.get('Urine')},{content: data.get('Transit')}]);
+        values.push([{content: data.get('Date')}, {content: data.get('Urine')}, {content: data.get('Transit')}]);
     });
 
 
     var Date = translate.getText("DATE_TITLE")
     var urine = translate.getText("URINE_TITLE");
     var transit = translate.getText("EXP_UR_TR");
-    headers.push(Date, urine,transit);
+    headers.push(Date, urine, transit);
 
     document.autoTable({
         head: [headers],
@@ -462,12 +485,43 @@ function addToiletsTable(document){
     });
 }
 
-function addAverageToiletsTable(document){
+function addAverageToiletsTable(document) {
     //TODO
     let averageToilets = getAverageToilets();
 
-    console.log(averageToilets);
+    let line_1 = [];
+    let line_2 = [];
+    let line_3 = [];
+    let line_4 = [];
+    let footerTable = [];
+
+    var totFecesTitle = translate.getText("EXP_TOT_FEC");
+    var totalFeces = averageToilets.get("totalFeces");
+    line_1.push(totFecesTitle, totalFeces);
+
+    var totUrineTitle = translate.getText("EXP_TOT_UR");
+    var totalUrine = averageToilets.get("totalUrine");
+    line_2.push(totUrineTitle, totalUrine);
+
+    var averageFecesPerDayTitle = translate.getText("EXP_AVG_FEC");
+    var averageFecesPerDay = averageToilets.get("averageFecesPerDay");
+    line_3.push(averageFecesPerDayTitle, averageFecesPerDay);
+
+    var averageUrinePerDayTitle = translate.getText("EXP_AVG_UR");
+    var averageUrinePerDay = averageToilets.get("averageUrinePerDay");
+    line_4.push(averageUrinePerDayTitle, averageUrinePerDay);
+
+    footerTable.push(line_1, line_2, line_3, line_4);
+
+    document.autoTable({
+        body: footerTable,
+        tableWidth: 'wrap'
+    });
 }
+
+//TODO : fonctions alcool
+
+//TODO : fonctions supléments
 
 /*
 function addGlycimiaTable(document){
