@@ -789,6 +789,11 @@
     "es": "Duración",
     "fr": "Moyenne"
   },
+  "EXP_REF_GLY": {
+    "en" : "Reference",
+    "es" : "Referencia",
+    "fr" : "Référence"
+  },
   "EXP_REPORT_AVERAGE_DURATION_ACTIVITY": {
     "en": "Total",
     "es": "promedio",
