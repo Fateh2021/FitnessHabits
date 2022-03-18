@@ -840,6 +840,16 @@
     "fr": "Quantité"
   },
   "EXP_REPORT_MACROS": {
+    "TOTAL": {
+      "en": "Total",
+      "es": "Total",
+      "fr": "Total"
+    },
+    "AVG": {
+      "en": "Average",
+      "es": "Promedio",
+      "fr": "Moyenne"
+    },
     "TOT_FIB": {
       "en": "Total fibers",
       "es": "Fibras total",

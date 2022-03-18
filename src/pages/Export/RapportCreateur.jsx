@@ -112,6 +112,7 @@ function addWeightTable(document) {
         headStyles: {
             fillColor: "#113d37"
         },
+        pageBreak: 'avoid',
         bodyStyles: {
             minCellHeight: 9,
             halign: "left",
@@ -151,7 +152,8 @@ function addWeightAggregateTable(document) {
 
     document.autoTable({
         body: footerTable,
-        tableWidth: 'wrap'
+        tableWidth: 'wrap',
+        theme: 'grid'
     });
 }
 
@@ -173,6 +175,7 @@ function addActivitiesTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#0f5780"
         },
@@ -205,7 +208,8 @@ function addActivitiesAggregateTable(document) {
 
     document.autoTable({
         body: footerTable,
-        tableWidth: 'wrap'
+        tableWidth: 'wrap',
+        theme: 'grid'
     });
 }
 
@@ -230,6 +234,7 @@ function addSleepTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#152b3f"
         },
@@ -272,7 +277,8 @@ function addSleepAggregateTable(document) {
 
     document.autoTable({
         body: footerTable,
-        tableWidth: 'wrap'
+        tableWidth: 'wrap',
+        theme: 'grid'
     });
 
 }
@@ -302,6 +308,7 @@ function addNourritureTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#185742"
         },
@@ -310,7 +317,7 @@ function addNourritureTable(document) {
             halign: "left",
             valign: "center",
             fontSize: 11,
-            fillColor: "#45ffc1"
+            fillColor: "#b4ead8"
         },
         columnStyles:{
             5 : {
@@ -337,51 +344,56 @@ function addNourritureTable(document) {
 function addNourritureMacros(document) {
     let nourritureMacros = getMacrosTotalAndAveragePerDay('nourriture');
 
+    let headers = [];
     let line_1 = [];
     let line_2 = [];
-    let line_3 = [];
-    let line_4 = [];
-    let line_5 = [];
-    let line_6 = [];
-    let line_7 = [];
-    let line_8 = [];
     let footerTable = [];
 
-    var totFiberTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FIB"]);
+    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']), 
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+    
     var totalFiber = nourritureMacros.get("totalFiber");
-    line_1.push(totFiberTitle, totalFiber);
-
-    var totProteinTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_PROT"]);
-    var totalProtein = nourritureMacros.get("totalProtein");
-    line_2.push(totProteinTitle, totalProtein);
-
-    var totFatTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FAT"]);
-    var totalFat = nourritureMacros.get("totalFat");
-    line_3.push(totFatTitle, totalFat);
-
-    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_GLUC"]);
-    var totalGlucide = nourritureMacros.get("totalGlucide");
-    line_4.push(totGlucideTitle, totalGlucide);
-
-    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FIB"]);
     var averageFiber = nourritureMacros.get("averageFiber");
-    line_5.push(avgFiberTitle, averageFiber);
-
-    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_PROT"]);
+    
+    var totalProtein = nourritureMacros.get("totalProtein");
     var averageProtein = nourritureMacros.get("averageProtein");
-    line_6.push(avgProteinTitle, averageProtein);
 
-    var avgFatTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FAT"]);
-    var averageFat = nourritureMacros.get("totalFat");
-    line_7.push(avgFatTitle, averageFat);
+    var totalFat = nourritureMacros.get("totalFat");
+    var averageFat = nourritureMacros.get("averageFat");
 
-    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_GLUC"]);
-    var averageGlucide = nourritureMacros.get("totalGlucide");
-    line_8.push(avgGlucideTitle, averageGlucide);
+    var totalGlucide = nourritureMacros.get("totalGlucide");
+    var averageGlucide = nourritureMacros.get("averageGlucide");
 
-    footerTable.push(line_1, line_2, line_3, line_4, line_5, line_6, line_7, line_8);
+    line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
+    line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber,averageFat);
+
+    footerTable.push(line_1, line_2);
 
     document.autoTable({
+        head: [headers],
+        headStyles: {
+            fillColor: "#185742"
+        },
+        columnStyles:{
+            1 : {
+                fillColor: "#a52a2a",
+                textColor: "#ffffff"
+            },
+            2 : {
+                fillColor: "#db4e3e",
+                textColor: "#ffffff"
+            },
+            3 : {
+                fillColor: "#589051",
+                textColor: "#ffffff"
+            },
+            4 : {
+                fillColor : "#c99b2e",
+                textColor : "#ffffff"
+            }
+        },
         body: footerTable,
         tableWidth: 'wrap'
     });
@@ -413,6 +425,7 @@ function addHydratationTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#65afc5"
         },
@@ -445,52 +458,58 @@ function addHydratationTable(document) {
 }
 
 function addHydratationMacrosTable(document) {
-    let hydratationMacros = getMacrosTotalAndAveragePerDay("hydratation");
+    let hydratationMacros = getMacrosTotalAndAveragePerDay('hydratation');
+
+    let headers = [];
     let line_1 = [];
     let line_2 = [];
-    let line_3 = [];
-    let line_4 = [];
-    let line_5 = [];
-    let line_6 = [];
-    let line_7 = [];
-    let line_8 = [];
     let footerTable = [];
 
-    var totFiberTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FIB"]);
+    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']), 
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+    
     var totalFiber = hydratationMacros.get("totalFiber");
-    line_1.push(totFiberTitle, totalFiber);
-
-    var totProteinTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_PROT"]);
-    var totalProtein = hydratationMacros.get("totalProtein");
-    line_2.push(totProteinTitle, totalProtein);
-
-    var totFatTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FAT"]);
-    var totalFat = hydratationMacros.get("totalFat");
-    line_3.push(totFatTitle, totalFat);
-
-    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_GLUC"]);
-    var totalGlucide = hydratationMacros.get("totalGlucide");
-    line_4.push(totGlucideTitle, totalGlucide);
-
-    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FIB"]);
     var averageFiber = hydratationMacros.get("averageFiber");
-    line_5.push(avgFiberTitle, averageFiber);
-
-    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_PROT"]);
+    
+    var totalProtein = hydratationMacros.get("totalProtein");
     var averageProtein = hydratationMacros.get("averageProtein");
-    line_6.push(avgProteinTitle, averageProtein);
 
-    var avgFatTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FAT"]);
-    var averageFat = hydratationMacros.get("totalFat");
-    line_7.push(avgFatTitle, averageFat);
+    var totalFat = hydratationMacros.get("totalFat");
+    var averageFat = hydratationMacros.get("averageFat");
 
-    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_GLUC"]);
-    var averageGlucide = hydratationMacros.get("totalGlucide");
-    line_8.push(avgGlucideTitle, averageGlucide);
+    var totalGlucide = hydratationMacros.get("totalGlucide");
+    var averageGlucide = hydratationMacros.get("averageGlucide");
 
-    footerTable.push(line_1, line_2, line_3, line_4, line_5, line_6, line_7, line_8);
+    line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
+    line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber,averageFat);
+
+    footerTable.push(line_1, line_2);
 
     document.autoTable({
+        head: [headers],
+        headStyles: {
+            fillColor: "#65afc5"
+        },
+        columnStyles:{
+            1 : {
+                fillColor: "#a52a2a",
+                textColor: "#ffffff"
+            },
+            2 : {
+                fillColor: "#db4e3e",
+                textColor: "#ffffff"
+            },
+            3 : {
+                fillColor: "#589051",
+                textColor: "#ffffff"
+            },
+            4 : {
+                fillColor : "#c99b2e",
+                textColor : "#ffffff"
+            }
+        },
         body: footerTable,
         tableWidth: 'wrap'
     });
@@ -515,6 +534,7 @@ function addToiletsTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#bba339"
         },
@@ -557,7 +577,8 @@ function addAverageToiletsTable(document) {
 
     document.autoTable({
         body: footerTable,
-        tableWidth: 'wrap'
+        tableWidth: 'wrap',
+        theme: 'grid'
     });
 }
 
@@ -586,6 +607,7 @@ function addAlcoolTable(document){
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#e7a54f"
         },
@@ -618,52 +640,58 @@ function addAlcoolTable(document){
 }
 
 function addAlcoolMacrosTable(document){
-    let alcoolMacros = getMacrosTotalAndAveragePerDay("alcool")
+    let alcoolMacros = getMacrosTotalAndAveragePerDay('alcool');
+
+    let headers = [];
     let line_1 = [];
     let line_2 = [];
-    let line_3 = [];
-    let line_4 = [];
-    let line_5 = [];
-    let line_6 = [];
-    let line_7 = [];
-    let line_8 = [];
     let footerTable = [];
 
-    var totFiberTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FIB"]);
+    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']), 
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+    
     var totalFiber = alcoolMacros.get("totalFiber");
-    line_1.push(totFiberTitle, totalFiber);
-
-    var totProteinTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_PROT"]);
-    var totalProtein = alcoolMacros.get("totalProtein");
-    line_2.push(totProteinTitle, totalProtein);
-
-    var totFatTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_FAT"]);
-    var totalFat = alcoolMacros.get("totalFat");
-    line_3.push(totFatTitle, totalFat);
-
-    var totGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["TOT_GLUC"]);
-    var totalGlucide = alcoolMacros.get("totalGlucide");
-    line_4.push(totGlucideTitle, totalGlucide);
-
-    var avgFiberTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FIB"]);
     var averageFiber = alcoolMacros.get("averageFiber");
-    line_5.push(avgFiberTitle, averageFiber);
-
-    var avgProteinTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_PROT"]);
+    
+    var totalProtein = alcoolMacros.get("totalProtein");
     var averageProtein = alcoolMacros.get("averageProtein");
-    line_6.push(avgProteinTitle, averageProtein);
 
-    var avgFatTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_FAT"]);
-    var averageFat = alcoolMacros.get("totalFat");
-    line_7.push(avgFatTitle, averageFat);
+    var totalFat = alcoolMacros.get("totalFat");
+    var averageFat = alcoolMacros.get("averageFat");
 
-    var avgGlucideTitle = translate.getText("EXP_REPORT_MACROS", ["AVG_GLUC"]);
-    var averageGlucide = alcoolMacros.get("totalGlucide");
-    line_8.push(avgGlucideTitle, averageGlucide);
+    var totalGlucide = alcoolMacros.get("totalGlucide");
+    var averageGlucide = alcoolMacros.get("averageGlucide");
 
-    footerTable.push(line_1, line_2, line_3, line_4, line_5, line_6, line_7, line_8);
+    line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
+    line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber,averageFat);
+
+    footerTable.push(line_1, line_2);
 
     document.autoTable({
+        head: [headers],
+        headStyles: {
+            fillColor: "#e7a54f"
+        },
+        columnStyles:{
+            1 : {
+                fillColor: "#a52a2a",
+                textColor: "#ffffff"
+            },
+            2 : {
+                fillColor: "#db4e3e",
+                textColor: "#ffffff"
+            },
+            3 : {
+                fillColor: "#589051",
+                textColor: "#ffffff"
+            },
+            4 : {
+                fillColor : "#c99b2e",
+                textColor : "#ffffff"
+            }
+        },
         body: footerTable,
         tableWidth: 'wrap'
     });
@@ -688,6 +716,7 @@ function addGlycimiaTable(document){
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
+        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#6e233d"
         },
@@ -720,5 +749,6 @@ function addAverageGlycimiaTable(document){
     document.autoTable({
         body: footerTable,
         tableWidth: 'wrap',
+        theme: 'grid'
     });
 }
