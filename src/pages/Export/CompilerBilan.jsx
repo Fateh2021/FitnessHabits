@@ -263,8 +263,8 @@ function fetchToilets(toilets, formatedDate) {
 
 function fetchGlycemia(glycemia, formatedDate) {
     let mapGlycemia = new Map();
-    mapGlycemia["Date"] = formatedDate;
-    mapGlycemia["Glycémie"] = parseInt(glycemia);
+    mapGlycemia.set("Date", formatedDate);
+    mapGlycemia.set("Glycémie", parseInt(glycemia));
 
     arrayGlycemia.push(mapGlycemia);
 }
