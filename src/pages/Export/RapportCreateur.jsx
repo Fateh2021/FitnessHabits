@@ -167,8 +167,8 @@ function addActivitiesTable(document) {
 
 
     var Date = translate.getText("DATE_TITLE")
-    var poids = translate.getText("EXP_REPORT_DURATION");
-    headers.push(Date, poids);
+    var duree = translate.getText("EXP_REPORT_DURATION") + " (h)";
+    headers.push(Date, duree);
 
     document.autoTable({
         head: [headers],
@@ -194,11 +194,11 @@ function addActivitiesAggregateTable(document) {
     let line_2 = [];
     let footerTable = [];
 
-    var durationTitle = translate.getText("EXP_REPORT_MACROS", ["TOTAL"]);
+    var durationTitle = translate.getText("EXP_REPORT_MACROS", ["TOTAL"])+ " (h)";
     var totalDuration = aggregateActivities.get("TotalDuration");
     line_1.push(durationTitle, totalDuration);
 
-    var AverageDurationActTitle = translate.getText("EXP_REPORT_AVERAGE_DURATION_ACTIVITY");
+    var AverageDurationActTitle = translate.getText("EXP_REPORT_AVERAGE_DURATION_ACTIVITY")+ " (h)";
     var averageDuration = aggregateActivities.get("AverageDuration");
     line_2.push(AverageDurationActTitle, averageDuration);
 
@@ -217,15 +217,17 @@ function addSleepTable(document) {
     let values = [];
 
     sleeps.forEach((data) => {
-        values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}]);
+        values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}, {content: data.get('wakeUpQt')}, {content: data.get('wakeUpState')}]);
     });
 
 
     var Date = translate.getText("DATE_TITLE")
     var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
     var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
-    var duration = translate.getText("EXP_REPORT_DURATION");
-    headers.push(Date, startHour, endHour, duration);
+    var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
+    var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
+    var wakeUpState = translate.getText("STATE_OF_MIND");
+    headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
 
 
     document.autoTable({
@@ -551,7 +553,7 @@ function addAverageToiletsTable(document) {
     let line_4 = [];
     let footerTable = [];
 
-    var totFecesTitle = translate.getText("EXP_TOT_FEC");
+    var totFecesTitle = translate.getText("EXP_UR_TR");
     var totalFeces = averageToilets.get("totalFeces");
     line_1.push(totFecesTitle, totalFeces);
 
@@ -559,7 +561,7 @@ function addAverageToiletsTable(document) {
     var totalUrine = averageToilets.get("totalUrine");
     line_2.push(totUrineTitle, totalUrine);
 
-    var averageFecesPerDayTitle = translate.getText("EXP_AVG_FEC");
+    var averageFecesPerDayTitle = translate.getText("EXP_AVG_TRA");
     var averageFecesPerDay = averageToilets.get("averageFecesPerDay");
     line_3.push(averageFecesPerDayTitle, averageFecesPerDay);
 
@@ -702,7 +704,7 @@ function addGlycimiaTable(document){
     });
 
     var Date = translate.getText("DATE_TITLE")
-    var glycemie = translate.getText("GLYC_TITLE");
+    var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
     headers.push(Date, glycemie);
 
     document.autoTable({

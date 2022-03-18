@@ -812,7 +812,7 @@
   "EXP_REPORT_WAKEUP_QT_SLEEP": {
     "en": "Woke up quantity",
     "es": "Despertador cantidad",
-    "fr": "Quantité de réveil"
+    "fr": "Quantité de réveils"
   },
   "EXP_REPORT_AVG_END_HOUR_SLEEP": {
     "en": "Average waking hour",
@@ -915,6 +915,11 @@
     "en": "Average faeces per day",
     "es": "Excrementos promedio por día",
     "fr": "Moyenne feces par jour"
+  },
+  "EXP_AVG_TRA": {
+    "en": "Average transits per day",
+    "es": "Excrementos promedio por día",
+    "fr": "Moyenne transits par jour"
   },
   "HOME_TITLE": {
     "en": "Home",
