@@ -48,9 +48,9 @@ export async function creerPdf(date) {
     addToiletsTable(doc);
     addAverageToiletsTable(doc);
 
-    doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+/*    doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
     addGlycimiaTable(doc);
-    addAverageGlycimiaTable(doc);
+    addAverageGlycimiaTable(doc);*/
 
     //Finaly save the document
     doc.save("FitnessHabits-data-" + date + ".pdf");
@@ -443,6 +443,7 @@ function addAverageToiletsTable(document){
     console.log(averageToilets);
 }
 
+/*
 function addGlycimiaTable(document){
     //TODO
     let glycimia = getGlycemia();
@@ -455,4 +456,4 @@ function addAverageGlycimiaTable(document){
     let averageGlycimia = getAverageGlycemia();
 
     console.log(averageGlycimia);
-}
+}*/
