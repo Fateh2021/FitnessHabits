@@ -7,11 +7,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from "react-dom/test-utils";
 
 import App from '../../App';
-import { compilerBilan } from './CompilerBilan';
+import { compilerBilan,test_fetchNourriture,resetDataArrays,test_getNumberOfUniqueDate,test_sortEntries } from './CompilerBilan';
 import Settings from "./Export";
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
-
+import data from './example_test.json';
+import { execPath } from 'process';
 
 const renderWithRouter = (ui, { route = '/' } = {}) => {
     window.history.pushState({}, 'Test page', route);
@@ -314,6 +315,103 @@ test('ExportModule - TestClickOnFoodCheckbox', async() => {
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
 });
+
+
+test('ExportModule - TestClickOnFoodCheckbox', async() => {
+    renderWithRouter( < App / > , { route: '/Export' });
+    const checkbox_food = screen.getByTestId("checkbox-food")
+    act(() => {
+        fireEvent.click(checkbox_food)
+    });
+    expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
+});
+
+
+test('ExportModule - TestFetchNourritureCereale', async() => {
+    let data_cereales;
+    data.map((element)=>{
+        data_cereales=element.cereales.cereales
+    })
+    let arrayExpected=[]
+    data_cereales.map((element)=>{
+        let mapExpected = new Map();
+        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Nom", element.name);
+        mapExpected.set("Consommation", element.consumption);
+        mapExpected.set("Quantité", element.qtte);
+        mapExpected.set("Unité", element.unit);
+        mapExpected.set("Protéine", element.proteine * element.consumption);
+        mapExpected.set("Glucide", element.glucide * element.consumption);
+        mapExpected.set("Fibre", element.fibre * element.consumption);
+        mapExpected.set("Gras", element.gras * element.consumption);
+        arrayExpected.push(mapExpected);
+    })
+ 
+    expect(test_fetchNourriture(data_cereales,'18-03-2022')).toEqual(arrayExpected)
+});
+
+test('ExportModule - TestFetchNourritureCereale0Consumption', async() => {
+    resetDataArrays()
+    let data_cereales;
+    data.map((element)=>{
+        data_cereales=element.cereales.cereales
+    })
+    data_cereales.map((element)=>{
+        element.consumption=0;
+    })
+    
+    expect(test_fetchNourriture(data_cereales,'18-03-2022')).toEqual([])
+});
+
+test('ExportModule - TestFetchNourritureCerealeNull', async() => {
+    resetDataArrays()
+    expect(test_fetchNourriture(null,'18-03-2022')).toEqual([])
+});
+
+test('ExportModule - Test_getNumberOfUniqueDate', async() => {
+
+    let arrayDateNotUnique=['31-12-2023','18-05-2022',
+    '31-12-2023','15-10-2011','03-01-2022','18-05-2022',
+    '15-10-2011','18-05-2022','03-01-2022','18-05-2022',
+    '03-01-2022','31-12-2023','04-01-2025']
+    let arrayOfMapOfNotUniqueDate=[]
+    arrayDateNotUnique.forEach((element)=>{
+        let map= new Map()
+        map.set('Date',element)
+        arrayOfMapOfNotUniqueDate.push(map);
+    });
+    let numberUniqueExpected=5;
+    expect(test_getNumberOfUniqueDate(arrayOfMapOfNotUniqueDate)).toEqual(numberUniqueExpected);
+});
+
+test('ExportModule - test_sortEntries', async() => {
+
+    let arrayDateNotSorted=['31-12-2023','18-05-2022',
+    '31-12-2023','15-10-2011','03-01-2022','18-05-2022','13-08-2019']
+    let arrayOfMapDateNotSorted=[]
+    arrayDateNotSorted.forEach((element)=>{
+        let map= new Map()
+        map.set('Date',element)
+        arrayOfMapDateNotSorted.push(map);
+    });
+
+
+    let arrayOfMapDateSorted=[
+        new Map().set('Date','31-12-2023'),
+        new Map().set('Date','31-12-2023'), 
+        new Map().set('Date','18-05-2022'), 
+        new Map().set('Date','18-05-2022'),  
+        new Map().set('Date','03-01-2022'),   
+        new Map().set('Date','13-08-2019'),  
+        new Map().set('Date','15-10-2011'),  
+    ]
+
+    test_sortEntries(arrayOfMapDateNotSorted)
+    expect(arrayOfMapDateNotSorted).toEqual(arrayOfMapDateSorted);
+});
+
+
+
 
 /* Notes
   fireEvent.click(alcoolCheckbox);

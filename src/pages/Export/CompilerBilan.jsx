@@ -230,6 +230,7 @@ function fetchNourriture(array_nourriture,formatedDate){
     if(array_nourriture!=null){
 
         for (const element of array_nourriture) {
+            
                 if (element.consumption === 0) {
                     continue;
                 }
@@ -571,6 +572,22 @@ function getNumberOfUniqueDate(array_aliments){
     return set_date.size;
 }
 
+//----------TEST--------
+export function test_fetchNourriture(array_nourriture,formatedDate) {
+    fetchNourriture(array_nourriture,formatedDate);
+    return arrayNourriture;
+  }
+export function resetDataArrays(){
+    arrayNourriture=[];
+}  
+
+export function test_getNumberOfUniqueDate(array_aliments){
+    return getNumberOfUniqueDate(array_aliments);
+}
+
+export function test_sortEntries(arrayToSort){
+     sortEntries(arrayToSort);
+}
 
 
 

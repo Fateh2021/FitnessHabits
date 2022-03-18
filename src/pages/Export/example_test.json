@@ -1,0 +1,263 @@
+[
+    {
+    "activities": {
+      "heure": "6",
+      "minute": "42"
+    },
+    "alcool": {
+      "alcools": [
+        {
+          "id": "d8e6d-63ee-75b4-0022-37470e1561",
+          "favoris": false,
+          "name": "Vin",
+          "qtte": "02",
+          "proteine": "10",
+          "glucide": "5",
+          "fibre": "2",
+          "gras": "1",
+          "unit": "tasse",
+          "consumption": 2
+        },
+        {
+          "id": "448dbcc-4d68-b543-437f-dfae11313b6c",
+          "favoris": false,
+          "name": "Gin",
+          "qtte": "10",
+          "proteine": "10",
+          "glucide": "10",
+          "fibre": "01",
+          "gras": 0,
+          "unit": "oz",
+          "consumption": 2
+        },
+        {
+          "consumption": 0,
+          "favoris": false,
+          "fibre": 0,
+          "glucide": 0,
+          "gras": 0,
+          "id": "58a7e6f-2e41-2a4c-64b8-6a8d81700e35",
+          "name": "",
+          "proteine": 0,
+          "qtte": 0,
+          "unit": ""
+        },
+        {
+          "consumption": 3,
+          "favoris": false,
+          "fibre": 0,
+          "glucide": "5",
+          "gras": 0,
+          "id": "d1b154f-5b5c-c4c6-b23-f255bbb4f",
+          "name": "",
+          "proteine": "2",
+          "qtte": "-2",
+          "unit": "gr"
+        }
+      ],
+      "dailyTarget": {
+        "globalConsumption": 7,
+        "unit": "",
+        "value": 0
+      }
+    },
+    "cereales": {
+      "cereales": [
+        {
+          "consumption": 2,
+          "favoris": false,
+          "fibre": "04",
+          "glucide": "02",
+          "gras": "06",
+          "id": "d7a17fc-bf51-a3b-d6be-bab6d48b04",
+          "name": "Riz",
+          "proteine": "01",
+          "qtte": "111",
+          "unit": "tasse"
+        },
+        {
+          "consumption": 4,
+          "favoris": false,
+          "fibre": "3",
+          "glucide": 0,
+          "gras": "5",
+          "id": "58da444-5e2a-efef-062e-8cf6623847",
+          "name": "Pain",
+          "proteine": "2",
+          "qtte": "10",
+          "unit": "gr"
+        }
+      ],
+      "dailyTarget": {
+        "globalConsumption": 4,
+        "unit": "",
+        "value": 0
+      }
+    },
+    "glycemie": {
+      "dailyGlycemie": "120"
+    },
+    "gras": {
+      "dailyTarget": {
+        "globalConsumption": 6,
+        "unit": "",
+        "value": 0
+      },
+      "grass": [
+        {
+          "consumption": 2,
+          "favoris": false,
+          "fibre": 0,
+          "glucide": 0,
+          "gras": "100",
+          "id": "c10152b-084a-45e1-cb55-a48dcefc7",
+          "name": "Sauce aigre-douce",
+          "proteine": "10",
+          "qtte": "2",
+          "unit": "gr"
+        },
+        {
+          "consumption": 4,
+          "favoris": false,
+          "fibre": "1",
+          "glucide": "5",
+          "gras": "10",
+          "id": "87cc2f6-458-86c-02f8-cdcfc38e86cf",
+          "name": "Sauce BBQ",
+          "proteine": "1",
+          "qtte": "80",
+          "unit": "ml"
+        }
+      ]
+    },
+    "hydratation": {
+      "dailyTarget": {
+        "globalConsumption": 8,
+        "unit": "",
+        "value": 0
+      },
+      "hydrates": [
+        {
+          "id": "8c4141a-83b5-b837-e65d-78a05cc8fc6",
+          "favoris": false,
+          "name": "Jus",
+          "qtte": "10",
+          "proteine": "10",
+          "glucide": "20",
+          "fibre": "30",
+          "gras": "40",
+          "unit": "gr",
+          "consumption": 2
+        },
+        {
+          "consumption": 3,
+          "favoris": false,
+          "fibre": "05",
+          "glucide": "05",
+          "gras": "50",
+          "id": "a36fb6-668f-5551-11cc-8dced0164d2",
+          "name": "Thé",
+          "proteine": "50",
+          "qtte": "10",
+          "unit": "oz"
+        },
+        {
+          "consumption": 3,
+          "favoris": false,
+          "fibre": 0,
+          "glucide": 0,
+          "gras": 0,
+          "id": "cbc3ea2-7528-a2c5-5ac0-2d682b3b24b5",
+          "name": "Eau",
+          "proteine": "10",
+          "qtte": "2",
+          "unit": "ml"
+        }
+      ]
+    },
+    "legumes": {
+      "dailyTarget": {
+        "globalConsumption": 5,
+        "unit": "",
+        "value": 0
+      },
+      "legumes": [
+        {
+          "consumption": 2,
+          "favoris": false,
+          "fibre": "03",
+          "glucide": "20",
+          "gras": 0,
+          "id": "ddf533e-b80b-43-3e14-2550ddb7f4",
+          "name": "Soupe",
+          "proteine": "10",
+          "qtte": "15",
+          "unit": "ml"
+        },
+        {
+          "consumption": 3,
+          "favoris": false,
+          "fibre": "4",
+          "glucide": "3",
+          "gras": "10",
+          "id": "6d10cda-1a7a-3724-36ab-6c00a236764",
+          "name": "Salade",
+          "proteine": "2",
+          "qtte": 0,
+          "unit": "unite"
+        }
+      ]
+    },
+    "nourriture": {
+      "globalConsumption": 21
+    },
+    "poids": {
+      "dailyPoids": "496.16",
+      "datePoids": "2022-03-18T04:58:31.540Z"
+    },
+    "proteines": {
+      "dailyTarget": {
+        "globalConsumption": 6,
+        "unit": "",
+        "value": 0
+      },
+      "proteines": [
+        {
+          "consumption": 2,
+          "favoris": false,
+          "fibre": 0,
+          "glucide": 0,
+          "gras": 0,
+          "id": "f6755-7d0b-fe5-cd63-37f86dde76ac",
+          "name": "Viande",
+          "proteine": "10",
+          "qtte": "02",
+          "unit": "gr"
+        },
+        {
+          "consumption": 4,
+          "favoris": false,
+          "fibre": 0,
+          "glucide": "1",
+          "gras": "10",
+          "id": "dba6231-6e8b-ffd5-fb8-d72f1662ba5",
+          "name": "Poulet rotie",
+          "proteine": "20",
+          "qtte": "",
+          "unit": "unite"
+        }
+      ]
+    },
+    "sommeil": {
+      "heure": 0,
+      "heureDebut": "08:00",
+      "heureFin": "21:00",
+      "minute": 0,
+      "nbReveils": 3
+    },
+    "toilettes": {
+      "feces": 4,
+      "urine": 5
+    }
+  }
+]
