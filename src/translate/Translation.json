@@ -739,7 +739,12 @@
     "es": "Los suplementos aún no están implementados",
     "fr": "Les suppléments ne sont pas encore implémentés"
   },
-  "SEND_MAIL": {
+   "EXP_REPORT_NO_DATA": {
+      "en": "No data entered for these dates.",
+      "es": "No se han introducido datos para estas fechas.",
+      "fr": "Aucune donnée entrée pour ces dates."
+   },
+   "SEND_MAIL": {
     "en": "Send by email",
     "es": "Enviar por correo elec.",
     "fr": "Envoyer par courriel"
