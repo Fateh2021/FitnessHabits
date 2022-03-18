@@ -432,8 +432,34 @@ function addHydratationMacrosTable(document){
 function addToiletsTable(document){
     //TODO
     let toilets = getToilets();
+    let headers = [];
+    let values = [];
 
-    console.log(toilets);
+    toilets.forEach((data) => {
+        values.push([{content: data.get('Date')}, {content: data.get('Urine')},{content: data.get('Transit')}]);
+    });
+
+
+    var Date = translate.getText("DATE_TITLE")
+    var urine = translate.getText("URINE_TITLE");
+    var transit = translate.getText("EXP_UR_TR");
+    headers.push(Date, urine,transit);
+
+    document.autoTable({
+        head: [headers],
+        body: values,
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: "#bba339"
+        },
+        bodyStyles: {
+            minCellHeight: 9,
+            halign: "left",
+            valign: "center",
+            fontSize: 11,
+            fillColor: "#ffea9a"
+        },
+    });
 }
 
 function addAverageToiletsTable(document){
