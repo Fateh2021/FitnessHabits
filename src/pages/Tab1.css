@@ -365,12 +365,13 @@ color: #ffffff;
  }
 
  .headerTitleDashboard h3{
-   padding-top: 5px;
+   /* padding-top: 5px; */
   font-size: 18px;
   font-family: fantasy;
   font-weight: bolder;
   color:#f7e8ca;
-  margin-left: 130px;
+  text-align: center;
+  /* margin-left: 130px; */
  }
 
  .profilTitleDashboard h3{
@@ -1452,18 +1453,18 @@ background-color: #ffffff;
 
 .profilText h2{
   font-size:18px;
- padding-top: 0px;
- font-stretch: semi-condensed;
- margin-top: 0px;
+ /* padding-top: 0px; */
+ /* font-stretch: semi-condensed; */
+ /* margin-top: 0px; */
  color: #1a5a5a;
 }
 
-.profilText{
+.profilText {
  background-color: #f7e8ca;
 }
 
-.contentProfil{
-height: 58%;
+.noPadding{
+  padding: 0px;
 }
 
 .profilImage{
@@ -1672,9 +1673,18 @@ height: 58%;
   background-color: #0e3530;
 }
 
+.sideBarHeaderTitle{
+  background-color: #0e3530;
+}
+.whiteBackground{
+  --ion-background-color: white;
+  background-color: white;
+}
+
+
 .sidebar {
-  height: 100vh;
-  background-color:#90a17f;
+  height: 100%;
+  background-color:#6f7e61;
   color: white;
   width: 350px;
   position: fixed;
@@ -1683,6 +1693,11 @@ height: 58%;
   animation: slide-open 0.75s forwards;
   background-size: 2em 2em;
   flex: 1 1 auto;
+  --ion-background-color:#90a17f;
+}
+
+.sidebarfooter{
+  height: 20px;
 }
 
 .alert {
@@ -2121,4 +2136,4 @@ h2{
   font-weight: bold;
   color: black;
   right: 50px;
-}
+}
