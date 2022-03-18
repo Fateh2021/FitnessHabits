@@ -100,13 +100,13 @@
          "es": "Comida",
          "fr": "Nourriture"
       },
-      "sub_titles": {
-         "proteins": {
+      "foodCategories": {
+         "proteinFood": {
             "en": "Protein Food",
             "es": "Alimentos proteicos",
             "fr": "Aliments protéinés"
          },
-         "grain": {
+         "grainFood": {
             "en": "Grain Food",
             "es": "Comida de grano",
             "fr": "Aliments à grain"
@@ -116,32 +116,66 @@
             "es": "Vegetales",
             "fr": "Légumes"
          },
-         "fruits": {
-            "en": "Fruits",
+         "fruit": {
+            "en": "Fruit",
             "es": "Frutas",
             "fr": "Fruits"
          },
-         "fats": {
-            "en": "Fats",
-            "es": "Grasas",
-            "fr": "Gras"
+         "dairyProducts": {
+            "en": "Dairy Products",
+            "es": "Productos lácteos",
+            "fr": "Produits laitiers"
+         }
+      },
+      "macroNutrimentSummary": {
+         "cumulativeProteins": {
+            "en": "Protein Total",
+            "es": "Proteínas totales",
+            "fr": "Total protéines"
+         },
+         "cumulativeGlucides": {
+            "en": "Glucides Total",
+            "es": "Glúcidos totales",
+            "fr": "Total glucides"
+         },
+         "cumulativeFibre": {
+            "en": "Fibre Total",
+            "es": "Fibras totales",
+            "fr": "Total fibres"
+         },
+         "cumulativeFats": {
+            "en": "Fats Total",
+            "es": "Grasas totales",
+            "fr": "Total gras"
          }
       },
       "functions": {
-         "add_macro_nutriment": {
-            "en": "Add macro-nutriment",
-            "es": "Añadir un macronutriente",
-            "fr": "Ajouter un macro-nutriment"
+         "addFoodItem": {
+            "en": "Add food item",
+            "es": "Añadir un alimento",
+            "fr": "Ajouter un aliment"
          },
-         "add_description": {
+         "addDescription": {
             "placeholder": {
                "en": "Description",
                "es": "Descripción",
                "fr": "Description"
             }
+         },
+         "addErrorMessage": {
+            "saveItem": {
+               "en": "A food item's name cannot be empty and all macro-nutriments cannot have zero quantity!",
+               "es": "¡El nombre de un alimento no puede estar vacío y todos los macronutrientes no pueden tener una cantidad cero!",
+               "fr": "Le nom d'un aliment ne peut pas être vide et tous les macro-nutriments ne peuvent pas avoir une quantité de zéro !"
+            }
          }
       },
-      "macro_nutriments": {
+      "macroNutriments": {
+         "qty": {
+            "en": "quantity",
+            "es": "cantidad",
+            "fr": "quantité"
+         },
          "proteins": {
             "en": "Proteins",
             "es": "Proteinas", 
