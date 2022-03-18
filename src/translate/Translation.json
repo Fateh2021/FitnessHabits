@@ -829,6 +829,54 @@
       "es": "Despertar(es) por noche",
       "fr": "Réveil(s) par nuit"
    },
+
+   "EXP_REPORT_QT": {
+      "en": "Quantity",
+      "es": "Cantidad",
+      "fr": "Quantité"
+   },
+   "EXP_REPORT_MACROS": {
+      "TOT_FIB": {
+         "en": "Total fibers",
+         "es": "Fibras total",
+         "fr": "Total fibres"
+      },
+      "TOT_PROT": {
+         "en": "Total proteins",
+         "es": "Proteinas total",
+         "fr": "Total proteines"
+      },
+      "TOT_GLUC": {
+         "en": "Total carbs",
+         "es": "Glúcidos total",
+         "fr": "Total glucides"
+      },
+      "TOT_FAT": {
+         "en": "Total fats",
+         "es": "Grassa total",
+         "fr": "Total gras"
+      },
+      "AVG_FIB": {
+         "en": "Average fibers",
+         "es": "Fibras promedio",
+         "fr": "Moyenne fibres"
+      },
+      "AVG_PROT": {
+         "en": "Average proteins",
+         "es": "Proteinas promedio",
+         "fr": "Moyenne proteines"
+      },
+      "AVG_GLUC": {
+         "en": "Average carbs",
+         "es": "Glúcidos pormedio",
+         "fr": "Moyenne glucides"
+      },
+      "AVG_FAT": {
+         "en": "Average fats",
+         "es": "Grassa pormedio",
+         "fr": "Moyenne gras"
+      }
+   },
    "HOME_TITLE": {
       "en": "Home",
       "es": "Inicio",
