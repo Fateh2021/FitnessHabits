@@ -1,9 +1,9 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import firebase from 'firebase';
-import 'firebase/auth';
-import Sidebar from './Sidebar';
-import { ionFireEvent } from '@ionic/react-test-utils';
+import React from "react";
+import { render } from "@testing-library/react";
+import firebase from "firebase";
+import "firebase/auth";
+import Sidebar from "../Sidebar";
+import { ionFireEvent } from "@ionic/react-test-utils";
 
 const testProfile = {
     pseudo: "testUser",
@@ -13,31 +13,31 @@ const testProfile = {
     dateFormat: "dd-LLL-yyyy",
 };
 
-jest.mock('firebase', () => {
+jest.mock("firebase", () => {
     return {
         auth: jest.fn(),
         database: jest.fn(),
     };
 });
 
-describe('How <Sidebar> is rendered', () => {
+describe("How <Sidebar> is rendered", () => {
     beforeAll(() => {
-        localStorage.setItem('profile', JSON.stringify(testProfile));
+        localStorage.setItem("profile", JSON.stringify(testProfile));
     });
 
-    afterAll(() => { localStorage.removeItem('profile') });
+    afterAll(() => { localStorage.removeItem("profile") });
 
-    it('should not crash', () => {
+    it("should not crash", () => {
         const { baseElement } = render(<Sidebar pictureDisabled={true} />);
         expect(baseElement).toBeDefined();
     });
 
-    it('should close as expected', () => {
+    it("should close as expected", () => {
         const mockCloseHandler = jest.mock().fn();
         const { baseElement, getByTestId } = render(<Sidebar handleClose={mockCloseHandler} pictureDisabled={true} />);
 
-        const sidebar = getByTestId('sidebar');
-        const btnClose = getByTestId('btn-close');
+        const sidebar = getByTestId("sidebar");
+        const btnClose = getByTestId("btn-close");
         btnClose.click();
 
         expect(sidebar.classList).toContain("sidebarClose");
@@ -45,13 +45,13 @@ describe('How <Sidebar> is rendered', () => {
 
     });
 
-    it('should be open by default', () => {
+    it("should be open by default", () => {
         const { getByTestId } = render(<Sidebar pictureDisabled={true} />);
-        const sidebar = getByTestId('sidebar');
+        const sidebar = getByTestId("sidebar");
         expect(sidebar.classList).toContain("sidebar");
     });
 
-    it('should display profile information', () => {
+    it("should display profile information", () => {
         const { getByTestId } = render(<Sidebar pictureDisabled={true} />);
         const usernameElement = getByTestId("username");
         const heightElement = getByTestId("height");
@@ -67,15 +67,15 @@ describe('How <Sidebar> is rendered', () => {
     });
 });
 
-describe('How <Sidebar> behaves', () => {
+describe("How <Sidebar> behaves", () => {
 
     beforeEach(() => {
-        localStorage.setItem('profile', JSON.stringify(testProfile));
+        localStorage.setItem("profile", JSON.stringify(testProfile));
     });
 
-    afterAll(() => { localStorage.removeItem('profile') });
+    afterAll(() => { localStorage.removeItem("profile") });
 
-    it('should save inputs on change', () => {
+    it("should save inputs on change", () => {
         const mockUpdate = jest.fn().mockResolvedValue(true);
         const mockRef = jest.fn().mockReturnValue({ update: mockUpdate });
         firebase.database.mockReturnValue({ ref: mockRef });
@@ -91,7 +91,7 @@ describe('How <Sidebar> behaves', () => {
         expect(mockUpdate).toBeCalledTimes(3);
     });
 
-    it('should sign out on click', () => {
+    it("should sign out on click", () => {
         const mockSignout = jest.fn().mockResolvedValue(true);
         firebase.auth.mockReturnValueOnce({ signOut: mockSignout });
         const { getByTestId } = render(<Sidebar pictureDisabled={true} />);
