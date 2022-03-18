@@ -785,9 +785,9 @@
     "fr": "Différence de poids"
   },
   "EXP_REPORT_DURATION": {
-    "en": "Average",
+    "en": "Duration",
     "es": "Duración",
-    "fr": "Moyenne"
+    "fr": "Durée"
   },
   "EXP_REF_GLY": {
     "en" : "Reference",
@@ -795,9 +795,9 @@
     "fr" : "Référence"
   },
   "EXP_REPORT_AVERAGE_DURATION_ACTIVITY": {
-    "en": "Total",
+    "en": "Average",
     "es": "promedio",
-    "fr": "Total"
+    "fr": "Moyenne"
   },
   "EXP_REPORT_START_HOUR_SLEEP": {
     "en": "Bedtime",

@@ -112,13 +112,12 @@ function addWeightTable(document) {
         headStyles: {
             fillColor: "#113d37"
         },
-        pageBreak: 'avoid',
         bodyStyles: {
             minCellHeight: 9,
             halign: "left",
             valign: "center",
             fontSize: 11,
-            fillColor: "#75f6e7"
+            fillColor: "#bbebe5"
         },
     });
 }
@@ -175,7 +174,6 @@ function addActivitiesTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#0f5780"
         },
@@ -196,9 +194,9 @@ function addActivitiesAggregateTable(document) {
     let line_2 = [];
     let footerTable = [];
 
-    var durantionTitle = translate.getText("EXP_REPORT_DURATION");
+    var durationTitle = translate.getText("EXP_REPORT_MACROS", ["TOTAL"]);
     var totalDuration = aggregateActivities.get("TotalDuration");
-    line_1.push(durantionTitle, totalDuration);
+    line_1.push(durationTitle, totalDuration);
 
     var AverageDurationActTitle = translate.getText("EXP_REPORT_AVERAGE_DURATION_ACTIVITY");
     var averageDuration = aggregateActivities.get("AverageDuration");
@@ -234,7 +232,6 @@ function addSleepTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#152b3f"
         },
@@ -261,9 +258,9 @@ function addSleepAggregateTable(document) {
     var averageStartHour = aggregateSleeps.get("averageStartHour");
     line_1.push(avgStartHourSleepTitle, averageStartHour);
 
-    var aggInitialWeight = translate.getText("EXP_REPORT_AVG_END_HOUR_SLEEP");
+    var aggInitialHour = translate.getText("EXP_REPORT_AVG_END_HOUR_SLEEP");
     var averageEndHour = aggregateSleeps.get("averageEndHour");
-    line_2.push(aggInitialWeight, averageEndHour);
+    line_2.push(aggInitialHour, averageEndHour);
 
     var averageDurationSleepTitle = translate.getText("EXP_REPORT_AVG_DURATION_SLEEP");
     var averageDuree = aggregateSleeps.get("averageDuree");
@@ -308,7 +305,6 @@ function addNourritureTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#185742"
         },
@@ -425,7 +421,6 @@ function addHydratationTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#65afc5"
         },
@@ -534,7 +529,6 @@ function addToiletsTable(document) {
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#bba339"
         },
@@ -607,7 +601,6 @@ function addAlcoolTable(document){
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#e7a54f"
         },
@@ -716,7 +709,6 @@ function addGlycimiaTable(document){
         head: [headers],
         body: values,
         startY: document.lastAutoTable.finalY + 15,
-        pageBreak: 'avoid',
         headStyles: {
             fillColor: "#6e233d"
         },
