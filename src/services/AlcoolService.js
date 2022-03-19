@@ -92,7 +92,7 @@ const AlcoolService = {
         .once('value')
         .then(snapshot => {
           const sets = snapshot.val();
-          const alcoolSettings = sets ?? {
+          return sets ?? {
             dailyTarget: {
               value: 0,
               unit: ''
@@ -109,7 +109,6 @@ const AlcoolService = {
             },
             alcools: DefaultSettings.alcools
           };
-          return alcoolSettings;
         }),
     updateNotifications: (notifications) =>
       updateSettings(settings => settings.alcool.notifications = notifications),
