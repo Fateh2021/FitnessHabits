@@ -15,6 +15,7 @@ import DatePicker from "react-datepicker";
 const renderWithRouter = (ui, { route = '/' } = {}) => {
     window.history.pushState({}, 'Test page', route);
     return render(ui, { wrapper: BrowserRouter });
+    
 }
 
 test('renders without crashing', async() => {

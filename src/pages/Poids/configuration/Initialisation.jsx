@@ -2,16 +2,16 @@ import React, { useState , useEffect} from 'react';
 import firebase from 'firebase'
 import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent,
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
-import "../../poids.css";
+import "../../weight.css";
 import * as translate from "../../../translate/Translator";
-import * as poidsService from "../../Poids/configuration/poidsService"
+import * as weightService from "../../weight/configuration/weightService"
 
 import moment from "moment"
 
-const DIFF_UNITE_POIDS = 2.2;
+const WEIGHT_UNIT_DEF = 2.2;
 const userUID = localStorage.getItem('userUid'); // Récupération du userID
 
-// Au moment d'afficher la page, nous allons afficher l'information qui se trouve dans «preferencesPoids» du profil de l'utilisateur
+// Au moment d'afficher la page, nous allons afficher l'information qui se trouve dans «preferencesweight» du profil de l'utilisateur
 const Initialisation = () => {
 
 // Retour à la page principale de l'application
@@ -23,46 +23,46 @@ function formatDate (date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
-var preferencesPoidUnite = localStorage.getItem('prefUnitePoids');
+var prefWeightUnit = localStorage.getItem('prefweightUnit');
 
-const [poidsInitial, setPoidsInitial] = useState("");
-const [poidsCible, setPoidsCible] = useState("");
-const [dateCible, setDateCible] = useState("");
-const [unitePoids, setUnitePoids] = useState("");
+const [initialWeight, setInitialWeight] = useState("");
+const [targetWeight, setTargetWeight] = useState("");
+const [targetDate, setTargetDate] = useState("");
+const [weightUnit, setWeightUnit] = useState("");
 
-const handlePoidsInitialChange = (value) => {
-  setPoidsInitial(value)
+const handleinitialWeightChange = (value) => {
+  setInitialWeight(value)
 }
 
-const handlePoidsCibleChange = (value) => {
-  setPoidsCible(value)
+const handletargetWeightChange = (value) => {
+  setTargetWeight(value)
 }
 
-const handleDateCibleChange = (value) => {
-  setDateCible(value);
+const handletargetDateChange = (value) => {
+  setTargetDate(value);
 };
 
-const handleUnitePoidsChange = (e) => {
+const handleweightUnitChange = (e) => {
   let value = e.detail.value
-  let OldUnitePoids = unitePoids; // On récupère l'ancienne unité de poids
-  setUnitePoids(value);
+  let OldweightUnit = weightUnit; // On récupère l'ancienne unité de weight
+  setWeightUnit(value);
 
-  if (OldUnitePoids === "KG" && value === "LBS") {
-    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
-    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
-  } else if (OldUnitePoids === "LBS" && value === "KG") {
-    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
-    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
+  if (OldweightUnit === "KG" && value === "LBS") {
+    setTargetWeight((targetWeight * WEIGHT_UNIT_DEF).toFixed(2))
+    setInitialWeight((initialWeight * WEIGHT_UNIT_DEF).toFixed(2))
+  } else if (OldweightUnit === "LBS" && value === "KG") {
+    setTargetWeight((targetWeight / WEIGHT_UNIT_DEF).toFixed(2))
+    setInitialWeight((initialWeight / WEIGHT_UNIT_DEF).toFixed(2))
   }
 }
 
 // Récupération des informations initiale et cible du client pour les afficher
-let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids");
+let preferencesweightRef = firebase.database().ref('profiles/' + userUID + "/preferencesweight");
 useEffect(() => {
-  preferencesPoidsRef.once("value").then(function(snapshot) {
+  preferencesweightRef.once("value").then(function(snapshot) {
     if (snapshot.val() !== null) {
-      var ini = snapshot.val().poidsInitial;
-      var ci = snapshot.val().poidsCible;
+      var ini = snapshot.val().initialWeight;
+      var ci = snapshot.val().targetWeight;
       // Nous devons mettre des valeurs de 0 si elle n'éxiste pas encore...
       if (ini == null){
         ini = 0;
@@ -72,38 +72,38 @@ useEffect(() => {
         ci = 0;
       }
 
-      setUnitePoids(snapshot.val().unitePoids);
-      // Si le type unité de poids est en livre, nous devons faire x 2.2 (DIFF_UNITE_POIDS)
-      if (snapshot.val().unitePoids === "LBS") {
-        preferencesPoidUnite = "LBS";
-        ini *= DIFF_UNITE_POIDS;
-        ci *= DIFF_UNITE_POIDS;
+      setWeightUnit(snapshot.val().weightUnit);
+      // Si le type unité de weight est en livre, nous devons faire x 2.2 (WEIGHT_UNIT_DEF)
+      if (snapshot.val().weightUnit === "LBS") {
+        prefWeightUnit = "LBS";
+        ini *= WEIGHT_UNIT_DEF;
+        ci *= WEIGHT_UNIT_DEF;
       }
 
-      setPoidsInitial(parseFloat(ini).toFixed(2));
-      setPoidsCible(parseFloat(ci).toFixed(2));
-      setDateCible(snapshot.val().dateCible)
+      setInitialWeight(parseFloat(ini).toFixed(2));
+      setTargetWeight(parseFloat(ci).toFixed(2));
+      setTargetDate(snapshot.val().targetDate)
     }
   })
 },[])
 
-// Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de poids qui doit etre par défaut KG
+// Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de weight qui doit etre par défaut KG
 const handleReinitialisation = () => {
-	setPoidsCible("0.00");
-  setUnitePoids(preferencesPoidUnite); // On met par défaut KG, maintenant à la demande de Sylvie
-  setDateCible("");
-	// Récupération de la première donnée par rapport au poids, comme nous avons fait un reset des informations de base.
-	// Déplacement de la récupération de l'info du poids via firebase ici, car ailleurs la BD est callé plusieurs fois.
-  let poidsRef = firebase.database().ref('dashboard/' + userUID)
-  poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
+	setTargetWeight("0.00");
+  setWeightUnit(prefWeightUnit); // On met par défaut KG, maintenant à la demande de Sylvie
+  setTargetDate("");
+	// Récupération de la première donnée par rapport au weight, comme nous avons fait un reset des informations de base.
+	// Déplacement de la récupération de l'info du weight via firebase ici, car ailleurs la BD est callé plusieurs fois.
+  let weightRef = firebase.database().ref('dashboard/' + userUID)
+  weightRef.orderByChild("weight/dailyweight").once("value").then(function(snapshot){
     var graphData = []
     // J'ai retiré la validation si le retour de fireball contenait ou pas des données pour enlever un code smell
     // Si le résultat est null, le graphique restera null et mettra 0 comme valeur par défault
     for (const [_,value] of Object.entries(snapshot.val())) {
-        if (value.poids.datePoids !== undefined) {
-            let datePoids = formatDate(value.poids.datePoids)
-            let poids = poidsService.formatPoids(value.poids.dailyPoids)
-            graphData.push ({x: datePoids, y: poids})
+        if (value.weight.dateWeight !== undefined) {
+            let dateWeight = formatDate(value.weight.dateWeight)
+            let weight = weightService.formatweight(value.weight.dailyweight)
+            graphData.push ({x: dateWeight, y: weight})
         }
     }
     // Triage pour avoir les informations de la plus vieille date à la plus récente
@@ -111,9 +111,9 @@ const handleReinitialisation = () => {
 
     if(graphData.length > 0){
       // Récupération de la première valeur que le user a saisie à ses début avec l'application
-      setPoidsInitial(parseFloat(graphData[0].y).toFixed(2));
+      setInitialWeight(parseFloat(graphData[0].y).toFixed(2));
     } else {
-      setPoidsInitial("0.00");
+      setInitialWeight("0.00");
     }
   });
 }
@@ -122,17 +122,17 @@ const handleReinitialisation = () => {
 const handlerConfirmation = () => {
   let pi = 0.0, pc = 0.0;
 	// Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
-  if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
-    pi = poidsInitial;
-    pc = poidsCible;
+  if (initialWeight != 0 && targetWeight != 0 && weightUnit !== "" && targetDate !== ""){
+    pi = initialWeight;
+    pc = targetWeight;
     // On stock les informations en KG dans la BD
-    if (unitePoids === "LBS") {
-      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
-      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
+    if (weightUnit === "LBS") {
+      pi = (initialWeight / WEIGHT_UNIT_DEF).toFixed(2)
+      pc = (targetWeight / WEIGHT_UNIT_DEF).toFixed(2)
     }
-    let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
-    poidsService.setPrefUnitePoids(unitePoids)
-    firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
+    let preferencesweight = {initialWeight: pi, targetWeight : pc, weightUnit: weightUnit, targetDate: targetDate}
+    weightService.setPrefweightUnit(weightUnit)
+    firebase.database().ref('profiles/' + userUID + "/preferencesweight").update(preferencesweight);
     redirectDashboard();
   } else {
       alert("Attention, veuiller saisir les informations manquantes !")
@@ -146,35 +146,35 @@ const handlerConfirmation = () => {
           <IonItemGroup>
             <IonItemDivider>
 
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_UNITE_POIDS")}</IonLabel>
-            {/*<IonSelect slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
+              <IonLabel slot="start">{translate.getText("weight_PREF_UNITE_weight")}</IonLabel>
+            {/*<IonSelect slot ="end" value={weightUnit} okText={translate.getText("weight_PREF_CHOISIR")} cancelText={translate.getText("weight_PREF_ANNULER")} onIonChange={e => handleweightUnitChange(e)}>
 */}
-              <IonSelect data-testid = "pop_up_unite" slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
+              <IonSelect data-testid = "pop_up_unite" slot ="end" value={weightUnit} okText={translate.getText("weight_PREF_CHOISIR")} cancelText={translate.getText("weight_PREF_ANNULER")} onIonChange={e => handleweightUnitChange(e)}>
                 <IonSelectOption value="LBS">LBS</IonSelectOption>
                 <IonSelectOption value="KG">KG</IonSelectOption>
               </IonSelect>
 
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_INITIAL")}</IonLabel>
-              <IonInput class="ion-text-right" slot="end" value={poidsInitial} onIonChange={e => handlePoidsInitialChange(e.target.value)}></IonInput>
-              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
+              <IonLabel slot="start">{translate.getText("weight_PREF_weight_INITIAL")}</IonLabel>
+              <IonInput class="ion-text-right" slot="end" value={initialWeight} onIonChange={e => handleinitialWeightChange(e.target.value)}></IonInput>
+              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{weightUnit}</IonText>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_CIBLE")}</IonLabel>
-              <IonInput class="ion-text-right" slot="end" value={poidsCible} onIonChange={e => handlePoidsCibleChange(e.target.value)}></IonInput>
-              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
+              <IonLabel slot="start">{translate.getText("weight_PREF_weight_CIBLE")}</IonLabel>
+              <IonInput class="ion-text-right" slot="end" value={targetWeight} onIonChange={e => handletargetWeightChange(e.target.value)}></IonInput>
+              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{weightUnit}</IonText>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_DATE_CIBLE")}</IonLabel>
+              <IonLabel slot="start">{translate.getText("weight_PREF_DATE_CIBLE")}</IonLabel>
               <IonDatetime
                 monthShortNames = {translate.getText("ABBREVIATION_MOIS")}
                 slot="end"
                 displayFormat="MMM DD, YYYY"
                 placeholder="Choisir une date"
                 max="2099-10-31"
-                value={dateCible}
-                onIonChange={(e) => handleDateCibleChange(e.target.value)}
+                value={targetDate}
+                onIonChange={(e) => handletargetDateChange(e.target.value)}
               ></IonDatetime>
             </IonItemDivider>
           </IonItemGroup>
@@ -184,10 +184,10 @@ const handlerConfirmation = () => {
         <IonGrid>
           <IonRow>
             <IonCol size="6">
-              <IonButton shape="round" expand="block" onClick={handleReinitialisation}>{translate.getText("POIDS_PREF_REINITIALISER")}</IonButton>
+              <IonButton shape="round" expand="block" onClick={handleReinitialisation}>{translate.getText("weight_PREF_REINITIALISER")}</IonButton>
             </IonCol>
             <IonCol size="6">
-              <IonButton shape="round" expand="block" onClick={handlerConfirmation}>{translate.getText("POIDS_PREF_CONFIRMER")}</IonButton>
+              <IonButton shape="round" expand="block" onClick={handlerConfirmation}>{translate.getText("weight_PREF_CONFIRMER")}</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
