@@ -29,14 +29,18 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var [taille, setTaille] = useState("");
+  var [imc, setImc] = useState("0.00");
+  const userUID = localStorage.getItem("userUid");
 
   useEffect(() => {
-    setDailyPoids(prefPoids == 'LBS' ? props.poids.dailyPoids * 2.2 : props.poids.dailyPoids);
+    var tmp = "";
+    if(prefPoids == "LBS") tmp = (props.poids.dailyPoids * 2.2).toFixed(2);
+    else tmp = props.poids.dailyPoids;
+    setDailyPoids(tmp);
   }, [props.poids.dailyPoids]);
 
   useEffect(() => {
     poidsService.initPrefPoids();
-    const userUID = localStorage.getItem("userUid");
     let preferencesPoidsRef = firebase
       .database()
       .ref("profiles/" + userUID + "/preferencesPoids");
@@ -52,7 +56,9 @@ const Poids = (props) => {
         setTaille(snapshot.val().size);
       }
     });
-  }, []);
+
+    setImc(CalculImc());
+  });
 
 	// Capture de l'éventement si unite de préférence du poids change
   const handleUnitePoidsChange = (event) => {
@@ -61,14 +67,17 @@ const Poids = (props) => {
     let oldUnitePoids = unitePoids;
     setUnitePoids(newUnitePoids);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+    var tmp_weight = 0;
 
     if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(2);      
+      tmp_weight = (dashboard.poids.dailyPoids * 2.2).toFixed(2);      
+    } else{
+      tmp_weight = dashboard.poids.dailyPoids;
     }
 
-    setDailyPoids(dashboard.poids.dailyPoids);
+    setDailyPoids(tmp_weight);
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    CalculImc();
+    setImc(CalculImc());
   };
 
 	// Capture de l'éventement si IMC change
@@ -85,7 +94,7 @@ const Poids = (props) => {
 
 	// Capture de l'éventement si le dailyPoids change
   const handleChange = (event) => {
-    let poidsDaily = event.target.value;
+    let poidsDaily = event.detail.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
     dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
@@ -93,11 +102,7 @@ const Poids = (props) => {
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
     setDailyPoids(poidsDaily);
-    if (unitePoids == "LBS") {
-      dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
-    }
 
-    const userUID = localStorage.getItem("userUid");
     firebase
       .database()
       .ref(
@@ -113,24 +118,14 @@ const Poids = (props) => {
 
   // La fonction qui calcul IMC en fonction de la taille et le poids
   var CalculImc = () => {
-    taille = taille / 100;
+    var tmp_taille = taille / 100;
     var p = dailyPoids;
 
-    //var IMC;
-    var indicateur_IMC;
-    if (unitePoids == "LBS") {
-
-      p = (p / 2.2).toFixed(2);
-      indicateur_IMC = p / (taille * taille);
-    } else {
-      indicateur_IMC = dailyPoids / (taille * taille);
-    }
+    if (unitePoids == "LBS") p = (dailyPoids / 2.2).toFixed(2);
+    
+    var indicateur_IMC = p / (tmp_taille * tmp_taille);
     return indicateur_IMC.toFixed(2);
-
   };
-
-  // Récupération de la valeur IMC calculée à l'intérieur de la fonction
-  var IMC = CalculImc();
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";
@@ -154,9 +149,11 @@ const Poids = (props) => {
             </h2>
           </IonLabel>
           <IonInput
-            value={(IMC == Infinity? "": IMC)}
+            //value={IMC == "Infinity" ? "" : IMC}
+            value={imc == "Infinity" ? "" : imc}
             data-testid = "IMC_value" 
             className="IMC"
+            aria-label="imc"
             readonly
             onIonChange={handleIMCChange}  
             
@@ -168,7 +165,7 @@ const Poids = (props) => {
             value={dailyPoids}              
             onIonChange={handleChange}
             aria-label="weight"
-            title="Daily weight"      
+            title="Daily weight"
           ></IonInput>
 
         <select data-testid = "select" className="input" value={unitePoids} onChange={handleUnitePoidsChange} >

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { render, waitFor, screen, getByTestId, getByLabelText, findByText } from '@testing-library/react';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect';
@@ -10,19 +10,19 @@ import Poids from '../ItemsList/Poids';
 
 import { formatPoids,formatToKG , trouver_nouvelle_categorie, formatDate, initPrefPoids, 
         getDailyPoids, setPrefUnitePoids, saveEntreeDePoids} from '../../Poids/configuration/poidsService';
+import { doneAll } from 'ionicons/icons';
 
-
-let container = null;
 beforeEach(() => {
-  //var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
-  var userUID = "uTYu3TukpWXj19BA6isDMrb6ivy1";
+  var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
   var poids={
     dailyPoids:"77",
     datePoids:"2022-03-17T15:24:10.792Z"
   }
+  var size="160";
   const pseudo_dashboard = {
     userUID,
-    poids
+    poids,
+    size
   };
   localStorage.setItem('userUid', userUID);
   localStorage.setItem('dashboard', JSON.stringify(pseudo_dashboard));
@@ -30,27 +30,43 @@ beforeEach(() => {
   localStorage.setItem('userLanguage', 'fr');
 });
 
-test('tests sur la classe poids', async () => {
+
+test('tests - conversion du poids Kg - LBS', () => {  
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
-  const { findByTitle, findByText, getByTestId, getByLabelText } =  render(<Poids poids={ dash_.poids } />);
-  const weight_val = getByLabelText("weight");
+  const { getByTestId, getByLabelText } =  render(<Poids poids={ dash_.poids } />);
+  const weight = getByLabelText("weight");
+  const weight_in_LBS = (dash_.poids.dailyPoids * 2.2).toFixed(2);
   
   const select = getByTestId("select");
   fireEvent.change(select , { target: { value: "LBS" } });
-  //expect((dash_.poids.dailyPoids * 2.2).toFixed(2)).toBe(weight_val.value);
+  expect(weight.value).toBe(weight_in_LBS);
 
   fireEvent.change(select , { target: { value: "KG" } });
-  //document.getElementsByClassName("input poidsActuel")[0].innerHTML = weight_val.value;
-  expect(weight_val.value).toBe(dash_.poids.dailyPoids);
+  expect(weight.value).toBe(dash_.poids.dailyPoids);  
 });
 
-/* it('test sur Poids actuel', async () => {
+
+test('test - changement de poids, verification valeur de IMC', done => {
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));
-  const { findByTitle, findByText } =  render(<Poids poids={ dash_.poids } />);
-  const input = await findByTitle('Daily weight');
-  fireEvent.ionChange(input, '80');
-  await findByText('80');
-}); */
+  const { getByTestId, getByLabelText } = render(<Poids poids={ dash_.poids } />);
+  const weight = getByTestId("poids_input");
+  const imc = getByLabelText("imc");  
+  fireEvent.ionChange(weight, "99");
+  expect((weight).value).toEqual("99");
+
+  try{
+    // attendre que la valeur de imc soit mise a jour
+    const wait_time = setTimeout(() => {
+      const taille = dash_.size / 100;
+      const x = 99 / (taille * taille);
+      expect((imc).value).toEqual(x.toFixed(2));
+    }, 2000);
+    done();
+  }
+  catch (error) {
+    done(error);
+  }  
+});
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, { route = '/' } = {}) => {
@@ -65,6 +81,7 @@ test('Traduction du mot Poids en espagnol', async() => {
   const mot = screen.getByText(/Peso/i);
   expect(mot).toBeDefined();
 });
+
 
 test('Traduction du mot Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
@@ -222,4 +239,3 @@ test('go to page de configuration', async() => {
   const pop_up_elem_kg = screen.getByText(/KG/i);
   expect(pop_up_elem_kg).toBeInTheDocument();
 });
-
