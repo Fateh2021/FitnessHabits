@@ -96,12 +96,10 @@ function addWeightTable(document) {
    let unite = "";
 
    //Entete du tableau
-   var Date = translate.getText("DATE_TITLE")
-   if (getAggregateWeights()) {
-        unite = getAggregateWeights().get('weightUnit');
-   }
-   var poids = translate.getText("EXP_REPORT_WEIGHT") + " (" + unite + ")";
-   headers.push(Date, poids);
+    var Date = translate.getText("DATE_TITLE")
+    unite = getAggregateWeights() ? " (" + getAggregateWeights().get('weightUnit') + ")" : unite;
+    var poids = translate.getText("EXP_REPORT_WEIGHT") +  unite ;
+    headers.push(Date, poids);
 
     if (getWeights()) {
         poid = getWeights();
