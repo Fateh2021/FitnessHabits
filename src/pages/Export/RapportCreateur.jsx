@@ -232,7 +232,7 @@ function addSleepTable(document) {
          var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
          var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
          var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
-         var wakeUpState = translate.getText("STATE_OF_MIND");
+         var wakeUpState = translate.getText("EXP_REPORT_WAKEUP_STATE");
          headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
 
     if (getSleeps()) {

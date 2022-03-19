@@ -839,6 +839,11 @@
     "es": "Despertar(es) por noche",
     "fr": "Réveil(s) par nuit"
   },
+   "EXP_REPORT_WAKEUP_STATE": {
+      "en": "Wake-up state",
+      "es": "Estado de despertar",
+      "fr": "État au réveil"
+   },
   "EXP_REPORT_QT": {
     "en": "Quantity",
     "es": "Cantidad",
