@@ -316,9 +316,10 @@ function fetchInitialWeight(datas) {
 
 function fetchActivities(activity, formatedDate) {
     let mapActivity = new Map();
-    mapActivity.set("Date", formatedDate);
     var minutes = parseInt(activity.heure*60) + parseInt(activity.minute);
     var duration = formatDuration(minutes);
+
+    mapActivity.set("Date", formatedDate);
     mapActivity.set("duration", duration);
     mapActivity.set("hours", duration.slice(0,2));
     mapActivity.set("minutes", duration.slice(3,5));
@@ -507,84 +508,110 @@ export function getAverageGlycemia() {
 
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
-    sortEntries(arrayActivities);
-    return arrayActivities;
+    if (arrayActivities.length !== 0) {
+         sortEntries(arrayActivities);
+         return arrayActivities;
+    } else {
+            return null;
+    }
 }
+
 
 export function getAggregateActivities() {
     let totalDuration = 0;
     let totalDays = 0;
 
+    if (arrayActivities.length !== 0) {
+        getActivities().forEach((data) => {
+            totalDuration = totalDuration + parseInt(data.get('minutes')) + parseInt(data.get('hours')*60);
+            totalDays = totalDays + 1;
+        });
 
-    getActivities().forEach((data) => {
-        totalDuration = totalDuration + parseInt(data.get('minutes')) + parseInt(data.get('hours')*60);
-        totalDays = totalDays + 1;
-    });
+        mapAggActivities.set("TotalDuration", formatDuration(totalDuration));
+        mapAggActivities.set("AverageDuration", formatDuration(totalDuration/totalDays));
 
-    mapAggActivities.set("TotalDuration", formatDuration(totalDuration));
-    mapAggActivities.set("AverageDuration", formatDuration(totalDuration/totalDays));
-    return mapAggActivities;
+        return mapAggActivities;
+    } else {
+            return null;
+    }
 }
 
 //- WEIGHTS - //
 //Possible keys: weightUnit, weight
 export function getWeights() {
-    sortEntries(arrayWeights);
-    return arrayWeights;
+    if (arrayWeights.length !== 0) {
+        sortEntries(arrayWeights);
+        return arrayWeights;
+    } else {
+            return null;
+    }
 }
 
+
 export function getAggregateWeights() {
-    var finalWeight = getWeights()[getWeights().length -1].get("weight");
-    mapAggWeights.set("initalWeight", initialWeight);
-    mapAggWeights.set("finalWeight", finalWeight);
-    mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
-    mapAggWeights.set("prefUnitePoids",localStorage.getItem("prefUnitePoids"));
-    return mapAggWeights;
+    if (arrayWeights.length !== 0) {
+        var finalWeight = getWeights()[getWeights().length -1].get("weight");
+        mapAggWeights.set("initalWeight", initialWeight);
+        mapAggWeights.set("finalWeight", finalWeight);
+        mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
+        mapAggWeights.set("prefUnitePoids",localStorage.getItem("prefUnitePoids"));
+        return mapAggWeights;
+    } else {
+            return null;
+    }
 }
 
 //- SLEEPs - //
 //Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
 export function getSleeps() {
-    sortEntries(arraySleeps);
-    return arraySleeps;
+    if (arraySleeps.length !== 0) {
+        sortEntries(arraySleeps);
+        return arraySleeps;
+    } else {
+        return null;
+    }
 }
 
 export function getAggregateSleeps() {
-    var minTotalStartHours = 0;
-    var minTotalEndHours = 0;
-    var minTotalDuration = 0;
-    var totalWakeUp = 0;
+    if (arraySleeps.length !== 0) {
+        var minTotalStartHours = 0;
+        var minTotalEndHours = 0;
+        var minTotalDuration = 0;
+        var totalWakeUp = 0;
 
-    var totalDaysStart = 0;
-    var totalDaysEnd = 0;
-    var totalDaysDuration = 0;
-    var totalDaysWakeUp = 0;
+        var totalDaysStart = 0;
+        var totalDaysEnd = 0;
+        var totalDaysDuration = 0;
+        var totalDaysWakeUp = 0;
 
-    getSleeps().forEach((data) => {
-            if (data.get("startHour")) {
-               minTotalStartHours += getDuration(data.get("startHour"));
-               totalDaysStart += 1;
-            }
+        getSleeps().forEach((data) => {
+                if (data.get("startHour")) {
+                   minTotalStartHours += getDuration(data.get("startHour"));
+                   totalDaysStart += 1;
+                }
 
-            if (data.get("endHour")) {
-                minTotalEndHours += getDuration(data.get("endHour"));
-                totalDaysEnd += 1
-            }
+                if (data.get("endHour")) {
+                    minTotalEndHours += getDuration(data.get("endHour"));
+                    totalDaysEnd += 1
+                }
 
-            if (getDuration(data.get("duration")) != 0) {
-                minTotalDuration +=  getDuration(data.get("duration"));
-                totalDaysDuration += 1;
-            }
-            totalWakeUp += parseInt(data.get("wakeUpQt"));
-            totalDaysWakeUp +=1;
+                if (getDuration(data.get("duration")) != 0) {
+                    minTotalDuration +=  getDuration(data.get("duration"));
+                    totalDaysDuration += 1;
+                }
+                totalWakeUp += parseInt(data.get("wakeUpQt"));
+                totalDaysWakeUp +=1;
 
-    });
+        });
 
-    mapAggSleeps.set("averageStartHour", formatDuration(minTotalStartHours/totalDaysStart));
-    mapAggSleeps.set("averageEndHour", formatDuration(minTotalEndHours/totalDaysEnd));
-    mapAggSleeps.set("averageDuree", formatDuration(minTotalDuration/totalDaysDuration));
-    mapAggSleeps.set("averageWakeUpQt", (totalWakeUp/totalDaysWakeUp).toFixed(1));
-    return mapAggSleeps;
+        mapAggSleeps.set("averageStartHour", formatDuration(minTotalStartHours/totalDaysStart));
+        mapAggSleeps.set("averageEndHour", formatDuration(minTotalEndHours/totalDaysEnd));
+        mapAggSleeps.set("averageDuree", formatDuration(minTotalDuration/totalDaysDuration));
+        mapAggSleeps.set("averageWakeUpQt", (totalWakeUp/totalDaysWakeUp).toFixed(1));
+        return mapAggSleeps;
+    } else {
+        return null;
+    }
 }
 
 
