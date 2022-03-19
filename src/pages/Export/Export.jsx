@@ -146,7 +146,7 @@ const Settings = (props) => {
   }
 
   // variable qui va contenir le format d'exportation désiré, par défaut csv
-  const [exportType, onChangeExport ] = useState('csv');
+  const [exportType, onChangeExport ] = useState('pdf');
   // contient la date de debut et la date de fin choisi par l'utilisateur
   const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)));
   const [d2, onChangeD2] = useState(new Date());
@@ -386,19 +386,19 @@ const Settings = (props) => {
                 <IonLabel>{translate.getText("EXPORT_FORMAT_TITLE")}</IonLabel>
               </IonListHeader>
 
-              <IonItem data-testid="radio-csv">
-                <IonLabel>CSV</IonLabel>
-                <IonRadio slot="start" value="csv" checked={exportType === "csv"}/>
-              </IonItem>
-
               <IonItem data-testid="radio-pdf">
                 <IonLabel>PDF</IonLabel>
                 <IonRadio slot="start" value="pdf" checked={exportType === "pdf"}/>
               </IonItem>
 
+              <IonItem data-testid="radio-csv">
+                <IonLabel>CSV</IonLabel>
+                <IonRadio slot="start" value="csv" checked={exportType === "csv"} disabled="true"/>
+              </IonItem>
+
               <IonItem data-testid="radio-csv-and-pdf">
                 <IonLabel>{translate.getText("CSV_AND_PDF_TITLE")}</IonLabel>
-                <IonRadio slot="start" value="hybride" checked={exportType === "hybride"}/>
+                <IonRadio slot="start" value="hybride" checked={exportType === "hybride"} disabled="true"/>
               </IonItem>
             </IonRadioGroup>
           </IonList>
