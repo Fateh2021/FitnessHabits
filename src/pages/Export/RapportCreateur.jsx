@@ -38,11 +38,8 @@ export async function creerPdf(date, dataSelected) {
             case "hydratation":
                 doc.text(translate.getText("HYDR_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addHydratationTable(doc);
-                if (getMacrosTotalAndAveragePerDay('hydratation')) {
-                    addHydratationMacrosTable(doc);
-                } else {
-                    document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
-                }
+                if (getMacrosTotalAndAveragePerDay('hydratation')) {addHydratationMacrosTable(doc)}
+
                 break;
             case "activities":
                 doc.text(translate.getText("EXPORT_ACTIVITES_TITLE"), 10, doc.lastAutoTable.finalY + 10);
