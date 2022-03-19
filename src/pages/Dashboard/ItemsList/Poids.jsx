@@ -31,7 +31,7 @@ const Poids = (props) => {
   var [taille, setTaille] = useState("");
 
   useEffect(() => {
-    setDailyPoids(prefPoids == 'LBS' ? props.poids.dailyPoids * 2.2 : props.poids.dailyPoids);
+    setDailyPoids(prefPoids == 'LBS' ? (props.poids.dailyPoids * 2.2).toFixed(2) : (props.poids.dailyPoids).toFixed(2) );
   }, [props.poids.dailyPoids]);
 
   useEffect(() => {
