@@ -46,13 +46,20 @@ const updateSettingsRef = (settings) =>
 const updateSettingsLocalStorage = (settings) =>
   localStorage.setItem('settings', JSON.stringify(settings));
 
+const updateSettings = (doSomething) => {
+  const settings = getSettingsLocalStorage();
+  doSomething(settings);
+  updateSettingsLocalStorage(settings);
+  return updateSettingsRef(settings);
+}
+
 const AlcoolService = {
   dashboard: {
     updateAlcools: (alcools, currentDate) => {
       const dashboard = getDashboardLocalStorage();
       dashboard.alcool.alcools = alcools;
       updateDashboardLocalStorage(dashboard);
-  
+
       return updateDashBoardRef(currentDate, dashboard);
     },
     addAlcool: (alcoolToRemove, currentDate) => {
@@ -76,13 +83,8 @@ const AlcoolService = {
     },
   },
   settings: {
-    updateAlcools: (alcools) => {
-      const settings = getSettingsLocalStorage();
-      settings.alcool.alcools = alcools;
-      updateSettingsLocalStorage(settings);
-
-      return updateSettingsRef(settings);
-    },
+    updateAlcools: (alcools) => 
+      updateSettings(settings => settings.alcool.alcools = notifalcoolsications),
     getAlcool: () =>
       firebase
         .database()
@@ -108,7 +110,13 @@ const AlcoolService = {
             alcools: DefaultSettings.alcools
           };
           return alcoolSettings;
-        })
+        }),
+    updateNotifications: (notifications) =>
+      updateSettings(settings => settings.alcool.notifications = notifications),
+    updateDailyTarget: (dailyTarget) =>
+      updateSettings(settings => settings.alcool.dailyTarget = dailyTarget),
+    updateLimitConsom: (limitConsom) =>
+      updateSettings(settings => settings.alcool.limitConsom = limitConsom)
   }
 };
 
