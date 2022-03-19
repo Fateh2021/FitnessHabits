@@ -372,18 +372,27 @@ function getDuration(time) {
 
 // keys : date, consumption, quantity, volume, unit, protein, glucide, fiber, fat
 export function getHydratations() {
-    sortEntries(arrayHydratations);
-    return arrayHydratations;
+    if (arrayHydratations.length !== 0) {
+        sortEntries(arrayHydratations);
+        return arrayHydratations;
+    }
+    return null;
 }
 
 export function getNourriture(){
-    sortEntries(arrayNourriture);
-    return arrayNourriture;
+    if (arrayNourriture.length !== 0) {
+        sortEntries(arrayNourriture);
+        return arrayNourriture;
+    }
+    return null;
 }
 
 export function getAlcohol() {
-    sortEntries(arrayAlcohol);
-    return arrayAlcohol;
+    if (arrayAlcohol.length !== 0) {
+        sortEntries(arrayAlcohol);
+        return arrayAlcohol;
+    }
+    return null;
 }
 
 // Function used to calculate the macros total and the average per day.
@@ -395,10 +404,6 @@ export function getMacrosTotalAndAveragePerDay(category) {
     let totalProtein = 0;
     let totalFat = 0;
     let totalGlucide = 0;
-    let averageFiber = 0;
-    let averageProtein = 0;
-    let averageFat = 0;
-    let averageGlucide = 0;
     let days;
     let macrosMap = new Map();
 
@@ -418,46 +423,41 @@ export function getMacrosTotalAndAveragePerDay(category) {
             totalGlucide += data.get("Glucide");
         });
         days = getNumberOfUniqueDate(arrayNourriture)
-    } else { // for alcohol
-        if (arrayAlcohol.length !== 0) {
-            arrayAlcohol.forEach((data) => {
-                totalFiber += data.get("Fibre");
-                totalProtein += data.get("Protéine");
-                totalFat += data.get("Gras");
-                totalGlucide += data.get("Glucide");
-            });
-            days = getNumberOfUniqueDate(arrayAlcohol);
-        }
-    }
-    if (days) {
-        averageFiber = +(totalFiber/days).toFixed(2);
-        averageProtein = +(totalProtein/days).toFixed(2);
-        averageFat = +(totalFat/days).toFixed(2);
-        averageGlucide = +(totalGlucide/days).toFixed(2);
+    } else if (category === "alcool" && arrayAlcohol.length !== 0) { // for alcohol
+        arrayAlcohol.forEach((data) => {
+            totalFiber += data.get("Fibre");
+            totalProtein += data.get("Protéine");
+            totalFat += data.get("Gras");
+            totalGlucide += data.get("Glucide");
+        });
+        days = getNumberOfUniqueDate(arrayAlcohol);
+    } else { // empty array
+        return null;
     }
     macrosMap.set("totalFiber", totalFiber);
     macrosMap.set("totalProtein", totalProtein);
     macrosMap.set("totalFat", totalFat);
     macrosMap.set("totalGlucide", totalGlucide);
-    macrosMap.set("averageFiber", averageFiber);
-    macrosMap.set("averageProtein", averageProtein);
-    macrosMap.set("averageFat", averageFat);
-    macrosMap.set("averageGlucide", averageGlucide);
+    macrosMap.set("averageFiber", +(totalFiber/days).toFixed(2));
+    macrosMap.set("averageProtein", +(totalProtein/days).toFixed(2));
+    macrosMap.set("averageFat", +(totalFat/days).toFixed(2));
+    macrosMap.set("averageGlucide", +(totalGlucide/days).toFixed(2));
 
     return macrosMap;
 }
 
 // keys : urine, feces
 export function getToilets() {
-    sortEntries(arrayToilets);
-    return arrayToilets;
+    if (arrayToilets.length !== 0) {
+        sortEntries(arrayToilets);
+        return arrayToilets;
+    }
+    return null;
 }
 
 export function getAverageToilets() {
     let totalUrine = 0;
     let totalFeces = 0;
-    let averageUrine = 0;
-    let averageFeces = 0;
     let days = getNumberOfUniqueDate(arrayToilets);
     let mapToilets = new Map();
 
@@ -466,21 +466,23 @@ export function getAverageToilets() {
             totalUrine += data.get("Urine");
             totalFeces += data.get("Transit");
         });
-        averageUrine = (totalUrine/days).toFixed(2);
-        averageFeces = (totalFeces/days).toFixed(2);
-    }
-    mapToilets.set("totalUrine", totalUrine);
-    mapToilets.set("totalFeces", totalFeces);
-    mapToilets.set("averageUrinePerDay", averageUrine);
-    mapToilets.set("averageFecesPerDay", averageFeces);
+        mapToilets.set("totalUrine", totalUrine);
+        mapToilets.set("totalFeces", totalFeces);
+        mapToilets.set("averageUrinePerDay", (totalUrine/days).toFixed(2));
+        mapToilets.set("averageFecesPerDay", (totalFeces/days).toFixed(2));
 
-    return mapToilets;
+        return mapToilets;
+    }
+    return null;
 }
 
 // keys : Date, Glycemie
 export function getGlycemia() {
-    sortEntries(arrayGlycemia);
-    return arrayGlycemia;
+    if (arrayGlycemia.length !== 0) {
+        sortEntries(arrayGlycemia);
+        return arrayGlycemia;
+    }
+    return null;
 }
 
 // return the average glycemia for the last few days
@@ -495,11 +497,12 @@ export function getAverageGlycemia() {
             total += data.get("Glycémie");
         });
         moyenne = (total/days).toFixed(2);
-    }
-    mapAverageGlycemia.set("Moyenne", moyenne + " mmol/L");
-    mapAverageGlycemia.set("Référence", "4.7 - 6.8 mmol/L");
+        mapAverageGlycemia.set("Moyenne", moyenne + " mmol/L");
+        mapAverageGlycemia.set("Référence", "4.7 - 6.8 mmol/L");
 
-    return mapAverageGlycemia;
+        return mapAverageGlycemia;
+    }
+    return null;
 }
 
 //Possible keys: date, hour, minute, duration
