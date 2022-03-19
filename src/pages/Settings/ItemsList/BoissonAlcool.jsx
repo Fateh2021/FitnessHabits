@@ -14,6 +14,7 @@ const BoissonAlcool = (props) => {
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
   const [gender, setGender] = useState("");
+  const [alcoolService, _] = useState(props.alcoolService);
  
   // update state on prop change
   useEffect(() => {
@@ -135,7 +136,10 @@ const BoissonAlcool = (props) => {
      <HeadItems/>
               
         {/* Items Alcool */}
-        <Alcool alcools={props.alcool.alcools} />
+        <Alcool 
+          alcoolService={alcoolService}
+          alcools={props.alcool.alcools}
+        />
        
         {/* Cible quotidienne */}
         <IonRadioGroup>

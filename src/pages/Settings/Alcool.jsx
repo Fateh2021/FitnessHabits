@@ -2,7 +2,6 @@ import { IonIcon, IonLabel, IonCol, IonItem, IonButton, IonInput} from '@ionic/r
 import { star, trash, create,addCircle } from 'ionicons/icons';
 import React, {useState, useEffect} from 'react';
 import uuid from 'react-uuid';
-import firebase from 'firebase'
 
 const AlcoolItem = (props) => {
 
@@ -79,6 +78,7 @@ const Alcool = (props) => {
   const [alcoolsToEdit, setAlcoolsToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
   const [currentDate] = useState({startDate: new Date()});
+  const [alcoolService, _] = useState(props.alcoolService);
 
   // update state on prop change
   useEffect(() => {
@@ -92,36 +92,26 @@ const Alcool = (props) => {
     if(!array[item].favoris){
       event.target.style.color = '#d18a17';
       array[item].favoris = true;
-
-      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-      dashboard.alcool.alcools.unshift(array[item]);
-      localStorage.setItem('dashboard', JSON.stringify(dashboard));
-      const userUID = localStorage.getItem('userUid');
-      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard); 
+      alcoolService.dashboard.addDashboardAlcool(array[item], currentDate);
     } else {
       event.target.style.color = '';
-      array[item].favoris = false;      
+      array[item].favoris = false;
     }
-    setAlcools (array);
-    updateCacheAndBD(array);
+    setAlcools(array);
+    alcoolService.settings.updateAlcools(array);
   }
 
   const deleteItem = (item) => {
     var array = [...alcools];
     const index = array.findIndex((e) => e.id === item.id);
 
-    if(index === -1)array.splice(item, 1)
+    if (index === -1) array.splice(item, 1)
     else array[index] = item;
 
-    setAlcools (array);
+    setAlcools(array);
     closeItemContainer();
 
-    // update the cache and persist in DB
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= array;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateAlcools(array);
   }
 
   const closeItemContainer = () => {
@@ -143,26 +133,13 @@ const Alcool = (props) => {
     var array = [...alcools];
     const index = array.findIndex((e) => e.id === item.id);
 
-    if( index === -1) array.unshift(item)
+    if (index === -1) array.unshift(item)
     else array[index] = item;
 
-    setAlcools (array);
+    setAlcools(array);
     closeItemContainer();
 
-    // update the cache and persist in DB
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= array;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/'+userUID).update(settings);
-  }
-
-  const updateCacheAndBD = (alcoolList) => {
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= alcoolList;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateAlcools(array);
   }
   
   return (

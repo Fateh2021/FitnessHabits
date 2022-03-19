@@ -20,14 +20,31 @@ const getDashBoardRef = (currentDate) =>
       )
     );
 
+const getSettingsRef = () =>
+  firebase
+    .database()
+    .ref(
+      'settings/'
+      + getUserUID()
+    );
+
 const updateDashBoardRef = (currentDate, dashboard) =>
   getDashBoardRef(currentDate).update(dashboard);
 
 const getDashboardLocalStorage = () =>
   JSON.parse(localStorage.getItem('dashboard'));
 
+const getSettingsLocalStorage = () =>
+  JSON.parse(localStorage.getItem('settings'));
+
 const updateDashboardLocalStorage = (dashboard) =>
   localStorage.setItem('dashboard', JSON.stringify(dashboard));
+
+const updateSettingsRef = (settings) =>
+  getSettingsRef().update(settings);
+
+const updateSettingsLocalStorage = (settings) =>
+  localStorage.setItem('settings', JSON.stringify(settings));
 
 const AlcoolService = {
   updateAlcools: (alcools, currentDate) => {
@@ -83,6 +100,24 @@ const AlcoolService = {
     updateDashboardLocalStorage(dashboard);
 
     return updateDashBoardRef(currentDate, dashboard);
+  },
+  dashboard: {
+    removeAlcool: (alcoolToRemove, currentDate) => {
+      const dashboard = getDashboardLocalStorage();
+      dashboard.alcool.alcools.unshift(alcoolToRemove);
+      updateDashboardLocalStorage(dashboard);
+      
+      return updateDashBoardRef(currentDate, dashboard);
+    }
+  },
+  settings: {
+    updateAlcools: (alcools) => {
+      const settings = getSettingsLocalStorage();
+      settings.alcool.alcools = alcools;
+      updateSettingsLocalStorage(settings);
+  
+      return updateSettingsRef(settings);
+    }
   }
 };
 
