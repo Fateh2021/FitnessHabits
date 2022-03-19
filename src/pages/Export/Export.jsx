@@ -149,7 +149,7 @@ const Settings = (props) => {
   var selected = "csv";
 
 
-  const [d1, onChangeD1] = useState(new Date(new Date().setMonth(-2)));
+  const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)));
   const [d2, onChangeD2] = useState(new Date());
 
   // load the current settings from the local storage if it exists, otherwise load it from the DB
