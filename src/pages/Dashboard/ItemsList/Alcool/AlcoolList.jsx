@@ -65,7 +65,7 @@ const AlcoolList = (props) => {
     array[item].consumption += 1;
 
     updateCacheAndBD(array);
-    alcoolService.updateGlobalConsumption(totalConsumption(), currentDate);
+    alcoolService.dashboard.updateGlobalConsumption(totalConsumption(), currentDate);
   }
 
   const DailyConsumptionDecrementAlcool = (item)=>{  
@@ -81,7 +81,7 @@ const AlcoolList = (props) => {
     }
 
     updateCacheAndBD(array);
-    alcoolService.updateGlobalConsumption(totalConsumption(), currentDate);
+    alcoolService.dashboard.updateGlobalConsumption(totalConsumption(), currentDate);
   }
 
   const deleteItemAlcool = (item) => {
@@ -103,7 +103,7 @@ const AlcoolList = (props) => {
       sum += consumption; 
     }
     setGlobalConsumption(sum);
-    alcoolService.updateGlobalConsumption(sum, currentDate);
+    alcoolService.dashboard.updateGlobalConsumption(sum, currentDate);
     updateCacheAndBD(array);
   }
 
@@ -131,6 +131,7 @@ const AlcoolList = (props) => {
 
   const updateCacheAndBD = (alcools) => {
     alcoolService
+      .dashboard
       .updateAlcools(alcools, currentDate)
       .then(checkNotifications);
   }
@@ -148,7 +149,8 @@ const AlcoolList = (props) => {
   const checkNotifications = () => {
     // Obtenir les préférences de l'utilisateur
     alcoolService
-      .getSettings()
+      .settings
+      .getAlcool()
       .then(settings => {
         settings.limitConsom.notificationMessage = getNotificationMsg()
         getConsommationBackToMonday(settings);
@@ -156,7 +158,7 @@ const AlcoolList = (props) => {
   }
 
   const getConsommationBackToMonday = (alcoolSettings) =>
-    alcoolService.getConsommations()
+    alcoolService.dashboard.getConsommations()
       .then(consommations => {
         const date = new Date();
 
