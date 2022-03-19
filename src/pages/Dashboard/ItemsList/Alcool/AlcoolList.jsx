@@ -49,7 +49,7 @@ const AlcoolList = (props) => {
       consumption = item.consumption;
       sum += consumption; 
     }
-    console.log ("la somme ::::: " + sum);
+
     setGlobalConsumption(sum);
     return sum
   }
@@ -89,7 +89,6 @@ const AlcoolList = (props) => {
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
-    console.log("index :::::" + array[item].id);
 
     if (index === -1) {
       array.splice(item, 1);
@@ -198,21 +197,14 @@ const AlcoolList = (props) => {
   }
 
   const respectConsecutiveConsumption = (alcoolSettings, consommations, date) => {
-    let streak = true;
     if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.sobrietyDays)
     {
       for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
         const dateDiff = DateTime.fromJSDate(date).minus({ days: i}).toJSDate();
         if(getConsumptionsCount(consommations, dateDiff) === 0) {
-          streak = false;
           break;
         }
       }
-    }
-
-    console.log("Nombre de jours de consommation: ", +alcoolSettings.limitConsom.sobrietyDays);
-    if (streak) {
-      console.log("!!notification days streak");
     }
   }
 
