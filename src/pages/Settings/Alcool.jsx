@@ -172,7 +172,7 @@ const Alcool = (props) => {
           { alcools.map((alco, index) => (      
             <IonItem className="divTitre11" key={alco.id}>
               <IonCol size="1">
-                <IonIcon className='starFavoris' onClick={(e) => updateFavorisStatus(e,index)} icon={star} class={fav} ></IonIcon>
+                <IonIcon className='starFavoris' onClick={(e) => updateFavorisStatus(e,index)} icon={star} ></IonIcon>
               </IonCol>
               <IonCol size="3">
               <IonLabel className="nameDscrip"><h2><b>{alco.name}</b></h2></IonLabel>
