@@ -1,5 +1,4 @@
 import React, { useState , useEffect} from 'react';
-import { useHistory } from "react-router-dom";
 import firebase from 'firebase'
 import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent,
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
@@ -8,89 +7,92 @@ import * as translate from "../../../translate/Translator";
 import * as poidsService from "../../Poids/configuration/poidsService"
 
 const DIFF_UNITE_POIDS = 2.2;
-
          
 const Initialisation = () => {
-  const history = useHistory()
-  const redirectDashboard = () => {
-    window.location.href = "/dashboard"
-  }
 
-  const userUID = localStorage.getItem('userUid');
-  
-  let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+const redirectDashboard = () => {
+  window.location.href = "/dashboard"
+}
 
-  useEffect(() => {
-    preferencesPoidsRef.once("value").then(function(snapshot) {
-      if (snapshot.val() != null) {
+const userUID = localStorage.getItem('userUid');
 
-        setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids == "LBS") {
-          setPoidsInitial((parseFloat(snapshot.val().poidsInitial) * DIFF_UNITE_POIDS).toFixed(2));
-          setPoidsCible((parseFloat(snapshot.val().poidsCible) * DIFF_UNITE_POIDS ).toFixed(2));
-        } else {
-          setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
-          setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
-        }
-        setDateCible(snapshot.val().dateCible)
+// Récupération des informations de la préférence par rapport au poids
+let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+
+useEffect(() => {
+  preferencesPoidsRef.once("value").then(function(snapshot) {
+    if (snapshot.val() !== null) {
+
+      setUnitePoids(snapshot.val().unitePoids);
+      if (snapshot.val().unitePoids === "LBS") {
+        setPoidsInitial((parseFloat(snapshot.val().poidsInitial) * DIFF_UNITE_POIDS).toFixed(2));
+        setPoidsCible((parseFloat(snapshot.val().poidsCible) * DIFF_UNITE_POIDS ).toFixed(2));
+      } else {
+        setPoidsInitial(parseFloat(snapshot.val().poidsInitial).toFixed(2));
+        setPoidsCible(parseFloat(snapshot.val().poidsCible).toFixed(2));
       }
-    })
-  },[])
-
-  const [poidsInitial, setPoidsInitial] = useState("");
-  const [poidsCible, setPoidsCible] = useState("");
-  const [unitePoids, setUnitePoids] = useState("");
-  const [dateCible, setDateCible] = useState("");
-  
-  const handlePoidsInitialChange = (value) => {
-    setPoidsInitial(value)
-  }
-
-  const handlePoidsCibleChange = (value) => {
-    setPoidsCible(value)
-  }
-
-  const handleUnitePoidsChange = (e) => {
-    let value = e.detail.value
-    let OldUnitePoids = unitePoids;
-    setUnitePoids(value);
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    if (OldUnitePoids == "KG" && value == "LBS") {
-      setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
-      setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
-    } else if (OldUnitePoids == "LBS" && value == "KG") {
-      setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
-      setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
+      setDateCible(snapshot.val().dateCible)
     }
-    
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+  })
+},[])
+
+const [poidsInitial, setPoidsInitial] = useState("");
+const [poidsCible, setPoidsCible] = useState("");
+const [unitePoids, setUnitePoids] = useState("");
+const [dateCible, setDateCible] = useState("");
+
+const handlePoidsInitialChange = (value) => {
+  setPoidsInitial(value)
+}
+
+const handlePoidsCibleChange = (value) => {
+  setPoidsCible(value)
+}
+
+const handleUnitePoidsChange = (e) => {
+  let value = e.detail.value
+  let OldUnitePoids = unitePoids;
+  setUnitePoids(value);
+  const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+  if (OldUnitePoids === "KG" && value === "LBS") {
+    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
+    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
+  } else if (OldUnitePoids === "LBS" && value === "KG") {
+    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
+    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
   }
+  
+  localStorage.setItem('dashboard', JSON.stringify(dashboard));
+}
 
-  const handleDateCibleChange = (value) => {
-    setDateCible(value);
-  };
+const handleDateCibleChange = (value) => {
+  setDateCible(value);
+};
 
-  const handleReinitialisation = () => {
+const handleReinitialisation = () => {
     setPoidsInitial("0.00");
     setPoidsCible("0.00");
     setUnitePoids("");
     setDateCible("")
-  }
+}
 
-  const handlerConfirmation = () => {
+const handlerConfirmation = () => {
+// Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
+  if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
     let pi = poidsInitial;
     let pc = poidsCible;
-    if (unitePoids == "LBS") {
+    if (unitePoids === "LBS") {
       pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
       pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     poidsService.setPrefUnitePoids(unitePoids)
-    const userUID = localStorage.getItem('userUid');
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
-    
     redirectDashboard();
+  } else {
+      alert("Attention, veuiller saisir les informations manquantes !")
   }
+}
 
   return (
     <IonContent>

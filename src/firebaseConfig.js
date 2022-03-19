@@ -2,6 +2,7 @@ import firebase from 'firebase'
 import "firebase/auth";
 import 'firebase/storage';
 
+// la nouvelle base de donnée !
 const config={
    apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
     authDomain: "fitnesshabits-be415.firebaseapp.com",
@@ -14,7 +15,7 @@ const config={
 
 export default firebase.initializeApp(config).database().ref();
 
-export const storage = firebase.storage();
+//export const storage = firebase.storage(); //Test non fonctionnels avec cette ligne
 
 /*Config authentification Google et Facebook par l'équipe GEFRAL*/
 export const auth = firebase.auth();

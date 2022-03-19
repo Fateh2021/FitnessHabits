@@ -26,6 +26,7 @@ import FormatDate from '../../DateUtils'
 import '../Tab1.css';
 import Home from "../Footer/Home";
 import Export from "../Footer/Export";
+import * as translate from '../../translate/Translator';
 
 const Dashboard = (props) => {
 const [nourriture, setNourriture] = useState(0);
@@ -298,7 +299,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     }
   }, []);
 
-  const NourritureUpdate = () =>{
+  const NourritureUpdate = () => {
     const userUID = localStorage.getItem('userUid');
     console.log("Loading Dashboard From DB...");
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
@@ -673,7 +674,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           <div>
             <IonItem className="divTitre2">
               <IonAvatar slot="start"><img src="/assets/nutrition.jpg" alt=""/></IonAvatar>
-              <IonLabel><h2><b>Nourriture</b></h2></IonLabel>
+              <IonLabel><h2><b>{ translate.getText('FOOD_MODULE', ['title']) }</b></h2></IonLabel>
               <IonInput className='inputTextGly' readonly value={dashboard.nourriture.globalConsumption}></IonInput>
               <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV22")} />
             </IonItem>            
@@ -682,17 +683,33 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           <div id="myDIV22">
             <IonList id = "listNourriture">
             <NourrGras 
-            parentCallbackGras = {parentCallbackGras.bind(this)} 
-            gras={dashboard.gras} grass={dashboard.gras.grass} globalConsumption = {dashboard.gras.dailyTarget.globalConsumption} currentDate ={currentDate}/>
+              parentCallbackGras = {parentCallbackGras.bind(this)} 
+              gras={dashboard.gras} 
+              grass={dashboard.gras.grass} 
+              globalConsumption = {dashboard.gras.dailyTarget.globalConsumption} 
+              currentDate ={currentDate}
+            />
             <NourriProteines 
-            parentCallbackProteines = {parentCallbackProteines.bind(this)}
-            proteine={dashboard.proteines} proteines={dashboard.proteines.proteines} globalConsumption = {dashboard.proteines.dailyTarget.globalConsumption} currentDate ={currentDate}/>
+              parentCallbackProteines = {parentCallbackProteines.bind(this)} 
+              proteine={dashboard.proteines} 
+              proteines={dashboard.proteines.proteines} 
+              globalConsumption = {dashboard.proteines.dailyTarget.globalConsumption} 
+              currentDate ={currentDate}
+            />
             <NourriLegumes 
-            parentCallbackLegumes = {parentCallbackLegumes.bind(this)}
-            legume={dashboard.legumes} legumes={dashboard.legumes.legumes} globalConsumption = {dashboard.legumes.dailyTarget.globalConsumption} currentDate ={currentDate}/>
+              parentCallbackLegumes = {parentCallbackLegumes.bind(this)}
+              legume={dashboard.legumes} 
+              legumes={dashboard.legumes.legumes} 
+              globalConsumption = {dashboard.legumes.dailyTarget.globalConsumption} 
+              currentDate ={currentDate}
+            />
             <NourrCereales 
-            parentCallbackCereales = {parentCallbackCereales.bind(this)}
-            cereale={dashboard.cereales} cereales={dashboard.cereales.cereales} globalConsumption = {dashboard.cereales.dailyTarget.globalConsumption} currentDate ={currentDate}/>
+              parentCallbackCereales = {parentCallbackCereales.bind(this)}
+              cereale={dashboard.cereales} 
+              cereales={dashboard.cereales.cereales} 
+              globalConsumption = {dashboard.cereales.dailyTarget.globalConsumption} 
+              currentDate ={currentDate}
+            />
             </IonList>
           </div>
 

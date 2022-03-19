@@ -1,10 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-
 /android
 /ios
 /.idea
 /.gradle
+
+# scanner
+/.scannerwork
 
 # dependencies
 /node_modules
@@ -28,4 +30,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 src/pages/Glycemie/.scannerwork/
+=======
+
+# rapport testing
+test-report.xml
+>>>>>>> 60e3a35b9bb1220c6d899940bec08a223062a649

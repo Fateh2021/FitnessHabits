@@ -5,17 +5,17 @@ import * as translate from "../../../translate/Translator";
 
 import {
   IonInput,
-  IonText,
-  IonButton,
-  IonGrid,
-  IonContent,
+  //IonText,
+  //IonButton,
+  //IonGrid,
+  //IonContent,
   IonIcon,
   IonLabel,
   IonItem,
   IonAvatar,
-  IonCol,
-  IonRow,
-  IonItemDivider,
+  //IonCol,
+  //IonRow,
+  //IonItemDivider,
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
@@ -27,17 +27,17 @@ import TableauPoids from "../../Poids/configuration/TableauPoids";
 const accor = (divId) => {
   const divElt = document.getElementById(divId);
   if (divElt) {
-    !divElt.style.display || divElt.style.display === "none"
-      ? (divElt.style.display = "block")
-      : (divElt.style.display = "none");
+    divElt.style.display =  !divElt.style.display || divElt.style.display === "none"? "block": "none";
   }
 };
 
 const Poids = (props) => {
   const [unitePoids, setUnitePoids] = useState("KG");
-  const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
+  const [currentDate, ] = useState({ startDate: new Date() });
+  //const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   const [poids, setPoids] = useState(props.poids);
+  //const [, setPoids] = useState(props.poids); -- Cette ligne je ne l'a comprends pas, veuiller me l'expliquer
   var [taille, setTaille] = useState("");
 
   useEffect(() => {
@@ -57,14 +57,13 @@ const Poids = (props) => {
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids == "LBS") {
+        if (snapshot.val().unitePoids === "LBS") {
           props.poids.dailyPoids = props.poids.dailyPoids * 2.2;
         }
       }
     });
-    // setUnitePoids(poidsService.getPrefUnitePoids())
-    var taille = firebase.database().ref("profiles/" + userUID);
-    taille.once("value").then(function (snapshot) {
+    var taille_l = firebase.database().ref("profiles/" + userUID);
+    taille_l.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setTaille(snapshot.val().size);
       }
@@ -78,15 +77,11 @@ const Poids = (props) => {
     setUnitePoids(value);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    if (OldUnitePoids == "KG" && value == "LBS") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(
-        2
-      );
+    if (OldUnitePoids === "KG" && value === "LBS") {
+      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
       setDailyPoids((dailyPoids * 2.2).toFixed(2));
-    } else if (OldUnitePoids == "LBS" && value == "KG") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(
-        2
-      );
+    } else if (OldUnitePoids === "LBS" && value === "KG") {
+      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(2);
       setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
@@ -94,17 +89,16 @@ const Poids = (props) => {
   };
 
   const handleChange = (event) => {
-    let dailyPoids = event.target.value;
-
+    let poidsDaily = event.target.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    const prefUnitePoids = localStorage.getItem('prefUnitePoids');
 
-    dashboard.poids.dailyPoids = poidsService.formatToKG(dailyPoids);
+    dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    setDailyPoids(dailyPoids);
+
+    setDailyPoids(poidsDaily);
     if (unitePoids == "LBS") {
-      dashboard.poids.dailyPoids = (dailyPoids / 2.2).toFixed(2);
+      dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
     }
 
     const userUID = localStorage.getItem("userUid");
@@ -125,14 +119,17 @@ const Poids = (props) => {
   var CalculImc = () => {
     taille = taille / 100;
     var p = dailyPoids;
-    var IMC;
+
+    //var IMC;
+    var indicateur_IMC;
     if (unitePoids == "LBS") {
+
       p = (p / 2.2).toFixed(2);
-      IMC = p / (taille * taille);
+      indicateur_IMC = p / (taille * taille);
     } else {
-      IMC = dailyPoids / (taille * taille);
+      indicateur_IMC = dailyPoids / (taille * taille);
     }
-    return IMC.toFixed(2);
+    return indicateur_IMC.toFixed(2);
   };
   const IMC = CalculImc();
 
@@ -143,18 +140,18 @@ const Poids = (props) => {
   return (
     <div>
       <IonItem className="divTitre9" lines="none">
-        <IonAvatar slot="start" onClick={handleRouteToConfigurationPoids}>
+        <IonAvatar class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
           <img src="/assets/Poids.jpg" alt="" />
         </IonAvatar>{" "}
         <IonLabel classeName="titrePoids" style={{ width: 60 }}>
           <h2 color="warning">
-            <b>Poids</b>
+	        <b>{translate.getText("POIDS_NOM_SECTION")}</b>
           </h2>
         </IonLabel>
         <div className="titreImc">
           <IonLabel>
-            <h2 style={{ marginLeft: 10 }} className="IMC">
-              <b>IMC</b>
+            <h2 className="IMC" style={{ marginLeft: 13 }}>
+              <b>{translate.getText("POIDS_IMC_ACCRONIME")}</b>
             </h2>
           </IonLabel>
           <IonInput
