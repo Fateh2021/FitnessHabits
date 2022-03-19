@@ -532,7 +532,7 @@ export function getAggregateActivities() {
 
         return mapAggActivities;
     } else {
-            return null;
+        return null;
     }
 }
 
@@ -543,7 +543,7 @@ export function getWeights() {
         sortEntries(arrayWeights);
         return arrayWeights;
     } else {
-            return null;
+        return null;
     }
 }
 
@@ -551,13 +551,16 @@ export function getWeights() {
 export function getAggregateWeights() {
     if (arrayWeights.length !== 0) {
         var finalWeight = getWeights()[getWeights().length -1].get("weight");
-        mapAggWeights.set("initalWeight", initialWeight);
+
+        //mapAggWeights.set("initalWeight", initialWeight);
+        var initialWeight_2 = getWeights()[0].get("weight");
+        mapAggWeights.set("initalWeight", initialWeight_2);
         mapAggWeights.set("finalWeight", finalWeight);
-        mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
-        mapAggWeights.set("prefUnitePoids",localStorage.getItem("prefUnitePoids"));
+        mapAggWeights.set("deltaWeight", (finalWeight - initialWeight_2).toFixed(2));
+        mapAggWeights.set("weightUnit",localStorage.getItem("prefUnitePoids"));
         return mapAggWeights;
     } else {
-            return null;
+        return null;
     }
 }
 

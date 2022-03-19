@@ -97,14 +97,17 @@ function addWeightTable(document) {
 
    //Entete du tableau
    var Date = translate.getText("DATE_TITLE")
+   if (getAggregateWeights().get('weightUnit')) {
+        unite = getAggregateWeights().get('weightUnit');
+   };
    var poids = translate.getText("EXP_REPORT_WEIGHT") + " (" + unite + ")";
    headers.push(Date, poids);
 
     if (getWeights()) {
-    poid = getWeights();
+        poid = getWeights();
+
         poid.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('weight')}]);
-            unite = data.get('weightUnit');
         });
 
         document.autoTable({
@@ -130,17 +133,12 @@ function addWeightTable(document) {
 
 function addWeightAggregateTable(document) {
     if (getAggregateWeights()) {
-        let line_1 = [];
         let line_2 = [];
         let line_3 = [];
         let line_4 = [];
         let footerTable = [];
 
         var aggregateWeight = getAggregateWeights();
-        //Title Aggregate - Les aggregate
-        var aggUnitTitle = translate.getText("EXP_REPORT_UNIT");
-        var prefUnitePoids = aggregateWeight.get("prefUnitePoids");
-        line_1.push(aggUnitTitle, prefUnitePoids);
 
         var aggInitialWeight = translate.getText("EXP_REPORT_INITIAL_WEIGHT");
         var initialEeight = aggregateWeight.get("initalWeight");
@@ -154,7 +152,7 @@ function addWeightAggregateTable(document) {
         var difference = aggregateWeight.get("deltaWeight");
         line_4.push(aggDifference, difference);
 
-        footerTable.push(line_1, line_2, line_3, line_4);
+        footerTable.push(line_2, line_3, line_4);
 
         document.autoTable({
             body: footerTable,
