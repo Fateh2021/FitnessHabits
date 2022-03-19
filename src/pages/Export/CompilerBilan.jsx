@@ -1,7 +1,6 @@
-import React, {Fragment} from 'react';
+
 import firebase from "firebase";
-import * as translate from '../../translate/Translator'
-import {getLang} from "../../translate/Translator";
+
 
 //import React, {Fragment} from 'react';
 // import {Text, View, StyleSheet} from '@react-pdf/renderer';
@@ -56,9 +55,9 @@ export async function compilerBilan(dataSelected, d1, d2) {
 
         // With the filtered datas, make a dictionnary for each parameters
         // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
-        for (let i = 0; i < dataFormat.length; ++i) {
-            let formatedDate = dataFormat[i].date
-            fetchData(dataFormat[i], formatedDate, dataSelected);
+        for (const element of dataFormat) {
+            let formatedDate = element.date
+            fetchData(element, formatedDate, dataSelected);
         }
     }
 }
@@ -108,7 +107,7 @@ function filterDataByDate(dataFormat, d1, d2) {
     let datePickerDates = getDates(d1, d2);
     dataFormat = dataFormat.filter((data) => {
         return !!datePickerDates.find((item) => {
-            return (item.getTime() == new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
+            return (item.getTime() === new Date(data.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()
             );
         });
     });
@@ -117,8 +116,8 @@ function filterDataByDate(dataFormat, d1, d2) {
 
 // Return an array containing all the possible dates between startDate and stopDate
 function getDates(startDate, stopDate) {
-    var dateArray = [];
-    var currentDate = startDate;
+    let dateArray = [];
+    let currentDate = startDate;
     while (currentDate <= stopDate) {
         dateArray.push(new Date(currentDate));
         currentDate = currentDate.addDays(1);
@@ -169,7 +168,7 @@ function fetchData(data, formatedDate, categorySelected) {
                     */
                 break;
             case "poids":
-                var weight;
+                let weight;
                 if (data.poids.dailyPoids) {
                     weight = data.poids.dailyPoids;
                     if (weight !== "0.00") {
@@ -178,16 +177,15 @@ function fetchData(data, formatedDate, categorySelected) {
                 }
                 break;
             case "activities":
-                var activity;
                 if (data.activities) {
-                    var activity = data.activities;
-                    if (parseInt(activity.hour) + parseInt(activity.minute) != 0) {
+                    const activity = data.activities;
+                    if (parseInt(activity.hour) + parseInt(activity.minute) !== 0) {
                         fetchActivities(activity, formatedDate);
                     }
                 }
                 break;
             case "sommeil":
-                var sommeil;
+                let sommeil;
                 if (data.sommeil) {
                     sommeil = data.sommeil;
                     fetchSleeps(sommeil, formatedDate);
@@ -295,7 +293,7 @@ function fetchInitialWeight(datas) {
            let weight = data.poids.dailyPoids;
            let date = data.poids.datePoids.slice(0,10).replace("-", "/").replace("-", "/");
 
-           if (weight != "0.00") {
+           if (weight !== "0.00") {
                weightUnit === "LBS" ? mWeights.set(date, (weight * 2.2).toFixed(2)): mWeights.set(date, weight);
                dates.push(date);
            }
@@ -316,8 +314,8 @@ function fetchInitialWeight(datas) {
 
 function fetchActivities(activity, formatedDate) {
     let mapActivity = new Map();
-    var minutes = parseInt(activity.heure*60) + parseInt(activity.minute);
-    var duration = formatDuration(minutes);
+    let minutes = parseInt(activity.heure * 60) + parseInt(activity.minute);
+    let duration = formatDuration(minutes);
 
     mapActivity.set("Date", formatedDate);
     mapActivity.set("duration", duration);
@@ -331,7 +329,7 @@ function fetchActivities(activity, formatedDate) {
 function fetchSleeps(sleep, formatedDate) {
     let mapSleep = new Map();
 
-    if(sleep.duree && sleep.duree != 0 ){
+    if(sleep.duree && sleep.duree !== 0 ){
         mapSleep.set("Date", formatedDate);
         mapSleep.set("startHour", sleep.heureDebut);
         mapSleep.set("endHour", sleep.heureFin);
@@ -347,7 +345,7 @@ function fetchSleeps(sleep, formatedDate) {
 //methode qui prend heures et minutes et sort: 00:00
 function formatDuration(minutes) {
     minutes = Math.floor(minutes);
-    var hours;
+    let hours;
     var minutes;
     if (minutes >= 60) {
         hours = Math.floor(minutes/60);
@@ -407,31 +405,27 @@ export function getMacrosTotalAndAveragePerDay(category) {
     let totalGlucide = 0;
     let days;
     let macrosMap = new Map();
+    let arrayMacros;
+    switch (category) {
+        case "hydratation":
+            arrayMacros = arrayHydratations;
+            break;
+        case "nourriture":
+            arrayMacros = arrayNourriture;
+            break;
+        case "alcool":
+            arrayMacros = arrayAlcohol;
+            break;
+    }
 
-    if (category === "hydratation" && arrayHydratations.length !== 0) {
-        arrayHydratations.forEach((data) => {
+    if( arrayMacros.length !== 0) {
+        arrayMacros.forEach((data) => {
             totalFiber += data.get("Fibre");
             totalProtein += data.get("Protéine");
             totalFat += data.get("Gras");
             totalGlucide += data.get("Glucide");
         });
-        days = getNumberOfUniqueDate(arrayHydratations)
-    } else if (category === "nourriture" && arrayNourriture.length !== 0) {
-        arrayNourriture.forEach((data) => {
-            totalFiber += data.get("Fibre");
-            totalProtein += data.get("Protéine");
-            totalFat += data.get("Gras");
-            totalGlucide += data.get("Glucide");
-        });
-        days = getNumberOfUniqueDate(arrayNourriture)
-    } else if (category === "alcool" && arrayAlcohol.length !== 0) { // for alcohol
-        arrayAlcohol.forEach((data) => {
-            totalFiber += data.get("Fibre");
-            totalProtein += data.get("Protéine");
-            totalFat += data.get("Gras");
-            totalGlucide += data.get("Glucide");
-        });
-        days = getNumberOfUniqueDate(arrayAlcohol);
+        days = getNumberOfUniqueDate(arrayMacros);
     } else { // empty array
         return null;
     }
@@ -550,10 +544,10 @@ export function getWeights() {
 
 export function getAggregateWeights() {
     if (arrayWeights.length !== 0) {
-        var finalWeight = getWeights()[getWeights().length -1].get("weight");
+        let finalWeight = getWeights()[getWeights().length - 1].get("weight");
 
         //mapAggWeights.set("initalWeight", initialWeight);
-        var initialWeight_2 = getWeights()[0].get("weight");
+        let initialWeight_2 = getWeights()[0].get("weight");
         mapAggWeights.set("initalWeight", initialWeight_2);
         mapAggWeights.set("finalWeight", finalWeight);
         mapAggWeights.set("deltaWeight", (finalWeight - initialWeight_2).toFixed(2));
@@ -577,15 +571,15 @@ export function getSleeps() {
 
 export function getAggregateSleeps() {
     if (arraySleeps.length !== 0) {
-        var minTotalStartHours = 0;
-        var minTotalEndHours = 0;
-        var minTotalDuration = 0;
-        var totalWakeUp = 0;
+        let minTotalStartHours = 0;
+        let minTotalEndHours = 0;
+        let minTotalDuration = 0;
+        let totalWakeUp = 0;
 
-        var totalDaysStart = 0;
-        var totalDaysEnd = 0;
-        var totalDaysDuration = 0;
-        var totalDaysWakeUp = 0;
+        let totalDaysStart = 0;
+        let totalDaysEnd = 0;
+        let totalDaysDuration = 0;
+        let totalDaysWakeUp = 0;
 
         getSleeps().forEach((data) => {
                 if (data.get("startHour")) {
@@ -598,7 +592,7 @@ export function getAggregateSleeps() {
                     totalDaysEnd += 1
                 }
 
-                if (getDuration(data.get("duration")) != 0) {
+                if (getDuration(data.get("duration")) !== 0) {
                     minTotalDuration +=  getDuration(data.get("duration"));
                     totalDaysDuration += 1;
                 }
@@ -639,8 +633,18 @@ export function test_fetchNourriture(array_nourriture,formatedDate) {
     fetchNourriture(array_nourriture,formatedDate);
     return arrayNourriture;
   }
+export function test_fetchDrinksHydratation(typeOfDrink, drinks, formatedDate) {
+    fetchDrinks(typeOfDrink, drinks, formatedDate);
+    return arrayHydratations;
+}
+export function test_fetchDrinksAlcohol(typeOfDrink, drinks, formatedDate) {
+    fetchDrinks(typeOfDrink, drinks, formatedDate);
+    return arrayAlcohol;
+}    
 export function resetDataArrays(){
     arrayNourriture=[];
+    arrayHydratations=[];
+    arrayAlcohol=[];
 }  
 
 export function test_getNumberOfUniqueDate(array_aliments){

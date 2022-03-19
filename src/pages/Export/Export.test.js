@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from "react-dom/test-utils";
 
 import App from '../../App';
-import { compilerBilan,test_fetchNourriture,resetDataArrays,test_getNumberOfUniqueDate,test_sortEntries } from './CompilerBilan';
+import * as CompilerBilan from './CompilerBilan';
 import Settings from "./Export";
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
@@ -66,7 +66,7 @@ test('ExportModule - Check if PDF export options set correctly', async() => {
 */
 /* Tester la présence des composantes dans la page */
 test('ExportModule - TestElementsPresence_1', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter( < App / > , { route : '/Export' });
     const actPhys = screen.getByTestId(/checkbox-activities/i);
     expect(actPhys).toBeInTheDocument();
 
@@ -326,7 +326,7 @@ test('ExportModule - TestClickOnFoodCheckbox', async() => {
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
 });
 
-
+{/* ------Compiler Bilan----------- */}
 test('ExportModule - TestFetchNourritureCereale', async() => {
     let data_cereales;
     data.map((element)=>{
@@ -347,25 +347,99 @@ test('ExportModule - TestFetchNourritureCereale', async() => {
         arrayExpected.push(mapExpected);
     })
  
-    expect(test_fetchNourriture(data_cereales,'18-03-2022')).toEqual(arrayExpected)
+    expect(CompilerBilan.test_fetchNourriture(data_cereales,'18-03-2022')).toEqual(arrayExpected)
 });
 
 test('ExportModule - TestFetchNourritureCereale0Consumption', async() => {
-    resetDataArrays()
+    CompilerBilan.resetDataArrays()
     let data_cereales;
     data.map((element)=>{
-        data_cereales=element.cereales.cereales
+        data_cereales=element.cereales.cereales;
     })
     data_cereales.map((element)=>{
         element.consumption=0;
     })
     
-    expect(test_fetchNourriture(data_cereales,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchNourriture(data_cereales,'18-03-2022')).toEqual([])
 });
 
 test('ExportModule - TestFetchNourritureCerealeNull', async() => {
-    resetDataArrays()
-    expect(test_fetchNourriture(null,'18-03-2022')).toEqual([])
+    CompilerBilan.resetDataArrays()
+    expect(CompilerBilan.test_fetchNourriture(null,'18-03-2022')).toEqual([])
+});
+
+
+
+test('ExportModule - TestFetchDrinksHydratation', async() => {
+    let data_hydratation;
+    data.map((element)=>{
+        data_hydratation=element.hydratation.hydrates;
+    })
+    let arrayExpected=[]
+    data_hydratation.map((element)=>{
+        let mapExpected = new Map();
+        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Nom", element.name);
+        mapExpected.set("Consommation", element.consumption);
+        mapExpected.set("Quantité", element.qtte);
+        mapExpected.set("Unité", element.unit);
+        mapExpected.set("Protéine", element.proteine * element.consumption);
+        mapExpected.set("Glucide", element.glucide * element.consumption);
+        mapExpected.set("Fibre", element.fibre * element.consumption);
+        mapExpected.set("Gras", element.gras * element.consumption);
+        arrayExpected.push(mapExpected);
+    })
+ 
+    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual(arrayExpected);
+});
+
+test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
+    CompilerBilan.resetDataArrays()
+    let data_hydratation;
+    data.map((element)=>{
+        data_hydratation=element.hydratation.hydrates
+    })
+    data_hydratation.map((element)=>{
+        element.consumption=0;
+    })
+    
+    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual([])
+});
+
+test('ExportModule - TestFetchDrinksAlcohol', async() => {
+    let data_alcohol;
+    data.map((element)=>{
+        data_alcohol=element.alcool.alcools;
+    })
+    let arrayExpected=[]
+    data_alcohol.map((element)=>{
+        let mapExpected = new Map();
+        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Nom", element.name);
+        mapExpected.set("Consommation", element.consumption);
+        mapExpected.set("Quantité", element.qtte);
+        mapExpected.set("Unité", element.unit);
+        mapExpected.set("Protéine", element.proteine * element.consumption);
+        mapExpected.set("Glucide", element.glucide * element.consumption);
+        mapExpected.set("Fibre", element.fibre * element.consumption);
+        mapExpected.set("Gras", element.gras * element.consumption);
+        arrayExpected.push(mapExpected);
+    })
+
+    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
+});
+
+test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
+    CompilerBilan.resetDataArrays()
+    let data_alcohol;
+    data.map((element)=>{
+        data_alcohol=element.alcool.alcools
+    })
+    data_alcohol.map((element)=>{
+        element.consumption=0;
+    })
+    
+    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual([])
 });
 
 test('ExportModule - Test_getNumberOfUniqueDate', async() => {
@@ -375,13 +449,14 @@ test('ExportModule - Test_getNumberOfUniqueDate', async() => {
     '15-10-2011','18-05-2022','03-01-2022','18-05-2022',
     '03-01-2022','31-12-2023','04-01-2025']
     let arrayOfMapOfNotUniqueDate=[]
+
     arrayDateNotUnique.forEach((element)=>{
         let map= new Map()
         map.set('Date',element)
         arrayOfMapOfNotUniqueDate.push(map);
     });
     let numberUniqueExpected=5;
-    expect(test_getNumberOfUniqueDate(arrayOfMapOfNotUniqueDate)).toEqual(numberUniqueExpected);
+    expect(CompilerBilan.test_getNumberOfUniqueDate(arrayOfMapOfNotUniqueDate)).toEqual(numberUniqueExpected);
 });
 
 test('ExportModule - test_sortEntries', async() => {
@@ -406,7 +481,7 @@ test('ExportModule - test_sortEntries', async() => {
         new Map().set('Date','15-10-2011'),  
     ]
 
-    test_sortEntries(arrayOfMapDateNotSorted)
+    CompilerBilan.test_sortEntries(arrayOfMapDateNotSorted)
     expect(arrayOfMapDateNotSorted).toEqual(arrayOfMapDateSorted);
 });
 
