@@ -12,7 +12,7 @@ const AlcoolList = (props) => {
   const [, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [alcool, setAlcool] = useState(props.alcools);
   const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
-  const [alcoolService, _] = useState(props.alcoolService);
+  const [alcoolService] = useState(props.alcoolService);
   
   // update state on prop change
   useEffect(() => {
@@ -44,7 +44,7 @@ const AlcoolList = (props) => {
     var array = [...alcool];
     var sum = 0;
     var consumption = 0;
-    debugger;
+
     for (let item of array){
       consumption = item.consumption;
       sum += consumption; 

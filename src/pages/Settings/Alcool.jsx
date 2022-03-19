@@ -78,7 +78,7 @@ const Alcool = (props) => {
   const [alcoolsToEdit, setAlcoolsToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
   const [currentDate] = useState({startDate: new Date()});
-  const [alcoolService, _] = useState(props.alcoolService);
+  const [alcoolService] = useState(props.alcoolService);
 
   // update state on prop change
   useEffect(() => {
