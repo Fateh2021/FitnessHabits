@@ -13,6 +13,7 @@ import Supplements from './ItemsList/Supplements'
 import Glycemie from './ItemsList/Glycemie'
 import DefaultSettings from './DefaultSettings'
 import AlcoolService from '../../services/AlcoolService';
+import ProfileService from '../../services/ProfileService';
 
 import '../Tab1.css';
 
@@ -249,6 +250,7 @@ const Settings =(props) =>{
         <Supplements/>  
         <BoissonAlcool
           alcoolService={AlcoolService}
+          profileService={ProfileService}
           alcool={settings.alcool}
         />
         <Glycemie/>         
