@@ -20,7 +20,6 @@ import {
     IonSelect
 } from "@ionic/react";
 import '../Tab1.css'
-import { getLang } from '../../translate/Translator.js' ;
 
 
 const Ajout = () => {

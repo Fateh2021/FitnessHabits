@@ -17,7 +17,6 @@ import {
   IonFabButton,
   IonModal
 } from "@ionic/react";
-import { getLang } from '../../translate/Translator.js' ;
 
 
 const Initial = () => {

@@ -12,7 +12,6 @@ import {
     IonSelect,
     IonSelectOption
 } from "@ionic/react";
-import { getLang } from '../../translate/Translator.js' ;
 
 
 const Modifier = (props) => {
