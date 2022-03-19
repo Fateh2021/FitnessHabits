@@ -38,43 +38,42 @@ export async function creerPdf(date, dataSelected) {
             case "hydratation":
                 doc.text(translate.getText("HYDR_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addHydratationTable(doc);
-                if (getMacrosTotalAndAveragePerDay('hydratation')) {addHydratationMacrosTable(doc)}
-
+                addHydratationMacrosTable(doc);
                 break;
             case "activities":
                 doc.text(translate.getText("EXPORT_ACTIVITES_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addActivitiesTable(doc);
-                if (getAggregateActivities()) {addActivitiesAggregateTable(doc)};
+                addActivitiesAggregateTable(doc);
                 break;
             case "nourriture":
                 doc.text(translate.getText("NOURRITURE_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addNourritureTable(doc);
-                if (getMacrosTotalAndAveragePerDay('nourriture')) {addNourritureMacros(doc)};
+                addNourritureMacros(doc);
                 break;
             case "sommeil":
                 doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
                 addSleepTable(doc);
-                if (getAggregateSleeps()) {addSleepAggregateTable(doc)};
+                addSleepAggregateTable(doc);
                 break;
             case "toilettes":
                 doc.text(translate.getText("TOILETS_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addToiletsTable(doc);
-                if (getAverageToilets()) {addAverageToiletsTable(doc)};
+                addAverageToiletsTable(doc);
                 break;
             case "alcool":
                 doc.text(translate.getText("ALCOOL_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addAlcoolTable(doc);
-                if (getMacrosTotalAndAveragePerDay('alcool')) {addAlcoolMacrosTable(doc)};
+                addAlcoolMacrosTable(doc);
                 break;
             case "glycémie":
                 doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
                 addGlycimiaTable(doc);
-                if (getAverageGlycemia()) {addAverageGlycimiaTable(doc)};
+                addAverageGlycimiaTable(doc);
                 break;
             case "poids":
                 doc.text(translate.getText("POIDS_NOM_SECTION"), 10, doc.lastAutoTable.finalY + 10);
                 addWeightTable(doc);
-                if (getAggregateWeights()) {addWeightAggregateTable(doc)};
+                addWeightAggregateTable(doc);
                 break;
             case "supplements":
                 // TODO
@@ -124,7 +123,8 @@ function addWeightTable(document) {
             },
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
@@ -161,25 +161,23 @@ function addWeightAggregateTable(document) {
             tableWidth: 'wrap',
             theme: 'grid'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
 function addActivitiesTable(document) {
-    if (getActivities()) {
-        let activities = getActivities();
         let headers = [];
         let values = [];
+        var Date = translate.getText("DATE_TITLE")
+        var duree = translate.getText("EXP_REPORT_DURATION") + " (h)";
+        headers.push(Date, duree);
+
+    if (getActivities()) {
+        let activities = getActivities();
+
 
         activities.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('duration')}]);
         });
-
-
-        var Date = translate.getText("DATE_TITLE")
-        var duree = translate.getText("EXP_REPORT_DURATION") + " (h)";
-        headers.push(Date, duree);
 
         document.autoTable({
             head: [headers],
@@ -197,7 +195,8 @@ function addActivitiesTable(document) {
             },
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
@@ -224,32 +223,27 @@ function addActivitiesAggregateTable(document) {
             tableWidth: 'wrap',
             theme: 'grid'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
 
 
 function addSleepTable(document) {
-    if (getSleeps()) {
-        let sleeps = getSleeps();
         let headers = [];
         let values = [];
+         var Date = translate.getText("DATE_TITLE")
+         var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
+         var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
+         var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
+         var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
+         var wakeUpState = translate.getText("STATE_OF_MIND");
+         headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
 
+    if (getSleeps()) {
+        let sleeps = getSleeps();
         sleeps.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}, {content: data.get('wakeUpQt')}, {content: data.get('wakeUpState')}]);
         });
-
-
-        var Date = translate.getText("DATE_TITLE")
-        var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
-        var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
-        var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
-        var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
-        var wakeUpState = translate.getText("STATE_OF_MIND");
-        headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
-
 
         document.autoTable({
             head: [headers],
@@ -267,7 +261,8 @@ function addSleepTable(document) {
             },
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
@@ -306,25 +301,13 @@ function addSleepAggregateTable(document) {
             tableWidth: 'wrap',
             theme: 'grid'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
 
-
-
 function addNourritureTable(document) {
-    if (getNourriture()) {
-        let nourriture = getNourriture();
         let headers = [];
         let values = [];
-
-        nourriture.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
-        });
-
-
         var Date = translate.getText("DATE_TITLE")
         var name = translate.getText("SUPPL_NOM");
         var consomation = translate.getText("HYD_TEXT_COUNT");
@@ -335,6 +318,14 @@ function addNourritureTable(document) {
         var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
         var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
         headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+
+    if (getNourriture()) {
+        let nourriture = getNourriture();
+
+        nourriture.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
+        });
+
 
         document.autoTable({
             head: [headers],
@@ -370,7 +361,8 @@ function addNourritureTable(document) {
             },
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
@@ -434,23 +426,14 @@ function addNourritureMacros(document) {
             body: footerTable,
             tableWidth: 'wrap'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
 
 
 function addHydratationTable(document) {
-    if (getHydratations()) {
-        let hydratation = getHydratations();
         let headers = [];
         let values = [];
-
-        hydratation.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
-        });
-
 
         var Date = translate.getText("DATE_TITLE");
         var name = translate.getText("SUPPL_NOM");
@@ -462,6 +445,14 @@ function addHydratationTable(document) {
         var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
         var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
         headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+
+    if (getHydratations()) {
+        let hydratation = getHydratations();
+
+
+        hydratation.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
+        });
 
         document.autoTable({
             head: [headers],
@@ -497,16 +488,14 @@ function addHydratationTable(document) {
             }
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
 
 
 function addHydratationMacrosTable(document) {
-    if (getMacrosTotalAndAveragePerDay('hydratation')) {
-        let hydratationMacros = getMacrosTotalAndAveragePerDay('hydratation');
-
         let headers = [];
         let line_1 = [];
         let line_2 = [];
@@ -516,6 +505,9 @@ function addHydratationMacrosTable(document) {
             translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
             translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
             translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+
+    if (getMacrosTotalAndAveragePerDay('hydratation')) {
+        let hydratationMacros = getMacrosTotalAndAveragePerDay('hydratation');
 
         var totalFiber = hydratationMacros.get("totalFiber");
         var averageFiber = hydratationMacros.get("averageFiber");
@@ -560,29 +552,24 @@ function addHydratationMacrosTable(document) {
             body: footerTable,
             tableWidth: 'wrap'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
-
-
-
 function addToiletsTable(document) {
-    if (getToilets()) {
-        let toilets = getToilets();
         let headers = [];
         let values = [];
-
-        toilets.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Urine')}, {content: data.get('Transit')}]);
-        });
-
-
         var Date = translate.getText("DATE_TITLE")
         var urine = translate.getText("URINE_TITLE");
         var transit = translate.getText("EXP_UR_TR");
         headers.push(Date, urine, transit);
+
+    if (getToilets()) {
+        let toilets = getToilets();
+
+
+        toilets.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Urine')}, {content: data.get('Transit')}]);
+        });
 
         document.autoTable({
             head: [headers],
@@ -600,7 +587,8 @@ function addToiletsTable(document) {
             },
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
@@ -638,22 +626,12 @@ function addAverageToiletsTable(document) {
             tableWidth: 'wrap',
             theme: 'grid'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
 function addAlcoolTable(document){
-    if (getAlcohol()) {
-        let alcool = getAlcohol();
         let headers = [];
         let values = [];
-
-        alcool.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
-        });
-
-
         var Date = translate.getText("DATE_TITLE")
         var name = translate.getText("SUPPL_NOM");
         var consomation = translate.getText("HYD_TEXT_COUNT");
@@ -664,6 +642,13 @@ function addAlcoolTable(document){
         var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
         var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
         headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+
+    if (getAlcohol()) {
+        let alcool = getAlcohol();
+
+        alcool.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
+        });
 
         document.autoTable({
             head: [headers],
@@ -699,25 +684,27 @@ function addAlcoolTable(document){
             }
         });
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
 
 
 function addAlcoolMacrosTable(document){
-        if (getMacrosTotalAndAveragePerDay('alcool')) {
-        let alcoolMacros = getMacrosTotalAndAveragePerDay('alcool');
-
         let headers = [];
-        let line_1 = [];
-        let line_2 = [];
-        let footerTable = [];
-
         headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
             translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
             translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
             translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+
+        if (getMacrosTotalAndAveragePerDay('alcool')) {
+        let alcoolMacros = getMacrosTotalAndAveragePerDay('alcool');
+
+        let line_1 = [];
+        let line_2 = [];
+        let footerTable = [];
+
 
         var totalFiber = alcoolMacros.get("totalFiber");
         var averageFiber = alcoolMacros.get("averageFiber");
@@ -762,8 +749,6 @@ function addAlcoolMacrosTable(document){
             body: footerTable,
             tableWidth: 'wrap'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
 }
 
@@ -772,18 +757,18 @@ function addAlcoolMacrosTable(document){
 
 
 function addGlycimiaTable(document){
+    let headers = [];
+    var Date = translate.getText("DATE_TITLE")
+    var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
+    headers.push(Date, glycemie);
+
     if (getGlycemia()) {
         let glycimia = getGlycemia();
-        let headers = [];
         let values = [];
 
         glycimia.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('Glycémie')}]);
         });
-
-        var Date = translate.getText("DATE_TITLE")
-        var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
-        headers.push(Date, glycemie);
 
         document.autoTable({
             head: [headers],
@@ -800,8 +785,10 @@ function addGlycimiaTable(document){
                 fillColor: "#ff9bbd"
             },
         });
+
     } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
+       insertHeaders(document, headers);
+       insertNoDataFound(document);
     }
 }
 
@@ -828,7 +815,28 @@ function addAverageGlycimiaTable(document){
             tableWidth: 'wrap',
             theme: 'grid'
         });
-    } else {
-        document.text("\n" + translate.getText("EXP_REPORT_NO_DATA"), 10, document.lastAutoTable.finalY + 10);
     }
+}
+
+
+function insertNoDataFound(document){
+       document.autoTable({
+            body: [translate.getText("EXP_REPORT_NO_DATA")],
+            startY: document.lastAutoTable.finalY,
+            bodyStyles: {
+                fillColor: "#65afc5",
+                align: "left",
+                fontSize: 10
+            },
+        });
+}
+
+function insertHeaders(document, headers){
+       document.autoTable({
+            head: [headers],
+            startY: document.lastAutoTable.finalY + 15,
+            headStyles: {
+                fillColor: "#65afc5"
+            },
+        });
 }
