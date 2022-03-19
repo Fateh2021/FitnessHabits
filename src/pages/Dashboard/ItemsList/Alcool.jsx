@@ -156,8 +156,9 @@ const Alcool = (props) => {
     var array = [...alcool];
     var sum = 0;
     var consumption = 0;
+    debugger;
     for (let item of array){
-      consumption = array[item].consumption;
+      consumption = item.consumption;
       sum += consumption; 
     }
     console.log ("la somme ::::: " + sum);
@@ -180,7 +181,7 @@ const Alcool = (props) => {
 
     setAlcool(array);  
     for (let value of array){
-      consumption = array[value].consumption;
+      consumption = value.consumption;
       sum += consumption; 
     }
     setGlobalConsumption(sum);
