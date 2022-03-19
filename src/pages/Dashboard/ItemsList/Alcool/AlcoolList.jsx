@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from "react"
 import { IonInput, IonButton, IonIcon, IonLabel, IonItem, IonAvatar, IonCol} from '@ionic/react';
 import { arrowDropdownCircle, trash, addCircle, removeCircle} from 'ionicons/icons';
-import firebase from 'firebase'
-import DefaultSettings from '../../../Settings/DefaultSettings'
 import { DateTime } from "luxon";
 import { getLang } from "../../../../translate/Translator"
 
@@ -14,7 +12,8 @@ const AlcoolList = (props) => {
   const [, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [alcool, setAlcool] = useState(props.alcools);
   const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
-
+  const [alcoolService, _] = useState(props.alcoolService);
+  
   // update state on prop change
   useEffect(() => {
     setDailyTarget(props.alcool.dailyTarget);
@@ -41,6 +40,20 @@ const AlcoolList = (props) => {
   const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
 
+  const totalConsumption = ()=>{
+    var array = [...alcool];
+    var sum = 0;
+    var consumption = 0;
+    debugger;
+    for (let item of array){
+      consumption = item.consumption;
+      sum += consumption; 
+    }
+    console.log ("la somme ::::: " + sum);
+    setGlobalConsumption(sum);
+    return sum
+  }
+
   const DailyConsumptionIncrement = (item)=>{  
     var array = [...alcool];
     const index = array.findIndex((event) => event.id === item.id);
@@ -52,14 +65,7 @@ const AlcoolList = (props) => {
     array[item].consumption += 1;
 
     updateCacheAndBD(array);
-
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.dailyTarget.globalConsumption = totalConsumption();
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  
-    console.log('currentDate :::::' + currentDate.startDate.getMonth())
+    alcoolService.updateGlobalConsumption(totalConsumption(), currentDate);
   }
 
   const DailyConsumptionDecrementAlcool = (item)=>{  
@@ -75,28 +81,7 @@ const AlcoolList = (props) => {
     }
 
     updateCacheAndBD(array);
-
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.dailyTarget.globalConsumption = totalConsumption();
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  
-    console.log('currentDate :::::' + currentDate.startDate.getMonth())
-  }
-
-  const totalConsumption = ()=>{
-    var array = [...alcool];
-    var sum = 0;
-    var consumption = 0;
-    debugger;
-    for (let item of array){
-      consumption = item.consumption;
-      sum += consumption; 
-    }
-    console.log ("la somme ::::: " + sum);
-    setGlobalConsumption(sum);
-    return sum
+    alcoolService.updateGlobalConsumption(totalConsumption(), currentDate);
   }
 
   const deleteItemAlcool = (item) => {
@@ -118,14 +103,7 @@ const AlcoolList = (props) => {
       sum += consumption; 
     }
     setGlobalConsumption(sum);
-
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.alcools = array;
-    dashboard.alcool.dailyTarget.globalConsumption = sum;    
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-     
+    alcoolService.updateGlobalConsumption(sum, currentDate);
     updateCacheAndBD(array);
   }
 
@@ -152,25 +130,9 @@ const AlcoolList = (props) => {
   }, [props.currentDate])
 
   const updateCacheAndBD = (alcools) => {
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.alcools= alcools;
-    console.log("dashboard.alcool.alcools:::::" + JSON.stringify( dashboard))
-    setAlcool(alcools)
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase
-    .database()
-    .ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
-    .update(dashboard)
-    .then(() => {
-      console.log("props.currentDate.startDate.getDay())::::::" + props.currentDate.startDate.getDay());
-      console.log ("currentDate.startDate" + currentDate.startDate.toLocaleDateString("fr-FR", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric"
-      }))
-      checkNotifications();
-    });
+    alcoolService
+      .updateAlcools(alcools, currentDate)
+      .then(checkNotifications);
   }
 
   const closeItemContainer = () => {
@@ -185,45 +147,17 @@ const AlcoolList = (props) => {
 
   const checkNotifications = () => {
     // Obtenir les préférences de l'utilisateur
-    const userUID = localStorage.getItem('userUid');
-    firebase
-      .database()
-      .ref('settings/' + userUID + '/alcool')
-      .once("value", (snapshot) => {
-        const sets = snapshot.val();
-        const alcoolSettings = sets ?? {
-          dailyTarget:{
-            value:0,
-            unit:''
-          },
-          notifications :{
-            active: false
-          }, 
-          limitConsom : {
-            educAlcool: true,
-            weeklyTarget: 0,
-            dailyTarget: 0,
-            sobrietyDays: 7,
-            notificationMessage: ''
-          },
-          alcools:DefaultSettings.alcools
-        };
-
-        alcoolSettings.limitConsom.notificationMessage = getNotificationMsg()
-
-        // Obtenir les consommation jusqu'au dernier lundi
-        getConsommationBackToMonday(alcoolSettings, userUID);
-        
+    alcoolService
+      .getSettings()
+      .then(settings => {
+        settings.limitConsom.notificationMessage = getNotificationMsg()
+        getConsommationBackToMonday(settings);
       });
   }
 
-  const getConsommationBackToMonday = (alcoolSettings, userUID) =>
-    firebase
-      .database()
-      .ref('dashboard/' + userUID)
-      .orderByKey()
-      .once("value", (snapshot) => {
-        const consommations = snapshot.val();
+  const getConsommationBackToMonday = (alcoolSettings) =>
+    alcoolService.getConsommations()
+      .then(consommations => {
         const date = new Date();
 
         // Vérifier s'il respecte ses consommations journalières
@@ -235,9 +169,8 @@ const AlcoolList = (props) => {
 
         // Vérifier s'il respecte ses jours de consommation de suite 
         respectConsecutiveConsumption(alcoolSettings, consommations, date);
-
       });
-
+   
   const respectDailyConsumption = (alcoolSettings, consommations, date) => {
     const dailyCount = getConsumptionsCount(consommations, date);
 
