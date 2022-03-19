@@ -84,7 +84,7 @@ const AlcoolService = {
   },
   settings: {
     updateAlcools: (alcools) => 
-      updateSettings(settings => settings.alcool.alcools = notifalcoolsications),
+      updateSettings(settings => settings.alcool.alcools = alcools),
     getAlcool: () =>
       firebase
         .database()
