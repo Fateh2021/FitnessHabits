@@ -2,14 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import * as poidsService from "../../Poids/configuration/poidsService"
 import * as translate from "../../../translate/Translator";
-
-import {
-  IonInput,
-  IonIcon,
-  IonLabel,
-  IonItem,
-  IonAvatar
-} from "@ionic/react";
+import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/poids.css";
@@ -29,10 +22,16 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var [taille, setTaille] = useState("");
+  var pd = props.poids.dailyPoids;
 
   useEffect(() => {
-    setDailyPoids(prefPoids == 'LBS' ? (props.poids.dailyPoids * 2.2).toFixed(2) : (props.poids.dailyPoids).toFixed(2) );
-  }, [props.poids.dailyPoids]);
+		// Réajustement du daily poids
+		// Il est important de recalibrer le dailyPoids ici et non à l'extérieur du useEffect car sinon le switch ne se fait pas.
+    if (prefPoids == 'LBS'){
+      pd = (pd * 2.2).toFixed(2);
+    }
+    setDailyPoids(pd);
+  }, [pd]);
 
   useEffect(() => {
     poidsService.initPrefPoids();
@@ -68,20 +67,7 @@ const Poids = (props) => {
 
     setDailyPoids(dashboard.poids.dailyPoids);
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    CalculImc();
   };
-
-	// Capture de l'éventement si IMC change
-  const handleIMCChange = (event) => {
-    let change_IMC = event.target.value;
-    /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
-       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
-       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
-    */
-    if (change_IMC > 10) {
-      poidsService.verifier_changement_IMC(change_IMC);
-    }
-  }
 
 	// Capture de l'éventement si le dailyPoids change
   const handleChange = (event) => {
@@ -116,21 +102,31 @@ const Poids = (props) => {
     taille = taille / 100;
     var p = dailyPoids;
 
-    //var IMC;
     var indicateur_IMC;
     if (unitePoids == "LBS") {
-
       p = (p / 2.2).toFixed(2);
       indicateur_IMC = p / (taille * taille);
     } else {
       indicateur_IMC = dailyPoids / (taille * taille);
     }
-    return indicateur_IMC.toFixed(2);
 
+    return indicateur_IMC.toFixed(2);
   };
 
   // Récupération de la valeur IMC calculée à l'intérieur de la fonction
   var IMC = CalculImc();
+
+	// Capture de l'éventement si IMC change
+  const handleIMCChange = (event) => {
+    let change_IMC = event.target.value;
+    /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
+       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
+       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
+    */
+    if (change_IMC > 10) {
+      poidsService.verifier_changement_IMC(change_IMC);
+    }
+  }
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";

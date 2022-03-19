@@ -14,7 +14,6 @@ import { formatPoids,formatToKG , trouver_nouvelle_categorie, formatDate, initPr
 
 let container = null;
 beforeEach(() => {
-  //var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
   var userUID = "uTYu3TukpWXj19BA6isDMrb6ivy1";
   var poids={
     dailyPoids:"77",
@@ -30,18 +29,27 @@ beforeEach(() => {
   localStorage.setItem('userLanguage', 'fr');
 });
 
-test('tests sur la classe poids', async () => {
-  const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
-  const { findByTitle, findByText, getByTestId, getByLabelText } =  render(<Poids poids={ dash_.poids } />);
-  const weight_val = getByLabelText("weight");
-  
+test('Tests sur la classe poids avec KS de sélectionné', async () => {
+	// Récupération des donnés nécessaire au tests
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  const { findByTitle, findByText, getByTestId, getByLabelText } =  render(<Poids poids={ dashboard.poids } />);
+  const poids_val = getByLabelText("weight");
+
   const select = getByTestId("select");
-  fireEvent.change(select , { target: { value: "LBS" } });
-  //expect((dash_.poids.dailyPoids * 2.2).toFixed(2)).toBe(weight_val.value);
 
   fireEvent.change(select , { target: { value: "KG" } });
-  //document.getElementsByClassName("input poidsActuel")[0].innerHTML = weight_val.value;
-  expect(weight_val.value).toBe(dash_.poids.dailyPoids);
+  expect(dashboard.poids.dailyPoids).toBe(poids_val.value);
+});
+
+test('Tests sur la classe poids avec LBS de sélectionné', async () => {
+	// Récupération des donnés nécessaire au tests
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  const { findByTitle, findByText, getByTestId, getByLabelText } =  render(<Poids poids={ dashboard.poids } />);
+  const poids_val = getByLabelText("weight");
+
+  const select = getByTestId("select");
+  fireEvent.change(select , { target: { value: "LBS" } });
+  expect((dashboard.poids.dailyPoids * 2.2).toFixed(2)).toBe(poids_val.value);
 });
 
 /* it('test sur Poids actuel', async () => {
@@ -66,7 +74,7 @@ test('Traduction du mot Poids en espagnol', async() => {
   expect(mot).toBeDefined();
 });
 
-test('Traduction du mot Poids en anglais', async() => {
+test('Traduction du mot Poids en anglais', () => {
   localStorage.setItem('userLanguage', 'en')
   render(<Poids poids/>);
   const mot = screen.getByText(/Weight/i);
@@ -80,29 +88,24 @@ test('Traduction du mot Poids en anglais', async() => {
   expect(mot).toBeDefined();
 });
 
-test('select down', async() => {
+
+test('select down', () => {
   render(<Poids poids/>);
   const s = screen.getByTestId('select');
 
-  act(() => {fireEvent.click(s)})
+  act( () => {fireEvent.click(s)})
 
   expect('LBS').toBeDefined();
   expect('KG').toBeDefined();
-
 });
 
-
 //test pour poidsService
-
-
 describe('saveEntreeDePoids', () => {
 
   it('valeur should be 88', () => {
     saveEntreeDePoids(88);
-    var tmp = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;    
-    //dailyPoids:"77.00"
+    var tmp = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
     expect(tmp).toBe(88);
-
   });
 
 });
@@ -121,9 +124,7 @@ describe('setPrefUnitePoids', () => {
 describe('getDailyPoids', () => {
 
   it('should return undefined', () => {
-    
     expect(getDailyPoids()).toBe(undefined);
-
   });
 
 });
@@ -134,7 +135,6 @@ describe('initPrefPoids', () => {
     initPrefPoids()
     const local_unite = localStorage.getItem('prefUnitePoids')
     expect(local_unite).toBe('KG');
-
   });
 
 });
@@ -143,7 +143,6 @@ describe('formatDate', () => {
 
   it('should return 2022-03-16', () => {
       expect(formatDate(new Date('2022-03-17'))).toBe('2022-03-16');
-
   });
 
 });
@@ -152,7 +151,6 @@ describe('trouver_nouvelle_categorie', () => {
 
   it('should return CATEGORIE_IDEAL', () => {
       expect(trouver_nouvelle_categorie(20)).toBe('CATEGORIE_IDEAL');
-
   });
 
 });
@@ -160,9 +158,7 @@ describe('trouver_nouvelle_categorie', () => {
 describe('formatPoids', () => {
 
   it('should return 77', () => {
-
       expect(formatPoids(77)).toBe(77);
-
   });
 
 });
@@ -171,13 +167,10 @@ describe('formatToKG', () => {
 
   it('should return 35.00', () => {
     localStorage.setItem("prefUnitePoids", 'LBS');
-
-      expect(Number(formatToKG(77))).toBe(35.00);
-
+    expect(Number(formatToKG(77))).toBe(35.00);
   });
 
 });
-
 
 test('Poids Test element dans le page', async() => {
   renderWithRouter( < App / > , { route: '/configurationPoids' });
@@ -198,12 +191,10 @@ test('Poids Test popup', async() => {
   expect(pop_up_elem_kg).toBeInTheDocument();
 });
 
-
-
+/*
 test('valeur de poids', async() => {
 
   act(() => {render(<Poids poids/>);})
-
   const  poids_input = screen.getByTestId('poids_input');
     
   //const mot = document.getElementsByName('ion-input-20').value;
@@ -212,7 +203,8 @@ test('valeur de poids', async() => {
   const mot = document.getElementsByClassName('native-input sc-ion-input-md');
   expect(mot).toBeDefined();
 });
-
+*/
+/*
 test('go to page de configuration', async() => {
   render(<Poids poids/>);
 
@@ -222,4 +214,4 @@ test('go to page de configuration', async() => {
   const pop_up_elem_kg = screen.getByText(/KG/i);
   expect(pop_up_elem_kg).toBeInTheDocument();
 });
-
+*/
