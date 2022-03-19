@@ -126,7 +126,7 @@ function addWeightTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#113d37");
        insertNoDataFound(document);
     }
 }
@@ -193,7 +193,7 @@ function addActivitiesTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#0f5780");
        insertNoDataFound(document);
     }
 }
@@ -259,7 +259,7 @@ function addSleepTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#152b3f");
        insertNoDataFound(document);
     }
 }
@@ -359,7 +359,7 @@ function addNourritureTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#185742");
        insertNoDataFound(document);
     }
 }
@@ -486,7 +486,7 @@ function addHydratationTable(document) {
             }
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#65afc5");
        insertNoDataFound(document);
     }
 }
@@ -585,7 +585,7 @@ function addToiletsTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#bba339");
        insertNoDataFound(document);
     }
 }
@@ -682,7 +682,7 @@ function addAlcoolTable(document){
             }
         });
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#e7a54f");
        insertNoDataFound(document);
     }
 }
@@ -785,7 +785,7 @@ function addGlycimiaTable(document){
         });
 
     } else {
-       insertHeaders(document, headers);
+       insertHeaders(document, headers, "#6e233d");
        insertNoDataFound(document);
     }
 }
@@ -822,6 +822,7 @@ function insertNoDataFound(document){
             body: [translate.getText("EXP_REPORT_NO_DATA")],
             startY: document.lastAutoTable.finalY,
             bodyStyles: {
+                tableWidth: 'wrap',
                 fillColor: "#65afc5",
                 align: "left",
                 fontSize: 10
@@ -829,12 +830,12 @@ function insertNoDataFound(document){
         });
 }
 
-function insertHeaders(document, headers){
+function insertHeaders(document, headers, headerColor){
        document.autoTable({
             head: [headers],
             startY: document.lastAutoTable.finalY + 15,
             headStyles: {
-                fillColor: "#65afc5"
+                fillColor: headerColor
             },
         });
 }
