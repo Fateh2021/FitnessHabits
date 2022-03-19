@@ -29,7 +29,7 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var [taille, setTaille] = useState("");
-  var [imc, setImc] = useState("0.00");
+  var [imc, setImc] = useState("0.0");
   const userUID = localStorage.getItem("userUid");
 
   useEffect(() => {

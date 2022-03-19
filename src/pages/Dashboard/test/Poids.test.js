@@ -55,12 +55,11 @@ test('test - changement de poids, verification valeur de IMC', done => {
   expect((weight).value).toEqual("99");
 
   try{
-    // attendre que la valeur de imc soit mise a jour
     const wait_time = setTimeout(() => {
       const taille = dash_.size / 100;
       const x = 99 / (taille * taille);
       expect((imc).value).toEqual(x.toFixed(2));
-    }, 2000);
+    }, 2000); // attendre que la valeur de imc soit mise a jour
     done();
   }
   catch (error) {
