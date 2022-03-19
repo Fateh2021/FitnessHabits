@@ -92,7 +92,7 @@ const Alcool = (props) => {
     if(!array[item].favoris){
       event.target.style.color = '#d18a17';
       array[item].favoris = true;
-      alcoolService.dashboard.addDashboardAlcool(array[item], currentDate);
+      alcoolService.dashboard.addAlcool(array[item], currentDate);
     } else {
       event.target.style.color = '';
       array[item].favoris = false;
