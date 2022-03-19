@@ -197,6 +197,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 break;
         }
     }
+    console.log(getGlycemia())
 }
 
 // Function that fetches datas for hydratation and alcohol.
