@@ -117,7 +117,7 @@ const Settings = (props) => {
       categories.push("nourriture");
     }
     // Par défaut si l'utilisateur n'a pas personnalisé ses objectifs l'ensemble des données sera exporté
-    if (categories.length == 0) {
+    if (categories.length === 0) {
       categories = [
         "hydratation",
         "alcool",
@@ -146,9 +146,8 @@ const Settings = (props) => {
   }
 
   // variable qui va contenir le format d'exportation désiré, par défaut csv
-  var selected = "csv";
-
-
+  const [exportType, onChangeExport ] = useState('csv');
+  // contient la date de debut et la date de fin choisi par l'utilisateur
   const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)));
   const [d2, onChangeD2] = useState(new Date());
 
@@ -274,7 +273,7 @@ const Settings = (props) => {
                     locale={getLang()}
                     onChange={onChangeD1}
                     value={d1}
-                    minDate={new Date("01-01-2010")} // A CHANGER ICI POUR LA PLUS PETITE DATE QU'ON VEUT
+                    minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 10))} // max 10 ans plus tôt
                     maxDate={d2}
                     clearIcon={null}
                     autoFocus={true}
@@ -380,7 +379,7 @@ const Settings = (props) => {
 
             <IonRadioGroup
                 onIonChange={(e) => {
-                  selected = e.detail.value;
+                  onChangeExport(e.detail.value);
                 }}
             >
               <IonListHeader>
@@ -389,17 +388,17 @@ const Settings = (props) => {
 
               <IonItem data-testid="radio-csv">
                 <IonLabel>CSV</IonLabel>
-                <IonRadio slot="start" value="csv" checked="true"/>
+                <IonRadio slot="start" value="csv" checked={exportType === "csv"}/>
               </IonItem>
 
               <IonItem data-testid="radio-pdf">
                 <IonLabel>PDF</IonLabel>
-                <IonRadio slot="start" value="pdf" />
+                <IonRadio slot="start" value="pdf" checked={exportType === "pdf"}/>
               </IonItem>
 
               <IonItem data-testid="radio-csv-and-pdf">
                 <IonLabel>{translate.getText("CSV_AND_PDF_TITLE")}</IonLabel>
-                <IonRadio slot="start" value="hybride" />
+                <IonRadio slot="start" value="hybride" checked={exportType === "hybride"}/>
               </IonItem>
             </IonRadioGroup>
           </IonList>
@@ -432,11 +431,11 @@ const Settings = (props) => {
                         toast(toastMessage);
                       } else {
                       var date = new Date().toISOString().slice(0, 10);
-                      if (selected === "pdf" || selected === "hybride") {
+                      if (exportType === "pdf" || exportType === "hybride") {
                         await compilerBilan(dataSelected, d1, d2);
                         await creerPdf(date,dataSelected);
                       }
-                      if (selected === "csv" || selected === "hybride") {
+                      if (exportType === "csv" || exportType === "hybride") {
                         var overviewCsv = await compilerBilan(dataSelected, d1, d2);
                         if (overviewCsv.length <= 0) {
                           toast(
