@@ -5,11 +5,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { compilerBilan } from './pages/Settings/Export';
 import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
-/* -- À la demande de équipe qui gère Export & cie
-import { configure, shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-configure({ adapter: new Adapter() });
-*/
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { act } from "react-dom/test-utils";
@@ -26,7 +21,7 @@ test('renders without crashing', async() => {
     const { baseElement } = render(<App />);
     expect(baseElement).toBeDefined();
 });
-
+/*
 test('Check hydratation value', async() => {
     var attendu = 5;
     var something = { "hydratation": { "dailyTarget": { "value": 5, "unit": "", "globalConsumption": 0 }, "hydrates": ["0"] }, "alcool": { "dailyTarget": { "value": 0, "unit": "", "globalConsumption": 0 }, "alcools": [] }, "nourriture": { "globalConsumption": 0 }, "gras": { "dailyTarget": { "value": 0, "unit": "", "globalConsumption": 0 }, "grass": [] }, "proteines": { "dailyTarget": { "value": 0, "unit": "", "globalConsumption": 0 }, "proteines": [] }, "legumes": { "dailyTarget": { "value": 0, "unit": "", "globalConsumption": 0 }, "legumes": [] }, "cereales": { "dailyTarget": { "value": 0, "unit": "", "globalConsumption": 0 }, "cereales": [] }, "glycemie": { "dailyGlycemie": 0 }, "poids": { "dailyPoids": 0 }, "toilettes": { "feces": 0, "urine": 0 }, "sommeil": { "heure": 0, "minute": 0 }, "activities": { "heure": 0, "minute": 0 } };
@@ -79,7 +74,7 @@ test('ExportModule - Check if PDF export options set correctly', async() => {
     expect(doc).toBeDefined();
 });
 
-/* Tester la présence des composantes dans la page */
+/* Tester la présence des composantes dans la page *//*
 test('ExportModule - TestElementsPresence_1', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     const actPhys = screen.getByTestId(/checkbox-activities/i);
@@ -118,7 +113,7 @@ test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
     const checkboxes = screen.getAllByRole('checkbox', { checked: 'True' })
     expect(checkboxes.length).toEqual(9);
 });
-*/
+*//*
 test('ExportModule - TestEnglishTranslation', async() => {
     localStorage.setItem('userLanguage', 'en');
     renderWithRouter( < App / > , { route: '/Export' });
@@ -243,7 +238,7 @@ test('ExportModule - TestDefaultDateBehaviour', async() => {
     expect(startDate_2).toBe(startDate_1);
 });
 */
-/*Test if format selected changes, no change in attributes selected*/
+/*Test if format selected changes, no change in attributes selected*//*
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     //to be false
@@ -274,19 +269,19 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 });
 
 //todo
-/*Test if dates changes, no change in attributes selected*/
+/*Test if dates changes, no change in attributes selected*//*
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
 });
 
 //todo
-/*Tester les messages d'erreurs -- aucune erreur*/
+/*Tester les messages d'erreurs -- aucune erreur*//*
 test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     expect(screen.queryByRole('alert')).toBeNull();
 });
 
-/*Tester les messages d'erreurs quand il n'y a aucune sélection -- avec erreur*/
+/*Tester les messages d'erreurs quand il n'y a aucune sélection -- avec erreur*//*
 test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     //to be false
@@ -319,9 +314,9 @@ test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() =>
     //expect(screen.queryByRole('alert')).not.toBeNull();  //or
     //expect(screen.queryByText('error message todo')).toBeInTheDocument();
     //expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
-});
+//});
 
-
+/*
 test('ExportModule - TestClickOnFoodCheckbox', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     const checkbox_food = screen.getByTestId("checkbox-food")
