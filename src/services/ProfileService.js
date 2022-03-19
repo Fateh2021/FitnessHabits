@@ -13,10 +13,10 @@ const getProfileRef = () =>
 
 const ProfileService = {
   get: () => {
-    let profile = localStorage.getItem('profile');
-    if (profile) {
-      profile = JSON.parse(profile);
-      return Promise.resolve(profile);
+    let localProfile = localStorage.getItem('profile');
+    if (localProfile) {
+      localProfile = JSON.parse(localProfile);
+      return Promise.resolve(localProfile);
     }
 
     return getProfileRef()
