@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
-import * as poidsService from "../../Poids/configuration/poidsService"
+import * as poidsService from "../../Poids/configuration/weightService"
 import * as translate from "../../../translate/Translator";
 
 import {
