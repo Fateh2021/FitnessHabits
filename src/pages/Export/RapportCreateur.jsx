@@ -97,9 +97,9 @@ function addWeightTable(document) {
 
    //Entete du tableau
    var Date = translate.getText("DATE_TITLE")
-   if (getAggregateWeights().get('weightUnit')) {
+   if (getAggregateWeights()) {
         unite = getAggregateWeights().get('weightUnit');
-   };
+   }
    var poids = translate.getText("EXP_REPORT_WEIGHT") + " (" + unite + ")";
    headers.push(Date, poids);
 
@@ -819,12 +819,10 @@ function addAverageGlycimiaTable(document){
 
 function insertNoDataFound(document){
        document.autoTable({
-            body: [translate.getText("EXP_REPORT_NO_DATA")],
+            body: [[translate.getText("EXP_REPORT_NO_DATA")]],
             startY: document.lastAutoTable.finalY,
             bodyStyles: {
-                tableWidth: 'wrap',
-                fillColor: "#65afc5",
-                align: "left",
+                halign: "center",
                 fontSize: 10
             },
         });
