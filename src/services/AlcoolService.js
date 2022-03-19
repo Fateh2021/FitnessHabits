@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import DefaultSettings from '../../../Settings/DefaultSettings'
+import DefaultSettings from '../pages/Settings/DefaultSettings'
 
 const getUserUID = () => localStorage.getItem('userUid');
 
@@ -76,6 +76,14 @@ const AlcoolService = {
       .orderByKey()
       .once('value')
       .then(snapshot => snapshot.val())
+  ,
+  addDashboardAlcool: (alcoolToRemove, currentDate) => {
+    const dashboard = getDashboardLocalStorage();
+    dashboard.alcool.alcools.unshift(alcoolToRemove);
+    updateDashboardLocalStorage(dashboard);
+
+    return updateDashBoardRef(currentDate, dashboard);
+  }
 };
 
 export default AlcoolService; 

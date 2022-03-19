@@ -29,7 +29,7 @@ import Home from "../Footer/Home";
 import Export from "../Footer/Export";
 import * as translate from '../../translate/Translator';
 
-import AlcoolService from './ItemsList/Alcool/AlcoolService';
+import AlcoolService from '../../services/AlcoolService';
 
 const Dashboard = (props) => {
 const [proteinFood, setProteinFood] = useState(0);
