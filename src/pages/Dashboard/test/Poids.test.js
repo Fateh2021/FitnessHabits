@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, getByTestId, getByLabelText, findByText } from '@testing-library/react';
+import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,22 +12,45 @@ import { formatPoids,formatToKG , trouver_nouvelle_categorie, formatDate, initPr
         getDailyPoids, setPrefUnitePoids, saveEntreeDePoids} from '../../Poids/configuration/poidsService';
 
 
-
+let container = null;
 beforeEach(() => {
-  var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
+  //var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
+  var userUID = "uTYu3TukpWXj19BA6isDMrb6ivy1";
   var poids={
-    dailyPoids:"77.00",
+    dailyPoids:"77",
     datePoids:"2022-03-17T15:24:10.792Z"
   }
   const pseudo_dashboard = {
     userUID,
     poids
   };
-
+  localStorage.setItem('userUid', userUID);
   localStorage.setItem('dashboard', JSON.stringify(pseudo_dashboard));
   localStorage.setItem("prefUnitePoids", 'KG');
-
+  localStorage.setItem('userLanguage', 'fr');
 });
+
+test('tests sur la classe poids', async () => {
+  const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
+  const { findByTitle, findByText, getByTestId, getByLabelText } =  render(<Poids poids={ dash_.poids } />);
+  const weight_val = getByLabelText("weight");
+  
+  const select = getByTestId("select");
+  fireEvent.change(select , { target: { value: "LBS" } });
+  //expect((dash_.poids.dailyPoids * 2.2).toFixed(2)).toBe(weight_val.value);
+
+  fireEvent.change(select , { target: { value: "KG" } });
+  //document.getElementsByClassName("input poidsActuel")[0].innerHTML = weight_val.value;
+  expect(weight_val.value).toBe(dash_.poids.dailyPoids);
+});
+
+/* it('test sur Poids actuel', async () => {
+  const dash_ = JSON.parse(localStorage.getItem("dashboard"));
+  const { findByTitle, findByText } =  render(<Poids poids={ dash_.poids } />);
+  const input = await findByTitle('Daily weight');
+  fireEvent.ionChange(input, '80');
+  await findByText('80');
+}); */
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
 const renderWithRouter = (ui, { route = '/' } = {}) => {
@@ -198,12 +222,4 @@ test('go to page de configuration', async() => {
   const pop_up_elem_kg = screen.getByText(/KG/i);
   expect(pop_up_elem_kg).toBeInTheDocument();
 });
-
-
-
-
-
-
-
-
 
