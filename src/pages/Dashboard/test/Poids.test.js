@@ -58,25 +58,33 @@ test('Traduction du mot Poids en anglais', async() => {
     expect(mot).toBeDefined();
   })
 });
-
 /*
-test('tests - conversion du poids Kg - LBS', () => {  
-  const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
+test('tests - conversion du poids LBS', () => {
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
   act(() => {
-    const { getByTestId, getByLabelText } =  render(<Poids poids={ dash_.poids } />);
+    const { getByTestId, getByLabelText } =  render(<Poids poids={ dashboard.poids } />);
     const weight = getByLabelText("weight");
-    const weight_in_LBS = (dash_.poids.dailyPoids * 2.2).toFixed(2);
+    const weight_in_LBS = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
     
     const select = getByTestId("select");
     fireEvent.change(select , { target: { value: "LBS" } });
     expect(weight.value).toBe(weight_in_LBS);
-    fireEvent.change(select , { target: { value: "KG" } });
-    expect(weight.value).toBe(dash_.poids.dailyPoids);  
   })
-  
 });
 */
+test('tests - conversion du poids KG', () => {
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+
+  act(() => {
+    const { getByTestId, getByLabelText } =  render(<Poids poids={ dashboard.poids } />);
+    const weight = getByLabelText("weight");
+    const select = getByTestId("select");
+    fireEvent.change(select , { target: { value: "KG" } });
+    expect(weight.value).toBe(dashboard.poids.dailyPoids);
+  })
+});
+
 
 /*
 test('test - changement de poids, verification valeur de IMC', done => {
