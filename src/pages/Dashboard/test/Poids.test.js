@@ -30,6 +30,10 @@ beforeEach(() => {
   localStorage.setItem('userLanguage', 'fr');
 });
 
+afterEach(() => {
+  localStorage.clear();
+});
+
 
 test('tests - conversion du poids Kg - LBS', () => {  
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
