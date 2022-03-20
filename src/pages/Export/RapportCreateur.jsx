@@ -28,7 +28,7 @@ export async function creerPdf(date, dataSelected) {
         alternateRowStyles: {fillColor: "#ffffff"},
         didDrawCell: (data) => {
             if (data.section === 'body' && data.column.index === 0) {
-                doc.addImage('/assets/Logo2.png','png',10,2,78,20);
+                doc.addImage('/assets/Logo2.png', 'png', 10, 2, 78, 20);
             }
         }
     });
@@ -90,15 +90,15 @@ export async function creerPdf(date, dataSelected) {
 }
 
 function addWeightTable(document) {
-   let poid = [];
-   let headers = [];
-   let values = [];
-   let unite = "";
+    let poid = [];
+    let headers = [];
+    let values = [];
+    let unite = "";
 
-   //Entete du tableau
+    //Entete du tableau
     var Date = translate.getText("DATE_TITLE")
     unite = getAggregateWeights() ? " (" + getAggregateWeights().get('weightUnit') + ")" : unite;
-    var poids = translate.getText("EXP_REPORT_WEIGHT") +  unite ;
+    var poids = translate.getText("EXP_REPORT_WEIGHT") + unite;
     headers.push(Date, poids);
 
     if (getWeights()) {
@@ -124,8 +124,8 @@ function addWeightTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers, "#113d37");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#113d37");
+        insertNoDataFound(document);
     }
 }
 
@@ -161,11 +161,11 @@ function addWeightAggregateTable(document) {
 }
 
 function addActivitiesTable(document) {
-        let headers = [];
-        let values = [];
-        var Date = translate.getText("DATE_TITLE")
-        var duree = translate.getText("EXP_REPORT_DURATION") + " (h)";
-        headers.push(Date, duree);
+    let headers = [];
+    let values = [];
+    var Date = translate.getText("DATE_TITLE")
+    var duree = translate.getText("EXP_REPORT_DURATION") + " (h)";
+    headers.push(Date, duree);
 
     if (getActivities()) {
         let activities = getActivities();
@@ -191,8 +191,8 @@ function addActivitiesTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers, "#0f5780");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#0f5780");
+        insertNoDataFound(document);
     }
 }
 
@@ -204,11 +204,11 @@ function addActivitiesAggregateTable(document) {
         let line_2 = [];
         let footerTable = [];
 
-        var durationTitle = translate.getText("EXP_REPORT_MACROS", ["TOTAL"])+ " (h)";
+        var durationTitle = translate.getText("EXP_REPORT_MACROS", ["TOTAL"]) + " (h)";
         var totalDuration = aggregateActivities.get("TotalDuration");
         line_1.push(durationTitle, totalDuration);
 
-        var AverageDurationActTitle = translate.getText("EXP_REPORT_AVERAGE_DURATION_ACTIVITY")+ " (h)";
+        var AverageDurationActTitle = translate.getText("EXP_REPORT_AVERAGE_DURATION_ACTIVITY") + " (h)";
         var averageDuration = aggregateActivities.get("AverageDuration");
         line_2.push(AverageDurationActTitle, averageDuration);
 
@@ -223,17 +223,16 @@ function addActivitiesAggregateTable(document) {
 }
 
 
-
 function addSleepTable(document) {
-        let headers = [];
-        let values = [];
-         var Date = translate.getText("DATE_TITLE")
-         var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
-         var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
-         var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
-         var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
-         var wakeUpState = translate.getText("EXP_REPORT_WAKEUP_STATE");
-         headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
+    let headers = [];
+    let values = [];
+    var Date = translate.getText("DATE_TITLE")
+    var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
+    var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
+    var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
+    var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
+    var wakeUpState = translate.getText("EXP_REPORT_WAKEUP_STATE");
+    headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
 
     if (getSleeps()) {
         let sleeps = getSleeps();
@@ -257,11 +256,10 @@ function addSleepTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers, "#152b3f");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#152b3f");
+        insertNoDataFound(document);
     }
 }
-
 
 
 function addSleepAggregateTable(document) {
@@ -302,18 +300,18 @@ function addSleepAggregateTable(document) {
 
 
 function addNourritureTable(document) {
-        let headers = [];
-        let values = [];
-        var Date = translate.getText("DATE_TITLE")
-        var name = translate.getText("SUPPL_NOM");
-        var consomation = translate.getText("HYD_TEXT_COUNT");
-        var quantite = translate.getText("EXP_REPORT_QT");
-        var unity = translate.getText("EXP_REPORT_UNIT");
-        var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
-        var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
-        var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
-        var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
-        headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+    let headers = [];
+    let values = [];
+    var Date = translate.getText("DATE_TITLE")
+    var name = translate.getText("SUPPL_NOM");
+    var consomation = translate.getText("HYD_TEXT_COUNT");
+    var quantite = translate.getText("EXP_REPORT_QT");
+    var unity = translate.getText("EXP_REPORT_UNIT");
+    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
+    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
+    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
+    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
+    headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
 
     if (getNourriture()) {
         let nourriture = getNourriture();
@@ -337,32 +335,30 @@ function addNourritureTable(document) {
                 fontSize: 11,
                 fillColor: "#b4ead8"
             },
-            columnStyles:{
-                5 : {
+            columnStyles: {
+                5: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                6 : {
+                6: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                7 : {
+                7: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                8 : {
-                    fillColor : "#c99b2e",
-                    textColor : "#ffffff"
+                8: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
                 }
             },
         });
     } else {
-       insertHeaders(document, headers, "#185742");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#185742");
+        insertNoDataFound(document);
     }
 }
-
-
 
 
 function addNourritureMacros(document) {
@@ -392,7 +388,7 @@ function addNourritureMacros(document) {
         var averageGlucide = nourritureMacros.get("averageGlucide");
 
         line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
-        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber,averageFat);
+        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber, averageFat);
 
         footerTable.push(line_1, line_2);
 
@@ -401,22 +397,22 @@ function addNourritureMacros(document) {
             headStyles: {
                 fillColor: "#185742"
             },
-            columnStyles:{
-                1 : {
+            columnStyles: {
+                1: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                2 : {
+                2: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                3 : {
+                3: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                4 : {
-                    fillColor : "#c99b2e",
-                    textColor : "#ffffff"
+                4: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
                 }
             },
             body: footerTable,
@@ -426,21 +422,20 @@ function addNourritureMacros(document) {
 }
 
 
-
 function addHydratationTable(document) {
-        let headers = [];
-        let values = [];
+    let headers = [];
+    let values = [];
 
-        var Date = translate.getText("DATE_TITLE");
-        var name = translate.getText("SUPPL_NOM");
-        var consomation = translate.getText("HYD_TEXT_COUNT");
-        var quantite = translate.getText("EXP_REPORT_QT");
-        var unity = translate.getText("EXP_REPORT_UNIT");
-        var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
-        var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
-        var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
-        var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
-        headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+    var Date = translate.getText("DATE_TITLE");
+    var name = translate.getText("SUPPL_NOM");
+    var consomation = translate.getText("HYD_TEXT_COUNT");
+    var quantite = translate.getText("EXP_REPORT_QT");
+    var unity = translate.getText("EXP_REPORT_UNIT");
+    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
+    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
+    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
+    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
+    headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
 
     if (getHydratations()) {
         let hydratation = getHydratations();
@@ -464,43 +459,42 @@ function addHydratationTable(document) {
                 fontSize: 11,
                 fillColor: "#beecff"
             },
-            columnStyles:{
-                5 : {
+            columnStyles: {
+                5: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                6 : {
+                6: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                7 : {
+                7: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                8 : {
-                    fillColor : "#c99b2e",
-                    textColor : "#ffffff"
+                8: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
                 }
             }
         });
     } else {
-       insertHeaders(document, headers, "#65afc5");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#65afc5");
+        insertNoDataFound(document);
     }
 }
 
 
-
 function addHydratationMacrosTable(document) {
-        let headers = [];
-        let line_1 = [];
-        let line_2 = [];
-        let footerTable = [];
+    let headers = [];
+    let line_1 = [];
+    let line_2 = [];
+    let footerTable = [];
 
-        headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
-            translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
-            translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
-            translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
 
     if (getMacrosTotalAndAveragePerDay('hydratation')) {
         let hydratationMacros = getMacrosTotalAndAveragePerDay('hydratation');
@@ -518,7 +512,7 @@ function addHydratationMacrosTable(document) {
         var averageGlucide = hydratationMacros.get("averageGlucide");
 
         line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
-        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber,averageFat);
+        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber, averageFat);
 
         footerTable.push(line_1, line_2);
 
@@ -527,22 +521,22 @@ function addHydratationMacrosTable(document) {
             headStyles: {
                 fillColor: "#65afc5"
             },
-            columnStyles:{
-                1 : {
+            columnStyles: {
+                1: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                2 : {
+                2: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                3 : {
+                3: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                4 : {
-                    fillColor : "#c99b2e",
-                    textColor : "#ffffff"
+                4: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
                 }
             },
             body: footerTable,
@@ -552,12 +546,12 @@ function addHydratationMacrosTable(document) {
 }
 
 function addToiletsTable(document) {
-        let headers = [];
-        let values = [];
-        var Date = translate.getText("DATE_TITLE")
-        var urine = translate.getText("URINE_TITLE");
-        var transit = translate.getText("EXP_UR_TR");
-        headers.push(Date, urine, transit);
+    let headers = [];
+    let values = [];
+    var Date = translate.getText("DATE_TITLE")
+    var urine = translate.getText("URINE_TITLE");
+    var transit = translate.getText("EXP_UR_TR");
+    headers.push(Date, urine, transit);
 
     if (getToilets()) {
         let toilets = getToilets();
@@ -583,8 +577,8 @@ function addToiletsTable(document) {
             },
         });
     } else {
-       insertHeaders(document, headers, "#bba339");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#bba339");
+        insertNoDataFound(document);
     }
 }
 
@@ -625,19 +619,19 @@ function addAverageToiletsTable(document) {
     }
 }
 
-function addAlcoolTable(document){
-        let headers = [];
-        let values = [];
-        var Date = translate.getText("DATE_TITLE")
-        var name = translate.getText("SUPPL_NOM");
-        var consomation = translate.getText("HYD_TEXT_COUNT");
-        var quantite = translate.getText("EXP_REPORT_QT");
-        var unity = translate.getText("EXP_REPORT_UNIT");
-        var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
-        var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
-        var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
-        var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
-        headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+function addAlcoolTable(document) {
+    let headers = [];
+    let values = [];
+    var Date = translate.getText("DATE_TITLE")
+    var name = translate.getText("SUPPL_NOM");
+    var consomation = translate.getText("HYD_TEXT_COUNT");
+    var quantite = translate.getText("EXP_REPORT_QT");
+    var unity = translate.getText("EXP_REPORT_UNIT");
+    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
+    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
+    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
+    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
+    headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
 
     if (getAlcohol()) {
         let alcool = getAlcohol();
@@ -660,41 +654,40 @@ function addAlcoolTable(document){
                 fontSize: 11,
                 fillColor: "#ffd39b"
             },
-            columnStyles:{
-                5 : {
+            columnStyles: {
+                5: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                6 : {
+                6: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                7 : {
+                7: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                8 : {
-                    fillColor : "#c99b2e",
-                    textColor : "#ffffff"
+                8: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
                 }
             }
         });
     } else {
-       insertHeaders(document, headers, "#e7a54f");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#e7a54f");
+        insertNoDataFound(document);
     }
 }
 
 
+function addAlcoolMacrosTable(document) {
+    let headers = [];
+    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
 
-function addAlcoolMacrosTable(document){
-        let headers = [];
-        headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
-            translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
-            translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
-            translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
-
-        if (getMacrosTotalAndAveragePerDay('alcool')) {
+    if (getMacrosTotalAndAveragePerDay('alcool')) {
         let alcoolMacros = getMacrosTotalAndAveragePerDay('alcool');
 
         let line_1 = [];
@@ -715,7 +708,7 @@ function addAlcoolMacrosTable(document){
         var averageGlucide = alcoolMacros.get("averageGlucide");
 
         line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
-        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber,averageFat);
+        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber, averageFat);
 
         footerTable.push(line_1, line_2);
 
@@ -724,22 +717,22 @@ function addAlcoolMacrosTable(document){
             headStyles: {
                 fillColor: "#e7a54f"
             },
-            columnStyles:{
-                1 : {
+            columnStyles: {
+                1: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                2 : {
+                2: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                3 : {
+                3: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                4 : {
-                    fillColor : "#c99b2e",
-                    textColor : "#ffffff"
+                4: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
                 }
             },
             body: footerTable,
@@ -751,8 +744,7 @@ function addAlcoolMacrosTable(document){
 //TODO : fonctions supléments
 
 
-
-function addGlycimiaTable(document){
+function addGlycimiaTable(document) {
     let headers = [];
     var Date = translate.getText("DATE_TITLE")
     var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
@@ -783,13 +775,13 @@ function addGlycimiaTable(document){
         });
 
     } else {
-       insertHeaders(document, headers, "#6e233d");
-       insertNoDataFound(document);
+        insertHeaders(document, headers, "#6e233d");
+        insertNoDataFound(document);
     }
 }
 
 
-function addAverageGlycimiaTable(document){
+function addAverageGlycimiaTable(document) {
     if (getAverageGlycemia()) {
         let averageGlycemia = getAverageGlycemia();
         let line_1 = [];
@@ -815,23 +807,23 @@ function addAverageGlycimiaTable(document){
 }
 
 
-function insertNoDataFound(document){
-       document.autoTable({
-            body: [[translate.getText("EXP_REPORT_NO_DATA")]],
-            startY: document.lastAutoTable.finalY,
-            bodyStyles: {
-                halign: "center",
-                fontSize: 10
-            },
-        });
+function insertNoDataFound(document) {
+    document.autoTable({
+        body: [[translate.getText("EXP_REPORT_NO_DATA")]],
+        startY: document.lastAutoTable.finalY,
+        bodyStyles: {
+            halign: "center",
+            fontSize: 10
+        },
+    });
 }
 
-function insertHeaders(document, headers, headerColor){
-       document.autoTable({
-            head: [headers],
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: headerColor
-            },
-        });
+function insertHeaders(document, headers, headerColor) {
+    document.autoTable({
+        head: [headers],
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: headerColor
+        },
+    });
 }

@@ -37,8 +37,8 @@ export async function compilerBilan(dataSelected, d1, d2) {
     if (!window.navigator.onLine) {
         let localStorageData = JSON.parse(localStorage.getItem("dashboard"));
         let today = new Date();
-        let month = today.getMonth().toString().length === 1 ? '0'+ today.getMonth() : today.getMonth();
-        let formatedDate = today.getDate()+'-'+month+'-'+today.getFullYear();
+        let month = today.getMonth().toString().length === 1 ? '0' + today.getMonth() : today.getMonth();
+        let formatedDate = today.getDate() + '-' + month + '-' + today.getFullYear();
         fetchData(localStorageData, formatedDate, dataSelected)
     } else {
         //Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
@@ -75,19 +75,19 @@ async function getDataFromFirebase(dataFormat) {
                 mois = '0' + data.key[1] + '-';
                 // if dayAndMonth has length of 4, then day and month have 2 chars each
             } else if (dayAndMonth.length === 4) {
-                jour = data.key.slice(0,2) + '-';
-                mois = data.key.slice(2,4) + '-';
+                jour = data.key.slice(0, 2) + '-';
+                mois = data.key.slice(2, 4) + '-';
                 // if dayAndMonth has a length of 3, 2 options:
             } else if (dayAndMonth.length === 3) {
                 // day 2 chars, month 1 char
-                if ( [...Array(32).keys()].includes(parseInt(dayAndMonth.slice(0, 2)))
-                    && !([...Array(12).keys()].includes(parseInt(dayAndMonth.slice(1, 3)))) ) {
-                    jour = data.key.slice(0,2) + '-';
+                if ([...Array(32).keys()].includes(parseInt(dayAndMonth.slice(0, 2)))
+                    && !([...Array(12).keys()].includes(parseInt(dayAndMonth.slice(1, 3))))) {
+                    jour = data.key.slice(0, 2) + '-';
                     mois = '0' + data.key[2] + '-';
                     // day 1 char, month 1 char
                 } else {
                     jour = '0' + data.key[0] + '-';
-                    mois = data.key.slice(1,3) + '-';
+                    mois = data.key.slice(1, 3) + '-';
                 }
             }
             let date = jour + mois + annee;
@@ -135,10 +135,10 @@ function fetchData(data, formatedDate, categorySelected) {
                 let legumes = data.legumes.legumes;
                 let proteines = data.proteines.proteines;
                 let gras = data.gras.grass;
-                fetchNourriture(cereales,formatedDate);
-                fetchNourriture(legumes,formatedDate);
-                fetchNourriture(proteines,formatedDate);
-                fetchNourriture(gras,formatedDate);
+                fetchNourriture(cereales, formatedDate);
+                fetchNourriture(legumes, formatedDate);
+                fetchNourriture(proteines, formatedDate);
+                fetchNourriture(gras, formatedDate);
                 break;
             case "toilettes":
                 let toilets = data.toilettes;
@@ -152,7 +152,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 let glycemie = data.glycemie.dailyGlycemie;
                 fetchGlycemia(glycemie, formatedDate);
                 break;
-            case "supplements":/*
+            case "supplements":/* TODO
                     var supplement = dataFormat[i].supplement;
                     if (!supplement)
                         retour[i][data] =
@@ -185,6 +185,7 @@ function fetchData(data, formatedDate, categorySelected) {
 
 // Function that fetches datas for hydratation and alcohol.
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
+    console.table(drinks);
     if (drinks !== null) {
         for (const drink of drinks) {
             if (drink.consumption === 0) {
@@ -211,30 +212,30 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
 }
 
 
-function fetchNourriture(array_nourriture,formatedDate){
+function fetchNourriture(array_nourriture, formatedDate) {
 
-    if(array_nourriture!=null){
+    if (array_nourriture != null) {
 
         for (const element of array_nourriture) {
-            
-                if (element.consumption === 0) {
-                    continue;
-                }
-                let mapResult = new Map();
-                mapResult.set("Date", formatedDate);
-                mapResult.set("Nom", element.name);
-                mapResult.set("Consommation", element.consumption);
-                mapResult.set("Quantité", element.qtte);
-                mapResult.set("Unité", element.unit);
-                mapResult.set("Protéine", element.proteine * element.consumption);
-                mapResult.set("Glucide", element.glucide * element.consumption);
-                mapResult.set("Fibre", element.fibre * element.consumption);
-                mapResult.set("Gras", element.gras * element.consumption);
 
-                arrayNourriture.push(mapResult);
+            if (element.consumption === 0) {
+                continue;
+            }
+            let mapResult = new Map();
+            mapResult.set("Date", formatedDate);
+            mapResult.set("Nom", element.name);
+            mapResult.set("Consommation", element.consumption);
+            mapResult.set("Quantité", element.qtte);
+            mapResult.set("Unité", element.unit);
+            mapResult.set("Protéine", element.proteine * element.consumption);
+            mapResult.set("Glucide", element.glucide * element.consumption);
+            mapResult.set("Fibre", element.fibre * element.consumption);
+            mapResult.set("Gras", element.gras * element.consumption);
+
+            arrayNourriture.push(mapResult);
 
         }
-    }   
+    }
 }
 
 
@@ -284,13 +285,13 @@ function fetchInitialWeight(datas) {
 
     datas.forEach((data) => {
         if (data) {
-           let weight = data.poids.dailyPoids;
-           let date = data.poids.datePoids.slice(0,10).replace("-", "/").replace("-", "/");
+            let weight = data.poids.dailyPoids;
+            let date = data.poids.datePoids.slice(0, 10).replace("-", "/").replace("-", "/");
 
-           if (weight !== "0.00") {
-               weightUnit === "LBS" ? mWeights.set(date, (weight * 2.2).toFixed(2)): mWeights.set(date, weight);
-               dates.push(date);
-           }
+            if (weight !== "0.00") {
+                weightUnit === "LBS" ? mWeights.set(date, (weight * 2.2).toFixed(2)) : mWeights.set(date, weight);
+                dates.push(date);
+            }
         }
     });
 
@@ -302,7 +303,7 @@ function fetchInitialWeight(datas) {
         ),
     );
 
-    return mWeights.get(minDate.toISOString().slice(0,10).replace("-", "/").replace("-", "/"));
+    return mWeights.get(minDate.toISOString().slice(0, 10).replace("-", "/").replace("-", "/"));
 }
 
 
@@ -313,8 +314,8 @@ function fetchActivities(activity, formatedDate) {
 
     mapActivity.set("Date", formatedDate);
     mapActivity.set("duration", duration);
-    mapActivity.set("hours", duration.slice(0,2));
-    mapActivity.set("minutes", duration.slice(3,5));
+    mapActivity.set("hours", duration.slice(0, 2));
+    mapActivity.set("minutes", duration.slice(3, 5));
     arrayActivities.push(mapActivity);
 }
 
@@ -324,7 +325,7 @@ function fetchSleeps(sleep, formatedDate) {
     if (sleep !== null) {
         let mapSleep = new Map();
 
-        if(sleep.duree && sleep.duree !== 0 ){
+        if (sleep.duree && sleep.duree !== 0) {
             mapSleep.set("Date", formatedDate);
             mapSleep.set("startHour", sleep.heureDebut);
             mapSleep.set("endHour", sleep.heureFin);
@@ -343,21 +344,25 @@ function formatDuration(min) {
     let minutes = Math.floor(min);
     let hours;
     if (minutes >= 60) {
-        hours = Math.floor(minutes/60);
-        minutes = Math.floor(minutes%60);
-        if (hours   < 10) {hours   = "0"+hours;}
+        hours = Math.floor(minutes / 60);
+        minutes = Math.floor(minutes % 60);
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
 
     } else if (minutes < 60) {
         hours = "00";
     }
 
-    if (minutes < 10) {minutes = "0"+minutes;}
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
     return hours + ":" + minutes;
 }
 
 //fonction qui prend 00:00 et transforme en minutes
 function getDuration(time) {
-    return ( parseInt(time.slice(0,2) * 60) + parseInt(time.slice(3,5)) )
+    return (parseInt(time.slice(0, 2) * 60) + parseInt(time.slice(3, 5)))
 }
 
 // ---- PUBLIC FONCTIONS ----------------------------------------------------
@@ -373,7 +378,7 @@ export function getHydratations() {
     return null;
 }
 
-export function getNourriture(){
+export function getNourriture() {
     if (arrayNourriture.length !== 0) {
         sortEntries(arrayNourriture);
         return arrayNourriture;
@@ -413,7 +418,7 @@ export function getMacrosTotalAndAveragePerDay(category) {
             break;
     }
 
-    if( arrayMacros.length !== 0) {
+    if (arrayMacros.length !== 0) {
         arrayMacros.forEach((data) => {
             totalFiber += data.get("Fibre");
             totalProtein += data.get("Protéine");
@@ -428,10 +433,10 @@ export function getMacrosTotalAndAveragePerDay(category) {
     macrosMap.set("totalProtein", totalProtein);
     macrosMap.set("totalFat", totalFat);
     macrosMap.set("totalGlucide", totalGlucide);
-    macrosMap.set("averageFiber", +(totalFiber/days).toFixed(2));
-    macrosMap.set("averageProtein", +(totalProtein/days).toFixed(2));
-    macrosMap.set("averageFat", +(totalFat/days).toFixed(2));
-    macrosMap.set("averageGlucide", +(totalGlucide/days).toFixed(2));
+    macrosMap.set("averageFiber", +(totalFiber / days).toFixed(2));
+    macrosMap.set("averageProtein", +(totalProtein / days).toFixed(2));
+    macrosMap.set("averageFat", +(totalFat / days).toFixed(2));
+    macrosMap.set("averageGlucide", +(totalGlucide / days).toFixed(2));
 
     return macrosMap;
 }
@@ -458,8 +463,8 @@ export function getAverageToilets() {
         });
         mapToilets.set("totalUrine", totalUrine);
         mapToilets.set("totalFeces", totalFeces);
-        mapToilets.set("averageUrinePerDay", (totalUrine/days).toFixed(2));
-        mapToilets.set("averageFecesPerDay", (totalFeces/days).toFixed(2));
+        mapToilets.set("averageUrinePerDay", (totalUrine / days).toFixed(2));
+        mapToilets.set("averageFecesPerDay", (totalFeces / days).toFixed(2));
 
         return mapToilets;
     }
@@ -486,7 +491,7 @@ export function getAverageGlycemia() {
         arrayGlycemia.forEach((data) => {
             total += data.get("Glycémie");
         });
-        moyenne = (total/days).toFixed(2);
+        moyenne = (total / days).toFixed(2);
         mapAverageGlycemia.set("Moyenne", moyenne + " mmol/L");
         mapAverageGlycemia.set("Référence", "4.7 - 6.8 mmol/L");
 
@@ -498,10 +503,10 @@ export function getAverageGlycemia() {
 //Possible keys: date, hour, minute, duration
 export function getActivities() {
     if (arrayActivities.length !== 0) {
-         sortEntries(arrayActivities);
-         return arrayActivities;
+        sortEntries(arrayActivities);
+        return arrayActivities;
     } else {
-            return null;
+        return null;
     }
 }
 
@@ -512,12 +517,12 @@ export function getAggregateActivities() {
 
     if (arrayActivities.length !== 0) {
         getActivities().forEach((data) => {
-            totalDuration = totalDuration + parseInt(data.get('minutes')) + parseInt(data.get('hours')*60);
+            totalDuration = totalDuration + parseInt(data.get('minutes')) + parseInt(data.get('hours') * 60);
             totalDays = totalDays + 1;
         });
 
         mapAggActivities.set("TotalDuration", formatDuration(totalDuration));
-        mapAggActivities.set("AverageDuration", formatDuration(totalDuration/totalDays));
+        mapAggActivities.set("AverageDuration", formatDuration(totalDuration / totalDays));
 
         return mapAggActivities;
     } else {
@@ -541,12 +546,11 @@ export function getAggregateWeights() {
     if (arrayWeights.length !== 0) {
         let finalWeight = getWeights()[getWeights().length - 1].get("weight");
 
-        //mapAggWeights.set("initalWeight", initialWeight);
         let initialWeight_2 = getWeights()[0].get("weight");
         mapAggWeights.set("initalWeight", initialWeight_2);
         mapAggWeights.set("finalWeight", finalWeight);
         mapAggWeights.set("deltaWeight", (finalWeight - initialWeight_2).toFixed(2));
-        mapAggWeights.set("weightUnit",localStorage.getItem("prefUnitePoids"));
+        mapAggWeights.set("weightUnit", localStorage.getItem("prefUnitePoids"));
         return mapAggWeights;
     } else {
         return null;
@@ -577,29 +581,29 @@ export function getAggregateSleeps() {
         let totalDaysWakeUp = 0;
 
         getSleeps().forEach((data) => {
-                if (data.get("startHour")) {
-                   minTotalStartHours += getDuration(data.get("startHour"));
-                   totalDaysStart += 1;
-                }
+            if (data.get("startHour")) {
+                minTotalStartHours += getDuration(data.get("startHour"));
+                totalDaysStart += 1;
+            }
 
-                if (data.get("endHour")) {
-                    minTotalEndHours += getDuration(data.get("endHour"));
-                    totalDaysEnd += 1
-                }
+            if (data.get("endHour")) {
+                minTotalEndHours += getDuration(data.get("endHour"));
+                totalDaysEnd += 1
+            }
 
-                if (getDuration(data.get("duration")) !== 0) {
-                    minTotalDuration +=  getDuration(data.get("duration"));
-                    totalDaysDuration += 1;
-                }
-                totalWakeUp += parseInt(data.get("wakeUpQt"));
-                totalDaysWakeUp +=1;
+            if (getDuration(data.get("duration")) !== 0) {
+                minTotalDuration += getDuration(data.get("duration"));
+                totalDaysDuration += 1;
+            }
+            totalWakeUp += parseInt(data.get("wakeUpQt"));
+            totalDaysWakeUp += 1;
 
         });
 
-        mapAggSleeps.set("averageStartHour", formatDuration(minTotalStartHours/totalDaysStart));
-        mapAggSleeps.set("averageEndHour", formatDuration(minTotalEndHours/totalDaysEnd));
-        mapAggSleeps.set("averageDuree", formatDuration(minTotalDuration/totalDaysDuration));
-        mapAggSleeps.set("averageWakeUpQt", (totalWakeUp/totalDaysWakeUp).toFixed(1));
+        mapAggSleeps.set("averageStartHour", formatDuration(minTotalStartHours / totalDaysStart));
+        mapAggSleeps.set("averageEndHour", formatDuration(minTotalEndHours / totalDaysEnd));
+        mapAggSleeps.set("averageDuree", formatDuration(minTotalDuration / totalDaysDuration));
+        mapAggSleeps.set("averageWakeUpQt", (totalWakeUp / totalDaysWakeUp).toFixed(1));
         return mapAggSleeps;
     } else {
         return null;
@@ -610,44 +614,47 @@ export function getAggregateSleeps() {
 // sort the entries from the most recent date to the oldest one
 // Note : the key containing the date value must be called Date
 function sortEntries(arrayToSort) {
-    arrayToSort.sort((a,b) => new Date(b.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
+    arrayToSort.sort((a, b) => new Date(b.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
         - new Date(a.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")));
 }
 
 
-function getNumberOfUniqueDate(array_aliments){
+function getNumberOfUniqueDate(array_aliments) {
     let set_date = new Set();
-    array_aliments.forEach((data)=>{
+    array_aliments.forEach((data) => {
         set_date.add(data.get('Date'))
     });
     return set_date.size;
 }
 
 //----------TEST--------
-export function test_fetchNourriture(array_nourriture,formatedDate) {
-    fetchNourriture(array_nourriture,formatedDate);
+export function test_fetchNourriture(array_nourriture, formatedDate) {
+    fetchNourriture(array_nourriture, formatedDate);
     return arrayNourriture;
-  }
+}
+
 export function test_fetchDrinksHydratation(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayHydratations;
 }
+
 export function test_fetchDrinksAlcohol(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayAlcohol;
-}    
-export function resetDataArrays(){
-    arrayNourriture=[];
-    arrayHydratations=[];
-    arrayAlcohol=[];
-}  
+}
 
-export function test_getNumberOfUniqueDate(array_aliments){
+export function resetDataArrays() {
+    arrayNourriture = [];
+    arrayHydratations = [];
+    arrayAlcohol = [];
+}
+
+export function test_getNumberOfUniqueDate(array_aliments) {
     return getNumberOfUniqueDate(array_aliments);
 }
 
-export function test_sortEntries(arrayToSort){
-     sortEntries(arrayToSort);
+export function test_sortEntries(arrayToSort) {
+    sortEntries(arrayToSort);
 }
 
 
