@@ -67,16 +67,11 @@ test('test - changement de poids, verification valeur de IMC', done => {
   }  
 });
 
-//Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
-const renderWithRouter = (ui, { route = '/' } = {}) => {
-    window.history.pushState({}, 'Test page', route);
-    return render(ui, { wrapper: BrowserRouter });
-}
-
 // Les trois tests donne le même % de couverture
 test('Traduction du mot Poids en espagnol', async() => {
   localStorage.setItem('userLanguage', 'es')
-  render(<Poids poids/>);
+  act(() => {render(<Poids poids/>)})
+  ;
   const mot = screen.getByText(/Peso/i);
   expect(mot).toBeDefined();
 });
@@ -84,14 +79,14 @@ test('Traduction du mot Poids en espagnol', async() => {
 
 test('Traduction du mot Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
-  render(<Poids poids/>);
+  act(() => {render(<Poids poids/>)})
   const mot = screen.getByText(/Weight/i);
   expect(mot).toBeDefined();
 });
 
 test('Traduction du mot Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
-  render(<Poids poids/>);
+  act(() => {render(<Poids poids/>)})
   const mot = screen.getByText(/BMI/i);
   expect(mot).toBeDefined();
 });
@@ -193,28 +188,6 @@ describe('formatToKG', () => {
   });
 
 });
-
-
-test('Poids Test element dans le page', async() => {
-  renderWithRouter( < App / > , { route: '/configurationPoids' });
-  localStorage.setItem("prefUnitePoids", 'KG')
-  const pop_up_elem_kg = screen.getByText(/KG/i);
-  expect(pop_up_elem_kg).toBeInTheDocument();
-});
-
-test('Poids Test popup', async() => {
-  renderWithRouter( < App / > , { route: '/configurationPoids' });
-  localStorage.setItem("prefUnitePoids", 'KG')
-  const check_button = screen.getByTestId("pop_up_unite")
-  act(() => {fireEvent.click(check_button)})
-  
-  const pop_up_elem_lbs = screen.getByText(/LBS/i);
-  const pop_up_elem_kg = screen.getByText(/KG/i);
-  expect(pop_up_elem_lbs).toBeInTheDocument();
-  expect(pop_up_elem_kg).toBeInTheDocument();
-});
-
-
 
 test('valeur de poids', async() => {
 
