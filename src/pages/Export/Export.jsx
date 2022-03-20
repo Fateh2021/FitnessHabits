@@ -453,7 +453,7 @@ const Settings = (props) => {
                                         var date = new Date().toISOString().slice(0, 10);
                                         if (exportType === "pdf" || exportType === "hybride") {
                                             await compilerBilan(dataSelected, d1, d2);
-                                            await creerPdf(date, dataSelected);
+                                            await creerPdf(dataSelected, d1, d2);
                                         }
                                         if (exportType === "csv" || exportType === "hybride") {
                                             var overviewCsv = await compilerBilan(dataSelected, d1, d2);
