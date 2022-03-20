@@ -34,6 +34,31 @@ afterEach(() => {
   localStorage.clear();
 });
 
+test('Traduction du mot Poids en espagnol', async() => {
+  localStorage.setItem('userLanguage', 'es')
+  act(() => {render(<Poids poids/>);
+    const mot = screen.getByText(/Peso/i);
+    expect(mot).toBeDefined();
+	})
+});
+
+
+test('Traduction du mot Poids en anglais', async() => {
+  localStorage.setItem('userLanguage', 'en')
+  act(() => {render(<Poids poids/>);
+    const mot = screen.getByText(/Weight/i);
+    expect(mot).toBeDefined();
+  })
+});
+
+test('Traduction du mot Poids en anglais', async() => {
+  localStorage.setItem('userLanguage', 'en')
+  act(() => {render(<Poids poids/>)
+    const mot = screen.getByText(/BMI/i);
+    expect(mot).toBeDefined();
+  })
+});
+
 /*
 test('tests - conversion du poids Kg - LBS', () => {  
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
@@ -79,39 +104,7 @@ test('test - changement de poids, verification valeur de IMC', done => {
 })
 });
 */
-
-
-// Les trois tests donne le même % de couverture
-test('Traduction du mot Poids en espagnol', async() => {
-  localStorage.setItem('userLanguage', 'es')
-  act(() => {render(<Poids poids/>);
-    const mot = screen.getByText(/Peso/i);
-    expect(mot).toBeDefined();
-})
-
-
-});
-
-
-test('Traduction du mot Poids en anglais', async() => {
-  localStorage.setItem('userLanguage', 'en')
-  act(() => {render(<Poids poids/>);
-    const mot = screen.getByText(/Weight/i);
-    expect(mot).toBeDefined();
-  
-  })
-
-});
-
-test('Traduction du mot Poids en anglais', async() => {
-  localStorage.setItem('userLanguage', 'en')
-  act(() => {render(<Poids poids/>)
-    const mot = screen.getByText(/BMI/i);
-    expect(mot).toBeDefined();
-  })
-
-});
-
+/*
 test('select down', async() => {
   act(() => {
     render(<Poids poids/>);
@@ -125,8 +118,8 @@ test('select down', async() => {
 
 
 });
-
-//test pour poidsService
+*/
+/*
 describe('saveEntreeDePoids', () => {
 
   it('valeur should be 88', async() => {
@@ -136,8 +129,8 @@ describe('saveEntreeDePoids', () => {
 
   });
 
-});
-
+});*/
+/*
 describe('setPrefUnitePoids', () => {
 
   it('should return undefined', async() => {
@@ -146,16 +139,16 @@ describe('setPrefUnitePoids', () => {
     expect(tmp).toBe('LBS');
   });
 
-});
-
+});*/
+/*
 describe('getDailyPoids', () => {
 
   it('should return undefined', async() => {
     expect(getDailyPoids()).toBe(undefined);
   });
 
-});
-
+});*/
+/*
 describe('initPrefPoids', () => {
 
   it('should return KG', async() => {
@@ -164,10 +157,9 @@ describe('initPrefPoids', () => {
     expect(local_unite).toBe('KG');
   });
 
-});
+});*/
 
 /*
-
 describe('formatDate', () => {
 
   it('should return 2022-03-16', async() => {
@@ -175,23 +167,23 @@ describe('formatDate', () => {
   });
 });
 */
-
+/*
 describe('trouver_nouvelle_categorie', () => {
 
   it('should return CATEGORIE_IDEAL', async() => {
       expect(trouver_nouvelle_categorie(20)).toBe('CATEGORIE_IDEAL');
   });
 
-});
-
+});*/
+/*
 describe('formatPoids', () => {
 
   it('should return 77', async() => {
       expect(formatPoids(77)).toBe(77);
   });
 
-});
-
+});*/
+/*
 describe('formatToKG', () => {
 
   it('should return 35.00', async() => {
@@ -200,8 +192,8 @@ describe('formatToKG', () => {
 
   });
 
-});
-
+});*/
+/*
 test('valeur de poids', async() => {
 
   act(() => {render(<Poids poids/>);
@@ -212,7 +204,8 @@ test('valeur de poids', async() => {
 
 
 });
-
+*/
+/*
 test('go to page de configuration', async() => {
   act(() => {
     render(<Poids poids/>);
@@ -223,4 +216,4 @@ test('go to page de configuration', async() => {
     const pop_up_elem_kg = screen.getByText(/KG/i);
     expect(pop_up_elem_kg).toBeInTheDocument();
   })
-});
+});*/
