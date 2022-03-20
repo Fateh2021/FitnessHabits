@@ -29,37 +29,24 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var [taille, setTaille] = useState("");
-  // var p = props.poids; // en attente de Xuquan - car variable non utilisée
-  var pd = props.poids.dailyPoids;
-  // Réajustement du daily poids
-  if (prefPoids == 'LBS'){
-    pd = (pd * 2.2).toFixed(2);
-  }
-  // const [poids, setPoids] = useState(p); // en attente de Xuquan - car variable non utilisée
+  var [imc, setImc] = useState("0.0");
+  const userUID = localStorage.getItem("userUid");
 
-	// MAJ de l'ajustement
   useEffect(() => {
-    setDailyPoids(pd);
-  }, [pd]);
-
-/* // en attente de Xuquan
-  useEffect(() => {
-    setPoids(p); // car variable non utilisée
-  }, [p]);
-*/
+    var tmp = "";
+    if(prefPoids == "LBS") tmp = (props.poids.dailyPoids * 2.2).toFixed(2);
+    else tmp = props.poids.dailyPoids;
+    setDailyPoids(tmp);
+  }, [props.poids.dailyPoids]);
 
   useEffect(() => {
     poidsService.initPrefPoids();
-    const userUID = localStorage.getItem("userUid");
     let preferencesPoidsRef = firebase
       .database()
       .ref("profiles/" + userUID + "/preferencesPoids");
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids === "LBS") {
-          props.poids.dailyPoids = props.poids.dailyPoids * 2.2;
-        }
       }
     });
 
@@ -69,7 +56,9 @@ const Poids = (props) => {
         setTaille(snapshot.val().size);
       }
     });
-  }, []);
+
+    setImc(CalculImc());
+  });
 
 	// Capture de l'éventement si unite de préférence du poids change
   const handleUnitePoidsChange = (event) => {
@@ -79,17 +68,21 @@ const Poids = (props) => {
     
     setUnitePoids(newUnitePoids);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+    var tmp_weight = 0;
 
     if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
-      dashboard.poids.dailyPoids = (dailyPoids * 2.2).toFixed(2);
-      setDailyPoids((dailyPoids * 2.2).toFixed(2));
-    } else if (oldUnitePoids === "LBS" && newUnitePoids === "KG") {
-      dashboard.poids.dailyPoids = (dailyPoids / 2.2).toFixed(2);
-      setDailyPoids((dailyPoids / 2.2).toFixed(2));
+
+      tmp_weight = (dashboard.poids.dailyPoids * 2.2).toFixed(2);      
+    } else{
+      tmp_weight = dashboard.poids.dailyPoids;
+
     }
+
+    setDailyPoids(tmp_weight);
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
-    //IMC = CalculImc();
+    setImc(CalculImc());
+
   };
 
 	// Capture de l'éventement si IMC change
@@ -106,10 +99,7 @@ const Poids = (props) => {
 
 	// Capture de l'éventement si le dailyPoids change
   const handleChange = (event) => {
-    let poidsDaily = event.target.value;
-      
-    console.log("in poids change: ", poidsDaily)
-
+    let poidsDaily = event.detail.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
     dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
@@ -117,11 +107,7 @@ const Poids = (props) => {
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
     setDailyPoids(poidsDaily);
-    if (unitePoids == "LBS") {
-      dashboard.poids.dailyPoids = (poidsDaily / 2.2).toFixed(2);
-    }
 
-    const userUID = localStorage.getItem("userUid");
     firebase
       .database()
       .ref(
@@ -137,23 +123,14 @@ const Poids = (props) => {
 
   // La fonction qui calcul IMC en fonction de la taille et le poids
   var CalculImc = () => {
-    var valeur_IMC;
-    // Création d'une variable dans le but de ne pas toucher à la valeur de la variable taille
-    var taille_ajuste = taille / 100;
-    var poids_ajuste = dailyPoids; // Renommage de la variable
+    var tmp_taille = taille / 100;
+    var p = dailyPoids;
 
-    if (unitePoids == "LBS") {
-      poids_ajuste = (poids_ajuste / 2.2).toFixed(2); // IMC se calcul avec le poids en kilo seulement
-      valeur_IMC = poids_ajuste / (taille_ajuste * taille_ajuste);
-    } else {
-      valeur_IMC = poids_ajuste / (taille_ajuste * taille_ajuste);
-    }
-
-    return valeur_IMC.toFixed(2);
+    if (unitePoids == "LBS") p = (dailyPoids / 2.2).toFixed(2);
+    
+    var indicateur_IMC = p / (tmp_taille * tmp_taille);
+    return indicateur_IMC.toFixed(2);
   };
-
-  // Récupération de la valeur IMC calculée à l'intérieur de la fonction
-  var IMC = CalculImc();
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";
@@ -177,20 +154,24 @@ const Poids = (props) => {
             </h2>
           </IonLabel>
           <IonInput
-            value={(IMC == Infinity? "": IMC)}
+            //value={IMC == "Infinity" ? "" : IMC}
+            value={imc == "Infinity" ? "" : imc}
             data-testid = "IMC_value" 
             className="IMC"
+            aria-label="imc"
             readonly
             onIonChange={handleIMCChange}  
             
           ></IonInput>
         </div>
-        <IonInput
-          data-testid = "poids_input"  
-          className="input poidsActuel"
-          value={dailyPoids}              
-          onIonChange={handleChange}          
-        ></IonInput>
+          <IonInput
+            data-testid = "poids_input"  
+            className="input poidsActuel"
+            value={dailyPoids}              
+            onIonChange={handleChange}
+            aria-label="weight"
+            title="Daily weight"
+          ></IonInput>
 
         <select data-testid = "select" className="input" value={unitePoids} onChange={handleUnitePoidsChange} >
           <option value="LBS">LBS</option>

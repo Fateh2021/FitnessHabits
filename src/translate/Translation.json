@@ -799,6 +799,35 @@
       "en": "Morbid obesity",
       "es": "Obesidad mórbida",
       "fr": "Obésité morbide"
+   },
+   "POIDS_DEBUT_MESSAGE_ALERT":{
+      "en":"Warning, please enter the missing information in the following fields :\n",
+      "es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
+      "fr":"Attention, veuiller saisir les informations manquantes dans les champs suivant :\n"
+   },
+   "POIDS_INITIAL_VIDE":{
+      "en":"\nThe initial weight must not be empty !",
+      "es":"\n¡El peso inicial no debe estar vacío !",
+      "fr":"\nLe poids initiale ne doit pas être vide !"
+   },
+   "POIDS_CIBLE_VIDE":{
+      "en":"\nThe target weight must not be empty !",
+      "es":"\nEl peso objetivo no debe estar vacío !",
+      "fr":"\nLe poids cible ne doit pas être vide !"
+   },
+   "POIDS_DATE_CIBLE_VIDE":{
+      "en":"\nThe target date must not be empty !",
+      "es":"\n¡La fecha objetivo no debe estar vacía !",
+      "fr":"\nLa date cible ne doit pas être vide !"
+   },
+   "POIDS_FIN_MESSAGE_ALERT":{
+      "en":"\n\nHave a good day",
+      "es":"\n\nQue tenga un buen día",
+      "fr":"\n\nBonne journée"
+   },
+   "POIDS_SUGGESTION_DATE":{
+      "en":"Select a date",
+      "es":"Seleccione una fecha",
+      "fr":"Choisir une date"
    }
-
 }

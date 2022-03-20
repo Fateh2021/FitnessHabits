@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
@@ -9,23 +10,61 @@ import Poids from '../ItemsList/Poids';
 
 import { formatPoids,formatToKG , trouver_nouvelle_categorie, formatDate, initPrefPoids, 
         getDailyPoids, setPrefUnitePoids, saveEntreeDePoids} from '../../Poids/configuration/poidsService';
-
-
+import { doneAll } from 'ionicons/icons';
 
 beforeEach(() => {
   var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
   var poids={
-    dailyPoids:"77.00",
+    dailyPoids:"77",
     datePoids:"2022-03-17T15:24:10.792Z"
   }
+  var size="160";
   const pseudo_dashboard = {
     userUID,
-    poids
+    poids,
+    size
   };
-
+  localStorage.setItem('userUid', userUID);
   localStorage.setItem('dashboard', JSON.stringify(pseudo_dashboard));
   localStorage.setItem("prefUnitePoids", 'KG');
+  localStorage.setItem('userLanguage', 'fr');
+});
 
+
+test('tests - conversion du poids Kg - LBS', () => {  
+  const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
+  const { getByTestId, getByLabelText } =  render(<Poids poids={ dash_.poids } />);
+  const weight = getByLabelText("weight");
+  const weight_in_LBS = (dash_.poids.dailyPoids * 2.2).toFixed(2);
+  
+  const select = getByTestId("select");
+  fireEvent.change(select , { target: { value: "LBS" } });
+  expect(weight.value).toBe(weight_in_LBS);
+
+  fireEvent.change(select , { target: { value: "KG" } });
+  expect(weight.value).toBe(dash_.poids.dailyPoids);  
+});
+
+
+test('test - changement de poids, verification valeur de IMC', done => {
+  const dash_ = JSON.parse(localStorage.getItem("dashboard"));
+  const { getByTestId, getByLabelText } = render(<Poids poids={ dash_.poids } />);
+  const weight = getByTestId("poids_input");
+  const imc = getByLabelText("imc");  
+  fireEvent.ionChange(weight, "99");
+  expect((weight).value).toEqual("99");
+
+  try{
+    const wait_time = setTimeout(() => {
+      const taille = dash_.size / 100;
+      const x = 99 / (taille * taille);
+      expect((imc).value).toEqual(x.toFixed(2));
+    }, 2000); // attendre que la valeur de imc soit mise a jour
+    done();
+  }
+  catch (error) {
+    done(error);
+  }  
 });
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
@@ -41,6 +80,7 @@ test('Traduction du mot Poids en espagnol', async() => {
   const mot = screen.getByText(/Peso/i);
   expect(mot).toBeDefined();
 });
+
 
 test('Traduction du mot Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
@@ -198,12 +238,3 @@ test('go to page de configuration', async() => {
   const pop_up_elem_kg = screen.getByText(/KG/i);
   expect(pop_up_elem_kg).toBeInTheDocument();
 });
-
-
-
-
-
-
-
-
-
