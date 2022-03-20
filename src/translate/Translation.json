@@ -13,7 +13,7 @@
       "en":"Language",
       "es":"Lengua",
       "fr":"Langue"
-   }, 
+   },
    "HYD_TITLE_TARGET":{
       "en":"Daily target",
       "es":"Objetivo diario",
@@ -103,32 +103,32 @@
       "en":"Add supplements/medications",
       "es":"Añadir suplementos/medicamentos",
       "fr":"Ajouter suppléments/médicaments"
-   }, 
+   },
    "SUPPL_NOM":{
       "en":"Name",
       "es":"Nombre",
       "fr":"Nom"
-   }, 
+   },
    "SUPPL_FORME_CAPSULE":{
       "en":"Capsule",
       "es":"Cápsula",
       "fr":"Gélule"
-   }, 
+   },
    "SUPPL_FORME_TABLET":{
       "en":"Tablet",
       "es":"Tableta",
       "fr":"Comprimé"
-   }, 
+   },
    "SUPPL_FORME_DROP":{
       "en":"Drop",
       "es":"Gota",
       "fr":"Goutte"
-   }, 
+   },
    "SUPPL_FORME_SYROP":{
       "en":"Syrup",
       "es":"Jarabe",
       "fr":"Sirop"
-   }, 
+   },
    "SUPPL_SUPPPLEMENT":{
       "en":"Supplement",
       "es":"Suplemento",
@@ -138,17 +138,17 @@
       "en":"Medicament",
       "es":"Medicamento",
       "fr":"Médicament"
-   },  
+   },
    "SUPPL_DATE_DEBUT":{
       "en":"Start date",
       "es":"Fecha de inicio",
       "fr":"Date de debut"
-   },  
+   },
    "SUPPL_DATE_FIN":{
       "en":"End date",
       "es":"Fecha de fin",
       "fr":"Date de fin"
-   },  
+   },
    "SUPPL_ACTIVE":{
       "en":"Active",
       "es":"Activo",
@@ -494,6 +494,41 @@
       "es":"Dormir",
       "fr":"Sommeil"
    },
+   "HYDRATION":{
+      "en":"Hydration",
+      "es":"Hidratación",
+      "fr":"Hydratation"
+   },
+   "FOOD":{
+      "en":"Food",
+      "es":"Comida",
+      "fr":"Nourriture"
+   },
+   "ALCOHOL": {
+      "en":"Alcohol",
+      "es":"Alcohol",
+      "fr":"Alcool"
+   },
+   "ACTIVITIES": {
+      "en":"Activities",
+      "es":"Ocupaciones",
+      "fr":"Activités"
+   },
+   "WEIGHT": {
+      "en":"Weight",
+      "es":"Peso",
+      "fr":"Poids"
+   },
+   "TOILET": {
+      "en":"Toilet",
+      "es":"Baño",
+      "fr":"Toilettes"
+   },
+   "GLYCEMIC": {
+      "en":"Glycemic",
+      "es":"Glucémico",
+      "fr":"Glycémique"
+   },
    "SOMMEIL_DUREE_ERROR":{
       "en":"The sleep time cannot be 0 minutes.",
       "es":"El tiempo de reposo no puede ser de 0 minutos.",
@@ -580,3 +615,4 @@
       "fr":"Évolution du poids des 3 derniers mois"
    }
 }
+
