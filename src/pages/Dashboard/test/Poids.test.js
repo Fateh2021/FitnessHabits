@@ -90,43 +90,40 @@ test('tests - conversion du poids KG', () => {
 test('test - changement de poids, verification valeur de IMC', done => {
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));
   act(() => {
-  const { getByTestId, getByLabelText } = render(<Poids poids={ dash_.poids } />);
-  const weight = getByTestId("poids_input");
-  const imc = getByLabelText("imc");  
-  act(() => {fireEvent.ionChange(weight, "99");})
-  fireEvent.ionChange(weight, "99");
-  
-  expect((weight).value).toEqual("99");
+	  const { getByTestId, getByLabelText } = render(<Poids poids={ dash_.poids } />);
+	  const weight = getByTestId("poids_input");
+	  const imc = getByLabelText("imc");
+	  act(() => {fireEvent.ionChange(weight, "99");})
+	  fireEvent.ionChange(weight, "99");
 
-  try{
-    const wait_time = setTimeout(() => {
-      const taille = dash_.size / 100;
-      const x = 99 / (taille * taille);
-      expect((imc).value).toEqual(x.toFixed(2));
-    }, 2000); // attendre que la valeur de imc soit mise a jour
-    done();
-  }
-  catch (error) {
-    done(error);
-  }  
-})
+	  expect((weight).value).toEqual("99");
+
+	  try{
+	    const wait_time = setTimeout(() => {
+	      const taille = dash_.size / 100;
+	      const x = 99 / (taille * taille);
+	      expect((imc).value).toEqual(x.toFixed(2));
+	    }, 2000); // attendre que la valeur de imc soit mise a jour
+	    done();
+	  }
+	  catch (error) {
+	    done(error);
+	  }
+	})
 });
 */
-/*
+
 test('select down', async() => {
   act(() => {
     render(<Poids poids/>);
-    const s = screen.getByTestId('select');
-
-    fireEvent.click(s);
+    const option = screen.getByTestId('select');
+    fireEvent.click(option);
   
     expect('LBS').toBeDefined();
     expect('KG').toBeDefined();
   })
-
-
 });
-*/
+
 /*
 describe('saveEntreeDePoids', () => {
 
@@ -138,24 +135,20 @@ describe('saveEntreeDePoids', () => {
   });
 
 });*/
-/*
-describe('setPrefUnitePoids', () => {
 
+describe('setPrefUnitePoids', () => {
   it('should return undefined', async() => {
     setPrefUnitePoids('LBS');
     var tmp = localStorage.getItem("prefUnitePoids");    
     expect(tmp).toBe('LBS');
   });
+});
 
-});*/
-/*
 describe('getDailyPoids', () => {
-
   it('should return undefined', async() => {
     expect(getDailyPoids()).toBe(undefined);
   });
-
-});*/
+});
 /*
 describe('initPrefPoids', () => {
 
