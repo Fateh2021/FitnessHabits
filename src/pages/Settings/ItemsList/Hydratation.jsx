@@ -7,6 +7,9 @@ import firebase from 'firebase'
 import '../../../pages/Tab1.css';
 import HeadItems from './HeadItems';
 
+//Added to translator
+import * as translate from '../../../translate/Translator';
+
 const Hydratation = (props) => {
   const [dailyTarget, setDailyTarget] = useState(props.hydratation.dailyTarget);
 
@@ -42,7 +45,7 @@ const Hydratation = (props) => {
           <img src="/assets/Hydratation.jpeg" alt=""/>
         </IonAvatar>
         <IonLabel>
-          <h2><b>Hydratation</b></h2>
+          <h2><b>{translate.getText('HYDR_TITLE')}</b></h2>
         </IonLabel>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV1")} />
       </IonItem>
@@ -58,17 +61,17 @@ const Hydratation = (props) => {
         <IonRadioGroup>
           <IonItem className="cibleQuotid">
             <IonCol size="1"></IonCol>
-            <IonLabel className = 'cibleTitle'><h3>Cible quotidienne</h3></IonLabel> 
+            <IonLabel className = 'cibleTitle'><h3> {translate.getText('HYD_TITLE_TARGET')} </h3></IonLabel> 
             <IonCol size="2">
               <IonInput id = 'cibleQtte' type = "number" name="value" value={dailyTarget.value} onIonChange={handleDailyTargetChange}></IonInput>  
             </IonCol>
             <select id="materialSelectCibleQuot" name="unit" value={dailyTarget.unit} onChange={handleDailyTargetChange}>
               <option value8="-1"></option>
-              <option value8="gr">gr</option>
-              <option value8="oz">oz</option>
-              <option value8="ml">ml</option>
-              <option value8="tasse">tasse</option>
-              <option value8="unite">unité</option>
+              <option value="gr">{translate.getText('UNIT_GR')}</option>
+              <option value="oz">{translate.getText('UNIT_OZ')}</option>
+              <option value="ml">{translate.getText('UNIT_ML')}</option>
+              <option value="tasse">{translate.getText('UNIT_CUP')}</option>
+              <option value="unite">{translate.getText('UNIT_TEXT')}</option>
             </select>
           </IonItem>
         </IonRadioGroup>  

@@ -4,6 +4,9 @@ import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionico
 import uuid from 'react-uuid';
 import firebase from 'firebase'
 
+//Added to translator
+import * as translate from '../../../translate/Translator';
+
 import '../../../pages/Tab1.css';
 
 const HydrateItem = (props) => {
@@ -30,6 +33,9 @@ const HydrateItem = (props) => {
     props.save(itemDashHydrate);
   }
 
+  const descPlaceholder = translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']);
+
+
   return (
     <div id="divPopUp1-1">
         <IonCol size="1">
@@ -44,21 +50,21 @@ const HydrateItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemDashHydrate.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder={ descPlaceholder } name="name" value={itemDashHydrate.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={itemDashHydrate.qtte} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <select id="materialSelectAddHyd" name="unit" defaultValue={itemDashHydrate.unit} onChange={handleChange}>
             <option value="-1"></option>
-            <option value="gr">gr</option>
-            <option value="oz">oz</option>
-            <option value="ml">ml</option>
-            <option value="tasse">tasse</option>
-            <option value="unite">unité</option>
+            <option value="gr">{translate.getText('UNIT_GR')}</option>
+            <option value="oz">{translate.getText('UNIT_OZ')}</option>
+            <option value="ml">{translate.getText('UNIT_ML')}</option>
+            <option value="tasse">{translate.getText('UNIT_CUP')}</option>
+            <option value="unite">{translate.getText('UNIT_TEXT')}</option>
           </select>
           <IonCol className ="colNutProteinesHyd" size="1"><div className ="divMacroAdd">Pro</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Pro" name="proteine" value={itemDashHydrate.proteine} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Pro" name="pro" value={itemDashHydrate.proteine} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol className ="colNutGlucidesHyd" size="1"><div className ="divMacroAdd">Glu</div>
             <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={itemDashHydrate.glucide} onIonChange={handleChange}></IonInput>  
@@ -203,7 +209,11 @@ const Hydratation = (props) => {
     <div>
       <IonItem className="divTitre1">
         <IonAvatar slot="start"><img src="/assets/Hydratation.jpeg" alt=""/></IonAvatar>
-        <IonLabel><h2><b>Hydratation</b></h2></IonLabel>
+        <IonLabel id="hydrationTitle">
+          <h2>
+            <b>{translate.getText("HYDR_TITLE")}</b>
+          </h2>
+          </IonLabel>
         <IonInput className='inputTextGly' value = {globalConsumption} readonly></IonInput> 
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV1")} />
       </IonItem>
@@ -235,7 +245,9 @@ const Hydratation = (props) => {
           </div>
           <div className="ajoutBotton">    
             <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
-            <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
+            <IonIcon icon={addCircle}/>
+            <label id="addDrink"  className="labelAddItem">{ translate.getText('HYD_BUTTON_ADD_DRINK') }
+            </label></IonButton>
           </div>
           {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashHydrate) => saveItem(itemDashHydrate)}/>}   
         </div>

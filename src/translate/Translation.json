@@ -843,6 +843,15 @@
       "en": "DD-mmm-YYYY (16-feb-2021)",
       "es": "DD-mmm-AAAA (16-feb-2021)",
       "fr": "JJ-mmm-AAAA (16-fev-2021)"
+   },
+   "SIDEBAR_LBL_UNIT": {
+      "en": "Unit",
+      "es": "Unidad",
+      "fr": "Unité"
+   },
+   "SIDEBAR_LBL_PORTION_SIZE": {
+      "en": "Size",
+      "es": "Tamaño",
+      "fr": "Taille"
    }
-
 }
