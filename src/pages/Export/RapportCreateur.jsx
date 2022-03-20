@@ -19,16 +19,17 @@ import {
 
 import * as translate from '../../translate/Translator';
 
-export async function creerPdf(date, dataSelected) {
+export async function creerPdf(dataSelected, d1, d2) {
     const doc = new jsPDF();
-
-    // logo
+    let date = d1.toISOString().slice(0, 10) + " " + translate.getText("A") + " " + d2.toISOString().slice(0, 10);
+    // logo 
     doc.autoTable({
         body: [[' ']],
         alternateRowStyles: {fillColor: "#ffffff"},
         didDrawCell: (data) => {
             if (data.section === 'body' && data.column.index === 0) {
                 doc.addImage('/assets/Logo2.png','png',10,2,78,20);
+                doc.text(date, 90, 10);
             }
         }
     });
