@@ -30,8 +30,12 @@ beforeEach(() => {
   localStorage.setItem('userLanguage', 'fr');
 });
 
+afterEach(() => {
+  localStorage.clear();
+});
 
-test('tests - conversion du poids Kg - LBS', () => {  
+
+test('tests - conversion du poids Kg - LBS', () => {
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
 
   act(() => {
@@ -40,12 +44,11 @@ test('tests - conversion du poids Kg - LBS', () => {
     const weight_in_LBS = (dash_.poids.dailyPoids * 2.2).toFixed(2);
     
     const select = getByTestId("select");
-    //fireEvent.change(select , { target: { value: "LBS" } });
-    //expect(weight.value).toBe(weight_in_LBS);
-    //fireEvent.change(select , { target: { value: "KG" } });
+    fireEvent.change(select , { target: { value: "LBS" } });
+    expect(weight.value).toBe(weight_in_LBS);
+    fireEvent.change(select , { target: { value: "KG" } });
     expect(weight.value).toBe(dash_.poids.dailyPoids);  
   })
-  
   
 });
 
@@ -111,7 +114,6 @@ test('select down', async() => {
   expect('KG').toBeDefined();
 
 });
-
 
 //test pour poidsService
 describe('saveEntreeDePoids', () => {
