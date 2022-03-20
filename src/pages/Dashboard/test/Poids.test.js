@@ -58,21 +58,23 @@ test('Traduction du mot Poids en anglais', async() => {
     expect(mot).toBeDefined();
   })
 });
-/*
+
+/* Ne marche pas - Benoit
 test('tests - conversion du poids LBS', () => {
   const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
   act(() => {
     const { getByTestId, getByLabelText } =  render(<Poids poids={ dashboard.poids } />);
+    const select = getByTestId("select");
     const weight = getByLabelText("weight");
     const weight_in_LBS = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
-    
-    const select = getByTestId("select");
+
     fireEvent.change(select , { target: { value: "LBS" } });
     expect(weight.value).toBe(weight_in_LBS);
   })
 });
 */
+
 test('tests - conversion du poids KG', () => {
   const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
@@ -85,8 +87,7 @@ test('tests - conversion du poids KG', () => {
   })
 });
 
-
-/*
+/* Ne marche pas - Benoit
 test('test - changement de poids, verification valeur de IMC', done => {
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));
   act(() => {
@@ -126,14 +127,11 @@ test('select down', async() => {
 
 
 describe('saveEntreeDePoids', () => {
-
   it('valeur should be 88', async() => {
     saveEntreeDePoids(88);
     var tmp = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
     expect(tmp).toBe(88);
-
   });
-
 });
 
 describe('Test sur la fonction -> setPrefUnitePoids', () => {
@@ -158,9 +156,8 @@ describe('Test sur la fonction -> initPrefPoids', () => {
   });
 });
 
-/*
+/* Ne marche pas - Benoit
 describe('formatDate', () => {
-
   it('should return 2022-03-16', async() => {
       expect(formatDate(new Date('2022-03-16'))).toBe('2022-03-16');
   });
@@ -194,7 +191,7 @@ test('valeur de poids', async() => {
   })
 });
 
-/*
+/* Ne marche pas - Benoit
 test('go to page de configuration', async() => {
   act(() => {
     render(<Poids poids/>);
