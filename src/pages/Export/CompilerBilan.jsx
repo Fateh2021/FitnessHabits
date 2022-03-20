@@ -1,9 +1,6 @@
-
 import firebase from "firebase";
 
 
-//import React, {Fragment} from 'react';
-// import {Text, View, StyleSheet} from '@react-pdf/renderer';
 let arrayWeights = [];
 let arraySleeps = [];
 let arrayActivities = [];
@@ -83,8 +80,8 @@ async function getDataFromFirebase(dataFormat) {
                 // if dayAndMonth has a length of 3, 2 options:
             } else if (dayAndMonth.length === 3) {
                 // day 2 chars, month 1 char
-                if ( dayAndMonth.slice(0, 2) in [...Array(32).keys()]
-                    && !(dayAndMonth.slice(1, 3) in [...Array(12).keys()]) ) {
+                if ( [...Array(32).keys()].includes(parseInt(dayAndMonth.slice(0, 2)))
+                    && !([...Array(12).keys()].includes(parseInt(dayAndMonth.slice(1, 3)))) ) {
                     jour = data.key.slice(0,2) + '-';
                     mois = '0' + data.key[2] + '-';
                     // day 1 char, month 1 char
@@ -130,10 +127,8 @@ function fetchData(data, formatedDate, categorySelected) {
     for (const category of categorySelected) {
         switch (category) {
             case "hydratation":
-                if (data.hydratation.hydrates) {
-                    let hydratations = data.hydratation.hydrates
-                    fetchDrinks("hydratation", hydratations, formatedDate);
-                }
+                let hydratations = data.hydratation.hydrates
+                fetchDrinks("hydratation", hydratations, formatedDate);
                 break;
             case "nourriture":
                 let cereales = data.cereales.cereales;
@@ -150,9 +145,8 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchToilets(toilets, formatedDate);
                 break;
             case "alcool":
-                if (data.alcool.alcools) {
-                    let alcools = data.alcool.alcools;
-                    fetchDrinks("alcool", alcools, formatedDate);
+                let alcools = data.alcool.alcools;
+                fetchDrinks("alcool", alcools, formatedDate);
                 }
                 break;
             case "glycémie":
@@ -199,25 +193,27 @@ function fetchData(data, formatedDate, categorySelected) {
 
 // Function that fetches datas for hydratation and alcohol.
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
-    for (const drink of drinks) {
-        if (drink.consumption === 0) {
-            continue;
-        }
-        let mapHydratation = new Map();
-        mapHydratation.set("Date", formatedDate);
-        mapHydratation.set("Nom", drink.name);
-        mapHydratation.set("Consommation", drink.consumption);
-        mapHydratation.set("Quantité", drink.qtte);
-        mapHydratation.set("Unité", drink.unit);
-        mapHydratation.set("Protéine", parseInt(drink.proteine) * drink.consumption);
-        mapHydratation.set("Glucide", parseInt(drink.glucide) * drink.consumption);
-        mapHydratation.set("Fibre", parseInt(drink.fibre) * drink.consumption);
-        mapHydratation.set("Gras", parseInt(drink.gras) * drink.consumption);
+    if (drinks !== null) {
+        for (const drink of drinks) {
+            if (drink.consumption === 0) {
+                continue;
+            }
+            let mapHydratation = new Map();
+            mapHydratation.set("Date", formatedDate);
+            mapHydratation.set("Nom", drink.name);
+            mapHydratation.set("Consommation", drink.consumption);
+            mapHydratation.set("Quantité", drink.qtte);
+            mapHydratation.set("Unité", drink.unit);
+            mapHydratation.set("Protéine", parseInt(drink.proteine) * drink.consumption);
+            mapHydratation.set("Glucide", parseInt(drink.glucide) * drink.consumption);
+            mapHydratation.set("Fibre", parseInt(drink.fibre) * drink.consumption);
+            mapHydratation.set("Gras", parseInt(drink.gras) * drink.consumption);
 
-        if (typeOfDrink === "hydratation") {
-            arrayHydratations.push(mapHydratation);
-        } else {
-            arrayAlcohol.push(mapHydratation);
+            if (typeOfDrink === "hydratation") {
+                arrayHydratations.push(mapHydratation);
+            } else {
+                arrayAlcohol.push(mapHydratation);
+            }
         }
     }
 }
@@ -251,13 +247,15 @@ function fetchNourriture(array_nourriture,formatedDate){
 
 
 function fetchToilets(toilets, formatedDate) {
-    let mapToilets = new Map();
+    if (toilets !== null) {
+        let mapToilets = new Map();
 
-    mapToilets.set("Date", formatedDate);
-    mapToilets.set("Urine", toilets.urine);
-    mapToilets.set("Transit", toilets.feces);
+        mapToilets.set("Date", formatedDate);
+        mapToilets.set("Urine", toilets.urine);
+        mapToilets.set("Transit", toilets.feces);
 
-    arrayToilets.push(mapToilets);
+        arrayToilets.push(mapToilets);
+    }
 }
 
 function fetchGlycemia(glycemia, formatedDate) {
