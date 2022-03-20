@@ -242,12 +242,11 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
     const checkbox_glycemia = screen.getByTestId("checkbox-glycemia")
 
     const radio_pdf = screen.getByTestId("radio-pdf")
-
-    act(() => {
-        fireEvent.click(checkbox_food)
-        fireEvent.click(checkbox_sleep)
-        fireEvent.click(checkbox_weight)
-        fireEvent.click(radio_pdf)
+    await act( async () => {
+          fireEvent.click(checkbox_food)
+          fireEvent.click(checkbox_sleep)
+          fireEvent.click(checkbox_weight)
+          fireEvent.click(radio_pdf)
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
     expect(checkbox_sleep.getAttribute("aria-checked")).toBe("false")
@@ -286,7 +285,6 @@ test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() =>
     const checkbox_glycemia = screen.getByTestId("checkbox-glycemia")
 
     const radio_pdf = screen.getByTestId("radio-pdf")
-
     act(() => {
         fireEvent.click(checkbox_activities)
         fireEvent.click(checkbox_food)
@@ -310,7 +308,7 @@ test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() =>
 test('ExportModule - TestClickOnFoodCheckbox', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     const checkbox_food = screen.getByTestId("checkbox-food")
-    act(() => {
+    await act( async () => {
         fireEvent.click(checkbox_food)
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
@@ -320,11 +318,12 @@ test('ExportModule - TestClickOnFoodCheckbox', async() => {
 test('ExportModule - TestClickOnFoodCheckbox', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
     const checkbox_food = screen.getByTestId("checkbox-food")
-    act(() => {
-        fireEvent.click(checkbox_food)
+    await act( async () => {
+         fireEvent.click(checkbox_food)
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
 });
+
 
 {/* ------Compiler Bilan----------- */}
 test('ExportModule - TestFetchNourritureCereale', async() => {
