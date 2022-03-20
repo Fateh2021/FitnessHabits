@@ -30,12 +30,8 @@ beforeEach(() => {
   localStorage.setItem('userLanguage', 'fr');
 });
 
-afterEach(() => {
-  localStorage.clear();
-});
 
-
-test('tests - conversion du poids Kg - LBS', () => {
+test('tests - conversion du poids Kg - LBS', () => {  
   const dash_ = JSON.parse(localStorage.getItem("dashboard"));  
 
   act(() => {
@@ -83,35 +79,45 @@ test('test - changement de poids, verification valeur de IMC', done => {
 // Les trois tests donne le même % de couverture
 test('Traduction du mot Poids en espagnol', async() => {
   localStorage.setItem('userLanguage', 'es')
-  act(() => {render(<Poids poids/>)})
-  ;
-  const mot = screen.getByText(/Peso/i);
-  expect(mot).toBeDefined();
+  act(() => {render(<Poids poids/>);
+    const mot = screen.getByText(/Peso/i);
+    expect(mot).toBeDefined();
+})
+
+
 });
 
 
 test('Traduction du mot Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
-  act(() => {render(<Poids poids/>)})
-  const mot = screen.getByText(/Weight/i);
-  expect(mot).toBeDefined();
+  act(() => {render(<Poids poids/>);
+    const mot = screen.getByText(/Weight/i);
+    expect(mot).toBeDefined();
+  
+  })
+
 });
 
 test('Traduction du mot Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
-  act(() => {render(<Poids poids/>)})
-  const mot = screen.getByText(/BMI/i);
-  expect(mot).toBeDefined();
+  act(() => {render(<Poids poids/>)
+    const mot = screen.getByText(/BMI/i);
+    expect(mot).toBeDefined();
+  })
+
 });
 
 test('select down', async() => {
-  render(<Poids poids/>);
-  const s = screen.getByTestId('select');
+  act(() => {
+    render(<Poids poids/>);
+    const s = screen.getByTestId('select');
 
-  act(() => {fireEvent.click(s)})
+    fireEvent.click(s);
+  
+    expect('LBS').toBeDefined();
+    expect('KG').toBeDefined();
+  })
 
-  expect('LBS').toBeDefined();
-  expect('KG').toBeDefined();
 
 });
 
@@ -196,7 +202,7 @@ describe('formatToKG', () => {
   it('should return 35.00', async() => {
     localStorage.setItem("prefUnitePoids", 'LBS');
 
-      expect(Number(formatToKG(77))).toBe(35.00);
+    expect(Number(formatToKG(77))).toBe(35.00);
 
   });
 
@@ -204,23 +210,27 @@ describe('formatToKG', () => {
 
 test('valeur de poids', async() => {
 
-  act(() => {render(<Poids poids/>);})
-
-  const  poids_input = screen.getByTestId('poids_input');
+  act(() => {render(<Poids poids/>);
+    const  poids_input = screen.getByTestId('poids_input');
     
-  //const mot = document.getElementsByName('ion-input-20').value;
-  //expect(mot).toBe("77.00");
+    //const mot = document.getElementsByName('ion-input-20').value;
+    //expect(mot).toBe("77.00");
 
-  const mot = document.getElementsByClassName('native-input sc-ion-input-md');
-  expect(mot).toBeDefined();
+    const mot = document.getElementsByClassName('native-input sc-ion-input-md');
+    expect(mot).toBeDefined();
+  })
+
+
 });
 
 test('go to page de configuration', async() => {
-  render(<Poids poids/>);
+  act(() => {
+    render(<Poids poids/>);
 
-  const img = screen.getByTestId('img_sauter');
-  act(() => {fireEvent.click(img)})
+    const img = screen.getByTestId('img_sauter');
+    act(() => {fireEvent.click(img)})
 
-  const pop_up_elem_kg = screen.getByText(/KG/i);
-  expect(pop_up_elem_kg).toBeInTheDocument();
+    const pop_up_elem_kg = screen.getByText(/KG/i);
+    expect(pop_up_elem_kg).toBeInTheDocument();
+  })
 });
