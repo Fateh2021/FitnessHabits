@@ -124,7 +124,7 @@ test('select down', async() => {
   })
 });
 
-/*
+
 describe('saveEntreeDePoids', () => {
 
   it('valeur should be 88', async() => {
@@ -134,9 +134,9 @@ describe('saveEntreeDePoids', () => {
 
   });
 
-});*/
+});
 
-describe('setPrefUnitePoids', () => {
+describe('Test sur la fonction -> setPrefUnitePoids', () => {
   it('should return undefined', async() => {
     setPrefUnitePoids('LBS');
     var tmp = localStorage.getItem("prefUnitePoids");
@@ -144,20 +144,18 @@ describe('setPrefUnitePoids', () => {
   });
 });
 
-describe('getDailyPoids', () => {
+describe('Test sur la fonction -> getDailyPoids', () => {
   it('should return undefined', async() => {
     expect(getDailyPoids()).toBe(undefined);
   });
 });
 
-describe('initPrefPoids', () => {
-
+describe('Test sur la fonction -> initPrefPoids', () => {
   it('should return KG', async() => {
     initPrefPoids();
     const local_unite = localStorage.getItem('prefUnitePoids');
     expect(local_unite).toBe('KG');
   });
-
 });
 
 /*
@@ -169,7 +167,7 @@ describe('formatDate', () => {
 });
 */
 
-describe('Test sur la fonction trouver_nouvelle_categorie', () => {
+describe('Test sur la fonction -> trouver_nouvelle_categorie', () => {
   it('should return CATEGORIE_IDEAL', async() => {
       expect(trouver_nouvelle_categorie(20)).toBe('CATEGORIE_IDEAL');
   });
@@ -180,28 +178,22 @@ describe('Test sur la fonction -> formatPoids', () => {
       expect(formatPoids(77)).toBe(77);
   });
 });
-/*
-describe('formatToKG', () => {
 
+describe('Test sur la fonction -> formatToKG', () => {
   it('should return 35.00', async() => {
     localStorage.setItem("prefUnitePoids", 'LBS');
     expect(Number(formatToKG(77))).toBe(35.00);
-
   });
+});
 
-});*/
-/*
 test('valeur de poids', async() => {
-
   act(() => {render(<Poids poids/>);
-    const  poids_input = screen.getByTestId('poids_input');
+    const poids_input = screen.getByTestId('poids_input');
     const mot = document.getElementsByClassName('native-input sc-ion-input-md');
     expect(mot).toBeDefined();
   })
-
-
 });
-*/
+
 /*
 test('go to page de configuration', async() => {
   act(() => {
