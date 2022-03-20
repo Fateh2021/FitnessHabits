@@ -1,87 +1,19 @@
 import React, {useState, useEffect} from "react"
 import { IonInput, IonButton, IonIcon, IonLabel, IonItem, IonAvatar, IonCol} from '@ionic/react';
-import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
-import uuid from 'react-uuid';
-import firebase from 'firebase'
-import DefaultSettings from '../../Settings/DefaultSettings'
+import { arrowDropdownCircle, trash, addCircle, removeCircle} from 'ionicons/icons';
 import { DateTime } from "luxon";
-import { getLang } from "../../../translate/Translator"
+import { getLang } from "../../../../translate/Translator"
 
-import '../../Tab1.css';
+import '../../../Tab1.css';
+import AlcoolItem from './AlcoolItem';
 
-const AlcoolItem = (props) => {
-
-  const [itemDashAlcool, setItemDashAlcool] = useState({
-    id: props.itemDashAlcool ? props.itemDashAlcool.id : uuid(),
-    favoris: props.itemDashAlcool ? props.itemDashAlcool.favoris : false, 
-    name:props.itemDashAlcool ? props.itemDashAlcool.name : '', 
-    qtte:props.itemDashAlcool ? props.itemDashAlcool.qtte : 0, 
-    proteine:props.itemDashAlcool ? props.itemDashAlcool.proteine : 0, 
-    glucide:props.itemDashAlcool ? props.itemDashAlcool.glucide : 0, 
-    fibre:props.itemDashAlcool ? props.itemDashAlcool.fibre : 0, 
-    gras:props.itemDashAlcool ? props.itemDashAlcool.gras : 0, 
-    unit: props.itemDashAlcool ? props.itemDashAlcool.unit : '',
-    consumption: props.itemDashAlcool ? props.itemDashAlcool.consumption:0
-  });
-
-  const handleChange = event => {
-    const { name, value } = event.target;
-    setItemDashAlcool({ ...itemDashAlcool, [name]: value });
-  }
-
-  const saveChanges = () => {
-    props.save(itemDashAlcool);
-  }
-
-  return (
-    <div id="divPopUp1-1">
-        <IonCol size="1">
-          <button className="buttonOK" onClick={saveChanges}>OK</button>
-        </IonCol>  
-        <IonCol size="1">
-          <span className="buttonCloseEdit" onClick={() => props.close()}>X</span>
-        </IonCol>                              
-        <IonItem  className="divAdd">
-          <IonCol size="1">
-            <IonIcon className="starFavoris" icon={star}/>
-          </IonCol>
-          <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={itemDashAlcool.name} onIonChange={handleChange}></IonInput>  
-          </IonCol>
-          <IonCol size="2">
-            <IonInput className = 'divAddText' type= 'number' placeholder="0" name="qtte" value={itemDashAlcool.qtte} onIonChange={handleChange}></IonInput>  
-          </IonCol>
-          <select id="materialSelectAddHyd" name="unit" defaultValue={itemDashAlcool.unit} onChange={handleChange}>
-            <option value="-1"></option>
-            <option value="gr">gr</option>
-            <option value="oz">oz</option>
-            <option value="ml">ml</option>
-            <option value="tasse">tasse</option>
-            <option value="unite">unité</option>
-          </select>
-          <IonCol className ="colNutProteinesHyd" size="1"><div className ="divMacroAdd">Pro</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Prot" name="proteine" value={itemDashAlcool.proteine} onIonChange={handleChange}></IonInput>  
-          </IonCol>
-          <IonCol className ="colNutGlucidesHyd" size="1"><div className ="divMacroAdd">Glu</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gluc" name="glucide" value={itemDashAlcool.glucide} onIonChange={handleChange}></IonInput>  
-          </IonCol>
-          <IonCol className ="colNutFibresHyd" size="1"><div className ="divMacroAdd">Fib</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Fibre" name="fibre" value={itemDashAlcool.fibre} onIonChange={handleChange}></IonInput>  
-          </IonCol>
-          <IonCol className ="colNutGrasHyd" size="1"><div className ="divMacroAdd">Gras</div>
-            <IonInput className = 'divAddTextNut' type= 'number' placeholder="Gras" name="gras" value={itemDashAlcool.gras} onIonChange={handleChange}></IonInput>  
-          </IonCol>
-        </IonItem>        
-      </div>
-  );
-}
-
-const Alcool = (props) => {
+const AlcoolList = (props) => {
   //---- Header alcool ---------
   const [, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [alcool, setAlcool] = useState(props.alcools);
   const [globalConsumption, setGlobalConsumption] = useState(props.globalConsumption);
-
+  const [alcoolService] = useState(props.alcoolService);
+  
   // update state on prop change
   useEffect(() => {
     setDailyTarget(props.alcool.dailyTarget);
@@ -108,6 +40,20 @@ const Alcool = (props) => {
   const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
 
+  const totalConsumption = ()=>{
+    var array = [...alcool];
+    var sum = 0;
+    var consumption = 0;
+
+    for (let item of array){
+      consumption = item.consumption;
+      sum += consumption; 
+    }
+
+    setGlobalConsumption(sum);
+    return sum
+  }
+
   const DailyConsumptionIncrement = (item)=>{  
     var array = [...alcool];
     const index = array.findIndex((event) => event.id === item.id);
@@ -119,14 +65,7 @@ const Alcool = (props) => {
     array[item].consumption += 1;
 
     updateCacheAndBD(array);
-
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.dailyTarget.globalConsumption = totalConsumption();
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  
-    console.log('currentDate :::::' + currentDate.startDate.getMonth())
+    alcoolService.dashboard.updateGlobalConsumption(totalConsumption(), currentDate);
   }
 
   const DailyConsumptionDecrementAlcool = (item)=>{  
@@ -142,28 +81,7 @@ const Alcool = (props) => {
     }
 
     updateCacheAndBD(array);
-
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.dailyTarget.globalConsumption = totalConsumption();
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  
-    console.log('currentDate :::::' + currentDate.startDate.getMonth())
-  }
-
-  const totalConsumption = ()=>{
-    var array = [...alcool];
-    var sum = 0;
-    var consumption = 0;
-    debugger;
-    for (let item of array){
-      consumption = item.consumption;
-      sum += consumption; 
-    }
-    console.log ("la somme ::::: " + sum);
-    setGlobalConsumption(sum);
-    return sum
+    alcoolService.dashboard.updateGlobalConsumption(totalConsumption(), currentDate);
   }
 
   const deleteItemAlcool = (item) => {
@@ -171,7 +89,6 @@ const Alcool = (props) => {
     var sum = 0;
     var consumption = 0;
     const index = array.findIndex((e) => e.id === item.id);
-    console.log("index :::::" + array[item].id);
 
     if (index === -1) {
       array.splice(item, 1);
@@ -185,14 +102,7 @@ const Alcool = (props) => {
       sum += consumption; 
     }
     setGlobalConsumption(sum);
-
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.alcools = array;
-    dashboard.alcool.dailyTarget.globalConsumption = sum;    
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-     
+    alcoolService.dashboard.updateGlobalConsumption(sum, currentDate);
     updateCacheAndBD(array);
   }
 
@@ -219,25 +129,10 @@ const Alcool = (props) => {
   }, [props.currentDate])
 
   const updateCacheAndBD = (alcools) => {
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.alcool.alcools= alcools;
-    console.log("dashboard.alcool.alcools:::::" + JSON.stringify( dashboard))
-    setAlcool(alcools)
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase
-    .database()
-    .ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
-    .update(dashboard)
-    .then(() => {
-      console.log("props.currentDate.startDate.getDay())::::::" + props.currentDate.startDate.getDay());
-      console.log ("currentDate.startDate" + currentDate.startDate.toLocaleDateString("fr-FR", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric"
-      }))
-      checkNotifications();
-    });
+    alcoolService
+      .dashboard
+      .updateAlcools(alcools, currentDate)
+      .then(checkNotifications);
   }
 
   const closeItemContainer = () => {
@@ -252,45 +147,18 @@ const Alcool = (props) => {
 
   const checkNotifications = () => {
     // Obtenir les préférences de l'utilisateur
-    const userUID = localStorage.getItem('userUid');
-    firebase
-      .database()
-      .ref('settings/' + userUID + '/alcool')
-      .once("value", (snapshot) => {
-        const sets = snapshot.val();
-        const alcoolSettings = sets ?? {
-          dailyTarget:{
-            value:0,
-            unit:''
-          },
-          notifications :{
-            active: false
-          }, 
-          limitConsom : {
-            educAlcool: true,
-            weeklyTarget: 0,
-            dailyTarget: 0,
-            sobrietyDays: 7,
-            notificationMessage: ''
-          },
-          alcools:DefaultSettings.alcools
-        };
-
-        alcoolSettings.limitConsom.notificationMessage = getNotificationMsg()
-
-        // Obtenir les consommation jusqu'au dernier lundi
-        getConsommationBackToMonday(alcoolSettings, userUID);
-        
+    alcoolService
+      .settings
+      .getAlcool()
+      .then(settings => {
+        settings.limitConsom.notificationMessage = getNotificationMsg()
+        getConsommationBackToMonday(settings);
       });
   }
 
-  const getConsommationBackToMonday = (alcoolSettings, userUID) =>
-    firebase
-      .database()
-      .ref('dashboard/' + userUID)
-      .orderByKey()
-      .once("value", (snapshot) => {
-        const consommations = snapshot.val();
+  const getConsommationBackToMonday = (alcoolSettings) =>
+    alcoolService.dashboard.getConsommations()
+      .then(consommations => {
         const date = new Date();
 
         // Vérifier s'il respecte ses consommations journalières
@@ -302,9 +170,8 @@ const Alcool = (props) => {
 
         // Vérifier s'il respecte ses jours de consommation de suite 
         respectConsecutiveConsumption(alcoolSettings, consommations, date);
-
       });
-
+   
   const respectDailyConsumption = (alcoolSettings, consommations, date) => {
     const dailyCount = getConsumptionsCount(consommations, date);
 
@@ -330,21 +197,14 @@ const Alcool = (props) => {
   }
 
   const respectConsecutiveConsumption = (alcoolSettings, consommations, date) => {
-    let streak = true;
     if(alcoolSettings.limitConsom && alcoolSettings.limitConsom.sobrietyDays)
     {
       for (let i = 0; i < alcoolSettings.limitConsom.sobrietyDays; i++) {
         const dateDiff = DateTime.fromJSDate(date).minus({ days: i}).toJSDate();
         if(getConsumptionsCount(consommations, dateDiff) === 0) {
-          streak = false;
           break;
         }
       }
-    }
-
-    console.log("Nombre de jours de consommation: ", +alcoolSettings.limitConsom.sobrietyDays);
-    if (streak) {
-      console.log("!!notification days streak");
     }
   }
 
@@ -455,4 +315,4 @@ const Alcool = (props) => {
   </div>  
   );
 }
-export default Alcool;
+export default AlcoolList;
