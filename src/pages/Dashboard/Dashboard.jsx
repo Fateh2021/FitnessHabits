@@ -19,7 +19,7 @@ import Supplements from "./ItemsList/Supplements";
 import Toilettes from "./ItemsList/Toilettes";
 import Activities from "./ItemsList/Activities";
 import Sommeil from "./ItemsList/Sommeil";
-import Alcool from "./ItemsList/Alcool";
+import AlcoolList from "./ItemsList/Alcool/AlcoolList";
 import Poids from "./ItemsList/Poids"
 import DefaultDashboard from './DefaultDashboard'
 import FormatDate from '../../DateUtils'
@@ -28,6 +28,8 @@ import '../Tab1.css';
 import Home from "../Footer/Home";
 import Export from "../Footer/Export";
 import * as translate from '../../translate/Translator';
+
+import AlcoolService from '../../services/AlcoolService';
 
 const Dashboard = (props) => {
 const [proteinFood, setProteinFood] = useState(0);
@@ -641,7 +643,13 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
           <Activities heures={dashboard.activities.heure} minutes={dashboard.activities.minute} currentDate={currentDate} sommeil={dashboard.activities} />
           <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
-          <Alcool alcool={dashboard.alcool} alcools={dashboard.alcool.alcools} globalConsumption={dashboard.alcool.dailyTarget.globalConsumption} currentDate={currentDate} />
+          <AlcoolList 
+            alcoolService={AlcoolService} 
+            alcool={dashboard.alcool}
+            alcools={dashboard.alcool.alcools}
+            globalConsumption={dashboard.alcool.dailyTarget.globalConsumption}
+            currentDate={currentDate} 
+          />
           <Poids poids={dashboard.poids} currentDate={currentDate} />
         </IonList>
       </IonContent>
