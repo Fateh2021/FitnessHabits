@@ -83,8 +83,8 @@ async function getDataFromFirebase(dataFormat) {
                 // if dayAndMonth has a length of 3, 2 options:
             } else if (dayAndMonth.length === 3) {
                 // day 2 chars, month 1 char
-                if ( dayAndMonth.slice(0, 2) in [...Array(32).keys()]
-                    && !(dayAndMonth.slice(1, 3) in [...Array(12).keys()]) ) {
+                if ( [...Array(32).keys()].hasOwnProperty(dayAndMonth.slice(0, 2))
+                    && ![...Array(12).keys()].hasOwnProperty(dayAndMonth.slice(1, 3)) ) {
                     jour = data.key.slice(0,2) + '-';
                     mois = '0' + data.key[2] + '-';
                     // day 1 char, month 1 char
