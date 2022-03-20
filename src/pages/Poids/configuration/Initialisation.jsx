@@ -90,7 +90,7 @@ useEffect(() => {
 // Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de poids qui doit etre par défaut KG
 const handleReinitialisation = () => {
 	setPoidsCible("0.00");
-  setUnitePoids(preferencesPoidUnite); // On met par défaut KG, maintenant à la demande de Sylvie
+  setUnitePoids("KG"); // On met par défaut KG, maintenant à la demande de Sylvie
   setDateCible("");
 	// Récupération de la première donnée par rapport au poids, comme nous avons fait un reset des informations de base.
 	// Déplacement de la récupération de l'info du poids via firebase ici, car ailleurs la BD est callé plusieurs fois.
@@ -122,7 +122,8 @@ const handleReinitialisation = () => {
 const handlerConfirmation = () => {
   let pi = 0.0, pc = 0.0;
 	// Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
-  if (poidsInitial != 0 && poidsCible != 0 && unitePoids !== "" && dateCible !== ""){
+	// unitePoids ne pourrait jamais être vide, donc on enlève cette condition
+  if (poidsInitial !== 0 && poidsCible !== 0 && dateCible !== ""){
     pi = poidsInitial;
     pc = poidsCible;
     // On stock les informations en KG dans la BD
@@ -135,7 +136,22 @@ const handlerConfirmation = () => {
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
     redirectDashboard();
   } else {
-      alert("Attention, veuiller saisir les informations manquantes !")
+      var message_alert = "";
+			message_alert += translate.getText("POIDS_DEBUT_MESSAGE_ALERT");
+			// Nous allons faire 3 condition indépendente l'entre elle
+			if (poidsInitial == 0){
+				message_alert += translate.getText("POIDS_INITIAL_VIDE");
+			}
+
+			if (poidsCible == 0){
+        message_alert += translate.getText("POIDS_CIBLE_VIDE");
+      }
+
+      if (dateCible === ""){
+        message_alert += translate.getText("POIDS_DATE_CIBLE_VIDE");
+      }
+			message_alert += translate.getText("POIDS_FIN_MESSAGE_ALERT");
+      alert(message_alert);
   }
 }
 
@@ -145,15 +161,11 @@ const handlerConfirmation = () => {
         <IonCardContent>
           <IonItemGroup>
             <IonItemDivider>
-
               <IonLabel slot="start">{translate.getText("POIDS_PREF_UNITE_POIDS")}</IonLabel>
-            {/*<IonSelect slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
-*/}
               <IonSelect data-testid = "pop_up_unite" slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
                 <IonSelectOption value="LBS">LBS</IonSelectOption>
                 <IonSelectOption value="KG">KG</IonSelectOption>
               </IonSelect>
-
             </IonItemDivider>
             <IonItemDivider>
               <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_INITIAL")}</IonLabel>
@@ -170,8 +182,8 @@ const handlerConfirmation = () => {
               <IonDatetime
                 monthShortNames = {translate.getText("ABBREVIATION_MOIS")}
                 slot="end"
-                displayFormat="MMM DD, YYYY"
-                placeholder="Choisir une date"
+                displayFormat="YYYY MMM DD"
+                placeholder={translate.getText("POIDS_SUGGESTION_DATE")}
                 max="2099-10-31"
                 value={dateCible}
                 onIonChange={(e) => handleDateCibleChange(e.target.value)}
@@ -192,7 +204,7 @@ const handlerConfirmation = () => {
           </IonRow>
         </IonGrid>
       </IonCard>
-      </IonContent>
+    </IonContent>
   )
 }
 
