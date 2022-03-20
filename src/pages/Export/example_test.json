@@ -31,13 +31,13 @@
           "consumption": 2
         },
         {
-          "consumption": 0,
+          "consumption": 6,
           "favoris": false,
           "fibre": 0,
           "glucide": 0,
           "gras": 0,
           "id": "58a7e6f-2e41-2a4c-64b8-6a8d81700e35",
-          "name": "",
+          "name": "Bière",
           "proteine": 0,
           "qtte": 0,
           "unit": ""
@@ -49,7 +49,7 @@
           "glucide": "5",
           "gras": 0,
           "id": "d1b154f-5b5c-c4c6-b23-f255bbb4f",
-          "name": "",
+          "name": "Sangria",
           "proteine": "2",
           "qtte": "-2",
           "unit": "gr"
