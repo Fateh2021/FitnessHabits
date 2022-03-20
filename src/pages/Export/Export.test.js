@@ -66,7 +66,7 @@ test('ExportModule - Check if PDF export options set correctly', async() => {
 */
 /* Tester la présence des composantes dans la page */
 test('ExportModule - TestElementsPresence_1', async() => {
-    renderWithRouter( < App / > , { route : '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     const actPhys = screen.getByTestId(/checkbox-activities/i);
     expect(actPhys).toBeInTheDocument();
 
@@ -98,14 +98,14 @@ test('ExportModule - TestElementsPresence_1', async() => {
 
 
 test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     const checkboxes = screen.getAllByRole('checkbox', { checked: 'True' })
     expect(checkboxes.length).toEqual(9);
 });
 
 test('ExportModule - TestEnglishTranslation', async() => {
     localStorage.setItem('userLanguage', 'en');
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture.textContent).toBe('Food');
@@ -137,7 +137,7 @@ test('ExportModule - TestEnglishTranslation', async() => {
 
 test('ExportModule - TestFrenchTranslation', async() => {
     localStorage.setItem('userLanguage', 'fr');
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture.textContent).toBe('Nourriture')
@@ -169,7 +169,7 @@ test('ExportModule - TestFrenchTranslation', async() => {
 
 test('ExportModule - TestSpanishTranslation', async() => {
     localStorage.setItem('userLanguage', 'es');
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
 
     //EXPORTAR
     //Fechas de exportación
@@ -230,7 +230,7 @@ test('ExportModule - TestDefaultDateBehaviour', async() => {
 */
 /*Test if format selected changes, no change in attributes selected*/
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     //to be false
     const checkbox_food = screen.getByTestId("checkbox-food")
     const checkbox_sleep = screen.getByTestId("checkbox-sleep")
@@ -260,19 +260,19 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 //todo
 /*Test if dates changes, no change in attributes selected*/
 test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
 });
 
 //todo
 /*Tester les messages d'erreurs -- aucune erreur*/
 test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     expect(screen.queryByRole('alert')).toBeNull();
 });
 
 /*Tester les messages d'erreurs quand il n'y a aucune sélection -- avec erreur*/
 test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     //to be false
     const checkbox_activities = screen.getByTestId("checkbox-activities")
     const checkbox_food = screen.getByTestId("checkbox-food")
@@ -306,7 +306,7 @@ test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() =>
 
 
 test('ExportModule - TestClickOnFoodCheckbox', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     const checkbox_food = screen.getByTestId("checkbox-food")
     await act( async () => {
         fireEvent.click(checkbox_food)
@@ -316,7 +316,7 @@ test('ExportModule - TestClickOnFoodCheckbox', async() => {
 
 
 test('ExportModule - TestClickOnFoodCheckbox', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
+    renderWithRouter(<App />, {route: '/Export'});
     const checkbox_food = screen.getByTestId("checkbox-food")
     await act( async () => {
          fireEvent.click(checkbox_food)
