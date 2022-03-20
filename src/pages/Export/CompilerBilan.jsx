@@ -147,7 +147,6 @@ function fetchData(data, formatedDate, categorySelected) {
             case "alcool":
                 let alcools = data.alcool.alcools;
                 fetchDrinks("alcool", alcools, formatedDate);
-                }
                 break;
             case "glycémie":
                 let glycemie = data.glycemie.dailyGlycemie;
@@ -163,12 +162,8 @@ function fetchData(data, formatedDate, categorySelected) {
                 break;
             case "poids":
                 let weight;
-                if (data.poids.dailyPoids) {
-                    weight = data.poids.dailyPoids;
-                    if (weight !== "0.00") {
-                        fetchWeights(weight, formatedDate);
-                    }
-                }
+                weight = data.poids.dailyPoids;
+                fetchWeights(weight, formatedDate);
                 break;
             case "activities":
                 if (data.activities) {
@@ -179,11 +174,8 @@ function fetchData(data, formatedDate, categorySelected) {
                 }
                 break;
             case "sommeil":
-                let sommeil;
-                if (data.sommeil) {
-                    sommeil = data.sommeil;
-                    fetchSleeps(sommeil, formatedDate);
-                }
+                let sommeil = data.sommeil;
+                fetchSleeps(sommeil, formatedDate);
                 break;
             default:
                 break;
@@ -259,26 +251,30 @@ function fetchToilets(toilets, formatedDate) {
 }
 
 function fetchGlycemia(glycemia, formatedDate) {
-    let mapGlycemia = new Map();
-    mapGlycemia.set("Date", formatedDate);
-    mapGlycemia.set("Glycémie", parseInt(glycemia));
+    if (glycemia !== null) {
+        let mapGlycemia = new Map();
+        mapGlycemia.set("Date", formatedDate);
+        mapGlycemia.set("Glycémie", parseInt(glycemia));
 
-    arrayGlycemia.push(mapGlycemia);
+        arrayGlycemia.push(mapGlycemia);
+    }
 }
 
 
 function fetchWeights(weight, formatedDate) {
-    let mapWeight = new Map();
-    mapWeight.set("Date", formatedDate);
-    let weightUnit = localStorage.getItem("prefUnitePoids");
-    mapWeight.set("weightUnit", weightUnit);
+    if (weight !== null && weight !== "0.00") {
+        let mapWeight = new Map();
+        mapWeight.set("Date", formatedDate);
+        let weightUnit = localStorage.getItem("prefUnitePoids");
+        mapWeight.set("weightUnit", weightUnit);
 
-    if( weightUnit === "LBS"){
-        mapWeight.set("weight", (weight * 2.2).toFixed(2));
-    } else {
-        mapWeight.set("weight", weight);
+        if (weightUnit === "LBS") {
+            mapWeight.set("weight", (weight * 2.2).toFixed(2));
+        } else {
+            mapWeight.set("weight", weight);
+        }
+        arrayWeights.push(mapWeight);
     }
-    arrayWeights.push(mapWeight);
 }
 
 function fetchInitialWeight(datas) {
@@ -325,26 +321,27 @@ function fetchActivities(activity, formatedDate) {
 
 //Keys: "date", "startHour", "endHour", "wakeUpQt", "wakeUpState"
 function fetchSleeps(sleep, formatedDate) {
-    let mapSleep = new Map();
+    if (sleep !== null) {
+        let mapSleep = new Map();
 
-    if(sleep.duree && sleep.duree !== 0 ){
-        mapSleep.set("Date", formatedDate);
-        mapSleep.set("startHour", sleep.heureDebut);
-        mapSleep.set("endHour", sleep.heureFin);
-        mapSleep.set("duration", formatDuration(sleep.duree));
-        sleep.nbReveils < 0 ? mapSleep.set("wakeUpQt", 0) : mapSleep.set("wakeUpQt", sleep.nbReveils);
-        mapSleep.set("wakeUpState", sleep.etatReveil);
-        arraySleeps.push(mapSleep);
+        if(sleep.duree && sleep.duree !== 0 ){
+            mapSleep.set("Date", formatedDate);
+            mapSleep.set("startHour", sleep.heureDebut);
+            mapSleep.set("endHour", sleep.heureFin);
+            mapSleep.set("duration", formatDuration(sleep.duree));
+            sleep.nbReveils < 0 ? mapSleep.set("wakeUpQt", 0) : mapSleep.set("wakeUpQt", sleep.nbReveils);
+            mapSleep.set("wakeUpState", sleep.etatReveil);
+            arraySleeps.push(mapSleep);
+        }
     }
 }
 
 
 // ---- FONCTIONS UTILS ----------------------------------------------------
 //methode qui prend heures et minutes et sort: 00:00
-function formatDuration(minutes) {
-    minutes = Math.floor(minutes);
+function formatDuration(min) {
+    let minutes = Math.floor(min);
     let hours;
-    var minutes;
     if (minutes >= 60) {
         hours = Math.floor(minutes/60);
         minutes = Math.floor(minutes%60);
