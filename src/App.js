@@ -44,7 +44,7 @@ const RoutingSystem = () => {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/logIn" component={LogIn} />
           <Route path="/register" component={Register} />
-          <Route patg="/export" component={Export}/>
+          <Route path="/export" component={Export} />
           <Route path="/settings" component={Settings} />
           <Route path="/intro" component={Intro} exact={true} />
           <Route path="/glycemie" component={GlycemieInitial} />

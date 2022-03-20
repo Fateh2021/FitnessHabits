@@ -186,7 +186,7 @@ function fetchData(data, formatedDate, categorySelected) {
 // Function that fetches datas for hydratation and alcohol.
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
     console.table(drinks);
-    if (drinks !== null) {
+    if (drinks) {
         for (const drink of drinks) {
             if (drink.consumption === 0) {
                 continue;
@@ -240,7 +240,7 @@ function fetchNourriture(array_nourriture, formatedDate) {
 
 
 function fetchToilets(toilets, formatedDate) {
-    if (toilets !== null) {
+    if (toilets) {
         let mapToilets = new Map();
 
         mapToilets.set("Date", formatedDate);
@@ -263,7 +263,7 @@ function fetchGlycemia(glycemia, formatedDate) {
 
 
 function fetchWeights(weight, formatedDate) {
-    if (weight !== null && weight !== "0.00") {
+    if (weight && weight !== "0.00") {
         let mapWeight = new Map();
         mapWeight.set("Date", formatedDate);
         let weightUnit = localStorage.getItem("prefUnitePoids");
@@ -322,7 +322,7 @@ function fetchActivities(activity, formatedDate) {
 
 //Keys: "date", "startHour", "endHour", "wakeUpQt", "wakeUpState"
 function fetchSleeps(sleep, formatedDate) {
-    if (sleep !== null) {
+    if (sleep) {
         let mapSleep = new Map();
 
         if (sleep.duree && sleep.duree !== 0) {
