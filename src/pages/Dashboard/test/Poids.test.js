@@ -139,7 +139,7 @@ describe('saveEntreeDePoids', () => {
 describe('setPrefUnitePoids', () => {
   it('should return undefined', async() => {
     setPrefUnitePoids('LBS');
-    var tmp = localStorage.getItem("prefUnitePoids");    
+    var tmp = localStorage.getItem("prefUnitePoids");
     expect(tmp).toBe('LBS');
   });
 });
@@ -149,7 +149,7 @@ describe('getDailyPoids', () => {
     expect(getDailyPoids()).toBe(undefined);
   });
 });
-/*
+
 describe('initPrefPoids', () => {
 
   it('should return KG', async() => {
@@ -158,7 +158,7 @@ describe('initPrefPoids', () => {
     expect(local_unite).toBe('KG');
   });
 
-});*/
+});
 
 /*
 describe('formatDate', () => {
@@ -168,22 +168,18 @@ describe('formatDate', () => {
   });
 });
 */
-/*
-describe('trouver_nouvelle_categorie', () => {
 
+describe('Test sur la fonction trouver_nouvelle_categorie', () => {
   it('should return CATEGORIE_IDEAL', async() => {
       expect(trouver_nouvelle_categorie(20)).toBe('CATEGORIE_IDEAL');
   });
+});
 
-});*/
-/*
-describe('formatPoids', () => {
-
+describe('Test sur la fonction -> formatPoids', () => {
   it('should return 77', async() => {
       expect(formatPoids(77)).toBe(77);
   });
-
-});*/
+});
 /*
 describe('formatToKG', () => {
 
