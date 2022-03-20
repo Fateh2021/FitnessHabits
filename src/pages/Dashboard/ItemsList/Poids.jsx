@@ -76,18 +76,20 @@ const Poids = (props) => {
     let newUnitePoids = event.target.value;
     poidsService.setPrefUnitePoids(newUnitePoids);
     let oldUnitePoids = unitePoids;
+    
     setUnitePoids(newUnitePoids);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
     if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(2);
+      dashboard.poids.dailyPoids = (dailyPoids * 2.2).toFixed(2);
       setDailyPoids((dailyPoids * 2.2).toFixed(2));
     } else if (oldUnitePoids === "LBS" && newUnitePoids === "KG") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(2);
+      dashboard.poids.dailyPoids = (dailyPoids / 2.2).toFixed(2);
       setDailyPoids((dailyPoids / 2.2).toFixed(2));
     }
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    IMC = CalculImc();
+
+    //IMC = CalculImc();
   };
 
 	// Capture de l'éventement si IMC change
@@ -105,6 +107,9 @@ const Poids = (props) => {
 	// Capture de l'éventement si le dailyPoids change
   const handleChange = (event) => {
     let poidsDaily = event.target.value;
+      
+    console.log("in poids change: ", poidsDaily)
+
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
     dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
