@@ -89,9 +89,6 @@ useEffect(() => {
 
 // Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de poids qui doit etre par défaut KG
 const handleReinitialisation = () => {
-	setPoidsCible("0.00");
-  setUnitePoids("KG"); // On met par défaut KG, maintenant à la demande de Sylvie
-  setDateCible("");
 	// Récupération de la première donnée par rapport au poids, comme nous avons fait un reset des informations de base.
 	// Déplacement de la récupération de l'info du poids via firebase ici, car ailleurs la BD est callé plusieurs fois.
   let poidsRef = firebase.database().ref('dashboard/' + userUID)
@@ -115,6 +112,11 @@ const handleReinitialisation = () => {
     } else {
       setPoidsInitial("0.00");
     }
+    // Si nous mettons le retour à KG au début de la fonction, la mécanique va simplement changer le type de poids sans vraiment réinitialiser
+    // Sauf que à cette endroit, c'est juste parfait
+    setUnitePoids("KG");
+    setPoidsCible("0.00");
+    setDateCible("");
   });
 }
 
