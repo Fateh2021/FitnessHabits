@@ -100,13 +100,13 @@
          "es": "Comida",
          "fr": "Nourriture"
       },
-      "sub_titles": {
-         "proteins": {
+      "foodCategories": {
+         "proteinFood": {
             "en": "Protein Food",
             "es": "Alimentos proteicos",
             "fr": "Aliments protéinés"
          },
-         "grain": {
+         "grainFood": {
             "en": "Grain Food",
             "es": "Comida de grano",
             "fr": "Aliments à grain"
@@ -116,32 +116,66 @@
             "es": "Vegetales",
             "fr": "Légumes"
          },
-         "fruits": {
-            "en": "Fruits",
+         "fruit": {
+            "en": "Fruit",
             "es": "Frutas",
             "fr": "Fruits"
          },
-         "fats": {
-            "en": "Fats",
-            "es": "Grasas",
-            "fr": "Gras"
+         "dairyProducts": {
+            "en": "Dairy Products",
+            "es": "Productos lácteos",
+            "fr": "Produits laitiers"
+         }
+      },
+      "macroNutrimentSummary": {
+         "cumulativeProteins": {
+            "en": "Protein Total",
+            "es": "Proteínas totales",
+            "fr": "Total protéines"
+         },
+         "cumulativeGlucides": {
+            "en": "Glucides Total",
+            "es": "Glúcidos totales",
+            "fr": "Total glucides"
+         },
+         "cumulativeFibre": {
+            "en": "Fibre Total",
+            "es": "Fibras totales",
+            "fr": "Total fibres"
+         },
+         "cumulativeFats": {
+            "en": "Fats Total",
+            "es": "Grasas totales",
+            "fr": "Total gras"
          }
       },
       "functions": {
-         "add_macro_nutriment": {
-            "en": "Add macro-nutriment",
-            "es": "Añadir un macronutriente",
-            "fr": "Ajouter un macro-nutriment"
+         "addFoodItem": {
+            "en": "Add food item",
+            "es": "Añadir un alimento",
+            "fr": "Ajouter un aliment"
          },
-         "add_description": {
+         "addDescription": {
             "placeholder": {
                "en": "Description",
                "es": "Descripción",
                "fr": "Description"
             }
+         },
+         "addErrorMessage": {
+            "saveItem": {
+               "en": "A food item's name cannot be empty and all macro-nutriments cannot have zero quantity!",
+               "es": "¡El nombre de un alimento no puede estar vacío y todos los macronutrientes no pueden tener una cantidad cero!",
+               "fr": "Le nom d'un aliment ne peut pas être vide et tous les macro-nutriments ne peuvent pas avoir une quantité de zéro !"
+            }
          }
       },
-      "macro_nutriments": {
+      "macroNutriments": {
+         "qty": {
+            "en": "quantity",
+            "es": "cantidad",
+            "fr": "quantité"
+         },
          "proteins": {
             "en": "Proteins",
             "es": "Proteinas", 
@@ -768,6 +802,66 @@
       "en": "Date",
       "es": "Fecha",
       "fr": "Date"
+   },
+   "CATEGORIE_MAIGRE":{
+      "en": "Too skinny",
+      "es": "Demaciado flaco",
+      "fr": "Trop maigre"
+   },
+   "CATEGORIE_IDEAL":{
+      "en": "Ideal weight",
+      "es": "Peso ideal",
+      "fr": "Poids idéal"
+   },
+   "CATEGORIE_SURPOIDS":{
+      "en": "Overweight",
+      "es": "Exceso de peso",
+      "fr": "Surpoids"
+   },
+   "CATEGORIE_OB_CLASSE_1":{
+      "en": "Class 1 obesity",
+      "es": "Obesidad clase 1",
+      "fr": "Obésité classe 1"
+   },
+   "CATEGORIE_OB_CLASSE_2":{
+      "en": "Class 2 obesity - severe",
+      "es": "Obesidad clase 2 - severa",
+      "fr": "Obésité classe 2 - sévère"
+   },
+   "CATEGORIE_OB_CLASSE_3":{
+      "en": "Morbid obesity",
+      "es": "Obesidad mórbida",
+      "fr": "Obésité morbide"
+   },
+   "POIDS_DEBUT_MESSAGE_ALERT":{
+      "en":"Warning, please enter the missing information in the following fields :\n",
+      "es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
+      "fr":"Attention, veuiller saisir les informations manquantes dans les champs suivant :\n"
+   },
+   "POIDS_INITIAL_VIDE":{
+      "en":"\nThe initial weight must not be empty !",
+      "es":"\n¡El peso inicial no debe estar vacío !",
+      "fr":"\nLe poids initiale ne doit pas être vide !"
+   },
+   "POIDS_CIBLE_VIDE":{
+      "en":"\nThe target weight must not be empty !",
+      "es":"\nEl peso objetivo no debe estar vacío !",
+      "fr":"\nLe poids cible ne doit pas être vide !"
+   },
+   "POIDS_DATE_CIBLE_VIDE":{
+      "en":"\nThe target date must not be empty !",
+      "es":"\n¡La fecha objetivo no debe estar vacía !",
+      "fr":"\nLa date cible ne doit pas être vide !"
+   },
+   "POIDS_FIN_MESSAGE_ALERT":{
+      "en":"\n\nHave a good day",
+      "es":"\n\nQue tenga un buen día",
+      "fr":"\n\nBonne journée"
+   },
+   "POIDS_SUGGESTION_DATE":{
+      "en":"Select a date",
+      "es":"Seleccione una fecha",
+      "fr":"Choisir une date"
    },
    "ALT_LOGO": {
       "en":"Fitness Habits Logo",

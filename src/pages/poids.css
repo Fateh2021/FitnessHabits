@@ -1,8 +1,11 @@
-.poidsActuelReadOnly {
-  width: 100%;
+.input {
   height: 60%;
   background-color: #e7dcdc;
   border-radius: 5px;
+}
+
+.poidsActuel{
+  margin-right: 5px;
 }
 
 .icone{
