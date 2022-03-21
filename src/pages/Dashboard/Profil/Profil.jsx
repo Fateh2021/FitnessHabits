@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Toggle from "./Toggle";
 import Sidebar from "./Sidebar";
+import Poids from '../ItemsList/Poids';
 
 const Profil = ({ children, close: parentHandleSidebarClose}) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

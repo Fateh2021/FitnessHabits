@@ -803,6 +803,66 @@
       "es": "Fecha",
       "fr": "Date"
    },
+   "CATEGORIE_MAIGRE":{
+      "en": "Too skinny",
+      "es": "Demaciado flaco",
+      "fr": "Trop maigre"
+   },
+   "CATEGORIE_IDEAL":{
+      "en": "Ideal weight",
+      "es": "Peso ideal",
+      "fr": "Poids idéal"
+   },
+   "CATEGORIE_SURPOIDS":{
+      "en": "Overweight",
+      "es": "Exceso de peso",
+      "fr": "Surpoids"
+   },
+   "CATEGORIE_OB_CLASSE_1":{
+      "en": "Class 1 obesity",
+      "es": "Obesidad clase 1",
+      "fr": "Obésité classe 1"
+   },
+   "CATEGORIE_OB_CLASSE_2":{
+      "en": "Class 2 obesity - severe",
+      "es": "Obesidad clase 2 - severa",
+      "fr": "Obésité classe 2 - sévère"
+   },
+   "CATEGORIE_OB_CLASSE_3":{
+      "en": "Morbid obesity",
+      "es": "Obesidad mórbida",
+      "fr": "Obésité morbide"
+   },
+   "POIDS_DEBUT_MESSAGE_ALERT":{
+      "en":"Warning, please enter the missing information in the following fields :\n",
+      "es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
+      "fr":"Attention, veuiller saisir les informations manquantes dans les champs suivant :\n"
+   },
+   "POIDS_INITIAL_VIDE":{
+      "en":"\nThe initial weight must not be empty !",
+      "es":"\n¡El peso inicial no debe estar vacío !",
+      "fr":"\nLe poids initiale ne doit pas être vide !"
+   },
+   "POIDS_CIBLE_VIDE":{
+      "en":"\nThe target weight must not be empty !",
+      "es":"\nEl peso objetivo no debe estar vacío !",
+      "fr":"\nLe poids cible ne doit pas être vide !"
+   },
+   "POIDS_DATE_CIBLE_VIDE":{
+      "en":"\nThe target date must not be empty !",
+      "es":"\n¡La fecha objetivo no debe estar vacía !",
+      "fr":"\nLa date cible ne doit pas être vide !"
+   },
+   "POIDS_FIN_MESSAGE_ALERT":{
+      "en":"\n\nHave a good day",
+      "es":"\n\nQue tenga un buen día",
+      "fr":"\n\nBonne journée"
+   },
+   "POIDS_SUGGESTION_DATE":{
+      "en":"Select a date",
+      "es":"Seleccione una fecha",
+      "fr":"Choisir une date"
+   },
    "ALT_LOGO": {
       "en":"Fitness Habits Logo",
       "es":"Logo de Fitness Habits",

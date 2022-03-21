@@ -255,7 +255,6 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
 
   useEffect(() => {
     const localDashboard = localStorage['dashboard'];
-    console.log("Loading Dashboard test..."+JSON.stringify(dashboard));
     FormatDate(currentDate.startDate).then(dt => {
       setFormatedCurrentDate(dt);
     });
@@ -264,14 +263,13 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       const sets = addMissingDashboard(JSON.parse(localDashboard));
       localStorage.setItem('dashboard', JSON.stringify(sets));
       setDashboard(JSON.parse(localDashboard));
-      console.log("Loading Dashboard From localStorage 1st time..."+JSON.stringify(dashboard));
     } else {
       const userUID = localStorage.getItem('userUid');
-      console.log("Loading Dashboard From DB...");
+      //console.log("Loading Dashboard From DB...");
       firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
       .once("value", (snapshot) => {
         const sets = snapshot.val();
-        console.log("sets::"+JSON.stringify(sets));
+        //console.log("sets::"+JSON.stringify(sets));
         if (sets) {
           if(!(sets.hydratation.hydrates)){
             sets.hydratation.hydrates = [];
@@ -282,10 +280,10 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
           const updatedSets = addMissingDashboard(sets);
           localStorage.setItem('dashboard', JSON.stringify(updatedSets));
           setDashboard(updatedSets);
-          console.log("DB if ::::::::::::::"+JSON.stringify(dashboard));
+          //console.log("DB if ::::::::::::::"+JSON.stringify(dashboard));
         } else {
           localStorage.setItem('dashboard', JSON.stringify(dashboard));
-          console.log("DB else ::::::::::::::"+JSON.stringify(localStorage));
+          //console.log("DB else ::::::::::::::"+JSON.stringify(localStorage));
         }              
       });
     }
@@ -308,7 +306,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
 
   const NourritureUpdate = () => {
     const userUID = localStorage.getItem('userUid');
-    console.log("Loading Dashboard From DB...");
+    //console.log("Loading Dashboard From DB...");
     firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
     .once("value", (snapshot) => {
       const sets = snapshot.val();
@@ -323,13 +321,13 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
         updateGlobalMacroNutrimentConsumption(updatedSets);
         localStorage.setItem('dashboard', JSON.stringify(updatedSets));
         setDashboard(updatedSets);
-        console.log("sa marche::" + sets.nourriture.globalConsumption);  
+        //console.log("sa marche::" + sets.nourriture.globalConsumption);
         firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(sets) 
       }else {
         // const localDashboard = localStorage['dashboard'];
         localStorage.setItem('dashboard', JSON.stringify(dashboard));
-        console.log("DB else ::::::::::::::"+JSON.stringify(localStorage));
-        console.log("sa marche pas::");  
+        //console.log("DB else ::::::::::::::"+JSON.stringify(localStorage));
+        //console.log("sa marche pas::");
       }
     })
   };
@@ -366,7 +364,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     const localDate = currentDate.startDate.setDate(currentDate.startDate.getDate() + 1);
     setCurrentDate({startDate: new Date(localDate)});
     setLocalday ({startDate:new Date (localDate)});
-    console.log(currentDate.startDate)
+    //console.log(currentDate.startDate)
 
 
       setFormatedCurrentDate(localDate);
@@ -376,10 +374,10 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
       .once("value", (snapshot) =>{ 
         const sets = snapshot.val();
-        console.log("dataBase" + JSON.stringify (sets));
-        console.log("BOOOOOOOOOOM")
+        //console.log("dataBase" + JSON.stringify (sets));
+        //console.log("BOOOOOOOOOOM")
         if(!sets){
-          console.log("!snapshot.val()")
+          //console.log("!snapshot.val()")
           firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(
           {
             hydratation: {
@@ -439,14 +437,14 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       // localStorage.setItem('dashboard', JSON.stringify(sets));
       //  setDashboard(JSON.parse(localDashboard ));
           
-          console.log("Local Storage::::::" + JSON.stringify(localDashboard));
-          console.log("Local Storage::::::" + JSON.stringify(set));
+          //console.log("Local Storage::::::" + JSON.stringify(localDashboard));
+          //console.log("Local Storage::::::" + JSON.stringify(set));
           // setDashboard(localDashboard)  
         });
         
         }
         else{
-          console.log("snapshot.val()")
+          //console.log("snapshot.val()")
 
       if(!(sets.hydratation.hydrates)){
         sets.hydratation.hydrates = [];
@@ -457,7 +455,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       const updatedSets = addMissingDashboard(sets);
       // localStorage.setItem('dashboard', JSON.stringify(updatedSets));
       setDashboard(updatedSets);
-      console.log("Dashboard" + JSON.stringify(dashboard))
+      //console.log("Dashboard" + JSON.stringify(dashboard))
     }        
       })
   }
@@ -466,15 +464,15 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
     const localDate = currentDate.startDate.setDate(currentDate.startDate.getDate() - 1);
     setCurrentDate({startDate: new Date(localDate)});
     setLocalday ({startDate:new Date (localDate)});
-    console.log(currentDate.startDate)
+    //console.log(currentDate.startDate)
 
       const userUID = localStorage.getItem('userUid');
       firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
       .once("value", (snapshot) =>{ 
         const sets = snapshot.val();
-        console.log("dataBase" + JSON.stringify (sets));
+        //console.log("dataBase" + JSON.stringify (sets));
         if(!sets){
-          console.log("!snapshot.val()")
+          //console.log("!snapshot.val()")
           firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(
           {
             hydratation: {
@@ -528,7 +526,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
         })  
         }
         else{
-          console.log("snapshot.val()")
+          //console.log("snapshot.val()")
 
       if(!(sets.hydratation.hydrates)){
         sets.hydratation.hydrates = [];
@@ -539,7 +537,7 @@ const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateStri
       const updatedSets = addMissingDashboard(sets);
       // localStorage.setItem('dashboard', JSON.stringify(updatedSets));
       setDashboard(updatedSets);
-      console.log("Dashboard" + JSON.stringify(dashboard))
+      //console.log("Dashboard" + JSON.stringify(dashboard))
     }        
       })
   }

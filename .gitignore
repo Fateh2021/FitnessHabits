@@ -31,7 +31,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.scannerwork
+# rapport testing
 test-report.xml
-
-.scannerwork/report-task.txt
