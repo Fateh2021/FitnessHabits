@@ -24,17 +24,20 @@ export async function creerPdf(dataSelected, d1, d2) {
     let date = d1.toISOString().slice(0, 10) + " " + translate.getText("A") + " " + d2.toISOString().slice(0, 10);
     // logo 
     doc.autoTable({
-        body: [[' '],[date]],
+        body: [[' ']],
         alternateRowStyles: {fillColor: "#ffffff"},
-        styles:{
-            fontSize: 14,
-            fontStyle: 'bold'
-        },
         didDrawCell: (data) => {
             if (data.section === 'body' && data.column.index === 0) {
                 doc.addImage('/assets/Logo2.png','png',15,4,59,15);
             }
         }
+    });
+    doc.text(date, 75, doc.lastAutoTable.finalY + 10);
+    doc.autoTable({
+        body: [[' ']],
+        tableWidth: 'wrap',
+        startY: doc.lastAutoTable.finalY + 10,
+        alternateRowStyles: {fillColor: "#ffffff"},
     });
 
     dataSelected.forEach((data) => {
