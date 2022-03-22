@@ -8,7 +8,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from "react-dom/test-utils";
 
 import DatePicker from "react-datepicker";
-import Poids from './pages/Dashboard/ItemsList/Poids';
 
 const renderWithRouter = (ui, { route = '/' } = {}) => {
     window.history.pushState({}, 'Test page', route);
