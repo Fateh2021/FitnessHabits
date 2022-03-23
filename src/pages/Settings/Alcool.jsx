@@ -2,7 +2,6 @@ import { IonIcon, IonLabel, IonCol, IonItem, IonButton, IonInput} from '@ionic/r
 import { star, trash, create,addCircle } from 'ionicons/icons';
 import React, {useState, useEffect} from 'react';
 import uuid from 'react-uuid';
-import firebase from 'firebase'
 
 const AlcoolItem = (props) => {
 
@@ -78,7 +77,8 @@ const Alcool = (props) => {
   const [alcools, setAlcools] = useState(props.alcools);
   const [alcoolsToEdit, setAlcoolsToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
-  const [currentDate, setCurrentDate] = useState({startDate: new Date()});
+  const [currentDate] = useState({startDate: new Date()});
+  const [alcoolService] = useState(props.alcoolService);
 
   // update state on prop change
   useEffect(() => {
@@ -86,39 +86,32 @@ const Alcool = (props) => {
   }, [props.alcools])
 
   const updateFavorisStatus = (event, item, index) => {
-
+    debugger;
     event.stopPropagation();
     var array = [...alcools];
-    if(event.target.style.color === ''){
+    if(!array[item].favoris){
       event.target.style.color = '#d18a17';
       array[item].favoris = true;
-
-      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-      dashboard.alcool.alcools.unshift(array[item]);
-      localStorage.setItem('dashboard', JSON.stringify(dashboard));
-      const userUID = localStorage.getItem('userUid');
-      firebase.database().ref('dashboard/'+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard); 
+      alcoolService.dashboard.addAlcool(array[item], currentDate);
     } else {
       event.target.style.color = '';
-      array[item].favoris = false;      
+      array[item].favoris = false;
     }
-    setAlcools (array);
-    updateCacheAndBD(array);
+    setAlcools(array);
+    alcoolService.settings.updateAlcools(array);
   }
 
   const deleteItem = (item) => {
     var array = [...alcools];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[index] = item;
-    setAlcools (array);
+
+    if (index === -1) array.splice(item, 1)
+    else array[index] = item;
+
+    setAlcools(array);
     closeItemContainer();
 
-    // update the cache and persist in DB
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= array;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateAlcools(array);
   }
 
   const closeItemContainer = () => {
@@ -139,24 +132,14 @@ const Alcool = (props) => {
   const saveItem = (item) => {
     var array = [...alcools];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.unshift(item): array[index] = item;
-    setAlcools (array);
+
+    if (index === -1) array.unshift(item)
+    else array[index] = item;
+
+    setAlcools(array);
     closeItemContainer();
 
-    // update the cache and persist in DB
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= array;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/'+userUID).update(settings);
-  }
-
-  const updateCacheAndBD = (alcools) => {
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.alcools= alcools;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateAlcools(array);
   }
   
   return (
@@ -166,7 +149,7 @@ const Alcool = (props) => {
           { alcools.map((alco, index) => (      
             <IonItem className="divTitre11" key={alco.id}>
               <IonCol size="1">
-                <IonIcon className='starFavoris' onClick={(e) => updateFavorisStatus(e,index)} icon={star}></IonIcon>
+                <IonIcon className='starFavoris' onClick={(e) => updateFavorisStatus(e,index)} icon={star} ></IonIcon>
               </IonCol>
               <IonCol size="3">
               <IonLabel className="nameDscrip"><h2><b>{alco.name}</b></h2></IonLabel>

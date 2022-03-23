@@ -1,4 +1,3 @@
-
 .or-format {
     text-align: center;
 }
@@ -324,6 +323,10 @@ color: #ffffff;
 
 }
 
+.starFavoris.active {
+  color: #dbb600;
+}
+
 .labelAddItem{
   font-size: 11px;
   font-weight: bold;
@@ -389,7 +392,7 @@ color: #ffffff;
   background-color: #684b11;
   width: 50px;
   height: 50px;
-
+ 
  }
  .veg-box{
   z-index: 0;
@@ -414,7 +417,7 @@ color: #ffffff;
  .headerTitle h1{
   color: #1a5a5a;
  }
-
+ 
  #materialSelectSupp{
   margin-top: 0px;
   margin-right: 10px;
@@ -444,7 +447,7 @@ color: #ffffff;
   font-size: 13px;
   font-weight: bold;
  }
-
+ 
  #PopUpUnitSelect{
   margin-top: 0px;
   margin-left: -28px;
@@ -593,6 +596,12 @@ color: #ffffff;
 
   font-size: 10px;
   text-align: center;
+}
+
+.nourTextInput input::-webkit-outer-spin-button,
+.nourTextInput input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
  .labelSettings header h3 .IonItem{
@@ -1781,7 +1790,7 @@ body {
   overflow: hidden;
 }
 
-.ocean {
+.ocean { 
   height: 5%;
   width:100%;
   position:absolute;
@@ -1791,7 +1800,7 @@ body {
 }
 
 .wave {
-  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
   position: absolute;
   top: -198px;
   width: 6400px;
@@ -1927,7 +1936,7 @@ h2{
 }
 
 .ionlistNourrSettings {
-  padding: 0px;
+  padding: 0px;  
 }
 
 .divTitre3 {
@@ -1967,7 +1976,7 @@ h2{
 }
 
 .divTitre9 {
-
+  
   width: 100%;
   --ion-background-color: #113d37;
 }
@@ -1990,44 +1999,44 @@ h2{
   --ion-background-color:  #eed996;
 }
 
-.multipleSelection {
+.multipleSelection { 
   position: fixed;
   /* width: 300px;  */
-  background-color: #BCC2C1;
-}
+  background-color: #BCC2C1; 
+} 
 
-.selectBox {
-  position: fixed;
-}
+.selectBox { 
+  position: fixed; 
+} 
 
-.selectBox select {
+.selectBox select { 
   /* width: 100%;  */
-  font-weight: bold;
-}
+  font-weight: bold; 
+} 
 
-.overSelect {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
+.overSelect { 
+  position: fixed; 
+  left: 0; 
+  right: 0; 
+  top: 0; 
+  bottom: 0; 
+} 
 
-#checkBoxes {
-  display: none;
-  border: 1px #8DF5E4 solid;
+#checkBoxes { 
+  display: none; 
+  border: 1px #8DF5E4 solid; 
   overflow: hidden;
   height: 60px;
   width: 120px;
-}
+} 
 
-#checkBoxes label {
-  display: block;
-}
+#checkBoxes label { 
+  display: block; 
+} 
 
-#checkBoxes label:hover {
-  background-color: #4F615E;
-}
+#checkBoxes label:hover { 
+  background-color: #4F615E; 
+} 
 
 .scrollActivities {
   z-index: 1;
@@ -2102,10 +2111,10 @@ h2{
   justify-content: center;
 }
 
-@media only screen
+@media only screen 
   and (min-device-width: 375px){
     .grid-container{
-      margin-top: 30px;
+      margin-top: 30px; 
     }
     .sideBarHeader{
       margin-top: 30px;
