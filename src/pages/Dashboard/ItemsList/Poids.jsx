@@ -102,8 +102,7 @@ const Poids = (props) => {
         let poidsDaily = event.detail.value;
         const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-        dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
-        dashboard.poids.datePoids = new Date();
+        setDailyPoids(tmp_weight);
         localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
         setDailyPoids(poidsDaily);
