@@ -311,20 +311,20 @@ function addNourritureTable(document) {
     let values = [];
     var Date = translate.getText("DATE_TITLE")
     var name = translate.getText("SUPPL_NOM");
-    var consomation = translate.getText("HYD_TEXT_COUNT");
+    // var consomation = translate.getText("HYD_TEXT_COUNT");
     var quantite = translate.getText("EXP_REPORT_QT");
     var unity = translate.getText("EXP_REPORT_UNIT");
     var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
     var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
     var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
     var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
-    headers.push(Date, name, consomation, quantite, unity, proteine, glucide, fibre, gras);
+    headers.push(Date, name, quantite, unity, proteine, glucide, fibre, gras);
 
     if (getNourriture()) {
         let nourriture = getNourriture();
 
         nourriture.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
+            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
         });
 
 
@@ -343,19 +343,19 @@ function addNourritureTable(document) {
                 fillColor: "#b4ead8"
             },
             columnStyles: {
-                5: {
+                4: {
                     fillColor: "#a52a2a",
                     textColor: "#ffffff"
                 },
-                6: {
+                5: {
                     fillColor: "#db4e3e",
                     textColor: "#ffffff"
                 },
-                7: {
+                6: {
                     fillColor: "#589051",
                     textColor: "#ffffff"
                 },
-                8: {
+                7: {
                     fillColor: "#c99b2e",
                     textColor: "#ffffff"
                 }
@@ -816,7 +816,7 @@ function addAverageGlycimiaTable(document) {
 
 function insertNoDataFound(document) {
     document.autoTable({
-        body: [[translate.getText("EXP_REPORT_NO_DATA")]],
+        body: [[translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")]],
         startY: document.lastAutoTable.finalY,
         bodyStyles: {
             halign: "center",

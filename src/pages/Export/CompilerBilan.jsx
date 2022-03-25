@@ -131,12 +131,14 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchDrinks("hydratation", hydratations, formatedDate);
                 break;
             case "nourriture":
-                let cereales = data.cereales.cereales;
-                let legumes = data.legumes.legumes;
-                let proteines = data.proteines.proteines;
-                let gras = data.gras.grass;
+                let cereales = data.food.categories.grainFood;
+                let legumes = data.food.categories.vegetables;
+                let fruits = data.food.categories.fruit;
+                let proteines = data.food.categories.proteinFood;
+                let gras = data.food.categories.dairyProducts;
                 fetchNourriture(cereales, formatedDate);
                 fetchNourriture(legumes, formatedDate);
+                fetchNourriture(fruits, formatedDate);
                 fetchNourriture(proteines, formatedDate);
                 fetchNourriture(gras, formatedDate);
                 break;
@@ -212,28 +214,20 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
 }
 
 
-function fetchNourriture(array_nourriture, formatedDate) {
-
-    if (array_nourriture != null) {
-
-        for (const element of array_nourriture) {
-
-            if (element.consumption === 0) {
-                continue;
-            }
+function fetchNourriture(foods, formatedDate) {
+    if (foods.items) {
+        for (const element of foods.items) {
             let mapResult = new Map();
             mapResult.set("Date", formatedDate);
             mapResult.set("Nom", element.name);
-            mapResult.set("Consommation", element.consumption);
-            mapResult.set("Quantité", element.qtte);
+            mapResult.set("Quantité", element.qty);
             mapResult.set("Unité", element.unit);
-            mapResult.set("Protéine", element.proteine * element.consumption);
-            mapResult.set("Glucide", element.glucide * element.consumption);
-            mapResult.set("Fibre", element.fibre * element.consumption);
-            mapResult.set("Gras", element.gras * element.consumption);
+            mapResult.set("Protéine", element.proteins);
+            mapResult.set("Glucide", element.glucides);
+            mapResult.set("Fibre", element.fibre);
+            mapResult.set("Gras", element.fats);
 
             arrayNourriture.push(mapResult);
-
         }
     }
 }
