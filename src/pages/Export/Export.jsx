@@ -455,7 +455,6 @@ const Settings = (props) => {
                                     if (dataSelected.length === 0) {
                                         toast(toastMessage);
                                     } else {
-                                        var date = new Date().toISOString().slice(0, 10);
                                         if (exportType === "pdf" || exportType === "hybride") {
                                             await compilerBilan(dataSelected, d1, d2);
                                             await creerPdf(dataSelected, d1, d2);
