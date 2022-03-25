@@ -21,7 +21,8 @@ import * as translate from '../../translate/Translator';
 
 export async function creerPdf(dataSelected, d1, d2) {
     const doc = new jsPDF();
-    let date = d1.toISOString().slice(0, 10) + " " + translate.getText("A") + " " + d2.toISOString().slice(0, 10);
+    let date = translate.getText("DE") + " " + d1.toISOString().slice(0, 10) + " " + translate.getText("A")
+            + " " + d2.toISOString().slice(0, 10);
     // logo 
     doc.autoTable({
         body: [[' ']],
