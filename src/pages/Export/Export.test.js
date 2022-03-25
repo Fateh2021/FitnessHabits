@@ -326,48 +326,39 @@ test('ExportModule - TestClickOnFoodCheckbox', async() => {
 
 
 {/* ------Compiler Bilan----------- */}
-// TODO MODIFIER POUR ADAPTER AUX NOUVELLES CATEGORIES
-// test('ExportModule - TestFetchNourritureCereale', async() => {
-//     let data_cereales;
-//     data.map( (element) => {
-//         data_cereales=element.cereales.cereales
-//     })
-//     let arrayExpected=[]
-//     data_cereales.map( (element) => {
-//         let mapExpected = new Map();
-//         mapExpected.set("Date", '18-03-2022');
-//         mapExpected.set("Nom", element.name);
-//         mapExpected.set("Consommation", element.consumption);
-//         mapExpected.set("Quantité", element.qtte);
-//         mapExpected.set("Unité", element.unit);
-//         mapExpected.set("Protéine", element.proteine * element.consumption);
-//         mapExpected.set("Glucide", element.glucide * element.consumption);
-//         mapExpected.set("Fibre", element.fibre * element.consumption);
-//         mapExpected.set("Gras", element.gras * element.consumption);
-//         arrayExpected.push(mapExpected);
-//     })
-//
-//     expect(CompilerBilan.test_fetchNourriture(data_cereales,'18-03-2022')).toEqual(arrayExpected)
-// });
-//
-// test('ExportModule - TestFetchNourritureCereale0Consumption', async() => {
-//     CompilerBilan.resetDataArrays()
-//     let data_cereales;
-//     data.map((element)=>{
-//         data_cereales=element.cereales.cereales;
-//     })
-//     data_cereales.map((element)=>{
-//         element.consumption=0;
-//     })
-//
-//     expect(CompilerBilan.test_fetchNourriture(data_cereales,'18-03-2022')).toEqual([])
-// });
-//
-// test('ExportModule - TestFetchNourritureCerealeNull', async() => {
-//     CompilerBilan.resetDataArrays()
-//     expect(CompilerBilan.test_fetchNourriture(null,'18-03-2022')).toEqual([])
-// });
+test('ExportModule - TestFetchNourritureVegetables', async() => {
+    let data_vegetables;
+    data.map( (element) => {
+        data_vegetables=element.food.categories.vegetables
+    })
+    let arrayExpected=[]
+    data_vegetables.items.forEach( (element) => {
+        let mapExpected = new Map();
+        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Nom", element.name);
+        mapExpected.set("Quantité", element.qty);
+        mapExpected.set("Unité", element.unit);
+        mapExpected.set("Protéine", element.proteins);
+        mapExpected.set("Glucide", element.glucides);
+        mapExpected.set("Fibre", element.fibre);
+        mapExpected.set("Gras", element.fats);
 
+        arrayExpected.push(mapExpected);
+    })
+    expect(CompilerBilan.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual(arrayExpected)
+});
+
+test('ExportModule - TestFetchNourritureVegetables0Consumption', async() => {
+    CompilerBilan.resetDataArrays()
+    let data_vegetables;
+    data.map((element)=>{
+        data_vegetables=element.food.categories.vegetables;
+    })
+
+    data_vegetables.items.map((element)=>{
+        element.consumption=0;
+    })
+});
 
 
 test('ExportModule - TestFetchDrinksHydratation', async() => {
@@ -389,7 +380,7 @@ test('ExportModule - TestFetchDrinksHydratation', async() => {
         mapExpected.set("Gras", element.gras * element.consumption);
         arrayExpected.push(mapExpected);
     })
- 
+
     expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual(arrayExpected);
 });
 
@@ -402,7 +393,7 @@ test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
     data_hydratation.map((element)=>{
         element.consumption=0;
     })
-    
+
     expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual([])
 });
 
@@ -426,10 +417,11 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
         arrayExpected.push(mapExpected);
     })
 
+
     expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
 });
 
-test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
+test('ExportModule - TestFetchDrinksAlcool0Consumption', async() => {
     CompilerBilan.resetDataArrays()
     let data_alcohol;
     data.map((element)=>{
@@ -438,7 +430,7 @@ test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
     data_alcohol.map((element)=>{
         element.consumption=0;
     })
-    
+
     expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual([])
 });
 
@@ -473,12 +465,12 @@ test('ExportModule - test_sortEntries', async() => {
 
     let arrayOfMapDateSorted=[
         new Map().set('Date','31-12-2023'),
-        new Map().set('Date','31-12-2023'), 
-        new Map().set('Date','18-05-2022'), 
-        new Map().set('Date','18-05-2022'),  
-        new Map().set('Date','03-01-2022'),   
-        new Map().set('Date','13-08-2019'),  
-        new Map().set('Date','15-10-2011'),  
+        new Map().set('Date','31-12-2023'),
+        new Map().set('Date','18-05-2022'),
+        new Map().set('Date','18-05-2022'),
+        new Map().set('Date','03-01-2022'),
+        new Map().set('Date','13-08-2019'),
+        new Map().set('Date','15-10-2011'),
     ]
 
     CompilerBilan.test_sortEntries(arrayOfMapDateNotSorted)
