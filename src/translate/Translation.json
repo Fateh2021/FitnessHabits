@@ -196,28 +196,6 @@
             "es": "Grasas",
             "fr": "Gras"
          }
-      },
-      "macro_nutriments": {
-         "proteins": {
-            "en": "Proteins",
-            "es": "Proteinas",
-            "fr": "Protéines"
-         },
-         "glucides": {
-            "en": "Glucides",
-            "es": "Glúcidos",
-            "fr": "Glucides"
-         },
-         "fibre": {
-            "en": "Fibre",
-            "es": "Fibras",
-            "fr": "Fibres"
-         },
-         "fats": {
-            "en": "Fats",
-            "es": "Grasas",
-            "fr": "Gras"
-         }
       }
    },
 
