@@ -147,7 +147,9 @@ const Settings = (props) => {
     const [d2, onChangeD2] = useState(new Date());
 
     // permet d'afficher le format de la date selon ce qui est dans son profile
-    const dateFormat = JSON.parse(localStorage.getItem("profile")).dateFormat.replace(/[L*]/g, 'M')
+    // si pas de format dans son profile, retourne null
+    const dateFormat = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")).dateFormat.replace(/[L*]/g, 'M')
+            : null;
 
     // load the current settings from the local storage if it exists, otherwise load it from the DB
     useEffect(() => {
