@@ -13,6 +13,7 @@ import { ExportToCsv } from "export-to-csv";
 import { jsPDF } from "jspdf";
 import data from './example_test.json';
 import { execPath } from 'process';
+import {resetDataArrays, test_formatDuration, test_getDuration} from "./CompilerBilan";
 
 const renderWithRouter = (ui, { route = '/' } = {}) => {
     window.history.pushState({}, 'Test page', route);
@@ -348,17 +349,112 @@ test('ExportModule - TestFetchNourritureVegetables', async() => {
     expect(CompilerBilan.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual(arrayExpected)
 });
 
-test('ExportModule - TestFetchNourritureVegetables0Consumption', async() => {
+test('ExportModule - TestFetchNourritureVegetablesNull', async() => {
     CompilerBilan.resetDataArrays()
     let data_vegetables;
-    data.map((element)=>{
-        data_vegetables=element.food.categories.vegetables;
+    data.map( (element) => {
+        data_vegetables=element.food.categories.vegetables
     })
+    data_vegetables.items=null
+    expect(CompilerBilan.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual([])
 
-    data_vegetables.items.map((element)=>{
-        element.consumption=0;
-    })
 });
+
+test('ExportModule - TestFetchToilets', async() => {
+    let data_toilets;
+    data.map( (element) => {
+        data_toilets=element.toilettes
+    })
+    let arrayExpected=[]
+
+    let mapExpected = new Map();
+    mapExpected.set("Date", '18-03-2022');
+    mapExpected.set("Urine", data_toilets.urine);
+    mapExpected.set("Transit", data_toilets.feces);
+    arrayExpected.push(mapExpected);
+
+    expect(CompilerBilan.test_fetchToilets(data_toilets,'18-03-2022')).toEqual(arrayExpected)
+});
+
+test('ExportModule - TestFetchToiletsVoid', async() => {
+    resetDataArrays()
+    expect(CompilerBilan.test_fetchToilets(null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchToilets(undefined,'18-03-2022')).toEqual([])
+});
+
+
+test('ExportModule - TestFetchActivities', async() => {
+    let data_activites;
+    data.map( (element) => {
+        data_activites=element.activities
+    })
+    let arrayExpected=[]
+
+    let mapExpected = new Map();
+    let duration='06:42'
+    mapExpected.set("Date", '18-03-2022');
+    mapExpected.set("duration", duration);
+    mapExpected.set("hours", duration.slice(0, 2));
+    mapExpected.set("minutes", duration.slice(3, 5));
+    arrayExpected.push(mapExpected);
+
+    expect(CompilerBilan.test_fetchActivites(data_activites,'18-03-2022')).toEqual(arrayExpected)
+});
+
+test('ExportModule - TestFetchActivitiesVoid', async() => {
+    resetDataArrays()
+    expect(CompilerBilan.test_fetchActivites(null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchActivites(undefined,'18-03-2022')).toEqual([])
+});
+
+test('ExportModule - TestFetchSleep', async() => {
+    let data_sleep;
+    data.map( (element) => {
+        data_sleep=element.sommeil
+    })
+    let arrayExpected=[]
+
+    let mapExpected = new Map();
+    mapExpected.set("Date", '18-03-2022');
+    mapExpected.set("startHour", data_sleep.heureDebut);
+    mapExpected.set("endHour", data_sleep.heureFin);
+    mapExpected.set("duration", test_formatDuration(data_sleep.duree));
+    mapExpected.set("wakeUpQt",data_sleep.nbReveils)
+    mapExpected.set("wakeUpState",data_sleep.etatReveil)
+    arrayExpected.push(mapExpected)
+
+
+    //console.log(CompilerBilan.test_fetchSleep(data_sleep,'18-03-2022'))
+    expect(CompilerBilan.test_fetchSleep(data_sleep,'18-03-2022')).toEqual(arrayExpected)
+});
+
+test('ExportModule - TestFetchSleepVoid', async() => {
+    resetDataArrays()
+    expect(CompilerBilan.test_fetchSleep(null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchSleep(undefined,'18-03-2022')).toEqual([])
+});
+
+test('ExportModule - TestFetchGlycemia', async() => {
+    let data_glycemia;
+    data.map( (element) => {
+        data_glycemia=element.glycemie.dailyGlycemie
+    })
+    let arrayExpected=[]
+
+    let mapExpected = new Map();
+    mapExpected.set("Date", '18-03-2022');
+    mapExpected.set("Glycémie", parseInt(data_glycemia));
+    arrayExpected.push(mapExpected)
+
+    expect(CompilerBilan.test_fetchGlycemia(data_glycemia,'18-03-2022')).toEqual(arrayExpected)
+});
+
+test('ExportModule - TestFetchGlycemiaVoid', async() => {
+    resetDataArrays()
+    expect(CompilerBilan.test_fetchGlycemia(null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchGlycemia(undefined,'18-03-2022')).toEqual([])
+});
+
 
 
 test('ExportModule - TestFetchDrinksHydratation', async() => {
@@ -384,17 +480,10 @@ test('ExportModule - TestFetchDrinksHydratation', async() => {
     expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual(arrayExpected);
 });
 
-test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
-    CompilerBilan.resetDataArrays()
-    let data_hydratation;
-    data.map((element)=>{
-        data_hydratation=element.hydratation.hydrates
-    })
-    data_hydratation.map((element)=>{
-        element.consumption=0;
-    })
-
-    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual([])
+test('ExportModule - TestFetchDrinksHydratationVoid', async() => {
+    resetDataArrays()
+    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",undefined,'18-03-2022')).toEqual([])
 });
 
 test('ExportModule - TestFetchDrinksAlcohol', async() => {
@@ -421,17 +510,10 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
     expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
 });
 
-test('ExportModule - TestFetchDrinksAlcool0Consumption', async() => {
-    CompilerBilan.resetDataArrays()
-    let data_alcohol;
-    data.map((element)=>{
-        data_alcohol=element.alcool.alcools
-    })
-    data_alcohol.map((element)=>{
-        element.consumption=0;
-    })
-
-    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual([])
+test('ExportModule - TestFetchDrinksAlcoolVoid', async() => {
+    resetDataArrays()
+    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",undefined,'18-03-2022')).toEqual([])
 });
 
 test('ExportModule - Test_getNumberOfUniqueDate', async() => {
@@ -476,6 +558,21 @@ test('ExportModule - test_sortEntries', async() => {
     CompilerBilan.test_sortEntries(arrayOfMapDateNotSorted)
     expect(arrayOfMapDateNotSorted).toEqual(arrayOfMapDateSorted);
 });
+
+
+test('ExportModule - getDuration', async() => {
+    expect(test_getDuration("15:30")).toEqual(930)
+    expect(test_getDuration("00:00")).toEqual(0)
+    expect(test_getDuration("24:00")).toEqual(1440)
+});
+
+test('ExportModule - formatDuration', async() => {
+    expect(test_formatDuration(930)).toEqual("15:30")
+    expect(test_formatDuration(0)).toEqual("00:00")
+    expect(test_formatDuration(1440)).toEqual("24:00")
+
+});
+
 
 
 

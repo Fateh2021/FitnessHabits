@@ -433,11 +433,13 @@
       } ]
     },
     "sommeil" : {
-      "heure" : 7,
-      "heureDebut" : "02:00",
-      "heureFin" : "09:00",
-      "minute" : 0,
-      "nbReveils" : 4
+      "heure": 0,
+      "heureDebut": "01:00",
+      "heureFin": "10:00",
+      "minute": 0,
+      "nbReveils": "4",
+      "etatReveil": "colere",
+      "duree": 540
     },
     "toilettes" : {
       "feces" : 4,

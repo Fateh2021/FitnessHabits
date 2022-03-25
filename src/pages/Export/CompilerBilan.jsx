@@ -246,7 +246,7 @@ function fetchToilets(toilets, formatedDate) {
 }
 
 function fetchGlycemia(glycemia, formatedDate) {
-    if (glycemia !== null) {
+    if (glycemia) {
         let mapGlycemia = new Map();
         mapGlycemia.set("Date", formatedDate);
         mapGlycemia.set("Glycémie", parseInt(glycemia));
@@ -302,15 +302,17 @@ function fetchInitialWeight(datas) {
 
 
 function fetchActivities(activity, formatedDate) {
-    let mapActivity = new Map();
-    let minutes = parseInt(activity.heure * 60) + parseInt(activity.minute);
-    let duration = formatDuration(minutes);
+    if(activity) {
+        let mapActivity = new Map();
+        let minutes = parseInt(activity.heure * 60) + parseInt(activity.minute);
+        let duration = formatDuration(minutes);
 
-    mapActivity.set("Date", formatedDate);
-    mapActivity.set("duration", duration);
-    mapActivity.set("hours", duration.slice(0, 2));
-    mapActivity.set("minutes", duration.slice(3, 5));
-    arrayActivities.push(mapActivity);
+        mapActivity.set("Date", formatedDate);
+        mapActivity.set("duration", duration);
+        mapActivity.set("hours", duration.slice(0, 2));
+        mapActivity.set("minutes", duration.slice(3, 5));
+        arrayActivities.push(mapActivity);
+    }
 }
 
 
@@ -318,7 +320,6 @@ function fetchActivities(activity, formatedDate) {
 function fetchSleeps(sleep, formatedDate) {
     if (sleep) {
         let mapSleep = new Map();
-
         if (sleep.duree && sleep.duree !== 0) {
             mapSleep.set("Date", formatedDate);
             mapSleep.set("startHour", sleep.heureDebut);
@@ -676,6 +677,25 @@ export function test_fetchNourriture(array_nourriture, formatedDate) {
     return arrayNourriture;
 }
 
+
+export function test_fetchToilets(toilets, formatedDate) {
+    fetchToilets(toilets, formatedDate);
+    return arrayToilets;
+}
+export function test_fetchActivites(activites, formatedDate) {
+    fetchActivities(activites, formatedDate);
+    return arrayActivities;
+}
+export function test_fetchSleep(sleeps, formatedDate) {
+    fetchSleeps(sleeps, formatedDate);
+    return arraySleeps;
+}
+
+export function test_fetchGlycemia(glycemia, formatedDate) {
+    fetchGlycemia(glycemia,formatedDate)
+    return arrayGlycemia;
+}
+
 export function test_fetchDrinksHydratation(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayHydratations;
@@ -686,10 +706,15 @@ export function test_fetchDrinksAlcohol(typeOfDrink, drinks, formatedDate) {
     return arrayAlcohol;
 }
 
+
 export function resetDataArrays() {
     arrayNourriture = [];
     arrayHydratations = [];
     arrayAlcohol = [];
+    arraySleeps=[];
+    arrayToilets=[];
+    arrayActivities=[];
+    arrayGlycemia=[];
 }
 
 export function test_getNumberOfUniqueDate(array_aliments) {
@@ -700,5 +725,12 @@ export function test_sortEntries(arrayToSort) {
     sortEntries(arrayToSort);
 }
 
+export function test_formatDuration(min){
+    return formatDuration(min);
+}
+
+export function test_getDuration(time){
+    return getDuration(time);
+}
 
 
