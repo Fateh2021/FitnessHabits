@@ -5,8 +5,7 @@ const GrainFood = (props) => {
   return (
     <Food
       categoryKey = 'grainFood'
-      cssId = 'myDIV3'
-      parentCallback = {props.parentCallback}
+      updateFoodConsumptionCallback = {props.updateFoodConsumptionCallback}
       macroNutrimentConsumption = {props.macroNutrimentConsumption}
       foodItems = {props.foodItems}
       currentDate = {props.currentDate}

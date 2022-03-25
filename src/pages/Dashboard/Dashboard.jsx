@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react"
 import firebase from "firebase"
 import DatePicker from "react-datepicker"
-import { arrowDropleftCircle, arrowDroprightCircle, arrowDropdownCircle, settings} from "ionicons/icons";
+import { arrowDropleftCircle, arrowDroprightCircle, arrowDropdownCircle, settings } from "ionicons/icons";
 import {
     IonContent, IonList, IonPage, IonTabBar, IonIcon, IonTabButton, IonLabel, IonFooter,
     IonGrid, IonCol, IonRow, IonAlert, IonItem, IonAvatar, IonInput, IonButton
 } from "@ionic/react";
 import Profil from "./Profil/Profil";
-import Fruit from "./ItemsList/Nourriture/Fruit"
-import ProteinFood from "./ItemsList/Nourriture/ProteinFood"
-import Vegetables from "./ItemsList/Nourriture/Vegetables"
-import GrainFood from "./ItemsList/Nourriture/GrainFood"
-import DairyProducts from "./ItemsList/Nourriture/DairyProducts";
+import Fruit from "./ItemsList/Food/Fruit"
+import ProteinFood from "./ItemsList/Food/ProteinFood"
+import Vegetables from "./ItemsList/Food/Vegetables"
+import GrainFood from "./ItemsList/Food/GrainFood"
+import DairyProducts from "./ItemsList/Food/DairyProducts";
 
 import Hydratation from "./ItemsList/Hydratation";
 import Glycemie from "./ItemsList/Glycemie"
@@ -32,11 +32,6 @@ import * as translate from "../../translate/Translator";
 import AlcoolService from "../../services/AlcoolService";
 
 const Dashboard = (props) => {
-    const [proteinFood, setProteinFood] = useState(0);
-    const [fruit, setFruit] = useState(0);
-    const [grainFood, setGrainFood] = useState(0);
-    const [vegetables, setVegetables] = useState(0);
-    const [dairyProducts, setDairyProducts] = useState(0);
     const [showAlert6, setShowAlert6] = useState(false);
     const [toDay, setToDaye] = useState({startDate: new Date()});
     const [currentDate, setCurrentDate] = useState({startDate: new Date()});
@@ -61,62 +56,64 @@ const Dashboard = (props) => {
             setFormatedCurrentDate(dt);
         });
     }
-    const SUPPORTED_FOOD_CATEGORIES = ["proteinFood", "grainFood", "vegetables", "fruit", "dairyProducts"];
 
-    const foodDashboard = {
-        globalMacroNutrimentConsumption: {
-            proteins: 0,
-            glucides: 0,
-            fibre: 0,
-            fats: 0
-        },
-        categories: {
-            proteinFood: {
-                macroNutrimentConsumption: {
-                    proteins: 0,
-                    glucides: 0,
-                    fibre: 0,
-                    fats: 0
-                },
-                items: DefaultDashboard.proteinFoodItems
+    const initFoodDashboard = () => {
+        const foodDashboard = {
+            globalMacroNutrimentConsumption: {
+                proteins: 0,
+                glucides: 0,
+                fibre: 0,
+                fats: 0
             },
-            grainFood: {
-                macroNutrimentConsumption: {
-                    proteins: 0,
-                    glucides: 0,
-                    fibre: 0,
-                    fats: 0
+            categories: {
+                proteinFood: {
+                    macroNutrimentConsumption: {
+                        proteins: 0,
+                        glucides: 0,
+                        fibre: 0,
+                        fats: 0
+                    },
+                    items: []
                 },
-                items: DefaultDashboard.grainFoodItems
-            }, 
-            vegetables: {
-                macroNutrimentConsumption: {
-                    proteins: 0,
-                    glucides: 0,
-                    fibre: 0,
-                    fats: 0
+                grainFood: {
+                    macroNutrimentConsumption: {
+                        proteins: 0,
+                        glucides: 0,
+                        fibre: 0,
+                        fats: 0
+                    },
+                    items: []
+                }, 
+                vegetables: {
+                    macroNutrimentConsumption: {
+                        proteins: 0,
+                        glucides: 0,
+                        fibre: 0,
+                        fats: 0
+                    },
+                    items: []
                 },
-                items: DefaultDashboard.vegetableItems
-            },
-            fruit: {
-                macroNutrimentConsumption: {
-                    proteins: 0,
-                    glucides: 0,
-                    fibre: 0,
-                    fats: 0
+                fruit: {
+                    macroNutrimentConsumption: {
+                        proteins: 0,
+                        glucides: 0,
+                        fibre: 0,
+                        fats: 0
+                    },
+                    items: []
                 },
-                items: DefaultDashboard.fruitItems
-            },
-            dairyProducts: {
-                macroNutrimentConsumption: {
-                    proteins: 0,
-                    glucides: 0,
-                    fibre: 0,
-                    fats: 0
-                },
-                items: DefaultDashboard.dairyProductItems
+                dairyProducts: {
+                    macroNutrimentConsumption: {
+                        proteins: 0,
+                        glucides: 0,
+                        fibre: 0,
+                        fats: 0
+                    },
+                    items: []
+                }
             }
-        }
+        };
+        return foodDashboard;
     };
 
     const [dashboard, setDashboard] = useState({
@@ -136,7 +133,7 @@ const Dashboard = (props) => {
             },
             alcools: DefaultDashboard.alcools
         },
-        food: foodDashboard,
+        food: initFoodDashboard(),
         glycemie: {
             dailyGlycemie: 0,
         },
@@ -162,42 +159,32 @@ const Dashboard = (props) => {
     });
 
     const checkAllFoodCategoriesAreDefined = (dashboard) => {
+        const foodDashboard = initFoodDashboard();
+
         if (!dashboard.food) {
             dashboard.food = foodDashboard;
-            return true;
+            return;
         }
         if (!dashboard.food.globalMacroNutrimentConsumption) {
             dashboard.food.globalMacroNutrimentConsumption = foodDashboard.globalMacroNutrimentConsumption;
         }
         if (!dashboard.food.categories || Object.keys(dashboard.food.categories).length === 0) {
             dashboard.food.categories = foodDashboard.categories;
-            return true;
+            return;
         }
-        SUPPORTED_FOOD_CATEGORIES.forEach(category => {
+        Object.keys(foodDashboard.categories).forEach(category => {
             if (!dashboard.food.categories[category]) {
-                dashboard.food.categories[category] = {
-                    macroNutrimentConsumption: {
-                        proteins: 0,
-                        glucides: 0,
-                        fibre: 0,
-                        fats: 0
-                    },
-                    items: []
-                };
+                dashboard.food.categories[category] = foodDashboard.categories[category];
+                return;
             }
             if (!dashboard.food.categories[category].macroNutrimentConsumption) {
-                dashboard.food.categories[category].macroNutrimentConsumption = {
-                    proteins: 0,
-                    glucides: 0,
-                    fibre: 0,
-                    fats: 0
-                };
+                dashboard.food.categories[category].macroNutrimentConsumption = foodDashboard.categories[category].macroNutrimentConsumption;
             }
             if (!dashboard.food.categories[category].items) {
-                dashboard.food.categories[category].items = [];
+                dashboard.food.categories[category].items = foodDashboard.categories[category].items;
             }
         });
-        return true;
+        return;
     };
 
     const addMissingDashboard = (dashboard) => {
@@ -260,9 +247,9 @@ const Dashboard = (props) => {
         });
 
         if (localDashboard) {
-            const sets = addMissingDashboard(JSON.parse(localDashboard));
-            localStorage.setItem("dashboard", JSON.stringify(sets));
-            setDashboard(JSON.parse(localDashboard));
+            const updatedSets = addMissingDashboard(JSON.parse(localDashboard));
+            localStorage.setItem("dashboard", JSON.stringify(updatedSets));
+            setDashboard(updatedSets);
         } else {
             const userUID = localStorage.getItem("userUid");
             //console.log("Loading Dashboard From DB...");
@@ -301,10 +288,10 @@ const Dashboard = (props) => {
             sets.food.globalMacroNutrimentConsumption.glucides += sets.food.categories[category].macroNutrimentConsumption.glucides;
             sets.food.globalMacroNutrimentConsumption.fibre += sets.food.categories[category].macroNutrimentConsumption.fibre;
             sets.food.globalMacroNutrimentConsumption.fats += sets.food.categories[category].macroNutrimentConsumption.fats;
-        })
+        });
     };
 
-    const NourritureUpdate = () => {
+    const updateFoodConsumption = function() {
         const userUID = localStorage.getItem("userUid");
         //console.log("Loading Dashboard From DB...");
         firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
@@ -331,32 +318,6 @@ const Dashboard = (props) => {
                 }
             })
     };
-  
-    const parentCallbackFruit = (childData) => {  
-        setFruit(childData);
-        NourritureUpdate();
-    };
-
-    const parentCallbackProteinFood = (childData) => {     
-        setProteinFood(childData);
-        NourritureUpdate();
-    };
-
-    const parentCallbackVegetables = (childData) => {  
-        setVegetables(childData);
-        NourritureUpdate();
-    };
-
-    const parentCallbackGrainFood = (childData) => {  
-        setGrainFood(childData);
-        NourritureUpdate();
-    };
-
-    const parentCallbackDairyProducts = (childData) => {  
-        setDairyProducts(childData);
-        NourritureUpdate();
-    };
-
 
     const nextDay = () => {
 
@@ -396,7 +357,7 @@ const Dashboard = (props) => {
                                 },
                                 alcools:DefaultDashboard.alcools
                             },
-                            food: foodDashboard,
+                            food: initFoodDashboard(),
                             glycemie : {
                                 dailyGlycemie:0,
                             },
@@ -491,7 +452,7 @@ const Dashboard = (props) => {
                                 },
                                 alcools:DefaultDashboard.alcools
                             },
-                            food: foodDashboard,
+                            food: initFoodDashboard(),
                             glycemie : {
                                 dailyGlycemie:0,
                             },
@@ -604,34 +565,34 @@ const Dashboard = (props) => {
                     <div id="myDIV22">
                         <IonList id = "listNourriture">
                             <Fruit 
-                                parentCallback = {parentCallbackFruit.bind(this)} 
-                                macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.fruit.macroNutrimentConsumption }
-                                foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.fruit.items }
-                                currentDate = {currentDate}
+                                updateFoodConsumptionCallback = { updateFoodConsumption } 
+                                macroNutrimentConsumption = { dashboard.food.categories.fruit.macroNutrimentConsumption }
+                                foodItems = { dashboard.food.categories.fruit.items }
+                                currentDate = { currentDate }
                             />
                             <ProteinFood 
-                                parentCallback = {parentCallbackProteinFood.bind(this)} 
-                                macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.proteinFood.macroNutrimentConsumption }
-                                foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.proteinFood.items }
-                                currentDate = {currentDate}
+                                updateFoodConsumptionCallback = { updateFoodConsumption } 
+                                macroNutrimentConsumption = { dashboard.food.categories.proteinFood.macroNutrimentConsumption }
+                                foodItems = { dashboard.food.categories.proteinFood.items }
+                                currentDate = { currentDate }
                             />
                             <Vegetables 
-                                parentCallback = {parentCallbackVegetables.bind(this)}
-                                macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.vegetables.macroNutrimentConsumption }
-                                foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.vegetables.items }
-                                currentDate = {currentDate}
+                                updateFoodConsumptionCallback = { updateFoodConsumption }
+                                macroNutrimentConsumption = { dashboard.food.categories.vegetables.macroNutrimentConsumption }
+                                foodItems = { dashboard.food.categories.vegetables.items }
+                                currentDate = { currentDate }
                             />
                             <GrainFood 
-                                parentCallback = {parentCallbackGrainFood.bind(this)}
-                                macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.grainFood.macroNutrimentConsumption }
-                                foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.grainFood.items }
-                                currentDate = {currentDate}
+                                updateFoodConsumptionCallback = { updateFoodConsumption }
+                                macroNutrimentConsumption = { dashboard.food.categories.grainFood.macroNutrimentConsumption }
+                                foodItems = { dashboard.food.categories.grainFood.items }
+                                currentDate = { currentDate }
                             />
                             <DairyProducts 
-                                parentCallback = {parentCallbackDairyProducts.bind(this)}
-                                macroNutrimentConsumption = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.dairyProducts.macroNutrimentConsumption }
-                                foodItems = { checkAllFoodCategoriesAreDefined(dashboard) && dashboard.food.categories.dairyProducts.items }
-                                currentDate = {currentDate}
+                                updateFoodConsumptionCallback = { updateFoodConsumption }
+                                macroNutrimentConsumption = { dashboard.food.categories.dairyProducts.macroNutrimentConsumption }
+                                foodItems = { dashboard.food.categories.dairyProducts.items }
+                                currentDate = { currentDate }
                             />
                         </IonList>
                     </div>
