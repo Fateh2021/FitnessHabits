@@ -1,34 +1,34 @@
-import React from 'react';
+import React from "react";
 import Register from "../Register";
 import { cleanup, render, screen } from "@testing-library/react";
-import { registerUser, signUp, validateFieldsEmpty, validatePasswordsMatching } from '../Register.Utilities';
-import toast from '../../../Toast';
-import { firebaseCreateUser } from '../firebase.helper';
+import { registerUser, signUp, validateFieldsEmpty, validatePasswordsMatching } from "../Register.Utilities";
+import toast from "../../../Toast";
+import { firebaseCreateUser } from "../firebase.helper";
 
-jest.mock('../../../Toast')
-jest.mock('../firebase.helper')
+jest.mock("../../../Toast")
+jest.mock("../firebase.helper")
 
 
 const mockFormFields = {
-    username: 'mockUsername',
-    password: 'mockPassword',
-    confirmPassword: 'mockPassword',
+    username: "mockUsername",
+    password: "mockPassword",
+    confirmPassword: "mockPassword",
 
     resetMockFormFields() {
-        mockFormFields.username = 'mockUsername'
-        mockFormFields.password = 'mockPassword'
-        mockFormFields.confirmPassword = 'mockPassword'
+        mockFormFields.username = "mockUsername"
+        mockFormFields.password = "mockPassword"
+        mockFormFields.confirmPassword = "mockPassword"
     },
 
     setEmptyFormFields() {
-        mockFormFields.username = ''
-        mockFormFields.password = ''
-        mockFormFields.confirmPassword = ''
+        mockFormFields.username = ""
+        mockFormFields.password = ""
+        mockFormFields.confirmPassword = ""
     }
 }
 
 
-describe('Register function', () => {
+describe("Register function", () => {
     const mockToast = jest.fn(() => Promise.resolve())
     let mockFirebaseCreateUser = jest.fn(() => Promise.resolve())
 
@@ -39,25 +39,25 @@ describe('Register function', () => {
         firebaseCreateUser.mockImplementation(mockFirebaseCreateUser)
     })
 
-    test('Component renders without crashing', async () => {
+    test("Component renders without crashing", async () => {
         const { registerPage } = render(<Register />)
-        await screen.findByTestId('btn-register')
+        await screen.findByTestId("btn-register")
     })
 
-    describe('When a form field is empty', () => {
+    describe("When a form field is empty", () => {
 
         beforeEach(() => {
             mockFormFields.setEmptyFormFields()
         })
 
-        describe('When user name field is empty', () => {
+        describe("When user name field is empty", () => {
 
 
-            test('Should return confirmation of empty fields', () => {
+            test("Should return confirmation of empty fields", () => {
                 expect(validateFieldsEmpty(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)).toBe(true)
             })
 
-            test('Should not send call to register user to firebase', () => {
+            test("Should not send call to register user to firebase", () => {
                 signUp(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)
 
                 expect(toast).toHaveBeenCalled()
@@ -65,14 +65,14 @@ describe('Register function', () => {
             })
         })
 
-        describe('When password field is empty', () => {
+        describe("When password field is empty", () => {
 
 
-            test('Should return confirmation of empty fields', () => {
+            test("Should return confirmation of empty fields", () => {
                 expect(validateFieldsEmpty(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)).toBe(true)
             })
 
-            test('Should not send call to register user to firebase', () => {
+            test("Should not send call to register user to firebase", () => {
                 signUp(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)
 
                 expect(toast).toHaveBeenCalled()
@@ -81,14 +81,14 @@ describe('Register function', () => {
         })
 
 
-        describe('When confirmation password field is empty', () => {
+        describe("When confirmation password field is empty", () => {
             const mockFirebaseCreateUser = jest.fn(() => Promise.resolve())
 
-            test('Should return confirmation of empty fields', () => {
+            test("Should return confirmation of empty fields", () => {
                 expect(validateFieldsEmpty(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)).toBe(true)
             })
 
-            test('Should not send call to register user to firebase', () => {
+            test("Should not send call to register user to firebase", () => {
                 signUp(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)
 
                 expect(toast).toHaveBeenCalled()
@@ -98,24 +98,24 @@ describe('Register function', () => {
     })
 
 
-    describe('When fields have data', () => {
+    describe("When fields have data", () => {
 
         beforeEach(() => {
             mockFormFields.resetMockFormFields()
         })
 
-        describe('When password and confirmation password do not match', () => {
+        describe("When password and confirmation password do not match", () => {
 
 
-            test('Should return confirmation of missmatching passwords', () => {
-                mockFormFields.password = 'password'
-                mockFormFields.confirmPassword = 'notthesamepassword'
+            test("Should return confirmation of missmatching passwords", () => {
+                mockFormFields.password = "password"
+                mockFormFields.confirmPassword = "notthesamepassword"
                 expect(validatePasswordsMatching(mockFormFields.password, mockFormFields.confirmPassword)).toBe(false)
             })
 
-            test('Should not send call to register user to firebase', () => {
-                mockFormFields.password = 'password'
-                mockFormFields.confirmPassword = 'notthesamepassword'
+            test("Should not send call to register user to firebase", () => {
+                mockFormFields.password = "password"
+                mockFormFields.confirmPassword = "notthesamepassword"
 
                 signUp(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)
 
@@ -124,24 +124,24 @@ describe('Register function', () => {
             })
         })
 
-        describe('When username field has data', () => {
+        describe("When username field has data", () => {
 
-            test('Should return confirmation of matching passwords', () => {
+            test("Should return confirmation of matching passwords", () => {
                 expect(validateFieldsEmpty(mockFormFields.password, mockFormFields.confirmPassword)).toBe(false)
             })
         })
 
-        describe('When password and confirmation password match', () => {
+        describe("When password and confirmation password match", () => {
 
-            test('Should return confirmation of matching passwords', () => {
+            test("Should return confirmation of matching passwords", () => {
                 expect(validatePasswordsMatching(mockFormFields.password, mockFormFields.confirmPassword)).toBe(true)
             })
         })
 
 
-        describe('When userName field is filled and passwords match', () => {
+        describe("When userName field is filled and passwords match", () => {
 
-            test('Should send call to register user to firebase', () => {
+            test("Should send call to register user to firebase", () => {
                 signUp(mockFormFields.username, mockFormFields.password, mockFormFields.confirmPassword)
 
                 expect(validatePasswordsMatching(mockFormFields.password, mockFormFields.confirmPassword)).toBe(true)
@@ -152,12 +152,12 @@ describe('Register function', () => {
 
     })
 
-    describe('When register user is called', () => {
+    describe("When register user is called", () => {
         mockFormFields.resetMockFormFields()
 
-        describe('When there is no error', () => {
+        describe("When there is no error", () => {
 
-            test('Should return true', () => {
+            test("Should return true", () => {
                 mockFirebaseCreateUser = jest.fn(() => Promise.resolve(true))
                 firebaseCreateUser.mockImplementation(mockFirebaseCreateUser)
 
@@ -169,9 +169,9 @@ describe('Register function', () => {
         })
 
 
-        describe('When there is an error', () => {
+        describe("When there is an error", () => {
            
-            test('Should return false and the error message', () => {
+            test("Should return false and the error message", () => {
                 mockFirebaseCreateUser = jest.fn(() => { throw new Error() })
                 firebaseCreateUser.mockImplementation(mockFirebaseCreateUser)
 

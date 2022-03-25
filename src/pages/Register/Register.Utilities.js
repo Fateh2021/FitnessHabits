@@ -1,10 +1,10 @@
-import { toast } from '../../Toast'
-import * as translate from '../../translate/Translator'
-import { firebaseCreateUser } from './firebase.helper';
+import { toast } from "../../Toast"
+import * as translate from "../../translate/Translator"
+import { firebaseCreateUser } from "./firebase.helper";
 
 
 export function validateFieldsEmpty (username, password) {
-    return (username.trim() === '' || password.trim() === '')
+    return (username.trim() === "" || password.trim() === "")
 }
 
 export function validatePasswordsMatching (password, confirmPassword) {
@@ -12,7 +12,7 @@ export function validatePasswordsMatching (password, confirmPassword) {
 }
 
 export async function registerUser(username, password) {
-    const email = username + '@fithab.com'
+    const email = username + "@fithab.com"
     try {
         await firebaseCreateUser(email, password)
         return true

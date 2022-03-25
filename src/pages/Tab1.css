@@ -277,7 +277,7 @@ color: #d66437;
   background-color: #aabb99;
 }
 
-.buttonTimeLeft{ 
+.buttonTimeLeft{
   font-size: 26px;
   color: #d66437;
   text-shadow: black;
@@ -362,19 +362,20 @@ color: #ffffff;
  }
 
  .datePicker {
-  margin: -40px; 
+  margin: -40px;
   background-color: #f7e8ca;
   width: 120px;
   font-weight: bolder;
  }
 
  .headerTitleDashboard h3{
-   padding-top: 5px;
+   /* padding-top: 5px; */
   font-size: 18px;
   font-family: fantasy;
   font-weight: bolder;
   color:#f7e8ca;
-  margin-left: 130px;
+  text-align: center;
+  /* margin-left: 130px; */
  }
 
  .profilTitleDashboard h3{
@@ -457,7 +458,7 @@ color: #ffffff;
  .ajoutBotton{
    width: 100%;
    padding-top: 4px;
-   display: inline-block; 
+   display: inline-block;
    vertical-align: middle;
    background-color: #fcf0c9;
    --ion-background-color:#faf2d9;
@@ -498,14 +499,14 @@ color: #ffffff;
 .description h3{
   font-size:12px;
   font-weight: bolder;
-  margin-top: 5px; 
+  margin-top: 5px;
   font-stretch: semi-condensed;
 }
 
 .divHyd{
   height: 122px;
   width: 100%;
-  overflow-y: 
+  overflow-y:
   scroll;
 }
 
@@ -1462,18 +1463,18 @@ background-color: #ffffff;
 
 .profilText h2{
   font-size:18px;
- padding-top: 0px;
- font-stretch: semi-condensed;
- margin-top: 0px;
+ /* padding-top: 0px; */
+ /* font-stretch: semi-condensed; */
+ /* margin-top: 0px; */
  color: #1a5a5a;
 }
 
-.profilText{
+.profilText {
  background-color: #f7e8ca;
 }
 
-.contentProfil{
-height: 58%;
+.noPadding{
+  padding: 0px;
 }
 
 .profilImage{
@@ -1660,6 +1661,17 @@ height: 58%;
   margin-top: 5px;
 }
 
+.sideBarButtonDelete {
+  width: 30px;
+  height: 30px;
+  background-color: #d31515;
+  border-radius: 72%;
+  padding-top: 4px;
+  margin-left: 80px;
+  margin-top: 0px;
+  color: white;
+}
+
 .sideBarButtonLogout{
   width: 30px;
   height: 30px;
@@ -1682,9 +1694,18 @@ height: 58%;
   background-color: #0e3530;
 }
 
+.sideBarHeaderTitle{
+  background-color: #0e3530;
+}
+.whiteBackground{
+  --ion-background-color: white;
+  background-color: white;
+}
+
+
 .sidebar {
-  height: 100vh;
-  background-color:#90a17f;
+  height: 100%;
+  background-color:#6f7e61;
   color: white;
   width: 350px;
   position: fixed;
@@ -1693,6 +1714,11 @@ height: 58%;
   animation: slide-open 0.75s forwards;
   background-size: 2em 2em;
   flex: 1 1 auto;
+  --ion-background-color:#90a17f;
+}
+
+.sidebarfooter{
+  height: 20px;
 }
 
 .alert {
