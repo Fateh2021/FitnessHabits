@@ -14,15 +14,22 @@ import {
     getAverageToilets,
     getGlycemia,
     getAverageGlycemia,
-    getAlcohol
+    getAlcohol,
+    formatDate
 } from "./CompilerBilan";
 
 import * as translate from '../../translate/Translator';
 
 export async function creerPdf(dataSelected, d1, d2) {
     const doc = new jsPDF();
-    let date = translate.getText("DE") + " " + d1.toISOString().slice(0, 10) + " " + translate.getText("A")
-            + " " + d2.toISOString().slice(0, 10);
+    // format the dates
+    let temp_d1 = d1.toISOString().slice(0, 10);
+    let temp_d2 = d2.toISOString().slice(0, 10);
+    d1 = temp_d1.slice(-2) + '-' + temp_d1.slice(5,7) + '-' + temp_d1.slice(0,4);
+    d2 = temp_d2.slice(-2) + '-' + temp_d2.slice(5,7) + '-' + temp_d2.slice(0,4);
+
+    let date = translate.getText("DE") + " " + formatDate(d1) + " " + translate.getText("A")
+            + " " + formatDate(d2);
     // logo 
     doc.autoTable({
         body: [[' ']],
@@ -312,7 +319,6 @@ function addNourritureTable(document) {
     let values = [];
     var Date = translate.getText("DATE_TITLE")
     var name = translate.getText("SUPPL_NOM");
-    // var consomation = translate.getText("HYD_TEXT_COUNT");
     var quantite = translate.getText("EXP_REPORT_QT");
     var unity = translate.getText("EXP_REPORT_UNIT");
     var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);

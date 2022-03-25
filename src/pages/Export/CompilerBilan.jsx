@@ -1,5 +1,4 @@
-import firebase from "firebase";
-
+import firebase from "firebase"
 
 let arrayWeights = [];
 let arraySleeps = [];
@@ -45,7 +44,8 @@ export async function compilerBilan(dataSelected, d1, d2) {
         // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
         // dataSelected = Checkbox selected by user
         dataFormat = await getDataFromFirebase(dataFormat);
-        initialWeight = fetchInitialWeight(dataFormat);
+        // TODO doesnt work anymore?
+        // initialWeight = fetchInitialWeight(dataFormat);
 
         // With the new array(with the good date format), filter the datas with date selected by user in the datepicker
         dataFormat = filterDataByDate(dataFormat, d1, d2);
@@ -53,7 +53,7 @@ export async function compilerBilan(dataSelected, d1, d2) {
         // With the filtered datas, make a dictionnary for each parameters
         // so the front end can easily fetch datas with keys and show parameters selected by activity/date.
         for (const element of dataFormat) {
-            let formatedDate = element.date
+            let formatedDate = formatDate(element.date);
             fetchData(element, formatedDate, dataSelected);
         }
     }
@@ -619,6 +619,55 @@ function getNumberOfUniqueDate(array_aliments) {
         set_date.add(data.get('Date'))
     });
     return set_date.size;
+}
+
+// initial date format looks like dd-MM-yyyy (ex : 01-01-2022)
+export function formatDate(date) {
+    let formatedDate;
+    let month;
+    let lang = localStorage.getItem("userLanguage");
+    const dateFormat = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")).dateFormat : null;
+    // if dateFormat if specified in user profile, consider it
+    if (dateFormat) {
+        switch (dateFormat) {
+            case "LL-dd-yyyy":
+                formatedDate = date.slice(3,5) + "-" + date.slice(0,2) + "-" + date.slice(-4);
+                break;
+            case "dd-LL-yyyy":
+                formatedDate = date;
+                break;
+            case "yyyy-LL-dd":
+                formatedDate = date.slice(-4) + "-" + date.slice(3,5) + "-" + date.slice(0,2);
+                break;
+            case "yyyy-LLL-dd":
+                date = date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3");
+                month = new Date(date).toLocaleString(lang, { month: 'short' });
+                formatedDate = date.slice(-4) + "-" + month + "-" + date.slice(3,5);
+                break;
+            case "dd-LLL-yyyy":
+                date = date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3");
+                month = new Date(date).toLocaleString(lang, { month: 'short' });
+                formatedDate = date.slice(3,5) + "-" + month + "-" + date.slice(-4);
+                break;
+            break;
+        }
+    // else, get date format of the user lang
+    } else {
+        date = date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3");
+        switch (lang) {
+            case "fr":
+                formatedDate = new Date(date).toLocaleDateString('fr-FR');
+                break;
+            case "en":
+                formatedDate = new Date(date).toLocaleDateString('en-EN');
+                break;
+            case "es":
+                formatedDate = new Date(date).toLocaleDateString('es-ES');
+                break;
+            break;
+        }
+    }
+    return formatedDate;
 }
 
 //----------TEST--------
