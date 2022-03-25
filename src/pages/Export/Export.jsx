@@ -140,11 +140,14 @@ const Settings = (props) => {
         changeSelection([...newSelection])
     }
 
-    // variable qui va contenir le format d'exportation désiré, par défaut csv
+    // variable qui va contenir le format d'exportation désiré, par défaut pdf
     const [exportType, onChangeExport] = useState('pdf');
     // contient la date de debut et la date de fin choisi par l'utilisateur
     const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)));
     const [d2, onChangeD2] = useState(new Date());
+
+    // permet d'afficher le format de la date selon ce qui est dans son profile
+    const dateFormat = JSON.parse(localStorage.getItem("profile")).dateFormat.replace(/[L*]/g, 'M')
 
     // load the current settings from the local storage if it exists, otherwise load it from the DB
     useEffect(() => {
@@ -266,6 +269,7 @@ const Settings = (props) => {
 
                         <DatePicker
                             locale={getLang()}
+                            format={dateFormat}
                             onChange={onChangeD1}
                             value={d1}
                             minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 10))} // max 10 ans plus tôt
@@ -282,6 +286,7 @@ const Settings = (props) => {
                         &nbsp;{translate.getText("A")} &nbsp;
                         <DatePicker
                             locale={getLang()}
+                            format={dateFormat}
                             onChange={onChangeD2}
                             value={d2}
                             minDate={d1}
