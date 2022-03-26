@@ -292,7 +292,7 @@
       }
     },
     "glycemie" : {
-      "dailyGlycemie" : "120"
+      "dailyGlycemie" : "2"
     },
     "gras" : {
       "dailyTarget" : {

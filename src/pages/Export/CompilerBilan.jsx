@@ -458,8 +458,8 @@ export function getAverageToilets() {
         });
         mapToilets.set("totalUrine", totalUrine);
         mapToilets.set("totalFeces", totalFeces);
-        mapToilets.set("averageUrinePerDay", (totalUrine / days).toFixed(2));
-        mapToilets.set("averageFecesPerDay", (totalFeces / days).toFixed(2));
+        mapToilets.set("averageUrinePerDay", parseInt((totalUrine / days).toFixed(2)));
+        mapToilets.set("averageFecesPerDay", parseInt((totalFeces / days).toFixed(2)));
 
         return mapToilets;
     }
@@ -487,7 +487,7 @@ export function getAverageGlycemia() {
             total += data.get("Glycémie");
         });
         moyenne = (total / days).toFixed(2);
-        mapAverageGlycemia.set("Moyenne", moyenne + " mmol/L");
+        mapAverageGlycemia.set("Moyenne", parseFloat(moyenne) + " mmol/L");
         mapAverageGlycemia.set("Référence", "4.7 - 6.8 mmol/L");
 
         return mapAverageGlycemia;
@@ -732,5 +732,28 @@ export function test_formatDuration(min){
 export function test_getDuration(time){
     return getDuration(time);
 }
+
+export function injectDataInArrayHydratation(value){
+    arrayHydratations=value;
+}
+export function injectDataInArrayNourriture(value){
+    arrayNourriture=value;
+}
+export function injectDataInArrayAlcohol(value){
+    arrayAlcohol=value;
+}
+export function injectDataInArrayToilets(value){
+    arrayToilets=value;
+}
+export function injectDataInArraySleeps(value){
+    arraySleeps=value;
+}
+export function injectDataInArrayActivities(value){
+    arrayActivities=value;
+}
+export function injectDataInArrayGlycemia(value){
+    arrayGlycemia=value;
+}
+
 
 
