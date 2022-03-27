@@ -39,8 +39,7 @@ const setUp = (mock, testFunc) => {
 
     render(<Food 
                 categoryKey = { categoryKey }
-                cssId = 'dummy'
-                parentCallback = { (e) => { } }
+                updateFoodConsumptionCallback = { () => { } }
                 macroNutrimentConsumption = { mock.food.categories[categoryKey].macroNutrimentConsumption }
                 foodItems = {mock.food.categories[categoryKey].items}
                 currentDate = { new Date() }
@@ -165,19 +164,17 @@ it('test negative quantity on macro-nutriments', () => {
 it('test div visibility toggle', () => {
     const dummyDashboard = initDummyDashboard();
     const moduleNames = ['proteinFood', 'grainFood', 'vegetables', 'fruit', 'dairyProducts'];
-    const divs = ['myDIV2', 'myDIV3', 'myDIV4', 'myDIV5', 'myDIV6'];
 
     const getToggledValue = (i) => {
         return i % 2 == 0 ? 'block' : 'none';
     }
 
-    divs.forEach((div, index) => 
+    moduleNames.forEach((moduleName, index) => 
         {
             act(() => {
                 render(<Food 
                             categoryKey = { moduleNames[index] }
-                            cssId = { div }
-                            parentCallback = { (e) => {} }
+                            updateFoodConsumptionCallback = { () => {} }
                             macroNutrimentConsumption = { dummyDashboard.food.categories.someFoodCategory.macroNutrimentConsumption }
                             foodItems = { dummyDashboard.food.categories.someFoodCategory.items }
                             currentDate = { new Date() }
@@ -190,7 +187,7 @@ it('test div visibility toggle', () => {
             expect(moduleImage).toBe(`http://localhost/assets/${ moduleNames[index] }.jpg`);
 
         const arrow = document.getElementById('proteinArrow');
-        const elem = document.getElementById(div);
+        const elem = document.getElementById(moduleName);
         elem.style.display = 'none';
 
         act(() => {
@@ -593,8 +590,7 @@ it('test module translation', () => {
                 act(() => {
                     render(<Food 
                                 categoryKey = { category }
-                                cssId = 'dummy'
-                                parentCallback = {  (e) => { } }
+                                updateFoodConsumptionCallback = { () => { } }
                                 macroNutrimentConsumption = { {} }
                                 foodItems = { [] }
                                 currentDate = { new Date() }
@@ -648,8 +644,7 @@ it('test translation for non-existent key', () => {
             act(() => {
                 render(<Food 
                             categoryKey = { 'UnsupportedKey' }
-                            cssId = 'dummy'
-                            parentCallback = {  (e) => { } }
+                            updateFoodConsumptionCallback = { () => { } }
                             macroNutrimentConsumption = { {} }
                             foodItems = { [] }
                             currentDate = { new Date() }
@@ -671,10 +666,7 @@ it('test translation for non-supported language', () => {
         act(() => {
             render(<Food 
                         categoryKey = 'proteinFood'
-                        dashboardKey = 'dummy'
-                        dashboardSubKey = 'dummy'
-                        cssId = 'dummy'
-                        parentCallback = {  (e) => { } }
+                        updateFoodConsumptionCallback = { () => { } }
                         macroNutrimentConsumption = { {} }
                         foodItems = { [] }
                         currentDate = { new Date() }
