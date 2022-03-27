@@ -1,12 +1,11 @@
 import React from "react"
 import Food from './Food';
 
-const ProteinFood = (props) => {
+const Fruit = (props) => {
   return (
     <Food
-      categoryKey = 'proteinFood'
-      cssId = 'myDIV5'
-      parentCallback = {props.parentCallback}
+      categoryKey = 'fruit'
+      updateFoodConsumptionCallback = {props.updateFoodConsumptionCallback}
       macroNutrimentConsumption = {props.macroNutrimentConsumption}
       foodItems = {props.foodItems}
       currentDate = {props.currentDate}
@@ -15,4 +14,4 @@ const ProteinFood = (props) => {
     />   
   );
 }
-export default ProteinFood;
+export default Fruit;

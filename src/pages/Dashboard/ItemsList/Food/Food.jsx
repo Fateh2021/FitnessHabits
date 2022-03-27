@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonRadio } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton } from '@ionic/react';
 import {arrowDropdownCircle, star, addCircle, removeCircle, trash, eye} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase';
@@ -154,10 +154,10 @@ const Food = (props) => {
     const item = foodItems[index];
     foodItems.splice(index, 1);
     updateCacheAndDB((macroNutrimentConsumption) => {
-      macroNutrimentConsumption.proteins = macroNutrimentConsumption.proteins - item.proteins;
-      macroNutrimentConsumption.glucides = macroNutrimentConsumption.glucides - item.glucides;
-      macroNutrimentConsumption.fibre = macroNutrimentConsumption.fibre - item.fibre;
-      macroNutrimentConsumption.fats = macroNutrimentConsumption.fats - item.fats;
+      macroNutrimentConsumption.proteins = Math.max(macroNutrimentConsumption.proteins - item.proteins, 0);
+      macroNutrimentConsumption.glucides = Math.max(macroNutrimentConsumption.glucides - item.glucides, 0);
+      macroNutrimentConsumption.fibre = Math.max(macroNutrimentConsumption.fibre - item.fibre, 0);
+      macroNutrimentConsumption.fats = Math.max(macroNutrimentConsumption.fats - item.fats, 0);
     });
   }
 
@@ -176,10 +176,10 @@ const Food = (props) => {
       const oldItem = foodItems[index];
       foodItems[index] = item;
       updateCacheAndDB((macroNutrimentConsumption) => {
-        macroNutrimentConsumption.proteins = macroNutrimentConsumption.proteins - oldItem.proteins + item.proteins;
-        macroNutrimentConsumption.glucides = macroNutrimentConsumption.glucides - oldItem.glucides + item.glucides;
-        macroNutrimentConsumption.fibre = macroNutrimentConsumption.fibre - oldItem.fibre + item.fibre;
-        macroNutrimentConsumption.fats = macroNutrimentConsumption.fats - oldItem.fats + item.fats;
+        macroNutrimentConsumption.proteins = Math.max(macroNutrimentConsumption.proteins - oldItem.proteins + item.proteins, 0);
+        macroNutrimentConsumption.glucides = Math.max(macroNutrimentConsumption.glucides - oldItem.glucides + item.glucides, 0);
+        macroNutrimentConsumption.fibre = Math.max(macroNutrimentConsumption.fibre - oldItem.fibre + item.fibre, 0);
+        macroNutrimentConsumption.fats = Math.max(macroNutrimentConsumption.fats - oldItem.fats + item.fats, 0);
       }); 
     }
     closeItemContainer(); 
@@ -196,7 +196,8 @@ const Food = (props) => {
     setGlobalFibreConsumption(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption.fibre);
     setGlobalFatsConsumption(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption.fats);
 
-    props.parentCallback(dashboard.food.categories[props.categoryKey]);
+    props.updateFoodConsumptionCallback();
+
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     // Le flag <code> test </code> sert à assurer qu'on ne fait pas appel à la BD dans les tests unitaires, pour lesquels l'utilisation de la cache suffit pour tester la logique du module.
     // Ce flag-ci est donc mis à vrai uniquement lors du rendu du composant Nourriture simulé dans les tests, mais demeure 'undefined' en production.
@@ -259,9 +260,9 @@ const Food = (props) => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <IonIcon id='proteinArrow' className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => toggle(props.cssId)}/>
+        <IonIcon id='proteinArrow' className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => toggle(props.categoryKey)}/>
       </IonItem> 
-      <div id={ props.cssId }>
+      <div id={ props.categoryKey }>
       <div className="divHyd">
             <div className="sett">
               { foodItems && foodItems.map((item, index) => (      
