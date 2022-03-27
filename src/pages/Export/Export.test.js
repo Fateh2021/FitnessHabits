@@ -7,6 +7,7 @@ import { act } from "react-dom/test-utils";
 
 import App from '../../App';
 import * as CompilerBilan from './CompilerBilan';
+import * as RapportCR from './RapportCreateur';
 import data from './example_test.json';
 
 
@@ -779,7 +780,9 @@ test('ExportModule - testGetAverageActivities', async() => {
     expect(CompilerBilan.getAggregateActivities()).toEqual(mapExpected);
 });
 
-
+test('ExportModule - testFormatPeriod', async() =>{
+    RapportCR.tests()
+});
 
 /* Notes
   fireEvent.click(alcoolCheckbox);

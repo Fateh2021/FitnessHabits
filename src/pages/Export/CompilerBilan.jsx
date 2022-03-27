@@ -187,7 +187,6 @@ function fetchData(data, formatedDate, categorySelected) {
 
 // Function that fetches datas for hydratation and alcohol.
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
-    console.table(drinks);
     if (drinks) {
         for (const drink of drinks) {
             if (drink.consumption === 0) {
