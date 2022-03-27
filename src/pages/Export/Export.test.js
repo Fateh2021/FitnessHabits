@@ -960,11 +960,11 @@ test('ExportModule - formatDuration', async() => {
 //TODO: Test pour formated date ?
 
 /**
- *
+ * Ne fait qu'augmenter la couverture de test sans rien tester...
  */
-test('ExportModule - testFormatPeriod', async() =>{
+/*test('ExportModule - testFormatPeriod', async() =>{
     RapportCR.tests()
-});
+});*/
 
 /********************************************************
  ********** TEST ON COMPILER BILAN NOT DONE *************/
@@ -978,6 +978,9 @@ test('ExportModule - testFormatPeriod', async() =>{
 
 /********************************************************
  ********** TEST ON RAPPORT CREATEUR ********************/
+// todo: createPeriod
+// todo: all function with CSV
+// todo: take the file and check the named saved
 
 /*
 test('ExportModule - CreatePDF', async() => {
