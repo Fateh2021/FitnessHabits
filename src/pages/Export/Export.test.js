@@ -1,17 +1,18 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import App from '../../App';
+
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { act } from "react-dom/test-utils";
-
-import App from '../../App';
-import * as CompilerBilan from './CompilerBilan';
-import mockData from './mockDatas.json';
 
 import {jsPDF} from "jspdf";
 import 'jspdf-autotable';
 
+//import data from './example_test.json';
+import mockData from './mockDatas.json';
+import * as CompilerBilan from './CompilerBilan';
 import {
     getWeights,
     getAggregateWeights,
@@ -23,6 +24,7 @@ import {
     getSleeps
 } from "./CompilerBilan";
 
+import * as RapportCR from './RapportCreateur';
 import {
     creerPdf,
     addWeightTable,
@@ -42,23 +44,16 @@ import {
     addSleepAggregateTable,
     addActivitiesAggregateTable,
     addWeightAggregateTable,
-    addContentWithAutotable
+    addContentWithAutotable,
+    sleepsHeaders
 } from "./RapportCreateur";
 
-
-/**
- * The only true button.
- *
- * @version 1.0.1
- * @author [Artem Sapegin](https://github.com/sapegin)
- * @author [Andy Krings-Stern](https://github.com/ankri)
- */
 
 /************************************************
  ********** TESTS ON UI *************************/
 
 /**
- * Render the Export page which can be used in test
+ * To use inorder to render the UI export page
  */
 const renderWithRouter = (ui, { route = '/' } = {}) => {
     window.history.pushState({}, 'Test page', route);
@@ -236,7 +231,7 @@ test('ExportModule - TestSpanishTranslation', async() => {
 
 /**
  * Test the start date by default, 3 month before today's date.
- * TODO: find error fetch one day off ex: 26/03 instead of 25/03
+ * TODO: find error fetch one day off ex: 26/03 instead of 25/03 -- appear to be inconsistence in DB
  */
 /*test('ExportModule - TestDefaultDateBehaviour', async() => {
     renderWithRouter( < App / > , { route: '/Export' });
@@ -964,6 +959,12 @@ test('ExportModule - formatDuration', async() => {
 
 //TODO: Test pour formated date ?
 
+/**
+ *
+ */
+test('ExportModule - testFormatPeriod', async() =>{
+    RapportCR.tests()
+});
 
 /********************************************************
  ********** TEST ON COMPILER BILAN NOT DONE *************/
@@ -1013,7 +1014,7 @@ test('ExportModule - SleepTable', async() => {
         startY: 150,
     });
 
-    let headers = getSleepHeadersTranslation();
+    let headers = sleepsHeaders();
     mockData.forEach( (data) => {
         test_deleteActualFetchedSleeps();
         test_fetchSleeps(data.sommeil, "2022-02-01");
@@ -1090,6 +1091,7 @@ addGlycimiaTable(document)
 addAverageGlycimiaTable(document)
 insertNoDataFound(document)
 insertHeaders(document, headers, headerColor)*/
+
 
 /* Notes
 //https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
