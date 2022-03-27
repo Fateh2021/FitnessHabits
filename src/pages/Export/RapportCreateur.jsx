@@ -15,10 +15,13 @@ import {
     getGlycemia,
     getAverageGlycemia,
     getAlcohol,
-    formatDate
+    formatDate,
+    test_deleteActualFetchedSleeps,
+    test_fetchSleeps
 } from "./CompilerBilan";
 
 import * as translate from '../../translate/Translator';
+import mockData from './mockDatas.json';//to delete
 
 export async function creerPdf(dataSelected, d1, d2) {
     const doc = new jsPDF();
@@ -66,9 +69,7 @@ export async function creerPdf(dataSelected, d1, d2) {
                 addNourritureMacros(doc);
                 break;
             case "sommeil":
-                doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
-                addSleepTable(doc);
-                addSleepAggregateTable(doc);
+                manageSleep(doc);
                 break;
             case "toilettes":
                 doc.text(translate.getText("TOILETS_TITLE"), 10, doc.lastAutoTable.finalY + 10);
@@ -91,7 +92,7 @@ export async function creerPdf(dataSelected, d1, d2) {
                 addWeightAggregateTable(doc);
                 break;
             case "supplements":
-                // TODO
+                // TODO when it will be implemented
                 break;
 
             default:
@@ -104,7 +105,7 @@ export async function creerPdf(dataSelected, d1, d2) {
 
 }
 
-function addWeightTable(document) {
+export function addWeightTable(document) {
     let poid = [];
     let headers = [];
     let values = [];
@@ -123,28 +124,16 @@ function addWeightTable(document) {
             values.push([{content: data.get('Date')}, {content: data.get('weight')}]);
         });
 
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#113d37"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#bbebe5"
-            },
-        });
+        addContentWithAutotable(document, headers, values, "#113d37", "#bbebe5");
+
     } else {
         insertHeaders(document, headers, "#113d37");
         insertNoDataFound(document);
     }
 }
 
-function addWeightAggregateTable(document) {
+
+export function addWeightAggregateTable(document) {
     if (getAggregateWeights()) {
         let line_2 = [];
         let line_3 = [];
@@ -175,7 +164,7 @@ function addWeightAggregateTable(document) {
     }
 }
 
-function addActivitiesTable(document) {
+export function addActivitiesTable(document) {
     let headers = [];
     let values = [];
     var Date = translate.getText("DATE_TITLE")
@@ -185,33 +174,21 @@ function addActivitiesTable(document) {
     if (getActivities()) {
         let activities = getActivities();
 
-
         activities.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('duration')}]);
         });
 
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#0f5780"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#7cc8f6"
-            },
-        });
+        addContentWithAutotable(document, headers, values, "#0f5780", "#7cc8f6");
+
     } else {
         insertHeaders(document, headers, "#0f5780");
         insertNoDataFound(document);
     }
 }
 
-function addActivitiesAggregateTable(document) {
+
+
+export function addActivitiesAggregateTable(document) {
     if (getAggregateActivities()) {
         let aggregateActivities = getAggregateActivities();
 
@@ -237,10 +214,8 @@ function addActivitiesAggregateTable(document) {
     }
 }
 
-
-function addSleepTable(document) {
+export function getSleepHeadersTranslation() {
     let headers = [];
-    let values = [];
     var Date = translate.getText("DATE_TITLE")
     var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
     var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
@@ -248,14 +223,38 @@ function addSleepTable(document) {
     var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
     var wakeUpState = translate.getText("EXP_REPORT_WAKEUP_STATE");
     headers.push(Date, startHour, endHour, duration, wakeUpQt, wakeUpState);
+    return headers;
+}
 
-    if (getSleeps()) {
-        let sleeps = getSleeps();
-        sleeps.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}, {content: data.get('wakeUpQt')}, {content: data.get('wakeUpState')}]);
-        });
+function manageSleep(doc) {
+    //data is a json with all activities
+    /*let headers_1 = getSleepHeadersTranslation();
+    mockData.forEach( (data) => {
+        test_deleteActualFetchedSleeps();
+        test_fetchSleeps(data.sommeil, "2022-02-01");
+    })
+    let mockArray = getSleeps()
+    addSleepTable(doc, mockArray, headers_1);*/
 
-        document.autoTable({
+    doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = getSleepHeadersTranslation();
+    if(getSleeps()) {
+        addSleepTable(doc, getSleeps(), headers);
+        addSleepAggregateTable(doc);
+    } else {
+        insertHeaders(document, headers, "#152b3f");
+        insertNoDataFound(document);
+    }
+}
+
+export function addSleepTable(document, sleeps, headers) {
+    let values = [];
+    sleeps.forEach((data) => {
+        values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}, {content: data.get('wakeUpQt')}, {content: data.get('wakeUpState')}]);
+    });
+
+    //addContentWithAutotable(document, headers, values, "#152b3f", "#4ca9ff");
+    document.autoTable({
             head: [headers],
             body: values,
             startY: document.lastAutoTable.finalY + 15,
@@ -270,14 +269,9 @@ function addSleepTable(document) {
                 fillColor: "#4ca9ff"
             },
         });
-    } else {
-        insertHeaders(document, headers, "#152b3f");
-        insertNoDataFound(document);
-    }
 }
 
-
-function addSleepAggregateTable(document) {
+export function addSleepAggregateTable(document) {
     if (getAggregateSleeps()) {
         let aggregateSleeps = getAggregateSleeps();
 
@@ -313,8 +307,7 @@ function addSleepAggregateTable(document) {
     }
 }
 
-
-function addNourritureTable(document) {
+export function addNourritureTable(document) {
     let headers = [];
     let values = [];
     var Date = translate.getText("DATE_TITLE")
@@ -333,7 +326,6 @@ function addNourritureTable(document) {
         nourriture.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
         });
-
 
         document.autoTable({
             head: [headers],
@@ -374,8 +366,7 @@ function addNourritureTable(document) {
     }
 }
 
-
-function addNourritureMacros(document) {
+export function addNourritureMacros(document) {
     if (getMacrosTotalAndAveragePerDay('nourriture')) {
         let nourritureMacros = getMacrosTotalAndAveragePerDay('nourriture');
 
@@ -435,8 +426,7 @@ function addNourritureMacros(document) {
     }
 }
 
-
-function addHydratationTable(document) {
+export function addHydratationTable(document) {
     let headers = [];
     let values = [];
 
@@ -498,8 +488,7 @@ function addHydratationTable(document) {
     }
 }
 
-
-function addHydratationMacrosTable(document) {
+export function addHydratationMacrosTable(document) {
     let headers = [];
     let line_1 = [];
     let line_2 = [];
@@ -559,7 +548,7 @@ function addHydratationMacrosTable(document) {
     }
 }
 
-function addToiletsTable(document) {
+export function addToiletsTable(document) {
     let headers = [];
     let values = [];
     var Date = translate.getText("DATE_TITLE")
@@ -570,34 +559,19 @@ function addToiletsTable(document) {
     if (getToilets()) {
         let toilets = getToilets();
 
-
         toilets.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('Urine')}, {content: data.get('Transit')}]);
         });
 
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#bba339"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#ffea9a"
-            },
-        });
+        addContentWithAutotable(document, headers, values, "#bba339", "#ffea9a");
+
     } else {
         insertHeaders(document, headers, "#bba339");
         insertNoDataFound(document);
     }
 }
 
-
-function addAverageToiletsTable(document) {
+export function addAverageToiletsTable(document) {
     if (getAverageToilets()) {
         let averageToilets = getAverageToilets();
 
@@ -633,7 +607,7 @@ function addAverageToiletsTable(document) {
     }
 }
 
-function addAlcoolTable(document) {
+export function addAlcoolTable(document) {
     let headers = [];
     let values = [];
     var Date = translate.getText("DATE_TITLE")
@@ -693,8 +667,7 @@ function addAlcoolTable(document) {
     }
 }
 
-
-function addAlcoolMacrosTable(document) {
+export function addAlcoolMacrosTable(document) {
     let headers = [];
     headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
         translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
@@ -707,7 +680,6 @@ function addAlcoolMacrosTable(document) {
         let line_1 = [];
         let line_2 = [];
         let footerTable = [];
-
 
         var totalFiber = alcoolMacros.get("totalFiber");
         var averageFiber = alcoolMacros.get("averageFiber");
@@ -755,10 +727,9 @@ function addAlcoolMacrosTable(document) {
     }
 }
 
-//TODO : fonctions supléments
+//TODO : fonctions supléments (not implemented yet)
 
-
-function addGlycimiaTable(document) {
+export function addGlycimiaTable(document) {
     let headers = [];
     var Date = translate.getText("DATE_TITLE")
     var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
@@ -772,21 +743,7 @@ function addGlycimiaTable(document) {
             values.push([{content: data.get('Date')}, {content: data.get('Glycémie')}]);
         });
 
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#6e233d"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#ff9bbd"
-            },
-        });
+        addContentWithAutotable(document, headers, values, "#6e233d", "#ff9bbd");
 
     } else {
         insertHeaders(document, headers, "#6e233d");
@@ -794,8 +751,7 @@ function addGlycimiaTable(document) {
     }
 }
 
-
-function addAverageGlycimiaTable(document) {
+export function addAverageGlycimiaTable(document) {
     if (getAverageGlycemia()) {
         let averageGlycemia = getAverageGlycemia();
         let line_1 = [];
@@ -820,8 +776,25 @@ function addAverageGlycimiaTable(document) {
     }
 }
 
+export function addContentWithAutotable(document, headers, values, headerColor, bodyColor) {
+    document.autoTable({
+        head: [headers],
+        body: values,
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: headerColor
+        },
+        bodyStyles: {
+            minCellHeight: 9,
+            halign: "left",
+            valign: "center",
+            fontSize: 11,
+            fillColor: bodyColor
+        },
+    });
+}
 
-function insertNoDataFound(document) {
+export function insertNoDataFound(document) {
     document.autoTable({
         body: [[translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")]],
         startY: document.lastAutoTable.finalY,
@@ -832,7 +805,7 @@ function insertNoDataFound(document) {
     });
 }
 
-function insertHeaders(document, headers, headerColor) {
+export function insertHeaders(document, headers, headerColor) {
     document.autoTable({
         head: [headers],
         startY: document.lastAutoTable.finalY + 15,
@@ -841,3 +814,4 @@ function insertHeaders(document, headers, headerColor) {
         },
     });
 }
+
