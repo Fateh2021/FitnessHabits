@@ -204,6 +204,7 @@ function fetchData(data, formatedDate, categorySelected) {
 
 /**
  * Fetches datas for hydratation and alcohol.
+ * @param: "hydratation" or "alcool"
  */
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
     if (drinks) {
@@ -381,6 +382,7 @@ export function getHydratations() {
     }
     return null;
 }
+
 
 /**
  * keys :
@@ -581,25 +583,43 @@ export function getWeights() {
     }
 }
 
+
 /**
  * WEIGHTS
  * @public
  * @return a map with keys : initalWeight, finalWeight, deltaWeight, weightUnit
  */
-export function getAggregateWeights() {
-    if (arrayWeights) {
-        let initialWeight = getWeights()[getWeights().length - 1].get("weight");
-        let finalWeight = getWeights()[0].get("weight");
+export function calculateAggregateWeights() {
+    let initialWeight = 0;
+    let finalWeight = 0;
+
+        getWeights();
+        finalWeight = arrayWeights[0].get("weight");
+        if (arrayWeights.length == 1) {
+            initialWeight = finalWeight;
+        } else {
+            initialWeight = arrayWeights[arrayWeights.length - 1].get("weight");
+        }
+
         mapAggWeights.set("initalWeight", initialWeight);
         mapAggWeights.set("finalWeight", finalWeight);
         mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
         mapAggWeights.set("weightUnit", localStorage.getItem("prefUnitePoids"));
 
-        return mapAggWeights;
-    } else {
-        return null;
-    }
 }
+
+
+/**
+ * WEIGHTS
+ * @private
+ * @return a map with keys : initalWeight, finalWeight, deltaWeight, weightUnit
+ */
+export function getAggregateWeights() {
+      return mapAggWeights;
+}
+
+
+
 
 /**
  * SLEEPS
@@ -662,6 +682,7 @@ export function getAggregateSleeps() {
     }
 }
 
+
 /**
  * Sort the entries from the most recent date to the oldest one
  * @private
@@ -684,6 +705,8 @@ function getNumberOfUniqueDate(array_aliments) {
     });
     return set_date.size;
 }
+
+
 
 /**
  * @param {date} like dd-MM-yyyy (ex : 01-01-2022)
@@ -754,30 +777,31 @@ function formatTodayDate() {
   * Public function which hide a private function in order to keep integrity of frontEnd not using this method
   * instead og getWeights and to be able to test it
   */
- export function test_fetchWeights(weight, formatedDate){
+ export function testReport_fetchActivities(activity, formatedDate){
+     return fetchActivities(activity, formatedDate)
+ }
+ export function testReport_fetchAlcohols(alcohol, formatedDate){
+     return fetchDrinks("alcool", alcohol, formatedDate)
+ }
+ export function testReport_fetchFood(food, formatedDate){
+     return fetchNourriture(food, formatedDate)
+ }
+ export function testReport_fetchGlycemias(glycemia, formatedDate){
+     return fetchGlycemia(glycemia, formatedDate)
+ }
+ export function testReport_fetchHydratation(hydrates, formatedDate){
+    return fetchDrinks("hydratation", hydrates, formatedDate);
+ }
+ export function testReport_fetchSleeps(sleep, formatedDate){
+     return fetchSleeps(sleep, formatedDate)
+ }
+ export function testReport_fetchTransits(transit, formatedDate){
+    return fetchToilets(transit, formatedDate)
+ }
+ export function testReport_fetchWeights(weight, formatedDate){
      return fetchWeights(weight, formatedDate)
  }
- /**
-  * @Function used for testing
-  */
- export function test_deleteActualFetchedWeights(){
-     arrayWeights = [];
- }
- /**
-  * @Function used for testing
-  * Public function which hide a private function in order to keep integrity of frontEnd not using this method
-  * instead og getWeights and to be able to test it
-  * weight is a map
-  */
- export function test_fetchSleeps(weight, formatedDate){
-     return fetchSleeps(weight, formatedDate)
- }
- /**
-  * @Function used for testing
-  */
- export function test_deleteActualFetchedSleeps(){
-     arraySleeps = [];
- }
+
 
 /**
  * @Function used for testing
@@ -832,14 +856,17 @@ export function test_fetchDrinksAlcohol(typeOfDrink, drinks, formatedDate) {
  * @Function used for testing
  */
 export function resetDataArrays() {
-    arrayNourriture = [];
+    arrayWeights = [];
+    arraySleeps = [];
+    arrayActivities = [];
     arrayHydratations = [];
+    arrayNourriture = [];
     arrayAlcohol = [];
-    arraySleeps=[];
-    arrayToilets=[];
-    arrayActivities=[];
-    arrayGlycemia=[];
+    arrayToilets = [];
+    arrayGlycemia = [];
 }
+
+
 /**
  * @Function used for testing
  */

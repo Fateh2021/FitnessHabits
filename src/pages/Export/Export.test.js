@@ -6,33 +6,21 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { act } from "react-dom/test-utils";
+import * as translate from '../../translate/Translator'
 
+import JSZip from "jszip";
 import {jsPDF} from "jspdf";
 import 'jspdf-autotable';
 
-//import data from './example_test.json';
 import mockData from './mockDatas.json';
-import * as CompilerBilan from './CompilerBilan';
-import {
-    getWeights,
-    getAggregateWeights,
-    test_fetchWeights,
-    test_deleteActualFetchedWeights,
-    compilerBilan,
-    test_deleteActualFetchedSleeps,
-    test_fetchSleeps,
-    getSleeps
-} from "./CompilerBilan";
-
-import * as RapportCR from './RapportCreateur';
+import * as CB from './CompilerBilan';
+import * as RC from './RapportCreateur';
 import {
     creerPdf,
     addWeightTable,
     addActivitiesTable,
     addSleepTable,
-    getSleepHeadersTranslation,
     addToiletsTable,
-    addAlcoolTable,
     addGlycimiaTable,
     addNourritureTable,
     addHydratationTable,
@@ -45,7 +33,17 @@ import {
     addActivitiesAggregateTable,
     addWeightAggregateTable,
     addContentWithAutotable,
-    sleepsHeaders
+    sleepsHeaders,
+    weightHeaders,
+    activitiesHeaders,
+    toilettesHeaders,
+    nourritureHydratAlcoolHeaders,
+    glycimiaHeaders,
+    mapAggActivities,
+    mapAggSleeps,
+    mapAggWeights,
+    toiletteHeaders,
+    toiletteAggrData
 } from "./RapportCreateur";
 
 
@@ -384,20 +382,20 @@ test('ExportModule - TestFetchNourritureVegetables', async() => {
 
         arrayExpected.push(mapExpected);
     })
-    expect(CompilerBilan.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual(arrayExpected)
+    expect(CB.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual(arrayExpected)
 });
 
 /**
  * Report test - Food - Null
  */
 test('ExportModule - TestFetchNourritureVegetablesNull', async() => {
-    CompilerBilan.resetDataArrays()
+    CB.resetDataArrays();
     let data_vegetables;
     mockData.forEach( (element) => {
         data_vegetables=element.food.categories.vegetables
     })
     data_vegetables.items=null
-    expect(CompilerBilan.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual([])
+    expect(CB.test_fetchNourriture(data_vegetables,'18-03-2022')).toEqual([])
 
 });
 
@@ -424,7 +422,7 @@ test('ExportModule - testGetMacrosNourriture', async() => {
         mapExpected.set("Gras", element.fats);
         arrayExpected.push(mapExpected);
     })
-    CompilerBilan.injectDataInArrayNourriture(arrayExpected)
+    CB.injectDataInArrayNourriture(arrayExpected)
     //console.log(getMacrosTotalAndAveragePerDay('nourriture'))
     let macrosMapExecpted=new Map();
     macrosMapExecpted.set("totalFiber", 105);
@@ -436,7 +434,7 @@ test('ExportModule - testGetMacrosNourriture', async() => {
     macrosMapExecpted.set("averageFat", 23.33);
     macrosMapExecpted.set("averageGlucide", 23.33);
 
-    expect(CompilerBilan.getMacrosTotalAndAveragePerDay('nourriture')).toEqual(macrosMapExecpted);
+    expect(CB.getMacrosTotalAndAveragePerDay('nourriture')).toEqual(macrosMapExecpted);
 
 });
 
@@ -456,16 +454,16 @@ test('ExportModule - TestFetchToilets', async() => {
     mapExpected.set("Transit", data_toilets.feces);
     arrayExpected.push(mapExpected);
 
-    expect(CompilerBilan.test_fetchToilets(data_toilets,'18-03-2022')).toEqual(arrayExpected)
+    expect(CB.test_fetchToilets(data_toilets,'18-03-2022')).toEqual(arrayExpected)
 });
 
 /**
  * Report test - Transit - Null
  */
 test('ExportModule - TestFetchToiletsVoid', async() => {
-    CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchToilets(null,'18-03-2022')).toEqual([])
-    expect(CompilerBilan.test_fetchToilets(undefined,'18-03-2022')).toEqual([])
+    CB.resetDataArrays();
+    expect(CB.test_fetchToilets(null,'18-03-2022')).toEqual([])
+    expect(CB.test_fetchToilets(undefined,'18-03-2022')).toEqual([])
 });
 
 /**
@@ -487,14 +485,14 @@ test('ExportModule - testGetAverageToilets', async() => {
         arrayExpected.push(mapExpected);
     }
 
-    CompilerBilan.injectDataInArrayToilets(arrayExpected)
+    CB.injectDataInArrayToilets(arrayExpected)
     let mapExpected=new Map();
     mapExpected.set("totalUrine", 20);
     mapExpected.set("totalFeces", 16);
     mapExpected.set("averageUrinePerDay", 5);
     mapExpected.set("averageFecesPerDay", 4);
 
-    expect(CompilerBilan.getAverageToilets()).toEqual(mapExpected);
+    expect(CB.getAverageToilets()).toEqual(mapExpected);
 });
 
 /**
@@ -515,16 +513,16 @@ test('ExportModule - TestFetchActivities', async() => {
     mapExpected.set("minutes", duration.slice(3, 5));
     arrayExpected.push(mapExpected);
 
-    expect(CompilerBilan.test_fetchActivites(data_activites,'18-03-2022')).toEqual(arrayExpected)
+    expect(CB.test_fetchActivites(data_activites,'18-03-2022')).toEqual(arrayExpected)
 });
 
 /**
  * Report test - activities - Null
  */
 test('ExportModule - TestFetchActivitiesVoid', async() => {
-    CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchActivites(null,'18-03-2022')).toEqual([])
-    expect(CompilerBilan.test_fetchActivites(undefined,'18-03-2022')).toEqual([])
+    CB.resetDataArrays();
+    expect(CB.test_fetchActivites(null,'18-03-2022')).toEqual([]);
+    expect(CB.test_fetchActivites(undefined,'18-03-2022')).toEqual([]);
 });
 
 /**
@@ -544,13 +542,13 @@ test('ExportModule - testGetAverageActivities', async() => {
         arrayExpected.push(mapExpected);
     }
 
-    CompilerBilan.injectDataInArrayActivities(arrayExpected);
-    //console.log(CompilerBilan.getAggregateActivities());
+    CB.injectDataInArrayActivities(arrayExpected);
+    //console.log(CB.getAggregateActivities());
     let mapExpected=new Map();
     mapExpected.set("TotalDuration", '54:42');
     mapExpected.set("AverageDuration", '13:40');
 
-    expect(CompilerBilan.getAggregateActivities()).toEqual(mapExpected);
+    expect(CB.getAggregateActivities()).toEqual(mapExpected);
 });
 
 /**
@@ -567,23 +565,23 @@ test('ExportModule - TestFetchSleep', async() => {
     mapExpected.set("Date", '18-03-2022');
     mapExpected.set("startHour", data_sleep.heureDebut);
     mapExpected.set("endHour", data_sleep.heureFin);
-    mapExpected.set("duration", CompilerBilan.test_formatDuration(data_sleep.duree));
+    mapExpected.set("duration", CB.test_formatDuration(data_sleep.duree));
     mapExpected.set("wakeUpQt",data_sleep.nbReveils)
     mapExpected.set("wakeUpState",data_sleep.etatReveil)
     arrayExpected.push(mapExpected)
 
 
-    //console.log(CompilerBilan.test_fetchSleep(data_sleep,'18-03-2022'))
-    expect(CompilerBilan.test_fetchSleep(data_sleep,'18-03-2022')).toEqual(arrayExpected)
+    //console.log(CB.test_fetchSleep(data_sleep,'18-03-2022'))
+    expect(CB.test_fetchSleep(data_sleep,'18-03-2022')).toEqual(arrayExpected)
 });
 
 /**
  * Report test - sleep - Null
  */
 test('ExportModule - TestFetchSleepVoid', async() => {
-    CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchSleep(null,'18-03-2022')).toEqual([])
-    expect(CompilerBilan.test_fetchSleep(undefined,'18-03-2022')).toEqual([])
+    CB.resetDataArrays();
+    expect(CB.test_fetchSleep(null,'18-03-2022')).toEqual([]);
+    expect(CB.test_fetchSleep(undefined,'18-03-2022')).toEqual([]);
 });
 
 /**
@@ -602,20 +600,20 @@ test('ExportModule - testGetAverageSleep', async() => {
         mapExpected.set("Date", dates_array[i]);
         mapExpected.set("startHour", data_sleep.heureDebut);
         mapExpected.set("endHour", data_sleep.heureFin);
-        mapExpected.set("duration", CompilerBilan.test_formatDuration(data_sleep.duree));
+        mapExpected.set("duration", CB.test_formatDuration(data_sleep.duree));
         mapExpected.set("wakeUpQt",data_sleep.nbReveils)
         mapExpected.set("wakeUpState",data_sleep.etatReveil)
         arrayExpected.push(mapExpected);
     }
 
-    CompilerBilan.injectDataInArraySleeps(arrayExpected);
+    CB.injectDataInArraySleeps(arrayExpected);
     let mapExpected=new Map();
     mapExpected.set("averageStartHour", '01:00');
     mapExpected.set("averageEndHour", '10:00');
     mapExpected.set("averageDuree", '09:00');
     mapExpected.set("averageWakeUpQt", '4.0' );
 
-    expect(CompilerBilan.getAggregateSleeps()).toEqual(mapExpected);
+    expect(CB.getAggregateSleeps()).toEqual(mapExpected);
 });
 
 /**
@@ -633,16 +631,16 @@ test('ExportModule - TestFetchGlycemia', async() => {
     mapExpected.set("Glycémie", parseInt(data_glycemia));
     arrayExpected.push(mapExpected)
 
-    expect(CompilerBilan.test_fetchGlycemia(data_glycemia,'18-03-2022')).toEqual(arrayExpected)
+    expect(CB.test_fetchGlycemia(data_glycemia,'18-03-2022')).toEqual(arrayExpected)
 });
 
 /**
  * Report test - Glycemia - Null
  */
 test('ExportModule - TestFetchGlycemiaVoid', async() => {
-    CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchGlycemia(null,'18-03-2022')).toEqual([])
-    expect(CompilerBilan.test_fetchGlycemia(undefined,'18-03-2022')).toEqual([])
+    CB.resetDataArrays();
+    expect(CB.test_fetchGlycemia(null,'18-03-2022')).toEqual([]);
+    expect(CB.test_fetchGlycemia(undefined,'18-03-2022')).toEqual([]);
 });
 
 /**
@@ -663,12 +661,12 @@ test('ExportModule - testGetAverageGlycemia', async() => {
         arrayExpected.push(mapExpected);
     }
 
-    CompilerBilan.injectDataInArrayGlycemia(arrayExpected);
+    CB.injectDataInArrayGlycemia(arrayExpected);
     let mapExpected=new Map();
     mapExpected.set("Moyenne", 555.50 + " mmol/L");
     mapExpected.set("Référence", "4.7 - 6.8 mmol/L");
 
-    expect(CompilerBilan.getAverageGlycemia()).toEqual(mapExpected);
+    expect(CB.getAverageGlycemia()).toEqual(mapExpected);
 });
 
 
@@ -695,16 +693,16 @@ test('ExportModule - TestFetchDrinksHydratation', async() => {
         arrayExpected.push(mapExpected);
     })
 
-    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual(arrayExpected);
+    expect(CB.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual(arrayExpected);
 });
 
 /**
  * Report test - Hydratation - Null
  */
 test('ExportModule - TestFetchDrinksHydratationVoid', async() => {
-    CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",null,'18-03-2022')).toEqual([])
-    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",undefined,'18-03-2022')).toEqual([])
+    CB.resetDataArrays();
+    expect(CB.test_fetchDrinksHydratation("hydratation",null,'18-03-2022')).toEqual([]);
+    expect(CB.test_fetchDrinksHydratation("hydratation",undefined,'18-03-2022')).toEqual([]);
 });
 
 /**
@@ -731,7 +729,7 @@ test('ExportModule - testGetMacrosHydratation', async() => {
         mapExpected.set("Gras", element.gras * element.consumption);
         arrayExpected.push(mapExpected);
     })
-    CompilerBilan.injectDataInArrayHydratation(arrayExpected)
+    CB.injectDataInArrayHydratation(arrayExpected)
     //console.log(getMacrosTotalAndAveragePerDay('hydratation'))
     let macrosMapExecpted=new Map();
     macrosMapExecpted.set("totalFiber", 75);
@@ -743,7 +741,7 @@ test('ExportModule - testGetMacrosHydratation', async() => {
     macrosMapExecpted.set("averageFat", 76.67);
     macrosMapExecpted.set("averageGlucide", 18.33);
 
-    expect(CompilerBilan.getMacrosTotalAndAveragePerDay('hydratation')).toEqual(macrosMapExecpted);
+    expect(CB.getMacrosTotalAndAveragePerDay('hydratation')).toEqual(macrosMapExecpted);
 });
 
 
@@ -770,16 +768,16 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
         arrayExpected.push(mapExpected);
     })
 
-    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
+    expect(CB.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
 });
 
 /**
  * Report test - Alcool - Null
  */
 test('ExportModule - TestFetchDrinksAlcoolVoid', async() => {
-    CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",null,'18-03-2022')).toEqual([])
-    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",undefined,'18-03-2022')).toEqual([])
+    CB.resetDataArrays();
+    expect(CB.test_fetchDrinksAlcohol("alcool",null,'18-03-2022')).toEqual([]);
+    expect(CB.test_fetchDrinksAlcohol("alcool",undefined,'18-03-2022')).toEqual([]);
 });
 
 /**
@@ -808,7 +806,7 @@ test('ExportModule - testGetMacrosAlcool', async() => {
         arrayExpected.push(mapExpected);
     })
 
-    CompilerBilan.injectDataInArrayAlcohol(arrayExpected)
+    CB.injectDataInArrayAlcohol(arrayExpected)
     //console.log(getMacrosTotalAndAveragePerDay('alcool'))
     let macrosMapExecpted=new Map();
     macrosMapExecpted.set("totalFiber", 6);
@@ -820,7 +818,7 @@ test('ExportModule - testGetMacrosAlcool', async() => {
     macrosMapExecpted.set("averageFat", 0.50);
     macrosMapExecpted.set("averageGlucide", 11.25);
 
-    expect(CompilerBilan.getMacrosTotalAndAveragePerDay('alcool')).toEqual(macrosMapExecpted);
+    expect(CB.getMacrosTotalAndAveragePerDay('alcool')).toEqual(macrosMapExecpted);
 });
 
 /**
@@ -828,14 +826,14 @@ test('ExportModule - testGetMacrosAlcool', async() => {
  */
 test('ExportModule - TestFetchWeight', async() => {
     mockData.forEach((data)=>{
-        test_deleteActualFetchedWeights()
+        CB.resetDataArrays();
         data.poids.forEach((weight)=>{
-            test_fetchWeights(weight.dailyPoids, weight.datePoids)
+            CB.testReport_fetchWeights(weight.dailyPoids, weight.datePoids)
         })
     })
 
     let weightUnit = localStorage.getItem("prefUnitePoids");
-    let mockArray = getWeights()
+    let mockArray = CB.getWeights();
 
     let map1 = new Map([["Date","2022-04-19"],["weightUnit",weightUnit],["weight","50.16"]]);
     let map2 = new Map([["Date","2022-03-18"],["weightUnit",weightUnit],["weight","52.16"]]);
@@ -851,26 +849,26 @@ test('ExportModule - TestFetchWeight', async() => {
  * Report test - Weight - Null
  */
 test('ExportModule - TestFetchWeightVoid', async() => {
-    test_deleteActualFetchedWeights()
-    let mockArray = getWeights()
-    expect(mockArray).toEqual(null)
+    CB.resetDataArrays();
+    let mockArray = CB.getWeights();
+    expect(mockArray).toEqual(null);
 });
 
 /**
- * Report test - Weight - AGGREGATE
+ * Report test - Weight - Aggregate
  */
-test('ExportModule - TestFetchDrinksWeight_AGGREGATE', async() => {
+test('ExportModule - TestFetchWeight_AGGREGATE', async() => {
     mockData.forEach((data)=>{
-        test_deleteActualFetchedWeights()
+        CB.resetDataArrays();
         data.poids.forEach((weight)=>{
-            test_fetchWeights(weight.dailyPoids, weight.datePoids)
+            CB.testReport_fetchWeights(weight.dailyPoids, weight.datePoids);
         })
     })
-
-    expect(getAggregateWeights().get('initalWeight')).toBe("52.16")
-    expect(getAggregateWeights().get('finalWeight')).toBe("50.16")
-    expect(getAggregateWeights().get('deltaWeight')).toBe("-2.00")
-    expect(getAggregateWeights().get('weightUnit')).toBe(localStorage.getItem("prefUnitePoids"))
+    CB.calculateAggregateWeights();
+    expect(CB.getAggregateWeights().get('initalWeight')).toBe("52.16");
+    expect(CB.getAggregateWeights().get('finalWeight')).toBe("50.16");
+    expect(CB.getAggregateWeights().get('deltaWeight')).toBe("-2.00");
+    expect(CB.getAggregateWeights().get('weightUnit')).toBe(localStorage.getItem("prefUnitePoids"));
 });
 
 
@@ -879,11 +877,11 @@ test('ExportModule - TestFetchDrinksWeight_AGGREGATE', async() => {
  */
 
 /**
- * Report test - Weight - Null (to do when it will be implemented)
+ * Report test - Supplements - Null (to do when it will be implemented)
  */
 
 /**
- * Report test - Weight - AGGREGATE (to do when it will be implemented)
+ * Report test - Supplements - AGGREGATE (to do when it will be implemented)
  */
 
 /************************************************
@@ -905,7 +903,7 @@ test('ExportModule - Test_getNumberOfUniqueDate', async() => {
         arrayOfMapOfNotUniqueDate.push(map);
     });
     let numberUniqueExpected=5;
-    expect(CompilerBilan.test_getNumberOfUniqueDate(arrayOfMapOfNotUniqueDate)).toEqual(numberUniqueExpected);
+    expect(CB.test_getNumberOfUniqueDate(arrayOfMapOfNotUniqueDate)).toEqual(numberUniqueExpected);
 });
 
 /**
@@ -933,7 +931,7 @@ test('ExportModule - test_sortEntries', async() => {
         new Map().set('Date','15-10-2011'),
     ]
 
-    CompilerBilan.test_sortEntries(arrayOfMapDateNotSorted)
+    CB.test_sortEntries(arrayOfMapDateNotSorted)
     expect(arrayOfMapDateNotSorted).toEqual(arrayOfMapDateSorted);
 });
 
@@ -941,30 +939,20 @@ test('ExportModule - test_sortEntries', async() => {
  * Test a function which get hh:mm as a param and tranform it in minutes
  */
 test('ExportModule - getDuration', async() => {
-    expect(CompilerBilan.test_getDuration("15:30")).toEqual(930)
-    expect(CompilerBilan.test_getDuration("00:00")).toEqual(0)
-    expect(CompilerBilan.test_getDuration("24:00")).toEqual(1440)
+    expect(CB.test_getDuration("15:30")).toEqual(930)
+    expect(CB.test_getDuration("00:00")).toEqual(0)
+    expect(CB.test_getDuration("24:00")).toEqual(1440)
 });
 
 /**
  * Test a function which take minutes and tranform it in hh:mm
  */
 test('ExportModule - formatDuration', async() => {
-    expect(CompilerBilan.test_formatDuration(930)).toEqual("15:30")
-    expect(CompilerBilan.test_formatDuration(0)).toEqual("00:00")
-    expect(CompilerBilan.test_formatDuration(1440)).toEqual("24:00")
+    expect(CB.test_formatDuration(930)).toEqual("15:30")
+    expect(CB.test_formatDuration(0)).toEqual("00:00")
+    expect(CB.test_formatDuration(1440)).toEqual("24:00")
 
 });
-
-
-//TODO: Test pour formated date ?
-
-/**
- * Ne fait qu'augmenter la couverture de test sans rien tester...
- */
-/*test('ExportModule - testFormatPeriod', async() =>{
-    RapportCR.tests()
-});*/
 
 /********************************************************
  ********** TEST ON COMPILER BILAN NOT DONE *************/
@@ -973,15 +961,30 @@ test('ExportModule - formatDuration', async() => {
 //filterDataByDate
 //getDates
 //fetchData(data, formatedDate, categorySelected)
-//Alll fetch categories - géré par les testFetch
-//resetDataArrays()
+//All fetch categories - géré par les testFetch
 
+//getNumberOfUniqueDate(array_aliments)
+test('ExportModule - getNumberOfUniqueDate', async() => {
+    //CB.getNumberOfUniqueDate([]);
+});
+
+//resetDataArrays()
+test('ExportModule - ResetDataArrays', async() => {
+    CB.resetDataArrays();
+    expect(CB.getHydratations()).toEqual(null);
+    expect(CB.getNourriture()).toEqual(null);
+    expect(CB.getAlcohol()).toEqual(null);
+    expect(CB.getToilets() ).toEqual(null);
+    expect(CB.getGlycemia()).toEqual(null);
+    expect(CB.getActivities()).toEqual(null);
+    expect(CB.getWeights()).toEqual(null);
+    expect(CB.getSleeps()).toEqual(null);
+});
 /********************************************************
  ********** TEST ON RAPPORT CREATEUR ********************/
-// todo: createPeriod
-// todo: all function with CSV
-// todo: take the file and check the named saved
-
+/**
+ * PDF part - ancienne fonction
+ */
 /*
 test('ExportModule - CreatePDF', async() => {
     let selection = ['hydratation', 'alcool', 'supplements', 'nourriture', 'glycémie', 'poids', 'toilettes', 'sommeil', 'activities'];
@@ -991,109 +994,356 @@ test('ExportModule - CreatePDF', async() => {
     //expect(data).toBeInstanceOf(Array);
     //expect(data.length).toBeGreaterThanOrEqual(0);
 });
+*/
 
-//addWeightTable(document) "#113d37", "#bbebe5")
-test('ExportModule - WeightTable', async() => {
-    const doc = new jsPDF();
-    addWeightTable(doc);
-    expect(document.getNumberOfPages()).toEqual(1);
-    expect(document.getFillColor()).toEqual('#bbebe5');
-});
-
+/**
+ * PDF part
+ */
 //addActivitiesTable(document) "#0f5780", "#7cc8f6"
 test('ExportModule - ActivitiesTable', async() => {
     const doc = new jsPDF();
-    addActivitiesTable(doc);
-    expect(document.getNumberOfPages()).toEqual(1);
-    expect(document.getFillColor()).toEqual('#7cc8f6');
-});*/
+    doc.autoTable({head: ["Test_Activities"],startY: 150,});
 
-//addSleepTable(document) "#152b3f", "#4ca9ff"
-test('ExportModule - SleepTable', async() => {
-    const doc = new jsPDF();
-
-    doc.autoTable({
-        head: ["Test_Sleep"],
-        startY: 150,
-    });
-
-    let headers = sleepsHeaders();
+    let headers = activitiesHeaders();
     mockData.forEach( (data) => {
-        test_deleteActualFetchedSleeps();
-        test_fetchSleeps(data.sommeil, "2022-02-01");
+        CB.resetDataArrays();
+        CB.testReport_fetchActivities(data.activities, "2022-02-01");
     })
-    let mockArray = getSleeps();
-    addSleepTable(doc, mockArray, headers);
+    let mockArray = CB.getActivities();
+    RC.addActivitiesTable(doc, headers);
     expect(doc.getNumberOfPages()).toEqual(1);
     expect(doc.getFillColor()).toEqual('#f4f4f4');
+
+    RC.addActivitiesAggregateTable(doc);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#ffffff');
 });
 
-/*
-0: Map(6) {'Date' => '2022-03-18', 'startHour' => '00:00', 'endHour' => '07:03', 'duration' => '07:03', 'wakeUpQt' => '3', …}
-1: Map(6) {'Date' => '2022-03-13', 'startHour' => '00:00', 'endHour' => '07:03', 'duration' => '07:03', 'wakeUpQt' => '3', …}
-2: Map(6) {'Date' => '2022-03-07', 'startHour' => '00:00', 'endHour' => '07:00', 'duration' => '07:00', 'wakeUpQt' => 0, …}
-3: Map(6) {'Date' => '2022-02-26', 'startHour' => '00:00', 'endHour' => '07:00', 'duration' => '07:00', 'wakeUpQt' => 0, …}
-4: Map(6) {'Date' => '2022-02-25', 'startHour' => '00:00', 'endHour' => '07:00', 'duration' => '07:00', 'wakeUpQt' => 0, …}
-5: Map(6) {'Date' => '2022-02-22', 'startHour' => '00:00', 'endHour' => '07:00', 'duration' => '07:00', 'wakeUpQt' => 0, …}
-6: Map(6) {'Date' => '2022-02-21', 'startHour' => '00:00', 'endHour' => '07:00', 'duration' => '07:00', 'wakeUpQt' => 0, …}
-7: Map(6) {'Date' => '2022-02-02', 'startHour' => '00:00', 'endHour' => '07:00', 'duration' => '07:00', 'wakeUpQt' => 0, …}
-*/
-/*
-//addToiletsTable(document) "#bba339", "#ffea9a"
-test('ExportModule - TransitTable', async() => {
-    const doc = new jsPDF();
-    addToiletsTable(doc);
-    expect(document.getNumberOfPages()).toEqual(1);
-    expect(document.getFillColor()).toEqual('#ffea9a');
-});
-
+/**
+ * PDF part
+ */
 //addAlcoolTable(document)  "#e7a54f" "#ffd39b"
+////addAlcoolMacrosTable(document) --> "#e7a54f""#a52a2a""#db4e3e""#589051""#c99b2e"
 test('ExportModule - AlcoolTable', async() => {
     const doc = new jsPDF();
-    addAlcoolTable(doc);
-    expect(document.getNumberOfPages()).toEqual(1);
-    expect(document.getFillColor()).toEqual('#ffd39b');
+    doc.autoTable({head: ["Test_Alcohol"],startY: 150,});
+
+    let headers = nourritureHydratAlcoolHeaders();
+    mockData.forEach( (data) => {
+        CB.resetDataArrays();
+        CB.testReport_fetchAlcohols(data.alcool.alcools, "2022-02-01");
+    })
+    let mockArray = CB.getAlcohol();
+    RC.addAlcoolTable(doc, headers);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#598e51');
+
+    RC.addAlcoolMacrosTable(doc);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#c99b2d');
 });
 
+/**
+ * PDF part
+ */
+//addNourritureTable(document, headers)
+////addNourritureMacros(document) #185742 "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
+//TODO _ received 2 ?
+test('ExportModule - FoodTable', async() => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Food"],startY: 150,});
+
+    let headers = nourritureHydratAlcoolHeaders();
+    mockData.forEach( (data) => {
+        CB.resetDataArrays();
+        CB.testReport_fetchFood(data.food.categories.dairyProducts, "2022-02-01");
+        CB.testReport_fetchFood(data.food.categories.fruit, "2022-02-01");
+        CB.testReport_fetchFood(data.food.categories.grainFood, "2022-02-01");
+        CB.testReport_fetchFood(data.food.categories.proteinFood, "2022-02-01");
+        CB.testReport_fetchFood(data.food.categories.vegetables, "2022-02-01");
+    })
+    let mockArray = CB.getNourriture();
+
+    RC.addNourritureTable(doc, headers);
+    expect(doc.getNumberOfPages()).toEqual(2);
+    expect(doc.getFillColor()).toEqual('#c99b2d');
+
+    RC.addNourritureMacros(doc);
+    expect(doc.getNumberOfPages()).toEqual(2);
+    expect(doc.getFillColor()).toEqual('#c99b2d');
+});
+
+/**
+ * PDF part
+ */
 //addGlycimiaTable(document) "#6e233d"
 test('ExportModule - GlycemiaTable', async() => {
     const doc = new jsPDF();
-    addGlycimiaTable(doc);
-    expect(document.getNumberOfPages()).toEqual(1);
-    expect(document.getFillColor()).toEqual('#6e233d');
+    doc.autoTable({head: ["Test_Glycemia"],startY: 150,});
+
+    let headers = glycimiaHeaders();
+    mockData.forEach( (data) => {
+        CB.resetDataArrays();
+        CB.testReport_fetchGlycemias(data.glycemie, "2022-02-01");
+    })
+    let mockArray = CB.getGlycemia();
+    RC.addGlycimiaTable(doc, headers);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#f4f4f4');
+
+    RC.addAverageGlycimiaTable(doc);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#ffffff');
 });
-*/
-/*
-addNourritureTable(document) #b4ead8 "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
-addHydratationTable(document) "#beecff" "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
 
-addAlcoolMacrosTable(document) --> "#e7a54f""#a52a2a""#db4e3e""#589051""#c99b2e"
-addNourritureMacros(document) #185742 "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
-addHydratationMacrosTable(document) -- "#65afc5" "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
+/**
+ * PDF part
+ */
+//RC.addHydratationTable
+//getHydratations()
+//addHydratationMacrosTable(document) -- "#65afc5" "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
+test('ExportModule - HydratationTable', async() => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Hydratation"],startY: 150,});
 
-addAverageGlycimiaTable(document)
-addAverageToiletsTable(document)
-addSleepAggregateTable(document)
-addActivitiesAggregateTable(document)
-addWeightAggregateTable(document)*/
-/*
-addWeightTable(document)
-addWeightAggregateTable(document)
-addActivitiesTable(document)
-addActivitiesAggregateTable(document)
-addSleepTable(document)
-addSleepAggregateTable(document)
-addNourritureTable(document)
-addNourritureMacros(document)
-addHydratationTable(document)
-addHydratationMacrosTable(document)
-addToiletsTable(document)
-addAlcoolTable(document)
-addAlcoolMacrosTable(document)
-addGlycimiaTable(document)
-addAverageGlycimiaTable(document)
-insertNoDataFound(document)
-insertHeaders(document, headers, headerColor)*/
+    let headers_2 = RC.nourritureHydraAlcoolAggrHeaders();
+
+    mockData.forEach( (data) => {
+         CB.resetDataArrays();
+         CB.testReport_fetchHydratation(data.hydratation.hydrates, "2022-02-01");
+    })
+    let mockArray_2 = CB.getHydratations();
+    RC.addHydratationTable(doc, headers_2);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#f4f4f4');
+
+    RC.addHydratationMacrosTable(doc);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#c99b2d');
+});
+
+
+/**
+ * PDF part --addSleepTable(document) "#152b3f", "#4ca9ff"
+ */
+test('ExportModule - SleepTable', async() => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Sleep"],startY: 150,});
+
+    let headers = sleepsHeaders();
+    mockData.forEach( (data) => {
+        CB.resetDataArrays();
+        CB.testReport_fetchSleeps(data.sommeil, "2022-02-01");
+    })
+    let mockArray = CB.getSleeps();
+    addSleepTable(doc, mockArray, headers);
+
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#f4f4f4');
+
+    addSleepAggregateTable(doc);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#ffffff');
+});
+
+/**
+ * PDF part --addToiletsTable(document) "#bba339", "#ffea9a"
+ */
+test('ExportModule - TransitTable', async() => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Transit"],startY: 150,});
+
+    let headers = RC.transitHeaders();
+    mockData.forEach( (data) => {
+        CB.resetDataArrays();
+        CB.testReport_fetchTransits(data.toilettes, "2022-02-01");
+    })
+    let mockArray = CB.getToilets();
+    RC.addToiletsTable(doc, headers);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#f4f4f4');
+
+    //RC.addAverageToiletsTable(document);
+    //expect(doc.getNumberOfPages()).toEqual(1);
+    //expect(doc.getFillColor()).toEqual('#f4f4f4');
+});
+
+/**
+ * PDF part - addWeightTable(document) "#113d37", "#bbebe5")
+ */
+test('ExportModule - WeightTable', async() => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Weight"],startY: 150,});
+    let headers = weightHeaders();
+    mockData.forEach( (data) => {
+        CB.resetDataArrays();
+        CB.testReport_fetchWeights(data.poids[0].dailyPoids, data.poids[0].datePoids);
+        CB.testReport_fetchWeights(data.poids[1].dailyPoids, data.poids[1].datePoids);
+    });
+    //let mockArray = CB.getWeights(); //sort the arrays
+    RC.addWeightTable(doc, headers); //inside-it, call getWeights which sort the array
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#baeae5');
+
+    //RC.addWeightAggregateTable(document);
+    //expect(doc.getNumberOfPages()).toEqual(1);
+    //expect(doc.getFillColor()).toEqual('#baeae5');
+});
+
+/**
+ * PDF part
+ */
+//insertNoDataFound(document)
+test('ExportModule - insertNoDataFound', () => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Weight"],startY: 150,});
+    RC.insertNoDataFound(doc);
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#f4f4f4');
+});
+/**
+ * PDF part
+ */
+//insertHeaders(document, headers, headerColor)
+test('ExportModule - insertHeaders', () => {
+    const doc = new jsPDF();
+    doc.autoTable({head: ["Test_Weight"],startY: 150,});
+    RC.insertHeaders(doc, ['a','b','c'], "#ffffff");
+    expect(doc.getNumberOfPages()).toEqual(1);
+    expect(doc.getFillColor()).toEqual('#ffffff');
+});
+
+/**
+ * CSV part -
+ */
+test('ExportModule - formedTitle', () => {
+    localStorage.setItem('userLanguage', 'en');
+    let title = RC.formedTitle("GLYC_TITLE", "2022/02/25");
+    expect(title).toEqual('Blood sugar level - 2022-02-25.csv');
+});
+
+/**
+ * CSV part -
+ */
+test('ExportModule - createPeriod', () => {
+    localStorage.setItem('userLanguage', 'fr');
+    let periodCreated = RC.createPeriod(new Date("2022-01-25"), new Date("2022-03-25"));
+    expect(periodCreated).toEqual('De 25/01/2022 À 25/03/2022');
+});
+
+/**
+ * CSV part - todo add more function
+ */
+
+/**
+ * CSV part - mis en commentaire car ne fait que passer dans les fonctions
+ */
+ /*
+test('ExportModule - CSVALL', () => {
+    const temppdf = new jsPDF();
+    const tempzip = new JSZip();
+    const tempdate = RC.createPeriod(new Date(), new Date("2022-03-25"));
+    temppdf.autoTable({
+        body: [[' ']]
+    });
+    RC.insertNoDataFound(temppdf);
+    RC.insertHeaders(temppdf, [" "], "#ffffff");
+
+    RC.weightHeaders();
+    RC.weightAggrData();
+    RC.activitiesHeaders();
+    RC.activitiesAggrData();
+    RC.sleepsHeaders();
+    RC.sleepAggrData();
+    RC.nourritureHydratAlcoolHeaders();
+    RC.nourritureHydraAlcoolAggrHeaders();
+    RC.hydratationAggrData();
+    RC.nourritureAggrData();
+    RC.transitHeaders();
+    RC.toiletteAggrData();
+    RC.alcoolAggrData();
+    RC.glycimiaHeaders();
+    RC.glycimiaAggrData();
+    RC.weightCSV(tempzip, tempdate);
+    RC.weightAggrCSV(tempzip, tempdate);
+    RC.activitiesCSV(tempzip, tempdate);
+    RC.activitiesAggrCSV(tempzip, tempdate);
+    RC.sleepsCSV(tempzip, tempdate);
+    RC.sleepAggrCSV(tempzip, tempdate);
+    RC.nourritureAggrCSV(tempzip, tempdate);
+    RC.hydratationAggrCSV(tempzip, tempdate);
+    RC.toiletteCSV(tempzip, tempdate);
+    RC.toiletteAggrCSV(tempzip, tempdate);
+    RC.glycimiaCSV(tempzip, tempdate);
+    RC.glycimiaAggrCSV(tempzip, tempdate);
+});*/
+
+
+/**
+ * TRADUCTION -- n'augmente pas la couverture
+ */
+test('ExportModule - english traduction', () => {
+    localStorage.setItem('userLanguage', 'en');
+    expect(translate.getText("EXP_REPORT_UNIT")).toEqual('Unit');
+    expect(translate.getText("EXP_REPORT_WEIGHT")).toEqual('Weight');
+    expect(translate.getText("EXP_REPORT_INITIAL_WEIGHT")).toEqual('Initial weight');
+    expect(translate.getText("EXP_REPORT_FINAL_WEIGHT")).toEqual("Final weight");
+    expect(translate.getText("EXP_REPORT_DIFF_WEIGHT")).toEqual("Weight difference");
+    expect(translate.getText("EXP_REPORT_DURATION")).toEqual("Duration");
+    expect(translate.getText("EXP_REF_GLY")).toEqual("Reference");
+    expect(translate.getText("EXP_REPORT_AVERAGE_DURATION_ACTIVITY")).toEqual("Average");
+    expect(translate.getText("EXP_REPORT_START_HOUR_SLEEP")).toEqual('Bedtime');
+    expect(translate.getText("EXP_REPORT_END_HOUR_SLEEP")).toEqual('Waking hour');
+    expect(translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP")).toEqual('Woke up quantity');
+    expect(translate.getText("EXP_REPORT_AVG_END_HOUR_SLEEP")).toEqual("Average waking hour");
+    expect(translate.getText("EXP_REPORT_AVG_START_HOUR_SLEEP")).toEqual("Average bedtime");
+    expect(translate.getText("EXP_REPORT_AVG_DURATION_SLEEP")).toEqual("Average duration");
+    expect(translate.getText("EXP_REPORT_AVG_WAKEUP_QT")).toEqual("Wake up(s) per night");
+    expect(translate.getText("EXP_REPORT_WAKEUP_STATE")).toEqual("Wake-up state");
+    expect(translate.getText("EXP_REPORT_QT")).toEqual("Quantity");
+    //expect(translate.getText("EXP_REPORT_MACROS").getText("TOTAL")).toEqual("Total");
+    expect(translate.getText("EXP_UR_TR")).toEqual("Transit");
+    expect(translate.getText("EXP_TOT_UR")).toEqual("Total urine");
+    expect(translate.getText("EXP_TOT_FEC")).toEqual("Total faeces");
+    expect(translate.getText("EXP_AVG_UR")).toEqual("Average urine per day");
+    expect(translate.getText("EXP_AVG_FEC")).toEqual("Average faeces per day");
+    expect(translate.getText("EXP_AVG_TRA")).toEqual("Average transits per day");
+});
+
+/**
+ * TRADUCTION Headers-- n'augmente pas la couverture
+ */
+test('ExportModule - english traduction', () => {
+    localStorage.setItem('userLanguage', 'en');
+    let unitePoids = localStorage.getItem("prefUnitePoids");
+    let dateTitle;
+    let poidsTitle;
+    [dateTitle, poidsTitle] = weightHeaders(); //translate.getText("EXP_REPORT_WEIGHT") + agg.get('weightUnit'); //translate.getText("DATE_TITLE");
+
+    expect(dateTitle).toEqual('Date');
+    expect(poidsTitle).toEqual('Weight' + unitePoids);
+});
+
+/**
+ * test on formatDate(date) -- @param {date} like dd-MM-yyyy (ex : 01-01-2022)  --> @return a formated date
+ * @private
+ *
+ */
+test('ExportModule - formatDate', () => {
+    let formatedDate = CB.formatDate('01-01-2022')
+    expect(formatedDate).toEqual('1/1/2022');
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Notes
