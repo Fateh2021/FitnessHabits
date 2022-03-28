@@ -564,8 +564,8 @@ function manageWeight(doc){
     doc.text(translate.getText("POIDS_NOM_SECTION"), 10, doc.lastAutoTable.finalY + 10);
     let headers = weightHeaders();
     if (CompilerBilan.getWeights()) {
-        RC.addWeightTable(doc, headers);
-        RC.addWeightAggregateTable(doc);
+        addWeightTable(doc, headers);
+        addWeightAggregateTable(doc);
     } else {
         insertHeaders(document, headers, "#113d37");
         insertNoDataFound(document);
