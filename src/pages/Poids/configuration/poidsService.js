@@ -3,7 +3,7 @@ import moment from "moment";
 import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITE_POIDS = 2.2;
-//
+
 export function initPrefPoids() {
     const userUID = localStorage.getItem("userUid");
     let prefPoidsRef = firebase.database().ref("profiles/"+ userUID +"/preferencesPoids")

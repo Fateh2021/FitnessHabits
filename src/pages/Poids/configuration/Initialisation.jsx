@@ -48,11 +48,11 @@ const handleUnitePoidsChange = (e) => {
   setUnitePoids(value);
 
   if (OldUnitePoids === "KG" && value === "LBS") {
-    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(2))
-    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(2))
+    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(1))
+    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(1))
   } else if (OldUnitePoids === "LBS" && value === "KG") {
-    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(2))
-    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(2))
+    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(1))
+    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(1))
   }
 }
 
@@ -80,8 +80,8 @@ useEffect(() => {
         ci *= DIFF_UNITE_POIDS;
       }
 
-      setPoidsInitial(parseFloat(ini).toFixed(2));
-      setPoidsCible(parseFloat(ci).toFixed(2));
+      setPoidsInitial(parseFloat(ini).toFixed(1));
+      setPoidsCible(parseFloat(ci).toFixed(1));
       setDateCible(snapshot.val().dateCible)
     }
   })
@@ -108,14 +108,14 @@ const handleReinitialisation = () => {
 
     if(graphData.length > 0){
       // Récupération de la première valeur que le user a saisie à ses début avec l'application
-      setPoidsInitial(parseFloat(graphData[0].y).toFixed(2));
+      setPoidsInitial(parseFloat(graphData[0].y).toFixed(1));
     } else {
-      setPoidsInitial("0.00");
+      setPoidsInitial("0.0");
     }
     // Si nous mettons le retour à KG au début de la fonction, la mécanique va simplement changer le type de poids sans vraiment réinitialiser
     // Sauf que à cette endroit, c'est juste parfait
     setUnitePoids("KG");
-    setPoidsCible("0.00");
+    setPoidsCible("0.0");
     setDateCible("");
   });
 }
@@ -129,9 +129,10 @@ const handlerConfirmation = () => {
     pi = poidsInitial;
     pc = poidsCible;
     // On stock les informations en KG dans la BD
+    // On garde 2 virgules pour la BD
     if (unitePoids === "LBS") {
-      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
-      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
+      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(1)
+      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(1)
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     poidsService.setPrefUnitePoids(unitePoids)
