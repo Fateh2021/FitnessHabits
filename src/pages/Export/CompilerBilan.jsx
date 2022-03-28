@@ -15,7 +15,12 @@ let mapAggActivities = new Map();
 let initialWeight;
 const userUID = localStorage.getItem("userUid");
 
-
+/**
+ * @param dataSelected: Categories selected by the user
+ * @param d1: Start date to generate report
+ * @param d2: End date to generate report
+ * @public
+ */
 export async function compilerBilan(dataSelected, d1, d2) {
     arrayWeights = [];
     arraySleeps = [];
@@ -29,23 +34,20 @@ export async function compilerBilan(dataSelected, d1, d2) {
     mapAggSleeps = new Map();
     mapAggActivities = new Map();
     d1.setHours(0, 0, 0, 0)
-    //Array of all datas in the BD
+    //*Array to contain all BD's data*/
     let dataFormat = [];
 
-    // if offline, fetches from local storage of the user
+    /* if offline, fetches from local storage of the user*/
     if (!window.navigator.onLine) {
         let localStorageData = JSON.parse(localStorage.getItem("dashboard"));
-        let today = new Date();
-        let month = today.getMonth().toString().length === 1 ? '0' + today.getMonth() : today.getMonth();
-        let formatedDate = today.getDate() + '-' + month + '-' + today.getFullYear();
-        fetchData(localStorageData, formatedDate, dataSelected)
+        fetchData(localStorageData, formatTodayDate(), dataSelected)
+
     } else {
-        //Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
+        formatTodayDate();
+        // Fetch all datas in BD for the current user and set the date from Firebase (like: 2044, 2046, 2022022
         // dataFormat = Array of all datas in the BD with date as mm-jj-aaaa
         // dataSelected = Checkbox selected by user
         dataFormat = await getDataFromFirebase(dataFormat);
-        // TODO doesnt work anymore?
-        // initialWeight = fetchInitialWeight(dataFormat);
 
         // With the new array(with the good date format), filter the datas with date selected by user in the datepicker
         dataFormat = filterDataByDate(dataFormat, d1, d2);
@@ -59,8 +61,11 @@ export async function compilerBilan(dataSelected, d1, d2) {
     }
 }
 
-// PRIVATE FONCTIONS
-//Return an array (dataFormat) with all the datas from the user
+/**
+ * @param dataFormat:
+ * @private
+ * @return: array (dataFormat) with all the datas from the user
+ */
 async function getDataFromFirebase(dataFormat) {
     let ref = firebase.database().ref("dashboard/" + userUID + "/");
     await ref.once("value", (snap) => {
@@ -69,22 +74,22 @@ async function getDataFromFirebase(dataFormat) {
             let dayAndMonth = data.key.slice(0, -4);
             let mois;
             let jour;
-            // if there's only 2 char for the day and month, then day and month are 1 char each
+            /**  if there's only 2 char for the day and month, then day and month are 1 char each*/
             if (dayAndMonth.length === 2) {
                 jour = '0' + data.key[0] + '-';
                 mois = '0' + data.key[1] + '-';
-                // if dayAndMonth has length of 4, then day and month have 2 chars each
+                /**  if dayAndMonth has length of 4, then day and month have 2 chars each*/
             } else if (dayAndMonth.length === 4) {
                 jour = data.key.slice(0, 2) + '-';
                 mois = data.key.slice(2, 4) + '-';
-                // if dayAndMonth has a length of 3, 2 options:
+                /**  if dayAndMonth has a length of 3, 2 options:*/
             } else if (dayAndMonth.length === 3) {
-                // day 2 chars, month 1 char
+                /**  day 2 chars, month 1 char*/
                 if ([...Array(32).keys()].includes(parseInt(dayAndMonth.slice(0, 2)))
                     && !([...Array(12).keys()].includes(parseInt(dayAndMonth.slice(1, 3))))) {
                     jour = data.key.slice(0, 2) + '-';
                     mois = '0' + data.key[2] + '-';
-                    // day 1 char, month 1 char
+                    /**  day 1 char, month 1 char*/
                 } else {
                     jour = '0' + data.key[0] + '-';
                     mois = data.key.slice(1, 3) + '-';
@@ -99,7 +104,14 @@ async function getDataFromFirebase(dataFormat) {
     return dataFormat;
 }
 
-// Filter the array of data by date between date debut and date fin
+/**
+ * Filter the array of data by date between start date and end date
+ * @param dataSelected: Categories selected by the user
+ * @param d1: Start date to generate report
+ * @param d2: End date to generate report
+ * @private
+ * @return: Datas between date selected bu the user
+ */
 function filterDataByDate(dataFormat, d1, d2) {
     let datePickerDates = getDates(d1, d2);
     dataFormat = dataFormat.filter((data) => {
@@ -111,7 +123,9 @@ function filterDataByDate(dataFormat, d1, d2) {
     return dataFormat;
 }
 
-// Return an array containing all the possible dates between startDate and stopDate
+/**
+ * Return an array containing all the possible dates between startDate and stopDate
+ */
 function getDates(startDate, stopDate) {
     let dateArray = [];
     let currentDate = startDate;
@@ -122,7 +136,10 @@ function getDates(startDate, stopDate) {
     return dateArray;
 }
 
-// fetches all the data for the selected categories
+/**
+ * Fetches all the data for the selected categories. Categories are pushed
+ * in the properMap/Array of this class.
+ */
 function fetchData(data, formatedDate, categorySelected) {
     for (const category of categorySelected) {
         switch (category) {
@@ -131,7 +148,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchDrinks("hydratation", hydratations, formatedDate);
                 break;
             case "nourriture":
-                let cereales = data.food.categories.grainFood;
+                /*let cereales = data.food.categories.grainFood;
                 let legumes = data.food.categories.vegetables;
                 let fruits = data.food.categories.fruit;
                 let proteines = data.food.categories.proteinFood;
@@ -140,7 +157,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchNourriture(legumes, formatedDate);
                 fetchNourriture(fruits, formatedDate);
                 fetchNourriture(proteines, formatedDate);
-                fetchNourriture(gras, formatedDate);
+                fetchNourriture(gras, formatedDate);*/
                 break;
             case "toilettes":
                 let toilets = data.toilettes;
@@ -154,7 +171,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 let glycemie = data.glycemie.dailyGlycemie;
                 fetchGlycemia(glycemie, formatedDate);
                 break;
-            case "supplements":/* TODO
+            case "supplements":/* must be done once implementation of this module done
                     var supplement = dataFormat[i].supplement;
                     if (!supplement)
                         retour[i][data] =
@@ -185,7 +202,10 @@ function fetchData(data, formatedDate, categorySelected) {
     }
 }
 
-// Function that fetches datas for hydratation and alcohol.
+/**
+ * Fetches datas for hydratation and alcohol.
+ * @param: "hydratation" or "alcool"
+ */
 function fetchDrinks(typeOfDrink, drinks, formatedDate) {
     if (drinks) {
         for (const drink of drinks) {
@@ -212,7 +232,9 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
     }
 }
 
-
+/**
+ *
+ */
 function fetchNourriture(foods, formatedDate) {
     if (foods.items) {
         for (const element of foods.items) {
@@ -231,7 +253,9 @@ function fetchNourriture(foods, formatedDate) {
     }
 }
 
-
+/**
+ *
+ */
 function fetchToilets(toilets, formatedDate) {
     if (toilets) {
         let mapToilets = new Map();
@@ -244,6 +268,9 @@ function fetchToilets(toilets, formatedDate) {
     }
 }
 
+/**
+ *
+ */
 function fetchGlycemia(glycemia, formatedDate) {
     if (glycemia) {
         let mapGlycemia = new Map();
@@ -254,7 +281,9 @@ function fetchGlycemia(glycemia, formatedDate) {
     }
 }
 
-
+/**
+ *
+ */
 function fetchWeights(weight, formatedDate) {
     if (weight && weight !== "0.00") {
         let mapWeight = new Map();
@@ -271,35 +300,9 @@ function fetchWeights(weight, formatedDate) {
     }
 }
 
-function fetchInitialWeight(datas) {
-    let mWeights = new Map();
-    let weightUnit = localStorage.getItem("prefUnitePoids");
-    const dates = [];
-
-    datas.forEach((data) => {
-        if (data) {
-            let weight = data.poids.dailyPoids;
-            let date = data.poids.datePoids.slice(0, 10).replace("-", "/").replace("-", "/");
-
-            if (weight !== "0.00") {
-                weightUnit === "LBS" ? mWeights.set(date, (weight * 2.2).toFixed(2)) : mWeights.set(date, weight);
-                dates.push(date);
-            }
-        }
-    });
-
-    const minDate = new Date(
-        Math.min(
-            ...dates.map(element => {
-                return new Date(element);
-            }),
-        ),
-    );
-
-    return mWeights.get(minDate.toISOString().slice(0, 10).replace("-", "/").replace("-", "/"));
-}
-
-
+/**
+ *
+ */
 function fetchActivities(activity, formatedDate) {
     if(activity) {
         let mapActivity = new Map();
@@ -314,8 +317,9 @@ function fetchActivities(activity, formatedDate) {
     }
 }
 
-
-//Keys: "date", "startHour", "endHour", "wakeUpQt", "wakeUpState"
+/**
+ * Keys: "date", "startHour", "endHour", "wakeUpQt", "wakeUpState"
+ */
 function fetchSleeps(sleep, formatedDate) {
     if (sleep) {
         let mapSleep = new Map();
@@ -333,7 +337,10 @@ function fetchSleeps(sleep, formatedDate) {
 
 
 // ---- FONCTIONS UTILS ----------------------------------------------------
-//methode qui prend heures et minutes et sort: 00:00
+
+/**
+ * Takes minutes and transform in a string like hh:mm
+ */
 function formatDuration(min) {
     let minutes = Math.floor(min);
     let hours;
@@ -354,7 +361,9 @@ function formatDuration(min) {
     return hours + ":" + minutes;
 }
 
-//fonction qui prend 00:00 et transforme en minutes
+/**
+ * Takes a string time as hh:00 and transform in int minuttes
+ */
 function getDuration(time) {
     return (parseInt(time.slice(0, 2) * 60) + parseInt(time.slice(3, 5)))
 }
@@ -362,8 +371,10 @@ function getDuration(time) {
 // ---- PUBLIC FONCTIONS ----------------------------------------------------
 
 // PUBLIC FONCTIONS
-
-// keys : date, consumption, quantity, volume, unit, protein, glucide, fiber, fat
+/**
+ * keys : date, consumption, quantity, volume, unit, protein, glucide, fiber, fat
+ * @public
+ */
 export function getHydratations() {
     if (arrayHydratations.length !== 0) {
         sortEntries(arrayHydratations);
@@ -372,6 +383,11 @@ export function getHydratations() {
     return null;
 }
 
+
+/**
+ * keys :
+ * @public
+ */
 export function getNourriture() {
     if (arrayNourriture.length !== 0) {
         sortEntries(arrayNourriture);
@@ -380,6 +396,10 @@ export function getNourriture() {
     return null;
 }
 
+/**
+ * keys :
+ * @public
+ */
 export function getAlcohol() {
     if (arrayAlcohol.length !== 0) {
         sortEntries(arrayAlcohol);
@@ -388,10 +408,12 @@ export function getAlcohol() {
     return null;
 }
 
-// Function used to calculate the macros total and the average per day.
-// Return a map with a total for each macro (protein, glucide, fiber, fat) as
-// well as their average.
-// category can be : "hydratation", "alcool", "nourriture"
+/**
+ * Function used to calculate the macros total and the average per day.
+ * @public
+ * keys : "hydratation", "alcool", "nourriture"
+ * @return: a map with a total for each macro (protein, glucide, fiber, fat) as well as their average.
+ */
 export function getMacrosTotalAndAveragePerDay(category) {
     let totalFiber = 0;
     let totalProtein = 0;
@@ -435,7 +457,10 @@ export function getMacrosTotalAndAveragePerDay(category) {
     return macrosMap;
 }
 
-// keys : urine, feces
+/**
+ * keys : urine, feces
+ * @public
+ */
 export function getToilets() {
     if (arrayToilets.length !== 0) {
         sortEntries(arrayToilets);
@@ -444,6 +469,10 @@ export function getToilets() {
     return null;
 }
 
+/**
+ * keys : "totalUrine", totalFeces", "averageUrinePerDay", "averageFecesPerDay"
+ * @public
+ */
 export function getAverageToilets() {
     let totalUrine = 0;
     let totalFeces = 0;
@@ -465,7 +494,10 @@ export function getAverageToilets() {
     return null;
 }
 
-// keys : Date, Glycemie
+/**
+ * keys : Date, Glycemie
+ * @public
+ */
 export function getGlycemia() {
     if (arrayGlycemia.length !== 0) {
         sortEntries(arrayGlycemia);
@@ -474,7 +506,11 @@ export function getGlycemia() {
     return null;
 }
 
-// return the average glycemia for the last few days
+/**
+ * keys : Date, Glycemie
+ * @public
+ * @return the average glycemia for the last few days
+ */
 export function getAverageGlycemia() {
     let total = 0;
     let moyenne = 0;
@@ -494,7 +530,11 @@ export function getAverageGlycemia() {
     return null;
 }
 
-//Possible keys: date, hour, minute, duration
+/**
+ * keys : date, hour, minute, duration
+ * @public
+ * @return an array of the activities or null
+ */
 export function getActivities() {
     if (arrayActivities.length !== 0) {
         sortEntries(arrayActivities);
@@ -504,7 +544,11 @@ export function getActivities() {
     }
 }
 
-
+/**
+ *
+ * @public
+ * @return a map with keys : TotalDuration, AverageDuration
+ */
 export function getAggregateActivities() {
     let totalDuration = 0;
     let totalDays = 0;
@@ -524,35 +568,64 @@ export function getAggregateActivities() {
     }
 }
 
-//- WEIGHTS - //
-//Possible keys: weightUnit, weight
+/**
+ * WEIGHTS
+ * @public
+ * @return a map with keys : weightUnit, weight, Date
+ */
 export function getWeights() {
     if (arrayWeights.length !== 0) {
         sortEntries(arrayWeights);
-        return arrayWeights;
+
+        return arrayWeights
     } else {
         return null;
     }
 }
 
 
-export function getAggregateWeights() {
-    if (arrayWeights.length !== 0) {
-        let finalWeight = getWeights()[getWeights().length - 1].get("weight");
+/**
+ * WEIGHTS
+ * @public
+ * @return a map with keys : initalWeight, finalWeight, deltaWeight, weightUnit
+ */
+export function calculateAggregateWeights() {
+    let initialWeight = 0;
+    let finalWeight = 0;
 
-        let initialWeight_2 = getWeights()[0].get("weight");
-        mapAggWeights.set("initalWeight", initialWeight_2);
+        getWeights();
+        finalWeight = arrayWeights[0].get("weight");
+        if (arrayWeights.length == 1) {
+            initialWeight = finalWeight;
+        } else {
+            initialWeight = arrayWeights[arrayWeights.length - 1].get("weight");
+        }
+
+        mapAggWeights.set("initalWeight", initialWeight);
         mapAggWeights.set("finalWeight", finalWeight);
-        mapAggWeights.set("deltaWeight", (finalWeight - initialWeight_2).toFixed(2));
+        mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
         mapAggWeights.set("weightUnit", localStorage.getItem("prefUnitePoids"));
-        return mapAggWeights;
-    } else {
-        return null;
-    }
+
 }
 
-//- SLEEPs - //
-//Possible keys: date, hour, minute, duration, wakeUpQt, wakeUpState
+
+/**
+ * WEIGHTS
+ * @private
+ * @return a map with keys : initalWeight, finalWeight, deltaWeight, weightUnit
+ */
+export function getAggregateWeights() {
+      return mapAggWeights;
+}
+
+
+
+
+/**
+ * SLEEPS
+ * @public
+ * @return an array of map with keys : date, hour, minute, duration, wakeUpQt, wakeUpState
+ */
 export function getSleeps() {
     if (arraySleeps.length !== 0) {
         sortEntries(arraySleeps);
@@ -562,6 +635,11 @@ export function getSleeps() {
     }
 }
 
+/**
+ * SLEEPS
+ * @public
+ * @return a map with keys : averageStartHour, averageEndHour, averageDuree, averageWakeUpQt
+ */
 export function getAggregateSleeps() {
     if (arraySleeps.length !== 0) {
         let minTotalStartHours = 0;
@@ -605,14 +683,21 @@ export function getAggregateSleeps() {
 }
 
 
-// sort the entries from the most recent date to the oldest one
-// Note : the key containing the date value must be called Date
+/**
+ * Sort the entries from the most recent date to the oldest one
+ * @private
+ * Note : the key containing the date value must be called Date
+ */
 function sortEntries(arrayToSort) {
     arrayToSort.sort((a, b) => new Date(b.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
         - new Date(a.get("Date").replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")));
 }
 
-
+/**
+ *
+ * @private
+ * @return number of distinct date
+ */
 function getNumberOfUniqueDate(array_aliments) {
     let set_date = new Set();
     array_aliments.forEach((data) => {
@@ -621,13 +706,19 @@ function getNumberOfUniqueDate(array_aliments) {
     return set_date.size;
 }
 
-// initial date format looks like dd-MM-yyyy (ex : 01-01-2022)
+
+
+/**
+ * @param {date} like dd-MM-yyyy (ex : 01-01-2022)
+ * @private
+ * @return a formated date
+ */
 export function formatDate(date) {
     let formatedDate;
     let month;
     let lang = localStorage.getItem("userLanguage");
     const dateFormat = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")).dateFormat : null;
-    // if dateFormat if specified in user profile, consider it
+    /** if dateFormat if specified in user profile, consider it */
     if (dateFormat) {
         switch (dateFormat) {
             case "LL-dd-yyyy":
@@ -670,86 +761,173 @@ export function formatDate(date) {
     return formatedDate;
 }
 
+/**
+ * @return date as dd-mm-yyyy
+ */
+function formatTodayDate() {
+    let today = new Date();
+    let month = today.getMonth().toString().length === 1 ? '0' + today.getMonth() : today.getMonth();
+    let todayformatedDate = today.getDate() + '-' + month + '-' + today.getFullYear();
+    return todayformatedDate
+}
+
 //----------TEST--------
+/**
+  * @Function used for testing
+  * Public function which hide a private function in order to keep integrity of frontEnd not using this method
+  * instead og getWeights and to be able to test it
+  */
+ export function testReport_fetchActivities(activity, formatedDate){
+     return fetchActivities(activity, formatedDate)
+ }
+ export function testReport_fetchAlcohols(alcohol, formatedDate){
+     return fetchDrinks("alcool", alcohol, formatedDate)
+ }
+ export function testReport_fetchFood(food, formatedDate){
+     return fetchNourriture(food, formatedDate)
+ }
+ export function testReport_fetchGlycemias(glycemia, formatedDate){
+     return fetchGlycemia(glycemia, formatedDate)
+ }
+ export function testReport_fetchHydratation(hydrates, formatedDate){
+    return fetchDrinks("hydratation", hydrates, formatedDate);
+ }
+ export function testReport_fetchSleeps(sleep, formatedDate){
+     return fetchSleeps(sleep, formatedDate)
+ }
+ export function testReport_fetchTransits(transit, formatedDate){
+    return fetchToilets(transit, formatedDate)
+ }
+ export function testReport_fetchWeights(weight, formatedDate){
+     return fetchWeights(weight, formatedDate)
+ }
+
+
+/**
+ * @Function used for testing
+ */
 export function test_fetchNourriture(array_nourriture, formatedDate) {
     fetchNourriture(array_nourriture, formatedDate);
     return arrayNourriture;
 }
-
-
+/**
+ * @Function used for testing
+ */
 export function test_fetchToilets(toilets, formatedDate) {
     fetchToilets(toilets, formatedDate);
     return arrayToilets;
 }
+/**
+ * @Function used for testing
+ */
 export function test_fetchActivites(activites, formatedDate) {
     fetchActivities(activites, formatedDate);
     return arrayActivities;
 }
+/**
+ * @Function used for testing
+ */
 export function test_fetchSleep(sleeps, formatedDate) {
     fetchSleeps(sleeps, formatedDate);
     return arraySleeps;
 }
-
+/**
+ * @Function used for testing
+ */
 export function test_fetchGlycemia(glycemia, formatedDate) {
     fetchGlycemia(glycemia,formatedDate)
     return arrayGlycemia;
 }
-
+/**
+ * @Function used for testing
+ */
 export function test_fetchDrinksHydratation(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayHydratations;
 }
-
+/**
+ * @Function used for testing
+ */
 export function test_fetchDrinksAlcohol(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayAlcohol;
 }
-
-
+/**
+ * @Function used for testing
+ */
 export function resetDataArrays() {
-    arrayNourriture = [];
+    arrayWeights = [];
+    arraySleeps = [];
+    arrayActivities = [];
     arrayHydratations = [];
+    arrayNourriture = [];
     arrayAlcohol = [];
-    arraySleeps=[];
-    arrayToilets=[];
-    arrayActivities=[];
-    arrayGlycemia=[];
+    arrayToilets = [];
+    arrayGlycemia = [];
 }
 
+
+/**
+ * @Function used for testing
+ */
 export function test_getNumberOfUniqueDate(array_aliments) {
     return getNumberOfUniqueDate(array_aliments);
 }
-
+/**
+ * @Function used for testing
+ */
 export function test_sortEntries(arrayToSort) {
     sortEntries(arrayToSort);
 }
-
+/**
+ * @Function used for testing
+ */
 export function test_formatDuration(min){
     return formatDuration(min);
 }
-
+/**
+ * @Function used for testing
+ */
 export function test_getDuration(time){
     return getDuration(time);
 }
-
+/**
+ * @Function used for testing
+ */
 export function injectDataInArrayHydratation(value){
     arrayHydratations=value;
 }
+/**
+ * @Function used for testing
+ */
 export function injectDataInArrayNourriture(value){
     arrayNourriture=value;
 }
+
 export function injectDataInArrayAlcohol(value){
     arrayAlcohol=value;
 }
+/**
+ * @Function used for testing
+ */
 export function injectDataInArrayToilets(value){
     arrayToilets=value;
 }
+/**
+ * @Function used for testing
+ */
 export function injectDataInArraySleeps(value){
     arraySleeps=value;
 }
+/**
+ * @Function used for testing
+ */
 export function injectDataInArrayActivities(value){
     arrayActivities=value;
 }
+/**
+ * @Function used for testing
+ */
 export function injectDataInArrayGlycemia(value){
     arrayGlycemia=value;
 }

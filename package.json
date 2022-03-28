@@ -25,6 +25,7 @@
     "@types/react-router-dom": "^5.1.5",
     "browser-history": "^1.0.1",
     "chart.js": "^2.9.3",
+    "coverage": "^0.4.1",
     "csv-string": "^4.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",

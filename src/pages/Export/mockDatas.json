@@ -398,10 +398,14 @@
     "nourriture" : {
       "globalConsumption" : 21
     },
-    "poids" : {
-      "dailyPoids" : "496.16",
-      "datePoids" : "2022-03-18T04:58:31.540Z"
+    "poids" : [{
+      "dailyPoids" : "52.16",
+      "datePoids" : "2022-03-18"
     },
+    {
+      "dailyPoids" : "50.16",
+      "datePoids" : "2022-04-19"
+    }],
     "proteines" : {
       "dailyTarget" : {
         "globalConsumption" : 6,

@@ -1,24 +1,9 @@
 import {jsPDF} from "jspdf";
 import "jspdf-autotable";
-import {
-    getWeights,
-    getAggregateWeights,
-    getActivities,
-    getAggregateActivities,
-    getSleeps,
-    getAggregateSleeps,
-    getMacrosTotalAndAveragePerDay,
-    getNourriture,
-    getHydratations,
-    getToilets,
-    getAverageToilets,
-    getGlycemia,
-    getAverageGlycemia,
-    getAlcohol,
-    formatDate
-} from "./CompilerBilan";
-
+import * as CompilerBilan from './CompilerBilan';
+import * as CB from './CompilerBilan';
 import * as translate from '../../translate/Translator';
+import mockData from './mockDatas.json';//to delete
 import JSZip from "jszip";
 import {saveAs} from 'file-saver';
 import * as CSV from 'csv-string'
@@ -45,402 +30,59 @@ export async function creerPdf(dataSelected, d1, d2) {
 
     dataSelected.forEach((data) => {
         switch (data) {
-            case "hydratation":
-                doc.text(translate.getText("HYDR_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-                addHydratationTable(doc);
-                addHydratationMacrosTable(doc);
-                break;
             case "activities":
-                doc.text(translate.getText("EXPORT_ACTIVITES_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-                addActivitiesTable(doc);
-                addActivitiesAggregateTable(doc);
+                manageActivities(doc);
+                break;
+             case "alcool":
+                 manageAlcool(doc);
+                 break;
+            case "glycémie":
+                manageGlycemia(doc);
+                break;
+            case "hydratation":
+                manageHydratation(doc);
                 break;
             case "nourriture":
-                doc.text(translate.getText("NOURRITURE_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-                addNourritureTable(doc);
-                addNourritureMacros(doc);
-                break;
-            case "sommeil":
-                doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
-                addSleepTable(doc);
-                addSleepAggregateTable(doc);
-                break;
-            case "toilettes":
-                doc.text(translate.getText("TOILETS_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-                addToiletsTable(doc);
-                addAverageToiletsTable(doc);
-                break;
-            case "alcool":
-                doc.text(translate.getText("ALCOOL_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-                addAlcoolTable(doc);
-                addAlcoolMacrosTable(doc);
-                break;
-            case "glycémie":
-                doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
-                addGlycimiaTable(doc);
-                addAverageGlycimiaTable(doc);
+                manageFood(doc);
                 break;
             case "poids":
-                doc.text(translate.getText("POIDS_NOM_SECTION"), 10, doc.lastAutoTable.finalY + 10);
-                addWeightTable(doc);
-                addWeightAggregateTable(doc);
+                CB.calculateAggregateWeights();
+                manageWeight(doc);
+                break;
+            case "sommeil":
+                manageSleep(doc);
+                break;
+            case "toilettes":
+                manageTransit(doc);
                 break;
             case "supplements":
-                // TODO
+                // TODO when it will be implemented
                 break;
 
             default:
                 break;
         }
     });
-
-    //Finaly save the document
     doc.save("FitnessHabits-data-" + createPeriod(d1, d2) + ".pdf");
 
 }
-
-function addWeightTable(document) {
-
-    let headers = weightHeaders();
-    let values = [];
-    let poid = [];
-    if (getWeights()) {
-        poid = getWeights();
-
-        poid.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('weight')}]);
-        });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#113d37"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#bbebe5"
-            },
-        });
+/**
+*  ----------- ALCOHOL --------------
+*/
+function manageAlcool(doc){
+    doc.text(translate.getText("ALCOOL_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = nourritureHydratAlcoolHeaders();
+    if(CompilerBilan.getAlcohol()) {
+        addAlcoolTable(doc, headers);
+        addAlcoolMacrosTable(doc);
     } else {
-        insertHeaders(document, headers, "#113d37");
-        insertNoDataFound(document);
+        insertHeaders(doc, headers, "#e7a54f");
+        insertNoDataFound(doc);
     }
 }
-
-function addWeightAggregateTable(document) {
-    let footerTable = weightAggrData();
-    document.autoTable({
-        body: footerTable,
-        tableWidth: 'wrap',
-        theme: 'grid'
-    });
-}
-
-function addActivitiesTable(document) {
-    let headers = activitiesHeaders();
+export function addAlcoolTable(document, headers) {
     let values = [];
-
-    if (getActivities()) {
-        let activities = getActivities();
-
-
-        activities.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('duration')}]);
-        });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#0f5780"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#7cc8f6"
-            },
-        });
-    } else {
-        insertHeaders(document, headers, "#0f5780");
-        insertNoDataFound(document);
-    }
-}
-
-function addActivitiesAggregateTable(document) {
-    let footerTable = activitiesAggrData();
-
-    document.autoTable({
-        body: footerTable,
-        tableWidth: 'wrap',
-        theme: 'grid'
-    });
-}
-
-function addSleepTable(document) {
-    let headers = sleepsHeaders();
-    let values = [];
-
-    if (getSleeps()) {
-        let sleeps = getSleeps();
-        sleeps.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}, {content: data.get('wakeUpQt')}, {content: data.get('wakeUpState')}]);
-        });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#152b3f"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#4ca9ff"
-            },
-        });
-    } else {
-        insertHeaders(document, headers, "#152b3f");
-        insertNoDataFound(document);
-    }
-}
-
-function addSleepAggregateTable(document) {
-    let footerTable = sleepAggrData();
-
-    document.autoTable({
-        body: footerTable,
-        tableWidth: 'wrap',
-        theme: 'grid'
-    });
-}
-
-function addNourritureTable(document) {
-    let headers = nourritureHydratAlcoolHeadres();
-    let values = [];
-
-    if (getNourriture()) {
-        let nourriture = getNourriture();
-
-        nourriture.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
-        });
-
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#185742"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#b4ead8"
-            },
-            columnStyles: {
-                4: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                5: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                6: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                7: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            },
-        });
-    } else {
-        insertHeaders(document, headers, "#185742");
-        insertNoDataFound(document);
-    }
-}
-
-function addNourritureMacros(document) {
-
-    let headers = nourritureHydraAlcoolAggrHeaders();
-    let footerTable = nourritureAggrData();
-    if (footerTable.length != 0) {
-        document.autoTable({
-            head: [headers],
-            headStyles: {
-                fillColor: "#185742"
-            },
-            columnStyles: {
-                1: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                2: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                3: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                4: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            },
-            body: footerTable,
-            tableWidth: 'wrap'
-        });
-    }
-}
-
-function addHydratationTable(document) {
-    let headers = nourritureHydratAlcoolHeadres();
-    let values = [];
-
-    if (getHydratations()) {
-        let hydratation = getHydratations();
-
-
-        hydratation.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
-        });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#65afc5"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#beecff"
-            },
-            columnStyles: {
-                5: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                6: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                7: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                8: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            }
-        });
-    } else {
-        insertHeaders(document, headers, "#65afc5");
-        insertNoDataFound(document);
-    }
-}
-
-function addHydratationMacrosTable(document) {
-    let headers = nourritureHydraAlcoolAggrHeaders();
-    let footerTable = hydratationAggrData();
-    if (footerTable.length != 0) {
-        document.autoTable({
-            head: [headers],
-            headStyles: {
-                fillColor: "#65afc5"
-            },
-            columnStyles: {
-                1: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                2: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                3: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                4: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            },
-            body: footerTable,
-            tableWidth: 'wrap'
-        });
-    }
-}
-
-function addToiletsTable(document) {
-    let headers = toiletteHeadres();
-    let values = [];
-
-    if (getToilets()) {
-        let toilets = getToilets();
-
-        toilets.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Urine')}, {content: data.get('Transit')}]);
-        });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#bba339"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#ffea9a"
-            },
-        });
-    } else {
-        insertHeaders(document, headers, "#bba339");
-        insertNoDataFound(document);
-    }
-}
-
-function addAverageToiletsTable(document) {
-    let footerTable = toiletteAggrData();
-    document.autoTable({
-        body: footerTable,
-        tableWidth: 'wrap',
-        theme: 'grid'
-    });
-}
-
-function addAlcoolTable(document) {
-    let headers = nourritureHydratAlcoolHeadres();
-    let values = [];
-
-    if (getAlcohol()) {
-        let alcool = getAlcohol();
+        let alcool = CompilerBilan.getAlcohol();
 
         alcool.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
@@ -479,16 +121,12 @@ function addAlcoolTable(document) {
                 }
             }
         });
-    } else {
-        insertHeaders(document, headers, "#e7a54f");
-        insertNoDataFound(document);
-    }
 }
-
-function addAlcoolMacrosTable(document) {
+export function addAlcoolMacrosTable(document) {
     let headers = nourritureHydraAlcoolAggrHeaders();
     let footerTable = alcoolAggrData();
     if (footerTable.length != 0) {
+
         document.autoTable({
             head: [headers],
             headStyles: {
@@ -517,137 +155,94 @@ function addAlcoolMacrosTable(document) {
         });
     }
 }
+export function alcoolAggrData() {
+    let dataTable = [];
+    if (CompilerBilan.getMacrosTotalAndAveragePerDay('alcool')) {
+        let alcoolMacros = CompilerBilan.getMacrosTotalAndAveragePerDay('alcool');
+        let line_1 = [];
+        let line_2 = [];
+        var totalFiber = alcoolMacros.get("totalFiber");
+        var averageFiber = alcoolMacros.get("averageFiber");
 
-//TODO : fonctions supléments
+        var totalProtein = alcoolMacros.get("totalProtein");
+        var averageProtein = alcoolMacros.get("averageProtein");
 
+        var totalFat = alcoolMacros.get("totalFat");
+        var averageFat = alcoolMacros.get("averageFat");
 
-function addGlycimiaTable(document) {
-    let headers = glycimiaHeaders();
-    if (getGlycemia()) {
-        let glycimia = getGlycemia();
-        let values = [];
+        var totalGlucide = alcoolMacros.get("totalGlucide");
+        var averageGlucide = alcoolMacros.get("averageGlucide");
 
-        glycimia.forEach((data) => {
-            values.push([{content: data.get('Date')}, {content: data.get('Glycémie')}]);
-        });
+        line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
+        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber, averageFat);
 
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#6e233d"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#ff9bbd"
-            },
-        });
-
+        dataTable.push(line_1, line_2);
+    }
+    return dataTable;
+}
+export function nourritureHydratAlcoolHeaders() {
+    var Date = translate.getText("DATE_TITLE")
+    var name = translate.getText("SUPPL_NOM");
+    var quantite = translate.getText("EXP_REPORT_QT");
+    var unity = translate.getText("EXP_REPORT_UNIT");
+    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
+    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
+    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
+    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
+    return [Date, name, quantite, unity, proteine, glucide, fibre, gras];
+}
+export function nourritureHydraAlcoolAggrHeaders() {
+    let headers = [];
+    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
+        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
+    return headers;
+}
+/**
+*  ----------- ACTIVITIES --------------
+*/
+function manageActivities(doc){
+    doc.text(translate.getText("EXPORT_ACTIVITES_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = activitiesHeaders();
+    if(CompilerBilan.getActivities()) {
+        addActivitiesTable(doc, headers);
+        addActivitiesAggregateTable(doc);
     } else {
-        insertHeaders(document, headers, "#6e233d");
+        insertHeaders(document, headers, "#0f5780");
         insertNoDataFound(document);
     }
 }
+export function addActivitiesTable(document, headers) {
+    let values = [];
+    let activities = CompilerBilan.getActivities();
 
+    activities.forEach((data) => {
+        values.push([{content: data.get('Date')}, {content: data.get('duration')}]);
+    });
 
-function addAverageGlycimiaTable(document) {
-    let footerTable = glycimiaAggrData();
-    if (footerTable.length != 0) {
-        document.autoTable({
-            body: footerTable,
-            tableWidth: 'wrap',
-            theme: 'grid'
-        });
-    }
+    addContentWithAutotable(document, headers, values, "#0f5780", "#7cc8f6");
+
 }
-
-
-function insertNoDataFound(document) {
+export function addActivitiesAggregateTable(document) {
+    let footerTable = activitiesAggrData();
     document.autoTable({
-        body: [[translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")]],
-        startY: document.lastAutoTable.finalY,
-        bodyStyles: {
-            halign: "center",
-            fontSize: 10
-        },
+        body: footerTable,
+        tableWidth: 'wrap',
+        theme: 'grid'
     });
 }
 
-function insertHeaders(document, headers, headerColor) {
-    document.autoTable({
-        head: [headers],
-        startY: document.lastAutoTable.finalY + 15,
-        headStyles: {
-            fillColor: headerColor
-        },
-    });
-}
-
-/**
- * format two dates as a period.
- * @param d1 the first date.
- * @param d2 the seconde date.
- * @returns {string} the period.
- */
-function createPeriod(d1, d2) {
-    let temp_d1 = d1.toISOString().slice(0, 10);
-    let temp_d2 = d2.toISOString().slice(0, 10);
-    d1 = temp_d1.slice(-2) + '-' + temp_d1.slice(5, 7) + '-' + temp_d1.slice(0, 4);
-    d2 = temp_d2.slice(-2) + '-' + temp_d2.slice(5, 7) + '-' + temp_d2.slice(0, 4);
-
-    let date = translate.getText("DE") + " " + formatDate(d1) + " " + translate.getText("A")
-        + " " + formatDate(d2);
-    return date;
-}
-
-function weightHeaders() {
-    let unite = "";
-    var Date = translate.getText("DATE_TITLE")
-    unite = getAggregateWeights() ? " (" + getAggregateWeights().get('weightUnit') + ")" : unite;
-    var poids = translate.getText("EXP_REPORT_WEIGHT") + unite;
-    return [Date, poids];
-}
-
-function weightAggrData() {
-    let weightAggrTable = [];
-    if (getAggregateWeights()) {
-        let line_2 = [];
-        let line_3 = [];
-        let line_4 = [];
-
-        var aggregateWeight = getAggregateWeights();
-
-        var aggInitialWeight = translate.getText("EXP_REPORT_INITIAL_WEIGHT");
-        var initialEeight = aggregateWeight.get("initalWeight");
-        line_2.push(aggInitialWeight, initialEeight);
-
-        var aggFinalWeight = translate.getText("EXP_REPORT_FINAL_WEIGHT");
-        var finalWeight = aggregateWeight.get("finalWeight");
-        line_3.push(aggFinalWeight, finalWeight);
-
-        var aggDifference = translate.getText("EXP_REPORT_DIFF_WEIGHT");
-        var difference = aggregateWeight.get("deltaWeight");
-        line_4.push(aggDifference, difference);
-
-        weightAggrTable.push(line_2, line_3, line_4);
-    }
-    return weightAggrTable;
-}
-
-function activitiesHeaders() {
+export function activitiesHeaders() {
     var Date = translate.getText("DATE_TITLE");
     var duree = translate.getText("EXP_REPORT_DURATION") + " (h)";
     return [Date, duree];
 }
 
-function activitiesAggrData() {
+export function activitiesAggrData() {
     let activitiesAggrTable = []
-    if (getAggregateActivities()) {
-        let aggregateActivities = getAggregateActivities();
+    if (CompilerBilan.getAggregateActivities()) {
+        let aggregateActivities = CompilerBilan.getAggregateActivities();
 
         let line_1 = [];
         let line_2 = [];
@@ -665,77 +260,163 @@ function activitiesAggrData() {
     return activitiesAggrTable;
 }
 
-function sleepsHeaders() {
-    var Date = translate.getText("DATE_TITLE");
-    var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
-    var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
-    var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
-    var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
-    var wakeUpState = translate.getText("EXP_REPORT_WAKEUP_STATE");
-    return [Date, startHour, endHour, duration, wakeUpQt, wakeUpState];
+
+/**
+*  ----------- GLYCEMIA --------------
+*/
+function manageGlycemia(doc){
+    doc.text(translate.getText("GLYC_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = glycimiaHeaders();
+    if(CompilerBilan.getGlycemia()) {
+        addGlycimiaTable(doc, headers);
+        addAverageGlycimiaTable(doc);
+    } else {
+        insertHeaders(document, headers, "#6e233d");
+        insertNoDataFound(document);
+    }
 }
+export function addGlycimiaTable(document, headers) {
+        let glycimia = CompilerBilan.getGlycemia();
+        let values = [];
 
-function sleepAggrData() {
-    let sleepAggrTable = [];
-    if (getAggregateSleeps()) {
-        let aggregateSleeps = getAggregateSleeps();
+        glycimia.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Glycémie')}]);
+        });
 
+        addContentWithAutotable(document, headers, values, "#6e233d", "#ff9bbd");
+}
+export function addAverageGlycimiaTable(document) {
+    let footerTable = glycimiaAggrData();
+    if (footerTable.length != 0) {
+
+        document.autoTable({
+            body: footerTable,
+            tableWidth: 'wrap',
+            theme: 'grid'
+        });
+    }
+}
+export function glycimiaHeaders() {
+    let headers = [];
+    var Date = translate.getText("DATE_TITLE");
+    var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
+    return [Date, glycemie];
+}
+export function glycimiaAggrData() {
+    let dataTable = [];
+    if (CompilerBilan.getAverageGlycemia()) {
+        let averageGlycemia = CompilerBilan.getAverageGlycemia();
         let line_1 = [];
         let line_2 = [];
-        let line_3 = [];
-        let line_4 = [];
 
+        var moyenneTitle = translate.getText("EXP_REPORT_DURATION");
+        var moyenne = averageGlycemia.get("Moyenne");
+        line_1.push(moyenneTitle, moyenne);
 
-        var avgStartHourSleepTitle = translate.getText("EXP_REPORT_AVG_START_HOUR_SLEEP");
-        var averageStartHour = aggregateSleeps.get("averageStartHour");
-        line_1.push(avgStartHourSleepTitle, averageStartHour);
+        var referenceActTitle = translate.getText("EXP_REF_GLY");
+        var reference = averageGlycemia.get("Référence");
+        line_2.push(referenceActTitle, reference);
 
-        var aggInitialHour = translate.getText("EXP_REPORT_AVG_END_HOUR_SLEEP");
-        var averageEndHour = aggregateSleeps.get("averageEndHour");
-        line_2.push(aggInitialHour, averageEndHour);
-
-        var averageDurationSleepTitle = translate.getText("EXP_REPORT_AVG_DURATION_SLEEP");
-        var averageDuree = aggregateSleeps.get("averageDuree");
-        line_3.push(averageDurationSleepTitle, averageDuree);
-
-        var averageWakeupQtTitle = translate.getText("EXP_REPORT_AVG_WAKEUP_QT");
-        var averageWakeUpQt = aggregateSleeps.get("averageWakeUpQt");
-        line_4.push(averageWakeupQtTitle, averageWakeUpQt);
-
-        sleepAggrTable.push(line_1, line_2, line_3, line_4);
-
+        dataTable.push(line_1, line_2);
     }
-    return sleepAggrTable;
+    return dataTable;
 }
+/**
+*  ----------- HYDRATATION --------------
+*/
 
-function nourritureHydratAlcoolHeadres() {
-    var Date = translate.getText("DATE_TITLE")
-    var name = translate.getText("SUPPL_NOM");
-    var quantite = translate.getText("EXP_REPORT_QT");
-    var unity = translate.getText("EXP_REPORT_UNIT");
-    var proteine = translate.getText("FOOD_MODULE", ["macro_nutriments", "proteins"]);
-    var glucide = translate.getText("FOOD_MODULE", ["macro_nutriments", "glucides"]);
-    var fibre = translate.getText("FOOD_MODULE", ["macro_nutriments", "fibre"]);
-    var gras = translate.getText("FOOD_MODULE", ["macro_nutriments", "fats"]);
-    return [Date, name, quantite, unity, proteine, glucide, fibre, gras];
+function manageHydratation(doc){
+    doc.text(translate.getText("HYDR_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = nourritureHydratAlcoolHeaders();
+    if(CompilerBilan.getHydratations()) {
+        addHydratationTable(doc, headers);
+        addHydratationMacrosTable(doc)
+    } else {
+        insertHeaders(doc, headers, "#65afc5");
+        insertNoDataFound(doc);
+    }
 }
+export function addHydratationTable(document, headers) {
+    let values = [];
+        let hydratation = CompilerBilan.getHydratations();
 
-function nourritureHydraAlcoolAggrHeaders() {
-    let headers = [];
-    headers.push(" ", translate.getText("FOOD_MODULE", ['macro_nutriments', 'proteins']),
-        translate.getText("FOOD_MODULE", ['macro_nutriments', 'glucides']),
-        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fibre']),
-        translate.getText("FOOD_MODULE", ['macro_nutriments', 'fats']));
-    return headers;
+        hydratation.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Consommation')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
+        });
+
+        document.autoTable({
+            head: [headers],
+            body: values,
+            startY: document.lastAutoTable.finalY + 15,
+            headStyles: {
+                fillColor: "#65afc5"
+            },
+            bodyStyles: {
+                minCellHeight: 9,
+                halign: "left",
+                valign: "center",
+                fontSize: 11,
+                fillColor: "#beecff"
+            },
+            columnStyles: {
+                5: {
+                    fillColor: "#a52a2a",
+                    textColor: "#ffffff"
+                },
+                6: {
+                    fillColor: "#db4e3e",
+                    textColor: "#ffffff"
+                },
+                7: {
+                    fillColor: "#589051",
+                    textColor: "#ffffff"
+                },
+                8: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
+                }
+            }
+        });
 }
+export function addHydratationMacrosTable(document) {
+    let headers = nourritureHydraAlcoolAggrHeaders();
+    let footerTable = hydratationAggrData();
+    if (footerTable.length != 0) {
 
-function hydratationAggrData() {
-
+        document.autoTable({
+            head: [headers],
+            headStyles: {
+                fillColor: "#65afc5"
+            },
+            columnStyles: {
+                1: {
+                    fillColor: "#a52a2a",
+                    textColor: "#ffffff"
+                },
+                2: {
+                    fillColor: "#db4e3e",
+                    textColor: "#ffffff"
+                },
+                3: {
+                    fillColor: "#589051",
+                    textColor: "#ffffff"
+                },
+                4: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
+                }
+            },
+            body: footerTable,
+            tableWidth: 'wrap'
+        });
+    }
+}
+export function hydratationAggrData() {
     let line_1 = [];
     let line_2 = [];
     let dataTable = [];
-    if (getMacrosTotalAndAveragePerDay('hydratation')) {
-        let hydratationMacros = getMacrosTotalAndAveragePerDay('hydratation');
+    if (CompilerBilan.getMacrosTotalAndAveragePerDay('hydratation')) {
+        let hydratationMacros = CompilerBilan.getMacrosTotalAndAveragePerDay('hydratation');
 
         var totalFiber = hydratationMacros.get("totalFiber");
         var averageFiber = hydratationMacros.get("averageFiber");
@@ -757,10 +438,103 @@ function hydratationAggrData() {
     return dataTable;
 }
 
-function nourritureAggrData() {
+
+
+/**
+*  ----------- NOURRITURE --------------
+*/
+function manageFood(doc){
+    doc.text(translate.getText("NOURRITURE_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = nourritureHydratAlcoolHeaders();
+    if(CompilerBilan.getNourriture()) {
+        addNourritureTable(doc, headers);
+        addNourritureMacros(doc);
+    } else {
+        insertHeaders(doc, headers, "#185742");
+        insertNoDataFound(doc);
+    }
+}
+export function addNourritureTable(document, headers) {
+    let values = [];
+        let nourriture = CompilerBilan.getNourriture();
+
+        nourriture.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Nom')},
+                        {content: data.get('Quantité')}, {content: data.get('Unité')},
+                        {content: data.get('Protéine')}, {content: data.get('Glucide')},
+                        {content: data.get('Fibre')}, {content: data.get('Gras')}]);
+        });
+
+        document.autoTable({
+            head: [headers],
+            body: values,
+            startY: document.lastAutoTable.finalY + 15,
+            headStyles: {
+                fillColor: "#185742"
+            },
+            bodyStyles: {
+                minCellHeight: 9,
+                halign: "left",
+                valign: "center",
+                fontSize: 11,
+                fillColor: "#b4ead8"
+            },
+            columnStyles: {
+                4: {
+                    fillColor: "#a52a2a",
+                    textColor: "#ffffff"
+                },
+                5: {
+                    fillColor: "#db4e3e",
+                    textColor: "#ffffff"
+                },
+                6: {
+                    fillColor: "#589051",
+                    textColor: "#ffffff"
+                },
+                7: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
+                }
+            },
+        });
+}
+export function addNourritureMacros(document) {
+    let headers = nourritureHydraAlcoolAggrHeaders();
+    let footerTable = nourritureAggrData();
+    if (footerTable.length != 0) {
+        document.autoTable({
+            head: [headers],
+            headStyles: {
+                fillColor: "#185742"
+            },
+            columnStyles: {
+                1: {
+                    fillColor: "#a52a2a",
+                    textColor: "#ffffff"
+                },
+                2: {
+                    fillColor: "#db4e3e",
+                    textColor: "#ffffff"
+                },
+                3: {
+                    fillColor: "#589051",
+                    textColor: "#ffffff"
+                },
+                4: {
+                    fillColor: "#c99b2e",
+                    textColor: "#ffffff"
+                }
+            },
+            body: footerTable,
+            tableWidth: 'wrap'
+        });
+    }
+}
+export function nourritureAggrData() {
     let dataTable = [];
-    if (getMacrosTotalAndAveragePerDay('nourriture')) {
-        let nourritureMacros = getMacrosTotalAndAveragePerDay('nourriture');
+    if (CompilerBilan.getMacrosTotalAndAveragePerDay('nourriture')) {
+        let nourritureMacros = CompilerBilan.getMacrosTotalAndAveragePerDay('nourriture');
         let line_1 = [];
         let line_2 = [];
 
@@ -783,18 +557,185 @@ function nourritureAggrData() {
     }
     return dataTable;
 }
+/**
+*  ----------- POIDS --------------
+*/
+function manageWeight(doc){
+    doc.text(translate.getText("POIDS_NOM_SECTION"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = weightHeaders();
+    if (CompilerBilan.getWeights()) {
+        RC.addWeightTable(doc, headers);
+        RC.addWeightAggregateTable(doc);
+    } else {
+        insertHeaders(document, headers, "#113d37");
+        insertNoDataFound(document);
+    }
+}
+export function addWeightTable(document, headers) {
+    let values = [];
+    let weights = CompilerBilan.getWeights();
 
-function toiletteHeadres() {
+    weights.forEach((data) => {
+        values.push([{content: data.get('Date')}, {content: data.get('weight')}]);
+    });
+
+    addContentWithAutotable(document, headers, values, "#113d37", "#bbebe5");
+}
+export function addWeightAggregateTable(document) {
+    let footerTable = weightAggrData();
+    document.autoTable({
+        body: footerTable,
+        tableWidth: 'wrap',
+        theme: 'grid'
+    });
+}
+export function weightHeaders() {
+    var agg = CompilerBilan.getAggregateWeights();
+    var Date = translate.getText("DATE_TITLE");
+    //var poids = translate.getText("EXP_REPORT_WEIGHT") + CompilerBilan.getAggregateWeights().get('weightUnit');
+    var poids = translate.getText("EXP_REPORT_WEIGHT") + agg.get('weightUnit');
+    return [Date, poids];
+}
+export function weightAggrData() {
+    let weightAggrTable = [];
+    if (CompilerBilan.getAggregateWeights()) {
+        let line_2 = [];
+        let line_3 = [];
+        let line_4 = [];
+
+        var aggregateWeight = CompilerBilan.getAggregateWeights();
+
+        var aggInitialWeight = translate.getText("EXP_REPORT_INITIAL_WEIGHT");
+        var initalWeight = aggregateWeight.get("initalWeight");
+        line_2.push(aggInitialWeight, initalWeight);
+
+        var aggFinalWeight = translate.getText("EXP_REPORT_FINAL_WEIGHT");
+        var finalWeight = aggregateWeight.get("finalWeight");
+        line_3.push(aggFinalWeight, finalWeight);
+
+        var aggDifference = translate.getText("EXP_REPORT_DIFF_WEIGHT");
+        var difference = aggregateWeight.get("deltaWeight");
+        line_4.push(aggDifference, difference);
+
+        weightAggrTable.push(line_2, line_3, line_4);
+    }
+    return weightAggrTable;
+}
+/**
+*  ----------- SOMMEIL --------------
+*/
+function manageSleep(doc) {
+    doc.text(translate.getText("SLEEP"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = sleepsHeaders();
+    if(CompilerBilan.getSleeps()) {
+        addSleepTable(doc, CompilerBilan.getSleeps(), headers);
+        addSleepAggregateTable(doc, headers);
+    } else {
+        insertHeaders(doc, headers, "#152b3f");
+        insertNoDataFound(doc);
+    }
+}
+export function addSleepTable(document, sleeps, headers) {
+    let values = [];
+    sleeps.forEach((data) => {
+        values.push([{content: data.get('Date')}, {content: data.get('startHour')}, {content: data.get('endHour')}, {content: data.get('duration')}, {content: data.get('wakeUpQt')}, {content: data.get('wakeUpState')}]);
+    });
+
+    addContentWithAutotable(document, headers, values, "#152b3f", "#4ca9ff");
+}
+export function addSleepAggregateTable(document) {
+    let footerTable = sleepAggrData();
+
+    document.autoTable({
+        body: footerTable,
+        tableWidth: 'wrap',
+        theme: 'grid'
+    });
+}
+export function sleepsHeaders() {
+    var Date = translate.getText("DATE_TITLE");
+    var startHour = translate.getText("EXP_REPORT_START_HOUR_SLEEP");
+    var endHour = translate.getText("EXP_REPORT_END_HOUR_SLEEP");
+    var duration = translate.getText("EXP_REPORT_DURATION") + " (h)";
+    var wakeUpQt = translate.getText("EXP_REPORT_WAKEUP_QT_SLEEP");
+    var wakeUpState = translate.getText("EXP_REPORT_WAKEUP_STATE");
+    return [Date, startHour, endHour, duration, wakeUpQt, wakeUpState];
+}
+export function sleepAggrData() {
+    let sleepAggrTable = [];
+    if (CompilerBilan.getAggregateSleeps()) {
+        let aggregateSleeps = CompilerBilan.getAggregateSleeps();
+
+        let line_1 = [];
+        let line_2 = [];
+        let line_3 = [];
+        let line_4 = [];
+
+        var avgStartHourSleepTitle = translate.getText("EXP_REPORT_AVG_START_HOUR_SLEEP");
+        var averageStartHour = aggregateSleeps.get("averageStartHour");
+        line_1.push(avgStartHourSleepTitle, averageStartHour);
+
+        var aggInitialHour = translate.getText("EXP_REPORT_AVG_END_HOUR_SLEEP");
+        var averageEndHour = aggregateSleeps.get("averageEndHour");
+        line_2.push(aggInitialHour, averageEndHour);
+
+        var averageDurationSleepTitle = translate.getText("EXP_REPORT_AVG_DURATION_SLEEP");
+        var averageDuree = aggregateSleeps.get("averageDuree");
+        line_3.push(averageDurationSleepTitle, averageDuree);
+
+        var averageWakeupQtTitle = translate.getText("EXP_REPORT_AVG_WAKEUP_QT");
+        var averageWakeUpQt = aggregateSleeps.get("averageWakeUpQt");
+        line_4.push(averageWakeupQtTitle, averageWakeUpQt);
+
+        sleepAggrTable.push(line_1, line_2, line_3, line_4);
+
+    }
+    return sleepAggrTable;
+}
+/**
+*  ----------- TOILET/ TRANSIT --------------
+*/
+function manageTransit(doc){
+    doc.text(translate.getText("TOILETS_TITLE"), 10, doc.lastAutoTable.finalY + 10);
+    let headers = transitHeaders();
+    if(CompilerBilan.getToilets()) {
+        addToiletsTable(doc, headers);
+        addAverageToiletsTable(doc);
+    } else {
+        insertHeaders(doc, headers, "#bba339");
+        insertNoDataFound(doc);
+    }
+}
+export function addToiletsTable(document, headers) {
+    let values = [];
+        let toilets = CompilerBilan.getToilets();
+
+        toilets.forEach((data) => {
+            values.push([{content: data.get('Date')}, {content: data.get('Urine')}, {content: data.get('Transit')}]);
+        });
+
+        addContentWithAutotable(document, headers, values, "#bba339", "#ffea9a");
+
+}
+export function addAverageToiletsTable(document) {
+    let footerTable = toiletteAggrData();
+    document.autoTable({
+        body: footerTable,
+        tableWidth: 'wrap',
+        theme: 'grid'
+    });
+}
+export function transitHeaders() {
     var Date = translate.getText("DATE_TITLE")
     var urine = translate.getText("URINE_TITLE");
     var transit = translate.getText("EXP_UR_TR");
     return [Date, urine, transit];
 }
 
-function toiletteAggrData() {
+export function toiletteAggrData() {
     let dataTable = [];
-    if (getAverageToilets()) {
-        let averageToilets = getAverageToilets();
+    if (CompilerBilan.getAverageToilets()) {
+        let averageToilets = CompilerBilan.getAverageToilets();
 
         let line_1 = [];
         let line_2 = [];
@@ -822,60 +763,84 @@ function toiletteAggrData() {
     return dataTable;
 }
 
-function alcoolAggrData() {
-    let dataTable = [];
-    if (getMacrosTotalAndAveragePerDay('alcool')) {
-        let alcoolMacros = getMacrosTotalAndAveragePerDay('alcool');
-        let line_1 = [];
-        let line_2 = [];
-        var totalFiber = alcoolMacros.get("totalFiber");
-        var averageFiber = alcoolMacros.get("averageFiber");
+/**
+*  ----------- SUPPLEMENTS --------------
+*/
+//TODO : fonctions supléments (not implemented yet)
 
-        var totalProtein = alcoolMacros.get("totalProtein");
-        var averageProtein = alcoolMacros.get("averageProtein");
 
-        var totalFat = alcoolMacros.get("totalFat");
-        var averageFat = alcoolMacros.get("averageFat");
-
-        var totalGlucide = alcoolMacros.get("totalGlucide");
-        var averageGlucide = alcoolMacros.get("averageGlucide");
-
-        line_1.push(translate.getText("EXP_REPORT_MACROS", ["TOTAL"]), totalProtein, totalGlucide, totalFiber, totalFat);
-        line_2.push(translate.getText("EXP_REPORT_MACROS", ["AVG"]), averageProtein, averageGlucide, averageFiber, averageFat);
-
-        dataTable.push(line_1, line_2);
-    }
-    return dataTable;
-}
-
-function glycimiaHeaders() {
-    var Date = translate.getText("DATE_TITLE")
-    var glycemie = translate.getText("GLYC_TITLE") + " (mmol/L)";
-    return [Date, glycemie];
-}
-
-function glycimiaAggrData() {
-    let dataTable = [];
-    if (getAverageGlycemia()) {
-        let averageGlycemia = getAverageGlycemia();
-        let line_1 = [];
-        let line_2 = [];
-
-        var moyenneTitle = translate.getText("EXP_REPORT_DURATION");
-        var moyenne = averageGlycemia.get("Moyenne");
-        line_1.push(moyenneTitle, moyenne);
-
-        var referenceActTitle = translate.getText("EXP_REF_GLY");
-        var reference = averageGlycemia.get("Référence");
-        line_2.push(referenceActTitle, reference);
-
-        dataTable.push(line_1, line_2);
-    }
-    return dataTable;
+/**
+*  ----------- GENERIC FUNCTIONS --------------
+*/
+/**
+*
+*/
+export function addContentWithAutotable(document, headers, values, headerColor, bodyColor) {
+    document.autoTable({
+        head: [headers],
+        body: values,
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: headerColor
+        },
+        bodyStyles: {
+            minCellHeight: 9,
+            halign: "left",
+            valign: "center",
+            fontSize: 11,
+            fillColor: bodyColor
+        },
+    });
 }
 
 /**
- * PARTIE CSV
+*
+*/
+export function insertNoDataFound(document) {
+    document.autoTable({
+        body: [[translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")]],
+        startY: document.lastAutoTable.finalY,
+        bodyStyles: {
+            halign: "center",
+            fontSize: 10
+        },
+    });
+}
+
+/**
+*
+*/
+export function insertHeaders(document, headers, headerColor) {
+    document.autoTable({
+        head: [headers],
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: headerColor
+        },
+    });
+}
+
+
+/**
+ * format two dates as a period.
+ * @param d1 the first date.
+ * @param d2 the seconde date.
+ * @returns {string} the period.
+ */
+export function createPeriod(d1, d2) {
+    let temp_d1 = d1.toISOString().slice(0, 10);
+    let temp_d2 = d2.toISOString().slice(0, 10);
+    d1 = temp_d1.slice(-2) + '-' + temp_d1.slice(5, 7) + '-' + temp_d1.slice(0, 4);
+    d2 = temp_d2.slice(-2) + '-' + temp_d2.slice(5, 7) + '-' + temp_d2.slice(0, 4);
+
+    let date = translate.getText("DE") + " " + CompilerBilan.formatDate(d1) + " " + translate.getText("A")
+        + " " + CompilerBilan.formatDate(d2);
+    return date;
+}
+
+
+/***********************************************************************************************
+ ************************************** CSV PART ***********************************************
  */
 export function creerCSV(dataSelected, d1, d2) {
     var zip = new JSZip();
@@ -912,6 +877,7 @@ export function creerCSV(dataSelected, d1, d2) {
                 glycimiaAggrCSV(zip, date);
                 break;
             case "poids":
+                CB.calculateAggregateWeights();
                 weightCSV(zip, date);
                 weightAggrCSV(zip, date);
                 break;
@@ -928,9 +894,9 @@ export function creerCSV(dataSelected, d1, d2) {
     });
 }
 
-function weightCSV(zip, date) {
-    if (getWeights()) {
-        let poid = getWeights();
+export function weightCSV(zip, date) {
+    if (CompilerBilan.getWeights()) {
+        let poid = CompilerBilan.getWeights();
         let values = [];
         let headers = weightHeaders();
         let poidData = headers[0] + ", " + headers[1];
@@ -938,22 +904,22 @@ function weightCSV(zip, date) {
         poid.forEach((data) => {
             poidData += "\n" + data.get('Date') + ", " + data.get('weight');
         });
-        zip.file(translate.getText("EXP_REPORT_WEIGHT") + " - " + date.replaceAll('/', '-') + ".csv", poidData, {binary: true});
+        zip.file(formedTitle("EXP_REPORT_WEIGHT", date), poidData, {binary: true});
     } else {
-        zip.file(translate.getText("EXP_REPORT_WEIGHT") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("EXP_REPORT_WEIGHT", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function weightAggrCSV(zip, date) {
+export function weightAggrCSV(zip, date) {
     if (weightAggrData().length != 0) {
         let data = CSV.stringify(weightAggrData());
         zip.file(translate.getText("EXP_REPORT_WEIGHT") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function activitiesCSV(zip, date) {
-    if (getActivities()) {
-        let activities = getActivities();
+export function activitiesCSV(zip, date) {
+    if (CompilerBilan.getActivities()) {
+        let activities = CompilerBilan.getActivities();
         let headers = activitiesHeaders();
         let values = [];
         values.push(headers);
@@ -961,134 +927,134 @@ function activitiesCSV(zip, date) {
         activities.forEach((data) => {
             values.push([data.get('Date'), data.get('duration')]);
         });
-        zip.file(translate.getText("EXPORT_ACTIVITES_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("EXPORT_ACTIVITES_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("EXPORT_ACTIVITES_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("EXPORT_ACTIVITES_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function activitiesAggrCSV(zip, date) {
+export function activitiesAggrCSV(zip, date) {
     if (activitiesAggrData().length != 0) {
         let data = CSV.stringify(activitiesAggrData());
         zip.file(translate.getText("EXPORT_ACTIVITES_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function sleepsCSV(zip, date) {
-    if (getSleeps()) {
-        let sleeps = getSleeps();
+export function sleepsCSV(zip, date) {
+    if (CompilerBilan.getSleeps()) {
+        let sleeps = CompilerBilan.getSleeps();
         let headers = sleepsHeaders();
         let values = [];
         values.push(headers);
         sleeps.forEach((data) => {
             values.push([data.get('Date'), data.get('startHour'), data.get('endHour'), data.get('duration'), data.get('wakeUpQt'), data.get('wakeUpState')]);
         });
-        zip.file(translate.getText("SLEEP") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("SLEEP", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("SLEEP") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("SLEEP", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function sleepAggrCSV(zip, date) {
+export function sleepAggrCSV(zip, date) {
     if (sleepAggrData().length != 0) {
         let data = CSV.stringify(sleepAggrData());
         zip.file(translate.getText("SLEEP") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function nourritureCSV(zip, date) {
-    if (getNourriture()) {
-        let nourriture = getNourriture();
-        let headers = nourritureHydratAlcoolHeadres();
+export function nourritureCSV(zip, date) {
+    if (CompilerBilan.getNourriture()) {
+        let nourriture = CompilerBilan.getNourriture();
+        let headers = nourritureHydratAlcoolHeaders();
         let values = [];
         values.push(headers);
         nourriture.forEach((data) => {
             values.push([data.get('Date'), data.get('Nom'), data.get('Consommation'), data.get('Quantité'), data.get('Unité'), data.get('Protéine'), data.get('Glucide'), data.get('Fibre'), data.get('Gras')]);
         });
-        zip.file(translate.getText("NOURRITURE_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("NOURRITURE_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("NOURRITURE_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("NOURRITURE_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function nourritureAggrCSV(zip, date) {
+export function nourritureAggrCSV(zip, date) {
     if (nourritureAggrData().length != 0) {
         let data = CSV.stringify([nourritureHydraAlcoolAggrHeaders(), nourritureAggrData()]);
         zip.file(translate.getText("NOURRITURE_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function hydratationCSV(zip, date) {
-    if (getHydratations()) {
-        let hydratation = getHydratations();
-        let headers = nourritureHydratAlcoolHeadres();
+export function hydratationCSV(zip, date) {
+    if (CompilerBilan.getHydratations()) {
+        let hydratation = CompilerBilan.getHydratations();
+        let headers = nourritureHydratAlcoolHeaders();
         let values = [];
         values.push(headers);
 
         hydratation.forEach((data) => {
             values.push([data.get('Date'), data.get('Nom'), data.get('Consommation'), data.get('Quantité'), data.get('Unité'), data.get('Protéine'), data.get('Glucide'), data.get('Fibre'), data.get('Gras')]);
         });
-        zip.file(translate.getText("HYDR_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("HYDR_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("HYDR_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("HYDR_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function hydratationAggrCSV(zip, date) {
+export function hydratationAggrCSV(zip, date) {
     if (hydratationAggrData().length != 0) {
         let data = CSV.stringify([nourritureHydraAlcoolAggrHeaders(), hydratationAggrData()]);
         zip.file(translate.getText("HYDR_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function toiletteCSV(zip, date) {
-    if (getToilets()) {
-        let toilets = getToilets();
-        let headers = toiletteHeadres();
+export function toiletteCSV(zip, date) {
+    if (CompilerBilan.getToilets()) {
+        let toilets = CompilerBilan.getToilets();
+        let headers = transitHeaders();
         let values = [];
         values.push(headers);
 
         toilets.forEach((data) => {
             values.push([data.get('Date'), data.get('Urine'), data.get('Transit')]);
         });
-        zip.file(translate.getText("TOILETS_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("TOILETS_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("TOILETS_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("TOILETS_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function toiletteAggrCSV(zip, date) {
+export function toiletteAggrCSV(zip, date) {
     if (toiletteAggrData().length != 0) {
         let data = CSV.stringify(toiletteAggrData());
         zip.file(translate.getText("TOILETS_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function alcoolCSV(zip, date) {
-    if (getAlcohol()) {
-        let alcool = getAlcohol();
-        let headers = nourritureHydratAlcoolHeadres();
+export function alcoolCSV(zip, date) {
+    if (CompilerBilan.getAlcohol()) {
+        let alcool = CompilerBilan.getAlcohol();
+        let headers = nourritureHydratAlcoolHeaders();
         let values = [];
         values.push(headers);
         alcool.forEach((data) => {
             values.push([data.get('Date'), data.get('Nom'), data.get('Consommation'), data.get('Quantité'), data.get('Unité'), data.get('Protéine'), data.get('Glucide'), data.get('Fibre'), data.get('Gras')]);
         });
-        zip.file(translate.getText("ALCOOL_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("ALCOOL_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("ALCOOL_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("ALCOOL_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function alcoolAggrCSV(zip, date) {
+export function alcoolAggrCSV(zip, date) {
     if (alcoolAggrData().length != 0) {
         let data = CSV.stringify([nourritureHydraAlcoolAggrHeaders(), alcoolAggrData()]);
         zip.file(translate.getText("ALCOOL_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-function glycimiaCSV(zip, date) {
-    if (getGlycemia()) {
-        let glycimia = getGlycemia();
+export function glycimiaCSV(zip, date) {
+    if (CompilerBilan.getGlycemia()) {
+        let glycimia = CompilerBilan.getGlycemia();
         let headers = glycimiaHeaders();
         let values = [];
         values.push(headers);
@@ -1096,55 +1062,23 @@ function glycimiaCSV(zip, date) {
         glycimia.forEach((data) => {
             values.push([data.get('Date'), data.get('Glycémie')]);
         });
-        zip.file(translate.getText("GLYC_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", CSV.stringify(values), {binary: true});
+        zip.file(formedTitle("GLYC_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
-        zip.file(translate.getText("GLYC_TITLE") + " - " + date.replaceAll('/', '-') + ".csv", translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
+        zip.file(formedTitle("GLYC_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
     }
 }
 
-function glycimiaAggrCSV(zip, date) {
+export function glycimiaAggrCSV(zip, date) {
     if (glycimiaAggrData().length != 0) {
         let data = CSV.stringify(glycimiaAggrData());
         zip.file(translate.getText("GLYC_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
-// pour les tests
-export function tests() {
-    const temppdf = new jsPDF();
-    const tempzip = new JSZip();
-    const tempdate = createPeriod(new Date(), new Date("2022-03-25"));
-    temppdf.autoTable({
-        body: [[' ']]
-    });
-    insertNoDataFound(temppdf);
-    insertHeaders(temppdf, [" "], "#ffffff");
-
-    weightHeaders();
-    weightAggrData();
-    activitiesHeaders();
-    activitiesAggrData();
-    sleepsHeaders();
-    sleepAggrData();
-    nourritureHydratAlcoolHeadres();
-    nourritureHydraAlcoolAggrHeaders();
-    hydratationAggrData();
-    nourritureAggrData();
-    toiletteHeadres();
-    toiletteAggrData();
-    alcoolAggrData();
-    glycimiaHeaders();
-    glycimiaAggrData();
-    weightCSV(tempzip, tempdate);
-    weightAggrCSV(tempzip, tempdate);
-    activitiesCSV(tempzip, tempdate);
-    activitiesAggrCSV(tempzip, tempdate);
-    sleepsCSV(tempzip, tempdate);
-    sleepAggrCSV(tempzip, tempdate);
-    nourritureAggrCSV(tempzip, tempdate);
-    hydratationAggrCSV(tempzip, tempdate);
-    toiletteCSV(tempzip, tempdate);
-    toiletteAggrCSV(tempzip, tempdate);
-    glycimiaCSV(tempzip, tempdate);
-    glycimiaAggrCSV(tempzip, tempdate);
+export function formedTitle(title, date){
+    return translate.getText(title) + " - " + date.replaceAll('/', '-') + ".csv"
 }
+
+
+
+
