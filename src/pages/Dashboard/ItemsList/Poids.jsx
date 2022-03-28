@@ -72,16 +72,16 @@ const Poids = (props) => {
     
     setUnitePoids(newUnitePoids);
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    var tmp_weight = 0;
+    var poidsAjuste = 0;
 
     if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
-      tmp_weight = (dashboard.poids.dailyPoids * 2.2).toFixed(1);
+      poidsAjuste = (dashboard.poids.dailyPoids * 2.2).toFixed(1);
     } else {
       // Nous sommes obliger de faire une modification de la valeur pour émettre une virgule apres le chiffre...
-      tmp_weight = (dashboard.poids.dailyPoids * 1.0).toFixed(1);
+      poidsAjuste = (dashboard.poids.dailyPoids * 1.0).toFixed(1);
     }
 
-    setDailyPoids(tmp_weight);
+    setDailyPoids(poidsAjuste);
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
     setImc(CalculImc());
@@ -108,6 +108,7 @@ const Poids = (props) => {
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
+	  // Au moment du relaod de la page, nous allons avoir un seul chiffre après la virgule
     setDailyPoids(poidsDaily);
 
     firebase

@@ -30,7 +30,8 @@ export function formatToKG(poids) {
     if (prefUnitePoids === "LBS") {
         return (poids / DIFF_UNITE_POIDS).toFixed(2)
     }
-    return poids
+    // Nous retournons la valeur avec 2 chiffres après la virgules pour la BD firebase et le localstorage
+    return parseFloat(poids).toFixed(2);
 }
 
 export function getDailyPoids() {

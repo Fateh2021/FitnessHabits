@@ -2,18 +2,12 @@ import React, { useState } from 'react';
 import { IonCard, IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
 import HeaderPoids from "./header";
 import InitialisationPoids from "./Initialisation";
-import ConfigurationNotificationCarteListe from "./configurationNotificationCarteListe";
-import notificationObject from './notificationObject';
 import * as translate from "../../../translate/Translator";
 
+// nous avons nettoyer tous ce qui ne touchait pas la page initilisation,
+// car la section configuration des notifications étaient tout simplement une coquille vide
+// et ne servait à rien selon nos analyses.
 const Configuration = (props) => {
-  const [listNotification, setListNotification] = useState([]);
-
-  const handleAjouterNotificationOnClick = () => {
-    const liste = listNotification;
-    setListNotification([...liste, notificationObject]);
-  }
-
   return (
     <ion-app>
       <HeaderPoids url="/dashboard" />
@@ -22,30 +16,6 @@ const Configuration = (props) => {
           <ion-tab tab="Initialisation">
             <InitialisationPoids />
           </ion-tab>
-          <ion-tab tab="Notification">
-            <ConfigurationNotificationCarteListe listeNotificationObject={listNotification} />
-            <IonCard>
-              <IonGrid>
-                <IonRow>
-                  <IonCol>
-                    <IonButton shape="round" expand="block">Supprimer</IonButton>
-                  </IonCol>
-                  <IonCol>
-                    <IonButton shape="round" expand="block" onClick={handleAjouterNotificationOnClick}>Ajouter</IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonCard>
-          </ion-tab>
-
-          <ion-tab-bar slot="bottom" >
-            <ion-tab-button tab="Initialisation">
-              <ion-label>{translate.getText("POIDS_PREF_PARAMETRES")}</ion-label>
-            </ion-tab-button>
-            <ion-tab-button tab="Notification">
-              <ion-label>{translate.getText("POIDS_PREF_NOTIFICATIONS")}</ion-label>
-            </ion-tab-button>
-          </ion-tab-bar>
         </ion-tabs>
       </ion-content>
     </ion-app>

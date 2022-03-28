@@ -696,11 +696,6 @@
 		"es":"Anular",
 		"fr":"Annuler"
 	},
-	"POIDS_PREF_PARAMETRES": {
-		"en":"Parameters",
-		"es":"Parámetros",
-		"fr":"Paramètres"
-	},
 	"POIDS_TABL_EVO_3_MOIS": {
 		"en":"Last 3 months weight evolution",
 		"es":"Evolución del peso de los últimos 3 meses",

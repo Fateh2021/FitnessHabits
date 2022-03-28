@@ -11,7 +11,6 @@ import GrapheGlycemie from './pages/GrapheGlycemie/graphe';
 import Settings from './pages/Settings/Settings'
 import Export from './pages/Export/Export'
 import ConfigurationPoids from './pages/Poids/configuration/configuration';
-import ConfigurationNotification from './pages/Poids/configuration/configurationNotification';
 import { Settings as LuxonSettings } from "luxon";
 import GlycemieInitial from './pages/Glycemie/Initial';
 import GlycemieAjout from './pages/Glycemie/Ajout';
@@ -52,8 +51,6 @@ const RoutingSystem = () => {
           <Route path="/glycemieAjout" component={GlycemieAjout} />
           <Route path="/configurationPoids" component={ConfigurationPoids} />
           <Route path="/languages" component={Languages} />
-          <Route path="/configurationNotification" component={ConfigurationNotification} />
-          {/* <Route path="/" render={(props) => getCurrentUser ? <Dashboard {...props} /> : <LogIn />} /> */}
           <Route path="/" render={() => <Redirect to="/intro" />} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>

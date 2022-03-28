@@ -129,10 +129,10 @@ const handlerConfirmation = () => {
     pi = poidsInitial;
     pc = poidsCible;
     // On stock les informations en KG dans la BD
-    // On garde 2 virgules pour la BD
+    // On garde 2 virgules pour la BD donc on créer des variables temporaires en parallelle
     if (unitePoids === "LBS") {
-      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(1)
-      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(1)
+      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
+      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
     }
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
     poidsService.setPrefUnitePoids(unitePoids)
