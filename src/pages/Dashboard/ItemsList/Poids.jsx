@@ -29,13 +29,17 @@ const Poids = (props) => {
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
   var [taille, setTaille] = useState("");
-  var [imc, setImc] = useState("0.0");
+  var [imc, setImc] = useState("0.00");
   const userUID = localStorage.getItem("userUid");
 
   useEffect(() => {
     var tmp = "";
-    if(prefPoids == "LBS") tmp = (props.poids.dailyPoids * 2.2).toFixed(2);
-    else tmp = props.poids.dailyPoids;
+    if(prefPoids == "LBS") {
+      tmp = (props.poids.dailyPoids * 2.2).toFixed(1);
+    } else {
+      tmp = (props.poids.dailyPoids * 1.0).toFixed(1);
+    }
+
     setDailyPoids(tmp);
   }, [props.poids.dailyPoids]);
 
@@ -71,18 +75,16 @@ const Poids = (props) => {
     var tmp_weight = 0;
 
     if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
-
-      tmp_weight = (dashboard.poids.dailyPoids * 2.2).toFixed(2);      
-    } else{
-      tmp_weight = dashboard.poids.dailyPoids;
-
+      tmp_weight = (dashboard.poids.dailyPoids * 2.2).toFixed(1);
+    } else {
+      // Nous sommes obliger de faire une modification de la valeur pour émettre une virgule apres le chiffre...
+      tmp_weight = (dashboard.poids.dailyPoids * 1.0).toFixed(1);
     }
 
     setDailyPoids(tmp_weight);
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
     setImc(CalculImc());
-
   };
 
 	// Capture de l'éventement si IMC change
@@ -126,7 +128,10 @@ const Poids = (props) => {
     var tmp_taille = taille / 100;
     var p = dailyPoids;
 
-    if (unitePoids == "LBS") p = (dailyPoids / 2.2).toFixed(2);
+    if (unitePoids == "LBS") {
+      //  Nous allons arrondir la valeur juste à la fin lors du return
+      p = dailyPoids / 2.2;
+    }
     
     var indicateur_IMC = p / (tmp_taille * tmp_taille);
     return indicateur_IMC.toFixed(2);
@@ -154,7 +159,6 @@ const Poids = (props) => {
             </h2>
           </IonLabel>
           <IonInput
-            //value={IMC == "Infinity" ? "" : IMC}
             value={imc == "Infinity" ? "" : imc}
             data-testid = "IMC_value" 
             className="IMC"

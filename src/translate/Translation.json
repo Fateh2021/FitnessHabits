@@ -1102,5 +1102,35 @@
 		"en":"Select a date",
 		"es":"Seleccione una fecha",
 		"fr":"Choisir une date"
+	},
+	"CATEGORIE_MAIGRE":{
+		"en": "Too skinny",
+		"es": "Demaciado flaco",
+		"fr": "Trop maigre"
+	},
+	"CATEGORIE_IDEAL":{
+		"en": "Ideal weight",
+		"es": "Peso ideal",
+		"fr": "Poids idéal"
+	},
+	"CATEGORIE_SURPOIDS":{
+		"en": "Overweight",
+		"es": "Exceso de peso",
+		"fr": "Surpoids"
+	},
+	"CATEGORIE_OB_CLASSE_1":{
+		"en": "Class 1 obesity",
+		"es": "Obesidad clase 1",
+		"fr": "Obésité classe 1"
+	},
+	"CATEGORIE_OB_CLASSE_2":{
+		"en": "Class 2 obesity - severe",
+		"es": "Obesidad clase 2 - severa",
+		"fr": "Obésité classe 2 - sévère"
+	},
+	"CATEGORIE_OB_CLASSE_3":{
+		"en": "Morbid obesity",
+		"es": "Obesidad mórbida",
+		"fr": "Obésité morbide"
 	}
 }
