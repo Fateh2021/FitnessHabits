@@ -57,7 +57,7 @@ const initDummyDashboard = () => {
         food: {
             globalMacroNutrimentConsumption: {
                 proteins: 0,
-                glucides: 0,
+                carbs: 0,
                 fibre: 0,
                 fats: 0
             },
@@ -65,7 +65,7 @@ const initDummyDashboard = () => {
                 someFoodCategory: {
                     macroNutrimentConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -101,13 +101,13 @@ const populateFoodItems = (start, end, expected, expectationFunc = (e) => {}) =>
 
         const foodItemPopup = document.getElementById("divPopUp1-1");
 
-        const name = foodItemPopup.getElementsByClassName("divAddText")[0];
-        const qty = foodItemPopup.getElementsByClassName("divAddText")[1];
-        const unit = foodItemPopup.querySelector("#materialSelectAddHyd");
-        const proteins = foodItemPopup.getElementsByClassName("divAddTextNut")[0];
-        const glucides = foodItemPopup.getElementsByClassName("divAddTextNut")[1];
-        const fibre = foodItemPopup.getElementsByClassName("divAddTextNut")[2];
-        const fats = foodItemPopup.getElementsByClassName("divAddTextNut")[3];
+        const name = foodItemPopup.getElementsByClassName('divAddText')[0];
+        const qty = foodItemPopup.getElementsByClassName('divAddText')[1];
+        const unit = foodItemPopup.querySelector('#materialSelectAddHyd');
+        const proteins = foodItemPopup.getElementsByClassName('divAddTextNut')[0];
+        const carbs = foodItemPopup.getElementsByClassName('divAddTextNut')[1];
+        const fibre = foodItemPopup.getElementsByClassName('divAddTextNut')[2];
+        const fats = foodItemPopup.getElementsByClassName('divAddTextNut')[3];
 
         name.value = expected[i].name;
         ionFireEvent.ionChange(name);
@@ -121,8 +121,8 @@ const populateFoodItems = (start, end, expected, expectationFunc = (e) => {}) =>
         proteins.value = expected[i].proteins;
         ionFireEvent.ionChange(proteins);
 
-        glucides.value = expected[i].glucides;
-        ionFireEvent.ionChange(glucides);
+        carbs.value = expected[i].carbs;
+        ionFireEvent.ionChange(carbs);
 
         fibre.value = expected[i].fibre;
         ionFireEvent.ionChange(fibre);
@@ -208,7 +208,7 @@ it("test save item", () => {
             qty: 34,
             unit: "unit",
             proteins: 12,
-            glucides: 56,
+            carbs: 56,
             fibre: 456,
             fats: 3
         },
@@ -217,7 +217,7 @@ it("test save item", () => {
             qty: 45,
             unit: "unit",
             proteins: 0,
-            glucides: 14,
+            carbs: 14,
             fibre: 9,
             fats: 0
         },
@@ -226,7 +226,7 @@ it("test save item", () => {
             qty: 200,
             unit: "unit",
             proteins: 45,
-            glucides: 21,
+            carbs: 21,
             fibre: 34,
             fats: 18
         },
@@ -235,7 +235,7 @@ it("test save item", () => {
             qty: 78,
             unit: "unit",
             proteins: 90,
-            glucides: 110,
+            carbs: 110,
             fibre: 0,
             fats: 0
         },
@@ -244,7 +244,7 @@ it("test save item", () => {
             qty: 1,
             unit: "unit",
             proteins: 67,
-            glucides: 900,
+            carbs: 900,
             fibre: 121,
             fats: 450
         }
@@ -263,7 +263,7 @@ it("test save item", () => {
             expect(items[0].qty).toBe(expected[index].qty);
             expect(items[0].unit).toBe(expected[index].unit);
             expect(items[0].proteins).toBe(expected[index].proteins);
-            expect(items[0].glucides).toBe(expected[index].glucides);
+            expect(items[0].carbs).toBe(expected[index].carbs);
             expect(items[0].fibre).toBe(expected[index].fibre);
             expect(items[0].fats).toBe(expected[index].fats);
         };
@@ -275,14 +275,14 @@ it("test save item", () => {
         const localStorageDashboard = JSON.parse(localStorage.getItem("dashboard"));
 
         expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(214);
-        expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(1101);
+        expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs).toBe(1101);
         expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(620);
         expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(471);
 
-        expect(document.getElementById("proteinConsumptionPerCategory").innerHTML).toBe("214");
-        expect(document.getElementById("glucideConsumptionPerCategory").innerHTML).toBe("1101");
-        expect(document.getElementById("fibreConsumptionPerCategory").innerHTML).toBe("620");
-        expect(document.getElementById("fatConsumptionPerCategory").innerHTML).toBe("471");
+        expect(document.getElementById('proteinConsumptionPerCategory').innerHTML).toBe('214');
+        expect(document.getElementById('carbConsumptionPerCategory').innerHTML).toBe('1101');
+        expect(document.getElementById('fibreConsumptionPerCategory').innerHTML).toBe('620');
+        expect(document.getElementById('fatConsumptionPerCategory').innerHTML).toBe('471');
     };
     setUp(dummyDashboard, testFunc);
 });
@@ -296,7 +296,7 @@ it("test delete item", () => {
             qty: 1,
             unit: "unit",
             proteins: 12,
-            glucides: 34,
+            carbs: 34,
             fibre: 56,
             fats: 36
         },
@@ -305,7 +305,7 @@ it("test delete item", () => {
             qty: 1,
             unit: "unit",
             proteins: 6,
-            glucides: 73,
+            carbs: 73,
             fibre: 11,
             fats: 2
         },
@@ -314,7 +314,7 @@ it("test delete item", () => {
             qty: 1,
             unit: "unit",
             proteins: 440,
-            glucides: 156,
+            carbs: 156,
             fibre: 67,
             fats: 0
         },
@@ -323,7 +323,7 @@ it("test delete item", () => {
             qty: 1,
             unit: "unit",
             proteins: 0,
-            glucides: 16,
+            carbs: 16,
             fibre: 24,
             fats: 1
         },
@@ -332,7 +332,7 @@ it("test delete item", () => {
             qty: 1,
             unit: "unit",
             proteins: 45,
-            glucides: 0,
+            carbs: 0,
             fibre: 0,
             fats: 100
         }
@@ -346,7 +346,7 @@ it("test delete item", () => {
         expect(items.length).toBe(5);
 
         let proteinConsumptionPerCategory = 503;
-        let glucideConsumptionPerCategory = 279;
+        let carbConsumptionPerCategory = 279;
         let fibreConsumptionPerCategory = 158;
         let fatConsumptionPerCategory = 139;
 
@@ -355,7 +355,7 @@ it("test delete item", () => {
         for (let i = 0; i < 5; i++) {
             const localStorageDashboard = JSON.parse(localStorage.getItem("dashboard"));
             expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(proteinConsumptionPerCategory);
-            expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(glucideConsumptionPerCategory);
+            expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs).toBe(carbConsumptionPerCategory);
             expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(fibreConsumptionPerCategory);
             expect(localStorageDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(fatConsumptionPerCategory);
             // La fonction <code> splice </code> utilisée dans <code> deleteItem </code> du module Nourriture modifie le tableau <code> items </code> 'in place' 
@@ -366,11 +366,11 @@ it("test delete item", () => {
             const showButton = currentFoodItemHDOM.querySelector("#showButton");
             showButton.dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
-            const foodItemPopup = document.getElementById("divPopUp1-1")
-            const proteins = foodItemPopup.getElementsByClassName("divAddTextNut")[0];
-            const glucides = foodItemPopup.getElementsByClassName("divAddTextNut")[1];
-            const fibre = foodItemPopup.getElementsByClassName("divAddTextNut")[2];
-            const fats = foodItemPopup.getElementsByClassName("divAddTextNut")[3];
+            const foodItemPopup = document.getElementById('divPopUp1-1')
+            const proteins = foodItemPopup.getElementsByClassName('divAddTextNut')[0];
+            const carbs = foodItemPopup.getElementsByClassName('divAddTextNut')[1];
+            const fibre = foodItemPopup.getElementsByClassName('divAddTextNut')[2];
+            const fats = foodItemPopup.getElementsByClassName('divAddTextNut')[3];
             // Il est nécessaire de déclencher la fermeture du popup ici afin de ne pas avoir le même popup s'ouvrir à la prochaine itération.
             const closeButton = foodItemPopup.querySelector("#closeButton");
             closeButton.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -382,7 +382,7 @@ it("test delete item", () => {
             expect(items.length).toBe(--nbItems);
 
             proteinConsumptionPerCategory -= proteins.value;
-            glucideConsumptionPerCategory -= glucides.value;
+            carbConsumptionPerCategory -= carbs.value;
             fibreConsumptionPerCategory -= fibre.value;
             fatConsumptionPerCategory -= fats.value;
         }
@@ -400,7 +400,7 @@ it("test edit and save", () => {
             qty: 1,
             unit: "unit",
             proteins: 189,
-            glucides: 567,
+            carbs: 567,
             fibre: 80,
             fats: 11
         },
@@ -409,7 +409,7 @@ it("test edit and save", () => {
             qty: 1,
             unit: "unit",
             proteins: 14,
-            glucides: 1,
+            carbs: 1,
             fibre: 0,
             fats: 39
         },
@@ -418,7 +418,7 @@ it("test edit and save", () => {
             qty: 1,
             unit: "unit",
             proteins: 41,
-            glucides: 111,
+            carbs: 111,
             fibre: 222,
             fats: 17
         },
@@ -427,7 +427,7 @@ it("test edit and save", () => {
             qty: 1,
             unit: "unit",
             proteins: 0,
-            glucides: 0,
+            carbs: 0,
             fibre: 0,
             fats: 34
         },
@@ -436,7 +436,7 @@ it("test edit and save", () => {
             qty: 1,
             unit: "unit",
             proteins: 22,
-            glucides: 78,
+            carbs: 78,
             fibre: 0,
             fats: 100
         }
@@ -454,7 +454,7 @@ it("test edit and save", () => {
         for (let i = 0; i < items.length; i++) {
             let cachedDashboard = JSON.parse(localStorage.getItem("dashboard"));
             let proteinConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins;
-            let glucideConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides;
+            let carbConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs;
             let fibreConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre;
             let fatConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats;
 
@@ -472,8 +472,8 @@ it("test edit and save", () => {
             const proteins = foodItemPopup.getElementsByClassName("divAddTextNut")[0];
             const proteinsOld = proteins.value;
 
-            const glucides = foodItemPopup.getElementsByClassName("divAddTextNut")[1];
-            const glucidesOld = glucides.value;
+            const carbs = foodItemPopup.getElementsByClassName('divAddTextNut')[1];
+            const carbsOld = carbs.value;
 
             const fibre = foodItemPopup.getElementsByClassName("divAddTextNut")[2];
             const fibreOld = fibre.value;
@@ -493,8 +493,8 @@ it("test edit and save", () => {
             proteins.value = i;
             ionFireEvent.ionChange(proteins);
 
-            glucides.value = i + 1;
-            ionFireEvent.ionChange(glucides);
+            carbs.value = i + 1;
+            ionFireEvent.ionChange(carbs);
 
             fibre.value = i + 2;
             ionFireEvent.ionChange(fibre);
@@ -506,7 +506,7 @@ it("test edit and save", () => {
             saveButton.dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
             proteinConsumptionPerCategory = proteinConsumptionPerCategory - proteinsOld + proteins.value;
-            glucideConsumptionPerCategory = glucideConsumptionPerCategory - glucidesOld + glucides.value;
+            carbConsumptionPerCategory = carbConsumptionPerCategory - carbsOld + carbs.value;
             fibreConsumptionPerCategory = fibreConsumptionPerCategory - fibreOld + fibre.value;
             fatConsumptionPerCategory = fatConsumptionPerCategory - fatsOld + fats.value;
 
@@ -516,13 +516,13 @@ it("test edit and save", () => {
             expect(cachedDashboard.food.categories.someFoodCategory.items[i].unit).toBe(units[i]);
 
             expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(proteinConsumptionPerCategory);
-            expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(glucideConsumptionPerCategory);
+            expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs).toBe(carbConsumptionPerCategory);
             expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(fibreConsumptionPerCategory);
             expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(fatConsumptionPerCategory);
         }
         const cachedDashboard = JSON.parse(localStorage.getItem("dashboard"));
         expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(10);
-        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(15);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs).toBe(15);
         expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(20);
         expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(25);
 
@@ -541,7 +541,7 @@ it("test no edit and save", () => {
             qty: 1,
             unit: "unit",
             proteins: 14,
-            glucides: 0,
+            carbs: 0,
             fibre: 0,
             fats: 12
         }
@@ -556,7 +556,7 @@ it("test no edit and save", () => {
 
         let cachedDashboard = JSON.parse(localStorage.getItem("dashboard"));
         let proteinConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins;
-        let glucideConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides;
+        let carbConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs;
         let fibreConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre;
         let fatConsumptionPerCategory = cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats;
 
@@ -571,7 +571,7 @@ it("test no edit and save", () => {
         // À ce moment-ci, on ne s'attend à aucun changement.
         cachedDashboard = JSON.parse(localStorage.getItem("dashboard"));
         expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.proteins).toBe(proteinConsumptionPerCategory);
-        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.glucides).toBe(glucideConsumptionPerCategory);
+        expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.carbs).toBe(carbConsumptionPerCategory);
         expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fibre).toBe(fibreConsumptionPerCategory);
         expect(cachedDashboard.food.categories.someFoodCategory.macroNutrimentConsumption.fats).toBe(fatConsumptionPerCategory);
 
@@ -618,18 +618,18 @@ it("test module translation", () => {
                 const cup = measures[4].innerHTML;
                 expect(cup).toBe(dict["UNIT_CUP"][lang]);
                 const unit = measures[5].innerHTML;
-                expect(unit).toBe(dict["UNIT_TEXT"][lang]);
+                expect(unit).toBe(dict['UNIT_TEXT'][lang]);
 
-                const itemQtyBoxValue = document.getElementById("foodItemQty").getAttribute("placeholder");
-                expect(itemQtyBoxValue).toBe(dict["FOOD_MODULE"]["macroNutriments"]["qty"][lang]);
-                const protQtyBoxValue = document.getElementById("protQty").innerHTML;
-                expect(protQtyBoxValue).toBe(dict["FOOD_MODULE"]["macroNutriments"]["proteins"][lang]);
-                const glucQtyBoxValue = document.getElementById("glucQty").innerHTML;
-                expect(glucQtyBoxValue).toBe(dict["FOOD_MODULE"]["macroNutriments"]["glucides"][lang]);
-                const fibQtyBoxValue = document.getElementById("fibQty").innerHTML;
-                expect(fibQtyBoxValue).toBe(dict["FOOD_MODULE"]["macroNutriments"]["fibre"][lang]);
-                const fatQtyBoxValue = document.getElementById("fatQty").innerHTML;
-                expect(fatQtyBoxValue).toBe(dict["FOOD_MODULE"]["macroNutriments"]["fats"][lang]);
+                const itemQtyBoxValue = document.getElementById('foodItemQty').getAttribute('placeholder');
+                expect(itemQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['qty'][lang]);
+                const protQtyBoxValue = document.getElementById('protQty').innerHTML;
+                expect(protQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['proteins'][lang]);
+                const glucQtyBoxValue = document.getElementById('glucQty').innerHTML;
+                expect(glucQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['carbs'][lang]);
+                const fibQtyBoxValue = document.getElementById('fibQty').innerHTML;
+                expect(fibQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['fibre'][lang]);
+                const fatQtyBoxValue = document.getElementById('fatQty').innerHTML;
+                expect(fatQtyBoxValue).toBe(dict['FOOD_MODULE']['macroNutriments']['fats'][lang]);
             });
         });
     };
@@ -693,7 +693,7 @@ it("test favorites button and favorites sorted", () => {
             qty: 1,
             unit: "unit",
             proteins: 1,
-            glucides: 2,
+            carbs: 2,
             fibre: 3,
             fats: 4
         };

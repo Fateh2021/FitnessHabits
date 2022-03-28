@@ -61,7 +61,7 @@ const Dashboard = (props) => {
         const foodDashboard = {
             globalMacroNutrimentConsumption: {
                 proteins: 0,
-                glucides: 0,
+                carbs: 0,
                 fibre: 0,
                 fats: 0
             },
@@ -69,7 +69,7 @@ const Dashboard = (props) => {
                 proteinFood: {
                     macroNutrimentConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -78,7 +78,7 @@ const Dashboard = (props) => {
                 grainFood: {
                     macroNutrimentConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -87,7 +87,7 @@ const Dashboard = (props) => {
                 vegetables: {
                     macroNutrimentConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -96,7 +96,7 @@ const Dashboard = (props) => {
                 fruit: {
                     macroNutrimentConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -105,7 +105,7 @@ const Dashboard = (props) => {
                 dairyProducts: {
                     macroNutrimentConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -279,13 +279,13 @@ const Dashboard = (props) => {
     const updateGlobalMacroNutrimentConsumption = (sets) => {
         sets.food.globalMacroNutrimentConsumption = {
             proteins: 0,
-            glucides: 0,
+            carbs: 0,
             fibre: 0,
             fats: 0
         };
         Object.keys(sets.food.categories).forEach(category => {
             sets.food.globalMacroNutrimentConsumption.proteins += sets.food.categories[category].macroNutrimentConsumption.proteins;
-            sets.food.globalMacroNutrimentConsumption.glucides += sets.food.categories[category].macroNutrimentConsumption.glucides;
+            sets.food.globalMacroNutrimentConsumption.carbs += sets.food.categories[category].macroNutrimentConsumption.carbs;
             sets.food.globalMacroNutrimentConsumption.fibre += sets.food.categories[category].macroNutrimentConsumption.fibre;
             sets.food.globalMacroNutrimentConsumption.fats += sets.food.categories[category].macroNutrimentConsumption.fats;
         });
@@ -542,13 +542,14 @@ const Dashboard = (props) => {
                         <IonItem className="divTitre2">
                             <IonAvatar slot="start"><img src="/assets/nutrition.jpg" alt=""/></IonAvatar>
                             <IonLabel><h2><b>{ translate.getText("FOOD_MODULE", ["title"]) }</b></h2></IonLabel>
+                            <span id="totalMacroNutriment">{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'totalMacroNutriments'])}:</span>
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
                                         <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeProteins"])}: {dashboard.food.globalMacroNutrimentConsumption.proteins}</IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeGlucides"])}: {dashboard.food.globalMacroNutrimentConsumption.glucides}</IonButton>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeCarbs"])}: {dashboard.food.globalMacroNutrimentConsumption.carbs}</IonButton>
                                     </IonCol>
                                     <IonCol>
                                         <IonButton color='primary'shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeFibre"])}: {dashboard.food.globalMacroNutrimentConsumption.fibre}</IonButton>
