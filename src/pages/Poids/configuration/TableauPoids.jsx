@@ -36,11 +36,14 @@ const TableauPoids = () => {
   var graphData = []
   if (refData != null) {
   // On doit comprendre à quoi sert la variable _
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
    for (const [,value] of Object.entries(refData)) {
       
       if (value.poids.datePoids !== undefined) {
         let datePoids = formatDate(value.poids.datePoids)
         let poids = poidsService.formatPoids(value.poids.dailyPoids)
+        if(datePoids == formatDate(new Date()))
+          poids = dashboard.poids.dailyPoids
         graphData.push ({x: datePoids, y: poids})
       }
     }
