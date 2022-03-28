@@ -10,7 +10,7 @@ export function initPrefPoids() {
     prefPoidsRef.once("value").then(function(snapshot) {
     // Permet de récupération de la préférence de poids que nous avons dans firebase avant de mettre ça dans le localstorage
         if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
-            localStorage.setItem("prefUnitePoids",snapshot.val().unitePoids.toString());
+            localStorage.setItem("prefUnitePoids", snapshot.val().unitePoids.toString());
         } else {
             localStorage.setItem("prefUnitePoids", "KG");
         }
@@ -31,7 +31,7 @@ export function formatToKG(poids) {
         return (poids / DIFF_UNITE_POIDS).toFixed(2)
     }
     // Nous retournons la valeur avec 2 chiffres après la virgules pour la BD firebase et le localstorage
-    return parseFloat(poids).toFixed(2);
+    return poids;
 }
 
 export function getDailyPoids() {
@@ -65,6 +65,11 @@ export function saveEntreeDePoids(dailyPoids) {
     dashboard.poids.datePoids = new Date()
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
+}
+
+// Simplification de la fonction IMC
+export function calculIMC(taille, dailyPoids){
+    return (dailyPoids / ((taille / 100) * (taille / 100))).toFixed(2);
 }
 
 export function verifier_changement_IMC(valeur_imc){

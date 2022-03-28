@@ -33,21 +33,19 @@ const Poids = (props) => {
   const userUID = localStorage.getItem("userUid");
 
   useEffect(() => {
-    var tmp = "";
-    if(prefPoids == "LBS") {
-      tmp = (props.poids.dailyPoids * 2.2).toFixed(1);
+    var tmp = 0;
+    if (prefPoids == "LBS") {
+      tmp = props.poids.dailyPoids * 2.2;
     } else {
-      tmp = (props.poids.dailyPoids * 1.0).toFixed(1);
+      tmp = props.poids.dailyPoids;
     }
 
-    setDailyPoids(tmp);
+    setDailyPoids(parseFloat(tmp).toFixed(1));
   }, [props.poids.dailyPoids]);
 
   useEffect(() => {
     poidsService.initPrefPoids();
-    let preferencesPoidsRef = firebase
-      .database()
-      .ref("profiles/" + userUID + "/preferencesPoids");
+    let preferencesPoidsRef = firebase.database().ref("profiles/" + userUID + "/preferencesPoids");
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setUnitePoids(snapshot.val().unitePoids);
@@ -61,7 +59,7 @@ const Poids = (props) => {
       }
     });
 
-    setImc(CalculImc());
+    setImc(poidsService.calculIMC(taille, poidsService.formatToKG(dailyPoids)));
   });
 
 	// Capture de l'éventement si unite de préférence du poids change
@@ -69,47 +67,32 @@ const Poids = (props) => {
     let newUnitePoids = event.target.value;
     poidsService.setPrefUnitePoids(newUnitePoids);
     let oldUnitePoids = unitePoids;
-    
     setUnitePoids(newUnitePoids);
+
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+
     var poidsAjuste = 0;
-
     if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
-      poidsAjuste = (dashboard.poids.dailyPoids * 2.2).toFixed(1);
+      poidsAjuste = dashboard.poids.dailyPoids * 2.2;
     } else {
-      // Nous sommes obliger de faire une modification de la valeur pour émettre une virgule apres le chiffre...
-      poidsAjuste = (dashboard.poids.dailyPoids * 1.0).toFixed(1);
+      poidsAjuste = dashboard.poids.dailyPoids;
     }
-
-    setDailyPoids(poidsAjuste);
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
-
-    setImc(CalculImc());
+		// Ensuite, on réduit à un chiffre après la virgule mais en utilisant parseFloat pour utiliser toFixed
+    setDailyPoids(parseFloat(poidsAjuste).toFixed(1));
   };
-
-	// Capture de l'éventement si IMC change
-  const handleIMCChange = (event) => {
-    let change_IMC = event.target.value;
-    /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
-       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
-       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
-    */
-    if (change_IMC > 10) {
-      poidsService.verifier_changement_IMC(change_IMC);
-    }
-  }
 
 	// Capture de l'éventement si le dailyPoids change
   const handleChange = (event) => {
-    let poidsDaily = event.detail.value;
+    let new_dailyPoids = event.detail.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-    dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
+		dashboard.poids.dailyPoids = poidsService.formatToKG(new_dailyPoids);
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
-	  // Au moment du relaod de la page, nous allons avoir un seul chiffre après la virgule
-    setDailyPoids(poidsDaily);
+		setDailyPoids(new_dailyPoids);
+		// On utilise directement la valeur qu'on a sauvé dans le localstorage du dashboard
+		setImc(poidsService.calculIMC(taille, dashboard.poids.dailyPoids));
 
     firebase
       .database()
@@ -122,21 +105,20 @@ const Poids = (props) => {
           currentDate.startDate.getFullYear()
       )
       .update(dashboard);
+
   };
 
-  // La fonction qui calcul IMC en fonction de la taille et le poids
-  var CalculImc = () => {
-    var tmp_taille = taille / 100;
-    var p = dailyPoids;
-
-    if (unitePoids == "LBS") {
-      //  Nous allons arrondir la valeur juste à la fin lors du return
-      p = dailyPoids / 2.2;
+  // Capture de l'éventement si IMC change
+  const handleIMCChange = (event) => {
+    let change_IMC = event.target.value;
+    /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
+       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
+       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
+    */
+    if (change_IMC > 10) {
+      poidsService.verifier_changement_IMC(change_IMC);
     }
-    
-    var indicateur_IMC = p / (tmp_taille * tmp_taille);
-    return indicateur_IMC.toFixed(2);
-  };
+  }
 
   const handleRouteToConfigurationPoids = () => {
     window.location.href = "/configurationPoids";
