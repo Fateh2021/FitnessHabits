@@ -31,7 +31,7 @@ export function formatToKG(poids) {
         return (poids / DIFF_UNITE_POIDS).toFixed(2)
     }
     // Nous retournons la valeur avec 2 chiffres après la virgules pour la BD firebase et le localstorage
-    return parseFloat(poids).toFixed(2);
+    return poids;
 }
 
 export function getDailyPoids() {
@@ -67,7 +67,12 @@ export function saveEntreeDePoids(dailyPoids) {
     firebase.database().ref("dashboard/" + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
 }
 
-export function verifier_changement_IMC(valeur_imc) {
+// Simplification de la fonction IMC
+export function calculIMC(taille, dailyPoids){
+    return (dailyPoids / ((taille / 100) * (taille / 100))).toFixed(2);
+}
+
+export function verifier_changement_IMC(valeur_imc){
     var imc_category = trouver_nouvelle_categorie(valeur_imc);
     let imc_category_local = localStorage.getItem("groupe_IMC");
 
