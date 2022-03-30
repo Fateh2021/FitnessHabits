@@ -934,6 +934,31 @@
          "en": "Average fats",
          "es": "Grassa pormedio",
          "fr": "Moyenne gras"
+      },
+      "QTY": {
+         "en": "quantity",
+         "es": "cantidad",
+         "fr": "quantité"
+      },
+      "PROT": {
+         "en": "Proteins",
+         "es": "Proteinas",
+         "fr": "Protéines"
+      },
+      "GLUC": {
+         "en": "Glucides",
+         "es": "Glúcidos",
+         "fr": "Glucides"
+      },
+      "FIBRE": {
+         "en": "Fibre",
+         "es": "Fibras",
+         "fr": "Fibres"
+      },
+      "FATS": {
+         "en": "Fats",
+         "es": "Grasas",
+         "fr": "Gras"
       }
    },
    "EXP_UR_TR": {
