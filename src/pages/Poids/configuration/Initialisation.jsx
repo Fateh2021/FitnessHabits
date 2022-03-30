@@ -172,7 +172,7 @@ const handlerConfirmation = () => {
             </IonItemDivider>
             <IonItemDivider>
               <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_INITIAL")}</IonLabel>
-              <IonInput class="ion-text-right" slot="end" value={poidsInitial} onIonChange={e => handlePoidsInitialChange(e.target.value)}></IonInput>
+              <IonInput data-testid = "poids_init" class="ion-text-right" slot="end" value={poidsInitial} onIonChange={e => handlePoidsInitialChange(e.target.value)}></IonInput>
               <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
             </IonItemDivider>
             <IonItemDivider>
