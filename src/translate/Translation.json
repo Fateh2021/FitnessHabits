@@ -84,6 +84,11 @@
       "es": "mililitro(s)",
       "fr": "millilitre(s)"
    },
+   "UNIT_LB": {
+      "en": "pound(s)",
+      "es": "libra(s)",
+      "fr": "livre(s)"
+   },
    "UNIT_CUP": {
       "en": "cup(s)",
       "es": "taza(s)",
@@ -127,9 +132,9 @@
             "fr": "Produits laitiers"
          }
       },
-      "macroNutrimentSummary": {
+      "macroNutrientSummary": {
          "cumulativeProteins": {
-            "en": "Protein",
+            "en": "Proteins",
             "es": "Proteínas",
             "fr": "Protéines"
          },
@@ -148,7 +153,7 @@
             "es": "Grasas",
             "fr": "Gras"
          },
-         "totalMacroNutriments": {
+         "totalMacroNutrients": {
             "en": "Total (g)",
             "es": "Totales (g)",
             "fr": "Total (g)"
@@ -160,27 +165,42 @@
             "es": "Añadir un alimento",
             "fr": "Ajouter un aliment"
          },
-         "addDescription": {
-            "placeholder": {
-               "en": "Description",
-               "es": "Descripción",
-               "fr": "Description"
+         "addLabel": {
+            "name": {
+               "en": "Name",
+               "es": "Nombre",
+               "fr": "Nom"
+            },
+            "qtyConsumed": {
+               "en": "Quantity consumed",
+               "es": "Cantidad consumida",
+               "fr": "Quantité consommée"
+            },
+            "refQty": {
+               "en": "Reference quantity",
+               "es": "Cantidad de referencia",
+               "fr": "Quantité de référence"
+            },
+            "unit": {
+               "en": "Unit of meaure",
+               "es": "Unidad de medida",
+               "fr": "Unité de mesure"
+            },
+            "macroNutrients": {
+               "en": "Macronutrients",
+               "es": "Macronutrientes",
+               "fr": "Macronutriments"
             }
          },
          "addErrorMessage": {
             "saveItem": {
-               "en": "A food item's name cannot be empty and all macro-nutriments cannot have zero quantity!",
-               "es": "¡El nombre de un alimento no puede estar vacío y todos los macronutrientes no pueden tener una cantidad cero!",
-               "fr": "Le nom d'un aliment ne peut pas être vide et tous les macro-nutriments ne peuvent pas avoir une quantité de zéro !"
+               "en": "Rules for adding and/or editing a food item: \n 1. A food item's name cannot be empty;\n 2. consumed and reference quantities must be non-zero;\n 3. at least one macronutrient must have a non-zero quantity.",
+               "es": "Reglas para agregar y/o editar un alimento: \n 1. El nombre de un alimento no puede estar vacío;\n 2. Las cantidades consumidas y de referencia deben ser distintas de cero;\n 3. Al menos un macronutriente debe tener un valor distinto de cero.",
+               "fr": "Règles pour ajouter et/ou modifier un aliment : \n 1. Le nom d'un aliment ne peut pas être vide ;\n 2. les quantités consommées et de référence doivent être non nulles ;\n 3. au moins un macronutriment doit avoir une quantité non nulle."
             }
          }
       },
-      "macroNutriments": {
-         "qty": {
-            "en": "quantity",
-            "es": "cantidad",
-            "fr": "quantité"
-         },
+      "macroNutrients": {
          "proteins": {
             "en": "Proteins",
             "es": "Proteinas",
