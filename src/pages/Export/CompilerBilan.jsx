@@ -148,7 +148,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchDrinks("hydratation", hydratations, formatedDate);
                 break;
             case "nourriture":
-                /*let cereales = data.food.categories.grainFood;
+                let cereales = data.food.categories.grainFood;
                 let legumes = data.food.categories.vegetables;
                 let fruits = data.food.categories.fruit;
                 let proteines = data.food.categories.proteinFood;
@@ -157,7 +157,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchNourriture(legumes, formatedDate);
                 fetchNourriture(fruits, formatedDate);
                 fetchNourriture(proteines, formatedDate);
-                fetchNourriture(gras, formatedDate);*/
+                fetchNourriture(gras, formatedDate);
                 break;
             case "toilettes":
                 let toilets = data.toilettes;
