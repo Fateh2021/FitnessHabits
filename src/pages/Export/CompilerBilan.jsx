@@ -12,7 +12,6 @@ let arrayGlycemia = [];
 let mapAggWeights = new Map();
 let mapAggSleeps = new Map();
 let mapAggActivities = new Map();
-let initialWeight;
 const userUID = localStorage.getItem("userUid");
 
 /**
@@ -234,7 +233,7 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
 /**
  *
  */
-function fetchNourriture(foods, formatedDate) {
+function  fetchNourriture(foods, formatedDate) {
     if (foods.items) {
         for (const element of foods.items) {
             let mapResult = new Map();
