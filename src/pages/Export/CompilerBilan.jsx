@@ -215,7 +215,6 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
             let mapHydratation = new Map();
             mapHydratation.set("Date", formatedDate);
             mapHydratation.set("Nom", drink.name);
-            mapHydratation.set("Consommation", drink.consumption);
             mapHydratation.set("Quantité", drink.qtte);
             mapHydratation.set("Unité", drink.unit);
             mapHydratation.set("Protéine", parseInt(drink.proteine) * drink.consumption);
