@@ -684,6 +684,11 @@
       "es": "Evolución del peso de los últimos 3 meses",
       "fr": "Évolution du poids des 3 derniers mois"
    },
+   "GLYC_TITLE":{
+      "en":"Glycaemia",
+      "es":"Glicemia",
+      "fr":"Glycémie"
+    }, 
    "POIDS_IMC_ACCRONIME": {
       "en":"BMI",
       "es":"IMC",
