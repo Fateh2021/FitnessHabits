@@ -23,8 +23,6 @@ function formatDate (date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
-var preferencesPoidUnite = localStorage.getItem('prefUnitePoids');
-
 const [poidsInitial, setPoidsInitial] = useState("");
 const [poidsCible, setPoidsCible] = useState("");
 const [dateCible, setDateCible] = useState("");
@@ -75,7 +73,6 @@ useEffect(() => {
       setUnitePoids(snapshot.val().unitePoids);
       // Si le type unité de poids est en livre, nous devons faire x 2.2 (DIFF_UNITE_POIDS)
       if (snapshot.val().unitePoids === "LBS") {
-        preferencesPoidUnite = "LBS";
         ini *= DIFF_UNITE_POIDS;
         ci *= DIFF_UNITE_POIDS;
       }

@@ -37,7 +37,7 @@ const renderWithRouter = (ui, { route = "/" } = {}) => {
 
 test('Traduction du mot Initial Poids en anglais', async() => {
   localStorage.setItem('userLanguage', 'en')
-  renderWithRouter(<App />, { route: '/ConfigurationPoids' });
+  renderWithRouter(<App />, { route: '/ConfigurationPoids'});
   const mot = screen.getByText(/Initial weight/i);
   const mot1 = screen.getByText(/Weight target/i);
   const mot2 = screen.getByText(/Weight unit/i);
