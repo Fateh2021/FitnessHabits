@@ -8,24 +8,29 @@
 
         ],
     
-        "proteines" : 
+        "proteinFoodItems" : 
         [        
             
         ],
     
-        "gras" :
+        "grainFoodItems" :
         [        
             
         ],
         
-        "legumes" : 
-        [        
+        "vegetableItems" : 
+        [       
             
         ],
     
-        "cereales" : 
+        "fruitItems" : 
         [        
             
+        ],
+
+        "dairyProductItems" :
+        [
+
         ],
     
         "supps" : 
