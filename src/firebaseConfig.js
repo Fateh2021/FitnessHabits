@@ -2,8 +2,9 @@ import firebase from 'firebase'
 import "firebase/auth";
 import 'firebase/storage';
 
+// la nouvelle base de donnée !
 const config={
-    apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
+   apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
     authDomain: "fitnesshabits-be415.firebaseapp.com",
     projectId: "fitnesshabits-be415",
     storageBucket: "fitnesshabits-be415.appspot.com",
@@ -13,6 +14,7 @@ const config={
 }
 
 export default firebase.initializeApp(config).database().ref();
+
 
 export const storage = firebase.storage();
 

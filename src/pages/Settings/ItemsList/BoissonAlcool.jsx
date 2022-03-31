@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { IonCol, IonItem, IonIcon, IonToggle, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonItemGroup, IonCheckbox, IonTextarea, IonRow, IonGrid } from '@ionic/react';
+import { IonCol, IonItem, IonIcon, IonToggle, IonLabel, IonRadioGroup, IonInput, IonAvatar, IonItemGroup, IonCheckbox, IonTextarea, IonRow } from '@ionic/react';
 import { arrowDropdownCircle } from 'ionicons/icons';
 import Alcool from '../Alcool'
-import firebase from 'firebase'
 
 import '../../../pages/Tab1.css';
 import HeadItems from './HeadItems';
@@ -14,6 +13,8 @@ const BoissonAlcool = (props) => {
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
   const [gender, setGender] = useState("");
+  const [alcoolService] = useState(props.alcoolService);
+  const [profileService] = useState(props.profileService);
  
   // update state on prop change
   useEffect(() => {
@@ -27,35 +28,32 @@ const BoissonAlcool = (props) => {
   const accorAlcool = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      if(!divElt.style.display || divElt.style.display === "none") divElt.style.display = "block"
+      else divElt.style.display = "none";
     }
   }
 
   const handleOnNotifications = event => {
-    const userUID = localStorage.getItem('userUid');
     const updatedNotifications = { ...notifications, "active": event.detail.checked };
     setNotifications(updatedNotifications);
-    // update the cache and persist in DB
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.notifications = updatedNotifications;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateNotifications(updatedNotifications);
   }
 
   const handleDailyTargetChangeAlcool = event => {
-    const userUID = localStorage.getItem('userUid');
+    debugger;
     const { name, value } = event.target;
-    const updatedDailyTarget = { ...dailyTarget, [name]: value ? value : (name === 'value') ? 0 : '' };
+
+    let nameValue = '';
+    if(value) nameValue = value;
+    else nameValue = (name === 'value') ? 0 : ''
+
+    const updatedDailyTarget = { ...dailyTarget, [name]: nameValue };
     setDailyTarget({ ...dailyTarget, [name]: value});
-    // update the cache and persist in DB
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.dailyTarget= updatedDailyTarget;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    firebase.database().ref('settings/'+userUID).update(settings);
+
+    alcoolService.settings.updateDailyTarget(updatedDailyTarget);
   };
 
   const handleOnEducAlcool = event => {
-    const userUID = localStorage.getItem('userUid');
     const updatedLimitConsom = { ...limitConsom, "educAlcool": event.detail.checked };
     if(event.detail.checked){
       if(gender === "H" || gender === "")
@@ -68,43 +66,29 @@ const BoissonAlcool = (props) => {
       }
     } 
     setLimitConsom(updatedLimitConsom);
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.limitConsom = updatedLimitConsom;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateLimitConsom(updatedLimitConsom);
   };
 
   const handleOnLimitConsom = event => {
-    const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
-    const updatedLimitConsom = { ...limitConsom, [name]: value ? value : (name === 'value') ? 0 : '' };
+
+    let nameValue = '';
+    if(value) nameValue = value;
+    else nameValue = (name === 'value') ? 0 : ''
+
+    const updatedLimitConsom = { ...limitConsom, [name]: nameValue };
     setLimitConsom({ ...limitConsom, [name]: value});
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    settings.alcool.limitConsom = updatedLimitConsom;
-    localStorage.setItem('settings', JSON.stringify(settings));
-    firebase.database().ref('settings/'+userUID).update(settings);
+    alcoolService.settings.updateLimitConsom(updatedLimitConsom);
   };
 
-  const defineGender = async () => {
-    return new Promise(resolve => {
-      const localProfile = localStorage['profile'];
-      if (localProfile) {
-          setGender(JSON.parse(localProfile).gender)
-          resolve();
-      } else {
-          const userUID = localStorage.getItem('userUid');
-          firebase.database().ref('profiles/'+userUID)
-          .once("value", (snapshot) => {
-              const prof = snapshot.val();
-              if (prof) {
-                  localStorage.setItem('profile', JSON.stringify(prof));
-                  setGender(prof.gender);
-                  resolve();
-              }               
-          });
-      }
-    });
-  };
+  const defineGender = async () => 
+    profileService
+      .get()
+      .then(profile => {
+        if (profile) {
+          setGender(profile.gender);
+        }
+      });
 
   return (
     <div>
@@ -124,7 +108,10 @@ const BoissonAlcool = (props) => {
      <HeadItems/>
               
         {/* Items Alcool */}
-        <Alcool alcools={props.alcool.alcools} />
+        <Alcool 
+          alcoolService={alcoolService}
+          alcools={props.alcool.alcools}
+        />
        
         {/* Cible quotidienne */}
         <IonRadioGroup>

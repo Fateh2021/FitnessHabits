@@ -40,7 +40,7 @@ const NourriCereales = (props) => {
       {/* Entête cereales */}
       <IonItem className="divTitre22">
         <IonAvatar slot="start">
-          <img src="/assets/cereales.jpg" alt=""/>
+          <img src="/assets/grain.jpg" alt=""/>
         </IonAvatar>
         <IonLabel>
           <h2><b>Féculents</b></h2>

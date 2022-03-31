@@ -43,6 +43,12 @@ const Supplements = (props) => {
     setChecked(!checked);
   };
 
+  useEffect(() => {
+    var divElt = document.getElementById("myDIVSuppl");
+    divElt.style.display = "none";
+    
+    });
+
   const accor = (divId) => {
     const divElt = document.getElementById(divId);
     if (divElt) {
@@ -138,7 +144,7 @@ const Supplements = (props) => {
           </h2>
         </IonLabel>
         <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => console.log("Open Supplements")}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIVSuppl")}/>
       </IonItem>
       <div id="myDIVSuppl">
         <IonList>

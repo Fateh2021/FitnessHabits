@@ -5,11 +5,11 @@ import { IonReactRouter } from '@ionic/react-router';
 import LogIn from './pages/Login/LogIn';
 import Register from './pages/Register/Register';
 import Intro from './pages/Intro/Intro';
-import Dashboard from './pages/Dashboard/Dashboard'
+import Dashboard from './pages/Dashboard/Dashboard';
 import Languages from './pages/Dashboard/Languages';
 import GrapheGlycemie from './pages/GrapheGlycemie/graphe';
 import Settings from './pages/Settings/Settings'
-import Export from './pages/Settings/Export'
+import Export from './pages/Export/Export'
 import ConfigurationPoids from './pages/Poids/configuration/configuration';
 import ConfigurationNotification from './pages/Poids/configuration/configurationNotification';
 import { Settings as LuxonSettings } from "luxon";
@@ -44,7 +44,7 @@ const RoutingSystem = () => {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/logIn" component={LogIn} />
           <Route path="/register" component={Register} />
-          <Route patg="/export" component={Export}/>
+          <Route path="/export" component={Export} />
           <Route path="/settings" component={Settings} />
           <Route path="/intro" component={Intro} exact={true} />
           <Route path="/glycemie" component={GlycemieInitial} />

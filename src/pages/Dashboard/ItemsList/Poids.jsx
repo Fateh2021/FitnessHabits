@@ -4,20 +4,11 @@ import * as poidsService from "../../Poids/configuration/poidsService"
 import * as translate from "../../../translate/Translator";
 
 import {
-  IonInput,
-  IonText,
-  IonButton,
-  IonGrid,
-  IonContent,
-  IonIcon,
-  IonLabel,
-  IonItem,
-  IonAvatar,
-  IonCol,
-  IonRow,
-  IonItemDivider,
-  IonSelect,
-  IonSelectOption,
+    IonInput,
+    IonIcon,
+    IonLabel,
+    IonItem,
+    IonAvatar
 } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
@@ -25,171 +16,178 @@ import "../../../pages/poids.css";
 import TableauPoids from "../../Poids/configuration/TableauPoids";
 
 const accor = (divId) => {
-  const divElt = document.getElementById(divId);
-  if (divElt) {
-    !divElt.style.display || divElt.style.display === "none"
-      ? (divElt.style.display = "block")
-      : (divElt.style.display = "none");
-  }
+    const divElt = document.getElementById(divId);
+    if (divElt) {
+        divElt.style.display =  !divElt.style.display || divElt.style.display === "none"? "block": "none";
+    }
 };
 
 const Poids = (props) => {
-  const [unitePoids, setUnitePoids] = useState("KG");
-  const [currentDate, setCurrentDate] = useState({ startDate: new Date() });
-  var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
-  const [poids, setPoids] = useState(props.poids);
-  var [taille, setTaille] = useState("");
-
-  useEffect(() => {
-    setDailyPoids(props.poids.dailyPoids);
-  }, [props.poids.dailyPoids]);
-
-  useEffect(() => {
-    setPoids(props.poids);
-  }, [props.poids]);
-
-  useEffect(() => {
-    poidsService.initPrefPoids()
+    // Ajout de cette variable dans le but de vérifier quel était la préférence d'affichage du poids.
+    var prefPoids = localStorage.getItem("prefUnitePoids");
+    const [unitePoids, setUnitePoids] = useState(prefPoids);
+    const [currentDate, ] = useState({ startDate: new Date() });
+    var [dailyPoids, setDailyPoids] = useState(props.poids.dailyPoids);
+    var [taille, setTaille] = useState("");
+    var [imc, setImc] = useState("0.0");
     const userUID = localStorage.getItem("userUid");
-    let preferencesPoidsRef = firebase
-      .database()
-      .ref("profiles/" + userUID + "/preferencesPoids");
-    preferencesPoidsRef.once("value").then(function (snapshot) {
-      if (snapshot.val() != null) {
-        setUnitePoids(snapshot.val().unitePoids);
-        if (snapshot.val().unitePoids == "LBS") {
-          props.poids.dailyPoids = props.poids.dailyPoids * 2.2;
+
+    useEffect(() => {
+        var tmp = "";
+        if (prefPoids == "LBS") tmp = (props.poids.dailyPoids * 2.2).toFixed(2);
+        else tmp = props.poids.dailyPoids;
+        setDailyPoids(tmp);
+    }, [props.poids.dailyPoids]);
+
+    useEffect(() => {
+        poidsService.initPrefPoids();
+        let preferencesPoidsRef = firebase
+            .database()
+            .ref("profiles/" + userUID + "/preferencesPoids");
+        preferencesPoidsRef.once("value").then(function (snapshot) {
+            if (snapshot.val() != null) {
+                setUnitePoids(snapshot.val().unitePoids);
+            }
+        });
+
+        var taille_l = firebase.database().ref("profiles/" + userUID);
+        taille_l.once("value").then(function (snapshot) {
+            if (snapshot.val() != null) {
+                setTaille(snapshot.val().size);
+            }
+        });
+
+        setImc(CalculImc());
+    });
+
+    // Capture de l'éventement si unite de préférence du poids change
+    const handleUnitePoidsChange = (event) => {
+        let newUnitePoids = event.target.value;
+        poidsService.setPrefUnitePoids(newUnitePoids);
+        let oldUnitePoids = unitePoids;
+    
+        setUnitePoids(newUnitePoids);
+        const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+        var tmp_weight = 0;
+
+        if (oldUnitePoids === "KG" && newUnitePoids === "LBS") {
+
+            tmp_weight = (dashboard.poids.dailyPoids * 2.2).toFixed(2);      
+        } else {
+            tmp_weight = dashboard.poids.dailyPoids;
+
         }
-      }
-    });
-    // setUnitePoids(poidsService.getPrefUnitePoids())
-    var taille = firebase.database().ref("profiles/" + userUID);
-    taille.once("value").then(function (snapshot) {
-      if (snapshot.val() != null) {
-        setTaille(snapshot.val().size);
-      }
-    });
-  }, []);
 
-  const handleUnitePoidsChange = (e) => {
-    let value = e.detail.value;
-    poidsService.setPrefUnitePoids(value)
-    let OldUnitePoids = unitePoids;
-    setUnitePoids(value);
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+        setDailyPoids(tmp_weight);
+        localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
-    if (OldUnitePoids == "KG" && value == "LBS") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids * 2.2).toFixed(
-        2
-      );
-      setDailyPoids((dailyPoids * 2.2).toFixed(2));
-    } else if (OldUnitePoids == "LBS" && value == "KG") {
-      dashboard.poids.dailyPoids = (dashboard.poids.dailyPoids / 2.2).toFixed(
-        2
-      );
-      setDailyPoids((dailyPoids / 2.2).toFixed(2));
-    }
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    CalculImc();
-  };
+        setImc(CalculImc());
 
-  const handleChange = (event) => {
-    let dailyPoids = event.target.value;
+    };
 
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    const prefUnitePoids = localStorage.getItem('prefUnitePoids');
-
-    dashboard.poids.dailyPoids = poidsService.formatToKG(dailyPoids);
-    dashboard.poids.datePoids = new Date();
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    setDailyPoids(dailyPoids);
-    if (unitePoids == "LBS") {
-      dashboard.poids.dailyPoids = (dailyPoids / 2.2).toFixed(2);
+    // Capture de l'éventement si IMC change
+    const handleIMCChange = (event) => {
+        let change_IMC = event.target.value;
+        /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
+       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
+       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
+    */
+        if (change_IMC > 10) {
+            poidsService.verifier_changement_IMC(change_IMC);
+        }
     }
 
-    const userUID = localStorage.getItem("userUid");
-    firebase
-      .database()
-      .ref(
-        "dashboard/" +
+    // Capture de l'éventement si le dailyPoids change
+    const handleChange = (event) => {
+        let poidsDaily = event.detail.value;
+        const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+
+        dashboard.poids.dailyPoids = poidsService.formatToKG(poidsDaily);
+        dashboard.poids.datePoids = new Date();
+        localStorage.setItem("dashboard", JSON.stringify(dashboard));
+
+        setDailyPoids(poidsDaily);
+
+        firebase
+            .database()
+            .ref(
+                "dashboard/" +
           userUID +
           "/" +
           currentDate.startDate.getDate() +
           (currentDate.startDate.getMonth() + 1) +
           currentDate.startDate.getFullYear()
-      )
-      .update(dashboard);
+            )
+            .update(dashboard);
+    };
 
-      
-  };
-  var CalculImc = () => {
-    taille = taille / 100;
-    var p = dailyPoids;
-    var IMC;
-    if (unitePoids == "LBS") {
-      p = (p / 2.2).toFixed(2);
-      IMC = p / (taille * taille);
-    } else {
-      IMC = dailyPoids / (taille * taille);
-    }
-    return IMC.toFixed(2);
-  };
-  const IMC = CalculImc();
+    // La fonction qui calcul IMC en fonction de la taille et le poids
+    var CalculImc = () => {
+        var tmp_taille = taille / 100;
+        var p = dailyPoids;
 
-  const handleRouteToConfigurationPoids = () => {
-    window.location.href = "/configurationPoids";
-  };
+        if (unitePoids == "LBS") p = (dailyPoids / 2.2).toFixed(2);
+    
+        var indicateur_IMC = p / (tmp_taille * tmp_taille);
+        return indicateur_IMC.toFixed(2);
+    };
 
-  return (
-    <div>
-      <IonItem className="divTitre9" lines="none">
-        <IonAvatar slot="start" onClick={handleRouteToConfigurationPoids}>
-          <img src="/assets/Poids.jpg" alt="" />
-        </IonAvatar>{" "}
-        <IonLabel classeName="titrePoids" style={{ width: 60 }}>
-          <h2 color="warning">
-            <b>Poids</b>
-          </h2>
-        </IonLabel>
-        <div className="titreImc">
-          <IonLabel>
-            <h2 style={{ marginLeft: 10 }} className="IMC">
-              <b>IMC</b>
-            </h2>
-          </IonLabel>
-          <IonInput
-            value={IMC}
-            type="number"
-            className="IMC"
-            readonly
-          ></IonInput>
+    const handleRouteToConfigurationPoids = () => {
+        window.location.href = "/configurationPoids";
+    };
+
+    return (
+        <div>
+            <IonItem className="divTitre9" lines="none">
+                <IonAvatar class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
+                    <img data-testid = "img_sauter" src="/assets/Poids.jpg" alt="" />
+                </IonAvatar>{" "}
+                <IonLabel classeName="titrePoids" style={{ width: 60 }}>
+                    <h2 color="warning">
+	        <b>{translate.getText("POIDS_NOM_SECTION")}</b>
+                    </h2>
+                </IonLabel>
+                <div className="titreImc">
+                    <IonLabel>
+                        <h2 className="IMC" style={{ marginLeft: 13 }}>
+                            <b>{translate.getText("POIDS_IMC_ACCRONIME")}</b>
+                        </h2>
+                    </IonLabel>
+                    <IonInput
+                        //value={IMC == "Infinity" ? "" : IMC}
+                        value={imc == "Infinity" ? "" : imc}
+                        data-testid = "IMC_value" 
+                        className="IMC"
+                        aria-label="imc"
+                        readonly
+                        onIonChange={handleIMCChange}  
+            
+                    ></IonInput>
+                </div>
+                <IonInput
+                    data-testid = "poids_input"  
+                    className="input poidsActuel"
+                    value={dailyPoids}              
+                    onIonChange={handleChange}
+                    aria-label="weight"
+                    title="Daily weight"
+                ></IonInput>
+
+                <select data-testid = "select" className="input" value={unitePoids} onChange={handleUnitePoidsChange} >
+                    <option value="LBS">LBS</option>
+                    <option value="KG">KG</option>
+                </select>
+
+                <IonIcon
+                    className="arrowDashItem"
+                    icon={arrowDropdownCircle}
+                    onClick={() => accor("accordeonPoids")}
+                />
+            </IonItem>
+            <div id="accordeonPoids" className="accordeonPoids">
+                <TableauPoids></TableauPoids>
+            </div>
         </div>
-        <IonInput
-          className="poidsActuelReadOnly"
-          type="number"
-          value={dailyPoids}
-          onIonChange={handleChange}
-        ></IonInput>
-        <IonSelect
-          className="unitePoids"
-          value={unitePoids}
-          okText={translate.getText("POIDS_PREF_CHOISIR")}
-          cancelText={translate.getText("POIDS_PREF_ANNULER")}
-          onIonChange={handleUnitePoidsChange}
-        >
-          <IonSelectOption value="LBS">LBS</IonSelectOption>
-          <IonSelectOption value="KG">KG</IonSelectOption>
-        </IonSelect>
-        <IonIcon
-          className="arrowDashItem"
-          icon={arrowDropdownCircle}
-          onClick={() => accor("accordeonPoids")}
-        />
-      </IonItem>
-      <div id="accordeonPoids" className="accordeonPoids">
-        <TableauPoids></TableauPoids>
-      </div>
-    </div>
-  );
+    );
 };
 export default Poids;
