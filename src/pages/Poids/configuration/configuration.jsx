@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { IonCard, IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
+import React from 'react';
 import HeaderPoids from "./header";
 import InitialisationPoids from "./Initialisation";
-import * as translate from "../../../translate/Translator";
 
 // nous avons nettoyer tous ce qui ne touchait pas la page initilisation,
 // car la section configuration des notifications étaient tout simplement une coquille vide

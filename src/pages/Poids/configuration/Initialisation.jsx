@@ -23,7 +23,6 @@ function formatDate (date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
-
 const [poidsInitial, setPoidsInitial] = useState("");
 const [poidsCible, setPoidsCible] = useState("");
 const [dateCible, setDateCible] = useState("");
