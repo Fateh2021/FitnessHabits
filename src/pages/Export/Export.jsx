@@ -273,8 +273,8 @@ const Settings = (props) => {
                             format={dateFormat}
                             onChange={onChangeD1}
                             value={d1}
-                            minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 10))} // max 10 ans plus tôt
-                            maxDate={d2}
+                            minDate={new Date("03-30-2022")} // Quand le data est bien formatté
+                            maxDate={new Date(d2.valueOf() - 86400000)}
                             clearIcon={null}
                             autoFocus={true}
                             onKeyDown={(e) => {
