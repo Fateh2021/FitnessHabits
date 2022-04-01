@@ -23,6 +23,7 @@ function formatDate (date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
+
 const [poidsInitial, setPoidsInitial] = useState("");
 const [poidsCible, setPoidsCible] = useState("");
 const [dateCible, setDateCible] = useState("");
@@ -93,7 +94,7 @@ const handleReinitialisation = () => {
     var graphData = []
     // J'ai retiré la validation si le retour de fireball contenait ou pas des données pour enlever un code smell
     // Si le résultat est null, le graphique restera null et mettra 0 comme valeur par défault
-    for (const [_,value] of Object.entries(snapshot.val())) {
+    for (const [,value] of Object.entries(snapshot.val())) {
         if (value.poids.datePoids !== undefined) {
             let datePoids = formatDate(value.poids.datePoids)
             let poids = poidsService.formatPoids(value.poids.dailyPoids)
