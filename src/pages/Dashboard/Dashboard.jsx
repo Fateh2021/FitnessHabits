@@ -542,9 +542,11 @@ const Dashboard = (props) => {
                         <IonItem className="divTitre2">
                             <IonAvatar slot="start"><img src="/assets/nutrition.jpg" alt=""/></IonAvatar>
                             <IonLabel><h2><b>{ translate.getText("FOOD_MODULE", ["title"]) }</b></h2></IonLabel>
-                            <span id="totalMacroNutriment">{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'totalMacroNutriments'])}:</span>
                             <IonGrid>
                                 <IonRow>
+                                    <IonCol>
+                                        <IonButton fill="clear" size='small'><span id="totalMacroNutriment">{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'totalMacroNutriments'])}:</span></IonButton>
+                                    </IonCol>
                                     <IonCol>
                                         <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeProteins"])}: {dashboard.food.globalMacroNutrimentConsumption.proteins}</IonButton>
                                     </IonCol>
