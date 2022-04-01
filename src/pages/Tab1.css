@@ -1904,6 +1904,7 @@ h2{
 
 .colNutProteinesHyd {
   background-color:  brown;
+  text-align: center;
 }
 
 .divMacroAdd{
@@ -1913,14 +1914,17 @@ h2{
 
 .colNutGlucidesHyd {
   background-color:  #db4e3e;
+  text-align: center;
 }
 
 .colNutFibresHyd {
   background-color:  #589051;
+  text-align: center;
 }
 
 .colNutGrasHyd {
   background-color: rgb(202, 154, 23);
+  text-align: center;
 }
 
 .divTitre1 {
