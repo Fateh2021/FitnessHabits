@@ -1071,7 +1071,7 @@
 	"POIDS_DEBUT_MESSAGE_ALERT": {
 		"en":"Warning, please enter the missing information in the following fields :\n",
 		"es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
-		"fr":"Attention, veuiller saisir les informations manquantes dans les champs suivant :\n"
+		"fr":"Attention, veuillez saisir les informations manquantes dans les champs suivant :\n"
 	},
 	"POIDS_INITIAL_VIDE":{
 		"en":"\nThe initial weight must not be empty !",
