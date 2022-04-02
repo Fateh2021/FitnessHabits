@@ -17,6 +17,7 @@ cache:
 stages:
   - build
   - tests
+  - lint
 
 before_script:
   - npm ci --cache .npm --prefer-offline
@@ -36,4 +37,12 @@ tests:
     # Running unit tests
     - echo "Running unit tests..."
     - CI=true npm run test:ci
+  interruptible: true
+
+lint:
+  stage: lint
+  script:
+    # Running lint
+    - echo "Running lint..."
+    - npm run lint
   interruptible: true

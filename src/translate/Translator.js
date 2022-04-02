@@ -1,11 +1,11 @@
-import firebase from 'firebase'
-const dict = require('./Translation.json');
+import firebase from "firebase"
+const dict = require("./Translation.json");
 const supportedLanguages = ["en", "es", "fr"];
-const userUID = localStorage.getItem('userUid');
+const userUID = localStorage.getItem("userUid");
 
 export function initLangue() {
     var language = "fr"
-    let prefLangueRef = firebase.database().ref('language/' + userUID)
+    let prefLangueRef = firebase.database().ref("language/" + userUID)
     prefLangueRef.once("value").then(function(snapshot) {
         if (localStorage["userLanguage"]) {
             language = localStorage.getItem("userLanguage");
@@ -27,7 +27,7 @@ export function setLang(lang) {
     if (supportedLanguages.includes(lang)) {
         localStorage.setItem("userLanguage", lang);
         var field = { "langue": lang }
-    firebase.database().ref('language/' + userUID).update(field);
+        firebase.database().ref("language/" + userUID).update(field);
     }
 }
 
@@ -55,4 +55,4 @@ const searchKeyAtVariableDepth = (obj, lang, subkeys) => {
         return searchKeyAtVariableDepth(obj[currentKey], lang, subkeys);
     }
     return `Node with key ${currentKey} is undefined`;
-  };
+};
