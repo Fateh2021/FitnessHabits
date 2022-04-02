@@ -310,7 +310,7 @@ export function glycimiaAggrData() {
         let line_1 = [];
         let line_2 = [];
 
-        var moyenneTitle = translate.getText("EXP_REPORT_DURATION");
+        var moyenneTitle = translate.getText("AVG");
         var moyenne = averageGlycemia.get("Moyenne");
         line_1.push(moyenneTitle, moyenne);
 
@@ -594,7 +594,7 @@ export function weightHeaders() {
     var agg = CompilerBilan.getAggregateWeights();
     var Date = translate.getText("DATE_TITLE");
     //var poids = translate.getText("EXP_REPORT_WEIGHT") + CompilerBilan.getAggregateWeights().get('weightUnit');
-    var poids = translate.getText("EXP_REPORT_WEIGHT") + agg.get('weightUnit');
+    var poids = translate.getText("EXP_REPORT_WEIGHT") + ' (' + agg.get('weightUnit') + ')';
     return [Date, poids];
 }
 export function weightAggrData() {

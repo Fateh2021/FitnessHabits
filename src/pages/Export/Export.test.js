@@ -1319,7 +1319,7 @@ test('ExportModule - english traduction', () => {
     [dateTitle, poidsTitle] = weightHeaders(); //translate.getText("EXP_REPORT_WEIGHT") + agg.get('weightUnit'); //translate.getText("DATE_TITLE");
 
     expect(dateTitle).toEqual('Date');
-    expect(poidsTitle).toEqual('Weight' + unitePoids);
+    expect(poidsTitle).toEqual('Weight' + ' (' + unitePoids + ')');
 });
 
 /**
