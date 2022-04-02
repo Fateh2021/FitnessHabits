@@ -15,6 +15,22 @@ import {
     setPrefUnitePoids,
     trouver_nouvelle_categorie
 } from "../../Poids/configuration/poidsService";
+import firebase from "firebase";
+
+jest.mock("firebase", () => {
+    return {
+        auth: jest.fn(),
+        database: jest.fn().mockReturnValue({
+            ref: jest.fn().mockReturnValue({
+                update: jest.fn(),
+                once: jest.fn().mockReturnValue(new Promise(() => {})),
+                orderByChild: jest.fn().mockReturnValue({
+                    once: jest.fn().mockReturnValue(new Promise(() => {}))
+                })
+            })
+        })
+    };
+});
 
 beforeEach(() => {
     var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
