@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import '@testing-library/jest-dom'
-import '@testing-library/jest-dom/extend-expect';
-import DatePicker from "react-datepicker";
-import { BrowserRouter } from 'react-router-dom';
-import { act } from "react-dom/test-utils";
+import React from "react";
+import {fireEvent, render, screen} from "@testing-library/react";
+import "@testing-library/jest-dom"
+import "@testing-library/jest-dom/extend-expect";
+import {BrowserRouter} from "react-router-dom";
+import {act} from "react-dom/test-utils";
 
-import App from '../../App';
-import * as CompilerBilan from './CompilerBilan';
-import Settings from "./Export";
-import { ExportToCsv } from "export-to-csv";
-import { jsPDF } from "jspdf";
-import data from './example_test.json';
-import { execPath } from 'process';
+import App from "../../App";
+import * as CompilerBilan from "./CompilerBilan";
+import data from "./example_test.json";
 
-const renderWithRouter = (ui, { route = '/' } = {}) => {
-    window.history.pushState({}, 'Test page', route);
+const renderWithRouter = (ui, { route = "/" } = {}) => {
+    window.history.pushState({}, "Test page", route);
     return render(ui, { wrapper: BrowserRouter });
 }
 
-test('renders without crashing', async() => {
+test("renders without crashing", async() => {
     const { baseElement } = render(<App />);
     expect(baseElement).toBeDefined();
 });
@@ -65,8 +60,8 @@ test('ExportModule - Check if PDF export options set correctly', async() => {
 });
 */
 /* Tester la présence des composantes dans la page */
-test('ExportModule - TestElementsPresence_1', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestElementsPresence_1", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
     const actPhys = screen.getByTestId(/checkbox-activities/i);
     expect(actPhys).toBeInTheDocument();
 
@@ -97,79 +92,79 @@ test('ExportModule - TestElementsPresence_1', async() => {
 });
 
 
-test('ExportModule - TestCheckBoxDefaultBehaviour', () => {
-    renderWithRouter(<App />, {route: '/Export'});
-    const checkboxes = screen.getAllByRole('checkbox', { checked: 'True' })
+test("ExportModule - TestCheckBoxDefaultBehaviour", () => {
+    renderWithRouter(<App />, {route: "/Export"});
+    const checkboxes = screen.getAllByRole("checkbox", { checked: "True" })
     expect(checkboxes.length).toEqual(9);
 });
 
-test('ExportModule - TestEnglishTranslation', async() => {
-    localStorage.setItem('userLanguage', 'en');
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestEnglishTranslation", async() => {
+    localStorage.setItem("userLanguage", "en");
+    renderWithRouter(<App />, {route: "/Export"});
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
-    expect(nourriture.textContent).toBe('Food');
+    expect(nourriture.textContent).toBe("Food");
 
     const act = screen.getByTestId(/checkbox-activities/i);
-    expect(act.textContent).toBe('Physical activities');
+    expect(act.textContent).toBe("Physical activities");
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
-    expect(hyd.textContent).toBe('Hydration');
+    expect(hyd.textContent).toBe("Hydration");
 
     const supp = screen.getByTestId(/checkbox-supplements/i);
-    expect(supp.textContent).toBe('Supplements');
+    expect(supp.textContent).toBe("Supplements");
 
     const sleep = screen.getByTestId(/checkbox-sleep/i);
-    expect(sleep.textContent).toBe('Sleep');
+    expect(sleep.textContent).toBe("Sleep");
 
     const weight = screen.getByTestId(/checkbox-weight/i);
-    expect(weight.textContent).toBe('Weight');
+    expect(weight.textContent).toBe("Weight");
 
     const glyc = screen.getByTestId(/checkbox-glycemia/i);
-    expect(glyc.textContent).toBe('Blood sugar level');
+    expect(glyc.textContent).toBe("Blood sugar level");
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    expect(alcool.textContent).toBe('Alcohol');
+    expect(alcool.textContent).toBe("Alcohol");
 
     const toilet = screen.getByTestId(/checkbox-toilet/i);
-    expect(toilet.textContent).toBe('Toilets');
+    expect(toilet.textContent).toBe("Toilets");
 });
 
-test('ExportModule - TestFrenchTranslation', async() => {
-    localStorage.setItem('userLanguage', 'fr');
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestFrenchTranslation", async() => {
+    localStorage.setItem("userLanguage", "fr");
+    renderWithRouter(<App />, {route: "/Export"});
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
-    expect(nourriture.textContent).toBe('Nourriture')
+    expect(nourriture.textContent).toBe("Nourriture")
 
     const act = screen.getByTestId(/checkbox-activities/i);
-    expect(act.textContent).toBe('Activités physiques');
+    expect(act.textContent).toBe("Activités physiques");
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
-    expect(hyd.textContent).toBe('Hydratation');
+    expect(hyd.textContent).toBe("Hydratation");
 
     const supp = screen.getByTestId(/checkbox-supplements/i);
-    expect(supp.textContent).toBe('Suppléments');
+    expect(supp.textContent).toBe("Suppléments");
 
     const sleep = screen.getByTestId(/checkbox-sleep/i);
-    expect(sleep.textContent).toBe('Sommeil');
+    expect(sleep.textContent).toBe("Sommeil");
 
     const weight = screen.getByTestId(/checkbox-weight/i);
-    expect(weight.textContent).toBe('Poids');
+    expect(weight.textContent).toBe("Poids");
 
     const glyc = screen.getByTestId(/checkbox-glycemia/i);
-    expect(glyc.textContent).toBe('Glycémie');
+    expect(glyc.textContent).toBe("Glycémie");
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    expect(alcool.textContent).toBe('Alcool');
+    expect(alcool.textContent).toBe("Alcool");
 
     const toilet = screen.getByTestId(/checkbox-toilet/i);
-    expect(toilet.textContent).toBe('Toilettes');
+    expect(toilet.textContent).toBe("Toilettes");
 });
 
-test('ExportModule - TestSpanishTranslation', async() => {
-    localStorage.setItem('userLanguage', 'es');
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestSpanishTranslation", async() => {
+    localStorage.setItem("userLanguage", "es");
+    renderWithRouter(<App />, {route: "/Export"});
 
     //EXPORTAR
     //Fechas de exportación
@@ -178,31 +173,31 @@ test('ExportModule - TestSpanishTranslation', async() => {
     //Selección de los datos a exportar
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture).toBeInTheDocument();
-    expect(nourriture.textContent).toBe('Alimentos')
+    expect(nourriture.textContent).toBe("Alimentos")
 
     const act = screen.getByTestId(/checkbox-activities/i);
-    expect(act.textContent).toBe('Actividades físicas');
+    expect(act.textContent).toBe("Actividades físicas");
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
-    expect(hyd.textContent).toBe('Hidratación');
+    expect(hyd.textContent).toBe("Hidratación");
 
     const supp = screen.getByTestId(/checkbox-supplements/i);
-    expect(supp.textContent).toBe('Suplementos');
+    expect(supp.textContent).toBe("Suplementos");
 
     const sleep = screen.getByTestId(/checkbox-sleep/i);
-    expect(sleep.textContent).toBe('Dormir');
+    expect(sleep.textContent).toBe("Dormir");
 
     const weight = screen.getByTestId(/checkbox-weight/i);
-    expect(weight.textContent).toBe('Peso');
+    expect(weight.textContent).toBe("Peso");
 
     const glyc = screen.getByTestId(/checkbox-glycemia/i);
-    expect(glyc.textContent).toBe('Glucemia');
+    expect(glyc.textContent).toBe("Glucemia");
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    expect(alcool.textContent).toBe('Alcohol');
+    expect(alcool.textContent).toBe("Alcohol");
 
     const toilet = screen.getByTestId(/checkbox-toilet/i);
-    expect(toilet.textContent).toBe('Aseos');
+    expect(toilet.textContent).toBe("Aseos");
 
     //Formato de exportación
     //CSV
@@ -229,8 +224,8 @@ test('ExportModule - TestDefaultDateBehaviour', async() => {
 });
 */
 /*Test if format selected changes, no change in attributes selected*/
-test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
     //to be false
     const checkbox_food = screen.getByTestId("checkbox-food")
     const checkbox_sleep = screen.getByTestId("checkbox-sleep")
@@ -243,10 +238,10 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 
     const radio_pdf = screen.getByTestId("radio-pdf")
     await act( async () => {
-          fireEvent.click(checkbox_food)
-          fireEvent.click(checkbox_sleep)
-          fireEvent.click(checkbox_weight)
-          fireEvent.click(radio_pdf)
+        fireEvent.click(checkbox_food)
+        fireEvent.click(checkbox_sleep)
+        fireEvent.click(checkbox_weight)
+        fireEvent.click(radio_pdf)
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
     expect(checkbox_sleep.getAttribute("aria-checked")).toBe("false")
@@ -259,20 +254,20 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 
 //todo
 /*Test if dates changes, no change in attributes selected*/
-test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestNoChangeOnAttributes_whenSelectingDates", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
 });
 
 //todo
 /*Tester les messages d'erreurs -- aucune erreur*/
-test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
-    expect(screen.queryByRole('alert')).toBeNull();
+test("ExportModule - TestErrorMessage_NoErrorDisplayed", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
+    expect(screen.queryByRole("alert")).toBeNull();
 });
 
 /*Tester les messages d'erreurs quand il n'y a aucune sélection -- avec erreur*/
-test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
     //to be false
     const checkbox_activities = screen.getByTestId("checkbox-activities")
     const checkbox_food = screen.getByTestId("checkbox-food")
@@ -305,8 +300,8 @@ test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() =>
 });
 
 
-test('ExportModule - TestClickOnFoodCheckbox', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestClickOnFoodCheckbox", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
     const checkbox_food = screen.getByTestId("checkbox-food")
     await act( async () => {
         fireEvent.click(checkbox_food)
@@ -315,18 +310,18 @@ test('ExportModule - TestClickOnFoodCheckbox', async() => {
 });
 
 
-test('ExportModule - TestClickOnFoodCheckbox', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
+test("ExportModule - TestClickOnFoodCheckbox", async() => {
+    renderWithRouter(<App />, {route: "/Export"});
     const checkbox_food = screen.getByTestId("checkbox-food")
     await act( async () => {
-         fireEvent.click(checkbox_food)
+        fireEvent.click(checkbox_food)
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
 });
 
 
-{/* ------Compiler Bilan----------- */}
-test('ExportModule - TestFetchNourritureCereale', async() => {
+{ /* ------Compiler Bilan----------- */ }
+test("ExportModule - TestFetchNourritureCereale", async() => {
     let data_cereales;
     data.map((element)=>{
         data_cereales=element.cereales.cereales
@@ -334,7 +329,7 @@ test('ExportModule - TestFetchNourritureCereale', async() => {
     let arrayExpected=[]
     data_cereales.map((element)=>{
         let mapExpected = new Map();
-        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Date", "18-03-2022");
         mapExpected.set("Nom", element.name);
         mapExpected.set("Consommation", element.consumption);
         mapExpected.set("Quantité", element.qtte);
@@ -346,10 +341,10 @@ test('ExportModule - TestFetchNourritureCereale', async() => {
         arrayExpected.push(mapExpected);
     })
  
-    expect(CompilerBilan.test_fetchNourriture(data_cereales,'18-03-2022')).toEqual(arrayExpected)
+    expect(CompilerBilan.test_fetchNourriture(data_cereales, "18-03-2022")).toEqual(arrayExpected)
 });
 
-test('ExportModule - TestFetchNourritureCereale0Consumption', async() => {
+test("ExportModule - TestFetchNourritureCereale0Consumption", async() => {
     CompilerBilan.resetDataArrays()
     let data_cereales;
     data.map((element)=>{
@@ -359,17 +354,17 @@ test('ExportModule - TestFetchNourritureCereale0Consumption', async() => {
         element.consumption=0;
     })
     
-    expect(CompilerBilan.test_fetchNourriture(data_cereales,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchNourriture(data_cereales, "18-03-2022")).toEqual([])
 });
 
-test('ExportModule - TestFetchNourritureCerealeNull', async() => {
+test("ExportModule - TestFetchNourritureCerealeNull", async() => {
     CompilerBilan.resetDataArrays()
-    expect(CompilerBilan.test_fetchNourriture(null,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchNourriture(null, "18-03-2022")).toEqual([])
 });
 
 
 
-test('ExportModule - TestFetchDrinksHydratation', async() => {
+test("ExportModule - TestFetchDrinksHydratation", async() => {
     let data_hydratation;
     data.map((element)=>{
         data_hydratation=element.hydratation.hydrates;
@@ -377,7 +372,7 @@ test('ExportModule - TestFetchDrinksHydratation', async() => {
     let arrayExpected=[]
     data_hydratation.map((element)=>{
         let mapExpected = new Map();
-        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Date", "18-03-2022");
         mapExpected.set("Nom", element.name);
         mapExpected.set("Consommation", element.consumption);
         mapExpected.set("Quantité", element.qtte);
@@ -389,10 +384,10 @@ test('ExportModule - TestFetchDrinksHydratation', async() => {
         arrayExpected.push(mapExpected);
     })
  
-    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual(arrayExpected);
+    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation", data_hydratation, "18-03-2022")).toEqual(arrayExpected);
 });
 
-test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
+test("ExportModule - TestFetchDrinksHydratation0Consumption", async() => {
     CompilerBilan.resetDataArrays()
     let data_hydratation;
     data.map((element)=>{
@@ -402,10 +397,10 @@ test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
         element.consumption=0;
     })
     
-    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation",data_hydratation,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchDrinksHydratation("hydratation", data_hydratation, "18-03-2022")).toEqual([])
 });
 
-test('ExportModule - TestFetchDrinksAlcohol', async() => {
+test("ExportModule - TestFetchDrinksAlcohol", async() => {
     let data_alcohol;
     data.map((element)=>{
         data_alcohol=element.alcool.alcools;
@@ -413,7 +408,7 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
     let arrayExpected=[]
     data_alcohol.map((element)=>{
         let mapExpected = new Map();
-        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Date", "18-03-2022");
         mapExpected.set("Nom", element.name);
         mapExpected.set("Consommation", element.consumption);
         mapExpected.set("Quantité", element.qtte);
@@ -425,10 +420,10 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
         arrayExpected.push(mapExpected);
     })
 
-    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
+    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool", data_alcohol, "18-03-2022")).toEqual(arrayExpected);
 });
 
-test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
+test("ExportModule - TestFetchDrinksHydratation0Consumption", async() => {
     CompilerBilan.resetDataArrays()
     let data_alcohol;
     data.map((element)=>{
@@ -438,46 +433,46 @@ test('ExportModule - TestFetchDrinksHydratation0Consumption', async() => {
         element.consumption=0;
     })
     
-    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual([])
+    expect(CompilerBilan.test_fetchDrinksAlcohol("alcool", data_alcohol, "18-03-2022")).toEqual([])
 });
 
-test('ExportModule - Test_getNumberOfUniqueDate', async() => {
+test("ExportModule - Test_getNumberOfUniqueDate", async() => {
 
-    let arrayDateNotUnique=['31-12-2023','18-05-2022',
-    '31-12-2023','15-10-2011','03-01-2022','18-05-2022',
-    '15-10-2011','18-05-2022','03-01-2022','18-05-2022',
-    '03-01-2022','31-12-2023','04-01-2025']
+    let arrayDateNotUnique=["31-12-2023", "18-05-2022",
+        "31-12-2023", "15-10-2011", "03-01-2022", "18-05-2022",
+        "15-10-2011", "18-05-2022", "03-01-2022", "18-05-2022",
+        "03-01-2022", "31-12-2023", "04-01-2025"]
     let arrayOfMapOfNotUniqueDate=[]
 
     arrayDateNotUnique.forEach((element)=>{
         let map= new Map()
-        map.set('Date',element)
+        map.set("Date", element)
         arrayOfMapOfNotUniqueDate.push(map);
     });
     let numberUniqueExpected=5;
     expect(CompilerBilan.test_getNumberOfUniqueDate(arrayOfMapOfNotUniqueDate)).toEqual(numberUniqueExpected);
 });
 
-test('ExportModule - test_sortEntries', async() => {
+test("ExportModule - test_sortEntries", async() => {
 
-    let arrayDateNotSorted=['31-12-2023','18-05-2022',
-    '31-12-2023','15-10-2011','03-01-2022','18-05-2022','13-08-2019']
+    let arrayDateNotSorted=["31-12-2023", "18-05-2022",
+        "31-12-2023", "15-10-2011", "03-01-2022", "18-05-2022", "13-08-2019"]
     let arrayOfMapDateNotSorted=[]
     arrayDateNotSorted.forEach((element)=>{
         let map= new Map()
-        map.set('Date',element)
+        map.set("Date", element)
         arrayOfMapDateNotSorted.push(map);
     });
 
 
     let arrayOfMapDateSorted=[
-        new Map().set('Date','31-12-2023'),
-        new Map().set('Date','31-12-2023'), 
-        new Map().set('Date','18-05-2022'), 
-        new Map().set('Date','18-05-2022'),  
-        new Map().set('Date','03-01-2022'),   
-        new Map().set('Date','13-08-2019'),  
-        new Map().set('Date','15-10-2011'),  
+        new Map().set("Date", "31-12-2023"),
+        new Map().set("Date", "31-12-2023"), 
+        new Map().set("Date", "18-05-2022"), 
+        new Map().set("Date", "18-05-2022"),  
+        new Map().set("Date", "03-01-2022"),   
+        new Map().set("Date", "13-08-2019"),  
+        new Map().set("Date", "15-10-2011"),  
     ]
 
     CompilerBilan.test_sortEntries(arrayOfMapDateNotSorted)

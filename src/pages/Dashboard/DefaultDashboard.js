@@ -1,39 +1,39 @@
-    const DefaultDashboard = {
-        "hydrates" :
+const DefaultDashboard = {
+    "hydrates" :
         [
         ],
     
-        "alcools" :
+    "alcools" :
         [        
 
         ],
     
-        "proteinFoodItems" : 
+    "proteinFoodItems" : 
         [        
             
         ],
     
-        "grainFoodItems" :
+    "grainFoodItems" :
         [        
             
         ],
         
-        "vegetableItems" : 
+    "vegetableItems" : 
         [       
             
         ],
     
-        "fruitItems" : 
+    "fruitItems" : 
         [        
             
         ],
 
-        "dairyProductItems" :
+    "dairyProductItems" :
         [
 
         ],
     
-        "supps" : 
+    "supps" : 
         [        
             
         ]
