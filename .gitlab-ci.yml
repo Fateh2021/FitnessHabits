@@ -1,11 +1,9 @@
 
 image: node:16.14.0
-# Remove comments to use the pipeline only on merge request
-# Only work with a updated GitLab Runner at V11.9+
-# workflow:
-#   rules:
-#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-#     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'master'
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'master'
 
 # Cache modules using lock file
 cache:
