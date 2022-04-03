@@ -628,7 +628,7 @@ function manageSleep(doc) {
     let headers = sleepsHeaders();
     if(CompilerBilan.getSleeps()) {
         addSleepTable(doc, CompilerBilan.getSleeps(), headers);
-        addSleepAggregateTable(doc, headers);
+        addSleepAggregateTable(doc);
     } else {
         insertHeaders(doc, headers, "#152b3f");
         insertNoDataFound(doc);
