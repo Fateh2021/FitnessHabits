@@ -1,8 +1,9 @@
 import React from 'react';
-import {configure, shallow} from 'enzyme'
+import {configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 import BoissonAlcool from './BoissonAlcool';
 import firebase from 'firebase';
+import { render, unmountComponentAtNode } from "react-dom";
 
 // Note: running cleanup afterEach is done automatically for you in @testing-library/react@9.0.0 or higher
 // unmount and cleanup DOM after the test is finished.
@@ -54,7 +55,32 @@ const dummyAlcool = {
 
 describe('BoissonAlcool Test', () => {
 
+    test('change educ alcool setting as Female', () => {
+        const mockAlcoolService = {
+            settings: {
+                updateLimitConsom: (updatedLimitConsom) => {
+                    expect(updatedLimitConsom.dailyTarget).toEqual(2);
+                    expect(updatedLimitConsom.weeklyTarget).toEqual(10);
+                }
+            }
+        };
+        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
+        const mockEvent = { detail: { checked: true } };
+        const component = shallow(<BoissonAlcool 
+            alcool = { dummyAlcool.alcool }
+            alcoolService = {mockAlcoolService} 
+            gender = {'F'} />);
+
+        component.find('#educAlcoolToggle').simulate('ionChange', mockEvent);
+        expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
+    });
+
     test('change educ alcool setting as Male', () => {
+        const mockProfileSercice = {
+            get: () => Promise.resolve({
+                gender: 'H'
+            })
+        };
         const mockAlcoolService = {
             settings: {
                 updateLimitConsom: (updatedLimitConsom) => {
@@ -65,7 +91,10 @@ describe('BoissonAlcool Test', () => {
         };
         jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
         const mockEvent = { detail: { checked: true } };
-        const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
+        const component = shallow(<BoissonAlcool 
+            alcool = { dummyAlcool.alcool }
+            alcoolService={mockAlcoolService}
+            profileService = {mockProfileSercice} />);
 
         component.find('#educAlcoolToggle').simulate('ionChange', mockEvent);
 

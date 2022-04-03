@@ -12,18 +12,19 @@ const BoissonAlcool = (props) => {
   const [notifications, setNotifications] = useState(props.alcool.notifications);
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState(props.gender ? props.gender : '');
   const [alcoolService] = useState(props.alcoolService);
   const [profileService] = useState(props.profileService);
  
   // update state on prop change
+  useEffect(() => defineGender());
   useEffect(() => {
     setNotifications(props.alcool.notifications);
     defineGender().then(() =>{
       setDailyTarget(props.alcool.dailyTarget); 
       setLimitConsom(props.alcool.limitConsom);
     });
-  }, [props.alcool.dailyTarget, props.alcool.limitConsom, props.alcool.notifications])
+  }, [props.alcool.limitConsom.educAlcool, props.alcool.dailyTarget, props.alcool.limitConsom, props.alcool.notifications])
 
   const accorAlcool = (divId) => {
     const divElt=document.getElementById(divId);
@@ -85,6 +86,8 @@ const BoissonAlcool = (props) => {
     profileService
       .get()
       .then(profile => {
+        console.log('WOLOLO')
+        console.log(profileService);
         if (profile) {
           setGender(profile.gender);
         }
