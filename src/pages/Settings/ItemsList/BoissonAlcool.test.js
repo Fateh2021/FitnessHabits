@@ -9,7 +9,6 @@ import firebase from 'firebase';
 
 configure({adapter: new Adapter()});
 
-
 firebase.database = jest.fn(() => {
     return {
         ref: jest.fn(() => {
@@ -55,221 +54,102 @@ const dummyAlcool = {
 
 describe('BoissonAlcool Test', () => {
 
-    test('change educ alcool setting', () => {
-
-        // Render a checkbox with label in the document
-        const checkbox = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } />);
-
-        localStorage.setItem('userUid', '435f4rcev42');
-        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
+    test('change educ alcool setting as Male', () => {
+        const mockAlcoolService = {
+            settings: {
+                updateLimitConsom: (updatedLimitConsom) => {
+                    expect(updatedLimitConsom.dailyTarget).toEqual(3);
+                    expect(updatedLimitConsom.weeklyTarget).toEqual(15);
+                }
+            }
+        };
+        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
         const mockEvent = { detail: { checked: true } };
-        
-        const sets = JSON.parse(localStorage.getItem('settings'));
-        
-        expect(sets.alcool.limitConsom.educAlcool).toEqual(false);
+        const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
 
-        checkbox.find('#educAlcoolToggle').simulate('ionChange', mockEvent);
-        
-        const newSets = JSON.parse(localStorage.getItem('settings'));
+        component.find('#educAlcoolToggle').simulate('ionChange', mockEvent);
 
-        expect(newSets.alcool.limitConsom.educAlcool).toEqual(true);
+        expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });
 
     test('change notification setting', () => {
+        let expectedNotificationsActiveValue = true;
+        const mockAlcoolService = {
+            settings: {
+                updateNotifications: (updatedNotifications) => {
+                    expect(updatedNotifications.active).toEqual(expectedNotificationsActiveValue);
+                }
+            }
+        };
+        jest.spyOn(mockAlcoolService.settings, 'updateNotifications');
+        let mockEvent = { detail: { checked: expectedNotificationsActiveValue } };
+        const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
 
-        // Render a checkbox with label in the document
-        const checkbox = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } />);
-
-        localStorage.setItem('userUid', '435f4rcev42');
-        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
-        const mockEvent = { detail: { checked: true } };
+        // Act.
+        component.find('#notificationToggle').simulate('ionChange', mockEvent);
         
-        const sets = JSON.parse(localStorage.getItem('settings'));
-        
-        expect(sets.alcool.notifications.active).toEqual(false);
+        expect(mockAlcoolService.settings.updateNotifications).toBeCalledTimes(1);
 
-        checkbox.find('#notificationToggle').simulate('ionChange', mockEvent);
-        
-        const newSets = JSON.parse(localStorage.getItem('settings'));
+        // Act.
+        expectedNotificationsActiveValue = false;
+        mockEvent.detail.checked = expectedNotificationsActiveValue;
+        component.find('#notificationToggle').simulate('ionChange', mockEvent);
 
-        expect(newSets.alcool.notifications.active).toEqual(true);
+        expect(mockAlcoolService.settings.updateNotifications).toBeCalledTimes(2);
+
     });
 
     test('change daily target', () => {
-
-        // Render a checkbox with label in the document
-        const checkbox = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } />);
-
-        localStorage.setItem('userUid', '435f4rcev42');
-        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
-        const mockEvent = { target: { value: 5, name: 'value' } };
+        const expectedCibleQqte = 89;
+        const mockAlcoolService = {
+            settings: {
+                updateDailyTarget: (updatedDailyTarget) => {
+                    expect(updatedDailyTarget.value).toEqual(expectedCibleQqte);
+                }
+            }
+        };
+        jest.spyOn(mockAlcoolService.settings, 'updateDailyTarget');
+        const mockEvent = { target: { value: expectedCibleQqte, name: 'value' } };
+        const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
         
-        const sets = JSON.parse(localStorage.getItem('settings'));
+        component.find('#cibleQtte').simulate('ionChange', mockEvent);
         
-        expect(sets.alcool.dailyTarget.value).toEqual(0);
-
-        checkbox.find('#cibleQtte').simulate('ionChange', mockEvent);
-        
-        const newSets = JSON.parse(localStorage.getItem('settings'));
-
-        expect(newSets.alcool.dailyTarget.value).toEqual(5);
+        expect(mockAlcoolService.settings.updateDailyTarget).toBeCalledTimes(1);
     });
 
-    test('change limit consom daily target', () => {
-
-        // Render a checkbox with label in the document
-        const checkbox = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } />);
-
-        localStorage.setItem('userUid', '435f4rcev42');
-        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
-        const mockEvent = { target: { value: 5, name: 'dailyTarget' } };
+    test('change limit consommation daily target', () => {
+        const expectedDailyTarget = 89;
+        const mockAlcoolService = {
+            settings: {
+                updateLimitConsom: (updatedLimitConsom) => {
+                    expect(updatedLimitConsom.dailyTarget).toEqual(expectedDailyTarget);
+                }
+            }
+        };
+        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
+        const mockEvent = { target: { value: expectedDailyTarget, name: 'dailyTarget' } };
+        const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
         
-        const sets = JSON.parse(localStorage.getItem('settings'));
+        component.find('#dailyTargetToggle').simulate('ionChange', mockEvent);
         
-        expect(sets.alcool.limitConsom.dailyTarget).toEqual(0);
-
-        checkbox.find('#dailyTargetToggle').simulate('ionChange', mockEvent);
-        
-        const newSets = JSON.parse(localStorage.getItem('settings'));
-
-        expect(newSets.alcool.limitConsom.dailyTarget).toEqual(5);
+        expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });
 
-    test('change limit consom weeklt target', () => {
-
-        // Render a checkbox with label in the document
-        const checkbox = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } />);
-
-        localStorage.setItem('userUid', '435f4rcev42');
-        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
-        const mockEvent = { target: { value: 5, name: 'weeklyTarget' } };
+    test('change limit consommation weekly target', () => {
+        const expectedWeeklyTarget = 89;
+        const mockAlcoolService = {
+            settings: {
+                updateLimitConsom: (updatedLimitConsom) => {
+                    expect(updatedLimitConsom.weeklyTarget).toEqual(expectedWeeklyTarget);
+                }
+            }
+        };
+        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
+        const mockEvent = { target: { value: expectedWeeklyTarget, name: 'weeklyTarget' } };
+        const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
         
-        const sets = JSON.parse(localStorage.getItem('settings'));
+        component.find('#weeklyTargetToggle').simulate('ionChange', mockEvent);
         
-        expect(sets.alcool.limitConsom.weeklyTarget).toEqual(0);
-
-        checkbox.find('#weeklyTargetToggle').simulate('ionChange', mockEvent);
-        
-        const newSets = JSON.parse(localStorage.getItem('settings'));
-
-        expect(newSets.alcool.limitConsom.weeklyTarget).toEqual(5);
+        expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });
-
-    test.skip('change define gender', () => {
-        // Render a checkbox with label in the document
-        const checkbox = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } />);
-
-        localStorage.setItem('userUid', '435f4rcev42');
-        localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
-        const sets = JSON.parse(localStorage.getItem('settings'));
-        expect(sets.alcool.limitConsom.weeklyTarget).toEqual(0);
-    });
-
-
 });
-
-// import { database } from 'firebase';
-// import React from 'react';
-// import { render, unmountComponentAtNode } from 'react-dom';
-// import { act } from 'react-dom/test-utils';
-// import BoissonAlcool from './BoissonAlcool';
-
-// const dict = require('../../../translate/Translation.json');
-
-// let container = null;
-
-// // jest.mock("firebase/app", () => {
-// //     const data = { name: "unnamed" };
-// //     const snapshot = { val: () => data };
-// //     return {
-// //       initializeApp: jest.fn().mockReturnValue({
-// //         database: jest.fn().mockReturnValue({
-// //           ref: jest.fn().mockReturnThis(),
-// //           once: jest.fn(() => Promise.resolve(snapshot))
-// //         })
-// //       })
-// //     };
-// //   });
-
-// beforeEach(() => {
-//     // setup a DOM element as a render target
-//     container = document.createElement("div");
-//     document.body.appendChild(container);
-// });
-  
-// afterEach(() => {
-//     // cleanup on exiting
-//     unmountComponentAtNode(container);
-//     container.remove();
-//     container = null;
-// });
-
-// const setUp = (mock, testFunc) => {
-
-//     render(<BoissonAlcool
-//             alcool = { mock.alcool } 
-//             />, container);
-    
-//     testFunc();
-// };
-
-
-// it('test change educ alcool setting', () => {
-//     const dummyAlcool = {
-//         alcool: {
-//             notifications: {
-//                 active: false,
-//             },
-//             dailyTarget:
-//             {
-//                 value: 0
-//             },
-//             limitConsom: {
-//                 dailyTarget: 0,
-//                 weeklyTarget: 0,
-//                 educAlcool: false,
-//                 sobrietyDays: 4,
-//                 notificationMessage: "Good job"
-//             },
-//             alcools: [
-//                 {
-//                     id: 0,
-//                     favoris: false,
-//                     name: '',
-//                     qtte: 0,
-//                     proteine: 0,
-//                     glucide: 0,
-//                     fibre: 0,
-//                     gras: 0,
-//                     unit: '',
-//                     consumption: 0,
-//                 }
-//             ],
-//         }
-//     };
-//     const testFunc = () => {
-        
-//         localStorage.setItem('userUid', '435f4rcev42');
-//         localStorage.setItem('settings', JSON.stringify(dummyAlcool));
-
-//         expect(dummyAlcool.alcool.limitConsom.dailyTarget).toBe(0);
-//         expect(dummyAlcool.alcool.limitConsom.weeklyTarget).toBe(0);
-//         const educAlcoolToggle = document.getElementById('educAlcoolToggle');
-
-//         // educAlcoolToggle.click();
-//         educAlcoolToggle.dispatchEvent(new MouseEvent('click'));
-
-//         const sets = JSON.parse(localStorage.getItem('settings'));
-        
-//         expect(dummyAlcool.alcool.limitConsom.dailyTarget).toBe(3);
-//         expect(dummyAlcool.alcool.limitConsom.weeklyTarget).toBe(15);
-        
-//     };
-//     setUp(dummyAlcool, testFunc);
-// });

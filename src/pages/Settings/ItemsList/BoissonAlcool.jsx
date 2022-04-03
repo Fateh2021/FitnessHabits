@@ -40,7 +40,6 @@ const BoissonAlcool = (props) => {
   }
 
   const handleDailyTargetChangeAlcool = event => {
-    debugger;
     const { name, value } = event.target;
 
     let nameValue = '';
