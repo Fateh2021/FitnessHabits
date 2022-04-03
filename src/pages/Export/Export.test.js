@@ -8,7 +8,6 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { act } from "react-dom/test-utils";
 import * as translate from '../../translate/Translator'
 
-import JSZip from "jszip";
 import {jsPDF} from "jspdf";
 import 'jspdf-autotable';
 
@@ -16,34 +15,13 @@ import mockData from './mockDatas.json';
 import * as CB from './CompilerBilan';
 import * as RC from './RapportCreateur';
 import {
-    creerPdf,
-    addWeightTable,
-    addActivitiesTable,
     addSleepTable,
-    addToiletsTable,
-    addGlycimiaTable,
-    addNourritureTable,
-    addHydratationTable,
-    addAlcoolMacrosTable,
-    addNourritureMacros,
-    addHydratationMacrosTable,
-    addAverageGlycimiaTable,
-    addAverageToiletsTable,
     addSleepAggregateTable,
-    addActivitiesAggregateTable,
-    addWeightAggregateTable,
-    addContentWithAutotable,
     sleepsHeaders,
     weightHeaders,
     activitiesHeaders,
-    toilettesHeaders,
     nourritureHydratAlcoolHeaders,
-    glycemiaHeaders,
-    mapAggActivities,
-    mapAggSleeps,
-    mapAggWeights,
-    toiletteHeaders,
-    toiletteAggrData
+    glycemiaHeaders
 } from "./RapportCreateur";
 
 
@@ -94,7 +72,6 @@ test('ExportModule-TestElementsPresence_1', async() => {
     expect(glycemie).toBeInTheDocument();
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    //const checkboxAlcool = screen.getByRole('checkbox', {name: 'Alcool'});//serait preferable a getbytestid
     expect(alcool).toBeInTheDocument();
 
     const toilettes = screen.getByTestId(/checkbox-toilet/i);
@@ -120,8 +97,8 @@ test('ExportModule - TestEnglishTranslation', async() => {
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture.textContent).toBe('Food');
 
-    const act = screen.getByTestId(/checkbox-activities/i);
-    expect(act.textContent).toBe('Physical activities');
+    const acti = screen.getByTestId(/checkbox-activities/i);
+    expect(acti.textContent).toBe('Physical activities');
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
     expect(hyd.textContent).toBe('Hydration');
@@ -155,8 +132,8 @@ test('ExportModule - TestFrenchTranslation', async() => {
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture.textContent).toBe('Nourriture')
 
-    const act = screen.getByTestId(/checkbox-activities/i);
-    expect(act.textContent).toBe('Activités physiques');
+    const acti = screen.getByTestId(/checkbox-activities/i);
+    expect(acti.textContent).toBe('Activités physiques');
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
     expect(hyd.textContent).toBe('Hydratation');
@@ -187,17 +164,12 @@ test('ExportModule - TestSpanishTranslation', async() => {
     localStorage.setItem('userLanguage', 'es');
     renderWithRouter(<App />, {route: '/Export'});
 
-    //EXPORTAR
-    //Fechas de exportación
-    //Del:
-    //Al
-    //Selección de los datos a exportar
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture).toBeInTheDocument();
     expect(nourriture.textContent).toBe('Alimentos')
 
-    const act = screen.getByTestId(/checkbox-activities/i);
-    expect(act.textContent).toBe('Actividades físicas');
+    const acti = screen.getByTestId(/checkbox-activities/i);
+    expect(acti.textContent).toBe('Actividades físicas');
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
     expect(hyd.textContent).toBe('Hidratación');
@@ -220,31 +192,8 @@ test('ExportModule - TestSpanishTranslation', async() => {
     const toilet = screen.getByTestId(/checkbox-toilet/i);
     expect(toilet.textContent).toBe('Aseos');
 
-    //Formato de exportación
-    //CSV
-    //PDF
-    //CSV Y PDF
-
 });
 
-/**
- * Test the start date by default, 3 month before today's date.
- * TODO: find error fetch one day off ex: 26/03 instead of 25/03 -- appear to be inconsistence in DB
- */
-/*test('ExportModule - TestDefaultDateBehaviour', async() => {
-    renderWithRouter( < App / > , { route: '/Export' });
-
-    const endDate_1 = new Date(new Date() + " UTC").toISOString().slice(0, 10);
-    const endDate_2 = screen.getByTestId('endDate').querySelector('input').value;
-    expect(endDate_2).toBe(endDate_1);
-
-    let startDate_1 = new Date(new Date() + " UTC");
-    startDate_1.setMonth(startDate_1.getMonth() - 3);
-    startDate_1 = startDate_1.toISOString().slice(0, 10);
-    const startDate_2 = screen.getByTestId('startDate').querySelector('input').value;
-    expect(startDate_2).toBe(startDate_1);
-});
-*/
 
 /**
  * When report format selection changes, there must be no change in attributes selected
@@ -278,40 +227,6 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 });
 
 /**
- * If selected dates changes, no change in attributes selected
- */
-test('ExportModule - TestNoChangeOnAttributes_whenSelectingDates', async() => {
-    renderWithRouter(<App />, {route: '/Export'});
-    //to be false
-    const checkbox_food = screen.getByTestId("checkbox-food")
-    const checkbox_sleep = screen.getByTestId("checkbox-sleep")
-    const checkbox_weight = screen.getByTestId("checkbox-weight")
-
-    //to be true
-    const checkbox_toilet = screen.getByTestId("checkbox-toilet")
-    const checkbox_alcool = screen.getByTestId("checkbox-alcool")
-    const checkbox_glycemia = screen.getByTestId("checkbox-glycemia")
-    //the trigger
-    const radio_pdf = screen.getByTestId("radio-pdf")
-
-    await act( async () => {
-          //turn into false
-          fireEvent.click(checkbox_food)
-          fireEvent.click(checkbox_sleep)
-          fireEvent.click(checkbox_weight)
-          //trigger
-          fireEvent.click(radio_pdf)
-    });
-    expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
-    expect(checkbox_sleep.getAttribute("aria-checked")).toBe("false")
-    expect(checkbox_weight.getAttribute("aria-checked")).toBe("false")
-
-    expect(checkbox_toilet.getAttribute("aria-checked")).toBe("true")
-    expect(checkbox_alcool.getAttribute("aria-checked")).toBe("true")
-    expect(checkbox_glycemia.getAttribute("aria-checked")).toBe("true")
-});
-
-/**
  * No error if all checkboxes are selected and the report is trigerred.
  */
 test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
@@ -326,7 +241,6 @@ test('ExportModule - TestErrorMessage_NoErrorDisplayed', async() => {
 
 /**
  * Must show an error when selecting a report but no checkbox selected.
- * TODO correct -- should actualy fail - add the error message
  */
 test('ExportModule - TestErrorMessage_ErrorDisplayedWhenNoSelection', async() => {
     renderWithRouter(<App />, {route: '/Export'});
@@ -423,7 +337,6 @@ test('ExportModule - testGetMacrosNourriture', async() => {
         arrayExpected.push(mapExpected);
     })
     CB.injectDataInArrayNourriture(arrayExpected)
-    //console.log(getMacrosTotalAndAveragePerDay('nourriture'))
     let macrosMapExecpted=new Map();
     macrosMapExecpted.set("totalFiber", 105);
     macrosMapExecpted.set("totalProtein", 140);
@@ -477,22 +390,22 @@ test('ExportModule - testGetAverageToilets', async() => {
     let arrayExpected=[];
     let dates_array = ['18-03-2022','18-04-2022','18-05-2022','18-06-2022'];
 
-    for (let i=0;i<dates_array.length;i++) {
+    for (const date of dates_array) {
         let mapExpected = new Map();
-        mapExpected.set("Date", dates_array[i]);
+        mapExpected.set("Date", date);
         mapExpected.set("Urine", data_toilets.urine);
         mapExpected.set("Transit", data_toilets.feces);
         arrayExpected.push(mapExpected);
     }
 
     CB.injectDataInArrayToilets(arrayExpected)
-    let mapExpected=new Map();
-    mapExpected.set("totalUrine", 20);
-    mapExpected.set("totalFeces", 16);
-    mapExpected.set("averageUrinePerDay", 5);
-    mapExpected.set("averageFecesPerDay", 4);
+    let mapExp=new Map();
+    mapExp.set("totalUrine", 20);
+    mapExp.set("totalFeces", 16);
+    mapExp.set("averageUrinePerDay", 5);
+    mapExp.set("averageFecesPerDay", 4);
 
-    expect(CB.getAverageToilets()).toEqual(mapExpected);
+    expect(CB.getAverageToilets()).toEqual(mapExp);
 });
 
 /**
@@ -534,7 +447,6 @@ test('ExportModule - testGetAverageActivities', async() => {
     let duration_array = ['06:42','16:00','08:01','23:59'];
     for (let i=0;i<dates_array.length;i++) {
         let mapExpected = new Map();
-        mapExpected.set("Date", dates_array[i]);
         mapExpected.set("Date", '18-03-2022');
         mapExpected.set("duration", duration_array[i]);
         mapExpected.set("hours", duration_array[i].slice(0, 2));
@@ -543,12 +455,11 @@ test('ExportModule - testGetAverageActivities', async() => {
     }
 
     CB.injectDataInArrayActivities(arrayExpected);
-    //console.log(CB.getAggregateActivities());
-    let mapExpected=new Map();
-    mapExpected.set("TotalDuration", '54:42');
-    mapExpected.set("AverageDuration", '13:40');
+    let mapExp=new Map();
+    mapExp.set("TotalDuration", '54:42');
+    mapExp.set("AverageDuration", '13:40');
 
-    expect(CB.getAggregateActivities()).toEqual(mapExpected);
+    expect(CB.getAggregateActivities()).toEqual(mapExp);
 });
 
 /**
@@ -570,8 +481,6 @@ test('ExportModule - TestFetchSleep', async() => {
     mapExpected.set("wakeUpState",data_sleep.etatReveil)
     arrayExpected.push(mapExpected)
 
-
-    //console.log(CB.test_fetchSleep(data_sleep,'18-03-2022'))
     expect(CB.test_fetchSleep(data_sleep,'18-03-2022')).toEqual(arrayExpected)
 });
 
@@ -595,9 +504,9 @@ test('ExportModule - testGetAverageSleep', async() => {
     let arrayExpected=[];
     let dates_array = ['18-03-2022','18-04-2022','18-05-2022','18-06-2022'];
 
-    for (let i=0;i<dates_array.length;i++) {
+    for (const date of dates_array) {
         let mapExpected = new Map();
-        mapExpected.set("Date", dates_array[i]);
+        mapExpected.set("Date", date);
         mapExpected.set("startHour", data_sleep.heureDebut);
         mapExpected.set("endHour", data_sleep.heureFin);
         mapExpected.set("duration", CB.test_formatDuration(data_sleep.duree));
@@ -607,13 +516,13 @@ test('ExportModule - testGetAverageSleep', async() => {
     }
 
     CB.injectDataInArraySleeps(arrayExpected);
-    let mapExpected=new Map();
-    mapExpected.set("averageStartHour", '01:00');
-    mapExpected.set("averageEndHour", '10:00');
-    mapExpected.set("averageDuree", '09:00');
-    mapExpected.set("averageWakeUpQt", '4.0' );
+    let mapExp=new Map();
+    mapExp.set("averageStartHour", '01:00');
+    mapExp.set("averageEndHour", '10:00');
+    mapExp.set("averageDuree", '09:00');
+    mapExp.set("averageWakeUpQt", '4.0' );
 
-    expect(CB.getAggregateSleeps()).toEqual(mapExpected);
+    expect(CB.getAggregateSleeps()).toEqual(mapExp);
 });
 
 /**
@@ -654,19 +563,19 @@ test('ExportModule - testGetAverageGlycemia', async() => {
     let arrayExpected=[];
     let dates_array = ['18-03-2022','18-04-2022','18-05-2022','18-06-2022'];
 
-    for (let i=0;i<dates_array.length;i++) {
+    for (const date of dates_array) {
         let mapExpected = new Map();
-        mapExpected.set("Date", dates_array[i]);
+        mapExpected.set("Date", date);
         mapExpected.set("Glycémie", data_glycemia);
         arrayExpected.push(mapExpected);
     }
 
     CB.injectDataInArrayGlycemia(arrayExpected);
-    let mapExpected=new Map();
-    mapExpected.set("Moyenne", 555.50 + " mmol/L");
-    mapExpected.set("Référence", "4.7 - 6.8 mmol/L");
+    let mapExp=new Map();
+    mapExp.set("Moyenne", 555.50 + " mmol/L");
+    mapExp.set("Référence", "4.7 - 6.8 mmol/L");
 
-    expect(CB.getAverageGlycemia()).toEqual(mapExpected);
+    expect(CB.getAverageGlycemia()).toEqual(mapExp);
 });
 
 
@@ -728,7 +637,6 @@ test('ExportModule - testGetMacrosHydratation', async() => {
         arrayExpected.push(mapExpected);
     })
     CB.injectDataInArrayHydratation(arrayExpected)
-    //console.log(getMacrosTotalAndAveragePerDay('hydratation'))
     let macrosMapExecpted=new Map();
     macrosMapExecpted.set("totalFiber", 75);
     macrosMapExecpted.set("totalProtein", 200);
@@ -754,7 +662,7 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
     let arrayExpected=[]
     data_alcohol.forEach((element)=>{
         let mapExpected = new Map();
-        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Date", '19-03-2022');
         mapExpected.set("Nom", element.name);
         mapExpected.set("Quantité", element.qtte);
         mapExpected.set("Unité", element.unit);
@@ -765,7 +673,7 @@ test('ExportModule - TestFetchDrinksAlcohol', async() => {
         arrayExpected.push(mapExpected);
     })
 
-    expect(CB.test_fetchDrinksAlcohol("alcool",data_alcohol,'18-03-2022')).toEqual(arrayExpected);
+    expect(CB.test_fetchDrinksAlcohol("alcool",data_alcohol,'19-03-2022')).toEqual(arrayExpected);
 });
 
 /**
@@ -804,7 +712,6 @@ test('ExportModule - testGetMacrosAlcool', async() => {
     })
 
     CB.injectDataInArrayAlcohol(arrayExpected)
-    //console.log(getMacrosTotalAndAveragePerDay('alcool'))
     let macrosMapExecpted=new Map();
     macrosMapExecpted.set("totalFiber", 6);
     macrosMapExecpted.set("totalProtein", 46);
@@ -867,19 +774,6 @@ test('ExportModule - TestFetchWeight_AGGREGATE', async() => {
     expect(CB.getAggregateWeights().get('deltaWeight')).toBe("-2.00");
     expect(CB.getAggregateWeights().get('weightUnit')).toBe(localStorage.getItem("prefUnitePoids"));
 });
-
-
-/**
- * Report test - Supplements - NotNull (to do when it will be implemented)
- */
-
-/**
- * Report test - Supplements - Null (to do when it will be implemented)
- */
-
-/**
- * Report test - Supplements - AGGREGATE (to do when it will be implemented)
- */
 
 /************************************************
  ********** TESTS ON UTILITIES FUNCTIONS *********/
@@ -952,20 +846,7 @@ test('ExportModule - formatDuration', async() => {
 });
 
 /********************************************************
- ********** TEST ON COMPILER BILAN NOT DONE *************/
-
-//getDataFromFirebase
-//filterDataByDate
-//getDates
-//fetchData(data, formatedDate, categorySelected)
-//All fetch categories - géré par les testFetch
-
-//getNumberOfUniqueDate(array_aliments)
-test('ExportModule - getNumberOfUniqueDate', async() => {
-    //CB.getNumberOfUniqueDate([]);
-});
-
-//resetDataArrays()
+ ********** TEST ON COMPILER BILAN  *************/
 test('ExportModule - ResetDataArrays', async() => {
     CB.resetDataArrays();
     expect(CB.getHydratations()).toEqual(null);
@@ -977,26 +858,13 @@ test('ExportModule - ResetDataArrays', async() => {
     expect(CB.getWeights()).toEqual(null);
     expect(CB.getSleeps()).toEqual(null);
 });
+
 /********************************************************
  ********** TEST ON RAPPORT CREATEUR ********************/
-/**
- * PDF part - ancienne fonction
- */
-/*
-test('ExportModule - CreatePDF', async() => {
-    let selection = ['hydratation', 'alcool', 'supplements', 'nourriture', 'glycémie', 'poids', 'toilettes', 'sommeil', 'activities'];
-    var date1 = new Date("2022-02-01");
-    var date2 = new Date("2022-03-29");
-    creerPdf(selection, date1, date2);
-    //expect(data).toBeInstanceOf(Array);
-    //expect(data.length).toBeGreaterThanOrEqual(0);
-});
-*/
 
 /**
  * PDF part
  */
-//addActivitiesTable(document) "#0f5780", "#7cc8f6"
 test('ExportModule - ActivitiesTable', async() => {
     const doc = new jsPDF();
     doc.autoTable({head: ["Test_Activities"],startY: 150,});
@@ -1006,7 +874,6 @@ test('ExportModule - ActivitiesTable', async() => {
         CB.resetDataArrays();
         CB.testReport_fetchActivities(data.activities, "2022-02-01");
     })
-    let mockArray = CB.getActivities();
     RC.addActivitiesTable(doc, headers);
     expect(doc.getNumberOfPages()).toEqual(1);
     expect(doc.getFillColor()).toEqual('#f4f4f4');
@@ -1016,11 +883,6 @@ test('ExportModule - ActivitiesTable', async() => {
     expect(doc.getFillColor()).toEqual('#ffffff');
 });
 
-/**
- * PDF part
- */
-//addAlcoolTable(document)  "#e7a54f" "#ffd39b"
-////addAlcoolMacrosTable(document) --> "#e7a54f""#a52a2a""#db4e3e""#589051""#c99b2e"
 test('ExportModule - AlcoolTable', async() => {
     const doc = new jsPDF();
     doc.autoTable({head: ["Test_Alcohol"],startY: 150,});
@@ -1030,7 +892,6 @@ test('ExportModule - AlcoolTable', async() => {
         CB.resetDataArrays();
         CB.testReport_fetchAlcohols(data.alcool.alcools, "2022-02-01");
     })
-    let mockArray = CB.getAlcohol();
     RC.addAlcoolTable(doc, headers);
     expect(doc.getNumberOfPages()).toEqual(1);
     expect(doc.getFillColor()).toEqual('#c99b2d');
@@ -1040,12 +901,7 @@ test('ExportModule - AlcoolTable', async() => {
     expect(doc.getFillColor()).toEqual('#c99b2d');
 });
 
-/**
- * PDF part
- */
-//addNourritureTable(document, headers)
-////addNourritureMacros(document) #185742 "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
-//TODO _ received 2 ?
+
 test('ExportModule - FoodTable', async() => {
     const doc = new jsPDF();
     doc.autoTable({head: ["Test_Food"],startY: 150,});
@@ -1059,7 +915,6 @@ test('ExportModule - FoodTable', async() => {
         CB.testReport_fetchFood(data.food.categories.proteinFood, "2022-02-01");
         CB.testReport_fetchFood(data.food.categories.vegetables, "2022-02-01");
     })
-    let mockArray = CB.getNourriture();
 
     RC.addNourritureTable(doc, headers);
     expect(doc.getNumberOfPages()).toEqual(2);
@@ -1070,10 +925,7 @@ test('ExportModule - FoodTable', async() => {
     expect(doc.getFillColor()).toEqual('#c99b2d');
 });
 
-/**
- * PDF part
- */
-//addGlycimiaTable(document) "#6e233d"
+
 test('ExportModule - GlycemiaTable', async() => {
     const doc = new jsPDF();
     doc.autoTable({head: ["Test_Glycemia"],startY: 150,});
@@ -1083,7 +935,6 @@ test('ExportModule - GlycemiaTable', async() => {
         CB.resetDataArrays();
         CB.testReport_fetchGlycemias(data.glycemie, "2022-02-01");
     })
-    let mockArray = CB.getGlycemia();
     RC.addGlycimiaTable(doc, headers);
     expect(doc.getNumberOfPages()).toEqual(1);
     expect(doc.getFillColor()).toEqual('#f4f4f4');
@@ -1093,32 +944,6 @@ test('ExportModule - GlycemiaTable', async() => {
     expect(doc.getFillColor()).toEqual('#ffffff');
 });
 
-/**
- * PDF part
- */
-// TODO
-//RC.addHydratationTable
-//getHydratations()
-//addHydratationMacrosTable(document) -- "#65afc5" "#a52a2a" "#db4e3e" "#589051" "#c99b2e"
-// test('ExportModule - HydratationTable', async() => {
-//     const doc = new jsPDF();
-//     doc.autoTable({head: ["Test_Hydratation"],startY: 150,});
-//
-//     let headers_2 = RC.nourritureHydraAlcoolAggrHeaders();
-//
-//     mockData.forEach( (data) => {
-//          CB.resetDataArrays();
-//          CB.testReport_fetchHydratation(data.hydratation.hydrates, "2022-02-01");
-//     })
-//     let mockArray_2 = CB.getHydratations();
-//     RC.addHydratationTable(doc, headers_2);
-//     expect(doc.getNumberOfPages()).toEqual(1);
-//     expect(doc.getFillColor()).toEqual('#f4f4f4');
-//
-//     RC.addHydratationMacrosTable(doc);
-//     expect(doc.getNumberOfPages()).toEqual(1);
-//     expect(doc.getFillColor()).toEqual('#c99b2d');
-// });
 
 
 /**
@@ -1156,14 +981,9 @@ test('ExportModule - TransitTable', async() => {
         CB.resetDataArrays();
         CB.testReport_fetchTransits(data.toilettes, "2022-02-01");
     })
-    let mockArray = CB.getToilets();
     RC.addToiletsTable(doc, headers);
     expect(doc.getNumberOfPages()).toEqual(1);
     expect(doc.getFillColor()).toEqual('#f4f4f4');
-
-    //RC.addAverageToiletsTable(document);
-    //expect(doc.getNumberOfPages()).toEqual(1);
-    //expect(doc.getFillColor()).toEqual('#f4f4f4');
 });
 
 /**
@@ -1178,20 +998,12 @@ test('ExportModule - WeightTable', async() => {
         CB.testReport_fetchWeights(data.poids[0].dailyPoids, data.poids[0].datePoids);
         CB.testReport_fetchWeights(data.poids[1].dailyPoids, data.poids[1].datePoids);
     });
-    //let mockArray = CB.getWeights(); //sort the arrays
     RC.addWeightTable(doc, headers); //inside-it, call getWeights which sort the array
     expect(doc.getNumberOfPages()).toEqual(1);
     expect(doc.getFillColor()).toEqual('#baeae5');
-
-    //RC.addWeightAggregateTable(document);
-    //expect(doc.getNumberOfPages()).toEqual(1);
-    //expect(doc.getFillColor()).toEqual('#baeae5');
 });
 
-/**
- * PDF part
- */
-//insertNoDataFound(document)
+
 test('ExportModule - insertNoDataFound', () => {
     const doc = new jsPDF();
     doc.autoTable({head: ["Test_Weight"],startY: 150,});
@@ -1202,7 +1014,6 @@ test('ExportModule - insertNoDataFound', () => {
 /**
  * PDF part
  */
-//insertHeaders(document, headers, headerColor)
 test('ExportModule - insertHeaders', () => {
     const doc = new jsPDF();
     doc.autoTable({head: ["Test_Weight"],startY: 150,});
@@ -1229,56 +1040,9 @@ test('ExportModule - createPeriod', () => {
     expect(periodCreated).toEqual('De 25/01/2022 À 25/03/2022');
 });
 
-/**
- * CSV part - todo add more function
- */
 
 /**
- * CSV part - mis en commentaire car ne fait que passer dans les fonctions
- */
- /*
-test('ExportModule - CSVALL', () => {
-    const temppdf = new jsPDF();
-    const tempzip = new JSZip();
-    const tempdate = RC.createPeriod(new Date(), new Date("2022-03-25"));
-    temppdf.autoTable({
-        body: [[' ']]
-    });
-    RC.insertNoDataFound(temppdf);
-    RC.insertHeaders(temppdf, [" "], "#ffffff");
-
-    RC.weightHeaders();
-    RC.weightAggrData();
-    RC.activitiesHeaders();
-    RC.activitiesAggrData();
-    RC.sleepsHeaders();
-    RC.sleepAggrData();
-    RC.nourritureHydratAlcoolHeaders();
-    RC.nourritureHydraAlcoolAggrHeaders();
-    RC.hydratationAggrData();
-    RC.nourritureAggrData();
-    RC.transitHeaders();
-    RC.toiletteAggrData();
-    RC.alcoolAggrData();
-    RC.glycimiaHeaders();
-    RC.glycimiaAggrData();
-    RC.weightCSV(tempzip, tempdate);
-    RC.weightAggrCSV(tempzip, tempdate);
-    RC.activitiesCSV(tempzip, tempdate);
-    RC.activitiesAggrCSV(tempzip, tempdate);
-    RC.sleepsCSV(tempzip, tempdate);
-    RC.sleepAggrCSV(tempzip, tempdate);
-    RC.nourritureAggrCSV(tempzip, tempdate);
-    RC.hydratationAggrCSV(tempzip, tempdate);
-    RC.toiletteCSV(tempzip, tempdate);
-    RC.toiletteAggrCSV(tempzip, tempdate);
-    RC.glycimiaCSV(tempzip, tempdate);
-    RC.glycimiaAggrCSV(tempzip, tempdate);
-});*/
-
-
-/**
- * TRADUCTION -- n'augmente pas la couverture
+ * TRADUCTION
  */
 test('ExportModule - english traduction', () => {
     localStorage.setItem('userLanguage', 'en');
@@ -1299,7 +1063,6 @@ test('ExportModule - english traduction', () => {
     expect(translate.getText("EXP_REPORT_AVG_WAKEUP_QT")).toEqual("Wake up(s) per night");
     expect(translate.getText("EXP_REPORT_WAKEUP_STATE")).toEqual("Wake-up state");
     expect(translate.getText("EXP_REPORT_QT")).toEqual("Quantity");
-    //expect(translate.getText("EXP_REPORT_MACROS").getText("TOTAL")).toEqual("Total");
     expect(translate.getText("EXP_UR_TR")).toEqual("Transit");
     expect(translate.getText("EXP_TOT_UR")).toEqual("Total urine");
     expect(translate.getText("EXP_TOT_FEC")).toEqual("Total faeces");
@@ -1309,14 +1072,14 @@ test('ExportModule - english traduction', () => {
 });
 
 /**
- * TRADUCTION Headers-- n'augmente pas la couverture
+ * TRADUCTION Headers
  */
 test('ExportModule - english traduction', () => {
     localStorage.setItem('userLanguage', 'en');
     let unitePoids = localStorage.getItem("prefUnitePoids");
     let dateTitle;
     let poidsTitle;
-    [dateTitle, poidsTitle] = weightHeaders(); //translate.getText("EXP_REPORT_WEIGHT") + agg.get('weightUnit'); //translate.getText("DATE_TITLE");
+    [dateTitle, poidsTitle] = weightHeaders();
 
     expect(dateTitle).toEqual('Date');
     expect(poidsTitle).toEqual('Weight' + ' (' + unitePoids + ')');
@@ -1331,61 +1094,6 @@ test('ExportModule - formatDate', () => {
     let formatedDate = CB.formatDate('01-01-2022')
     expect(formatedDate).toEqual('1/1/2022');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Notes
-//https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
-  fireEvent.click(alcoolCheckbox);
-  expect(alcoolCheckbox).toBeChecked();
-  expect(subscriptionService.subscribe).toHaveBeenCalledTimes(1)
-  use await finallbyrole instead of get allbyrole with async function
-
-  const checkboxAlcool = screen.findByLabelText('ALCOOL_TITLE'); //ne fonctionne pas
-  screen.getByDisplayValue('Nourriture'); //ne fonctionne pas
-  expect(screen.getByRole('alert')).toBeInvalid(); //ne fonctionne pas
-  npm test -- --coverage
-  npm test Export.test.js -- --coverage --collectCoverageFrom=src/pages/Export/*.jsx
-      renderWithRouter(<App />, {route: '/Export'});
-      const checkbox_activities = screen.getByTestId("checkbox-activities")
-      const checkbox_food = screen.getByTestId("checkbox-food")
-      const checkbox_hydration = screen.getByTestId("checkbox-hydration")
-      const checkbox_supplements = screen.getByTestId("checkbox-supplements")
-      const checkbox_sleep = screen.getByTestId("checkbox-sleep")
-      const checkbox_weight = screen.getByTestId("checkbox-weight")
-      const checkbox_toilet = screen.getByTestId("checkbox-toilet")
-      const checkbox_alcool = screen.getByTestId("checkbox-alcool")
-      const checkbox_glycemia = screen.getByTestId("checkbox-glycemia")
-      const radio_pdf = screen.getByTestId("radio-pdf")
-
-      await act( async() => {
-          fireEvent.click(checkbox_activities)
-          fireEvent.click(checkbox_food)
-          fireEvent.click(checkbox_hydration)
-          fireEvent.click(checkbox_supplements)
-          fireEvent.click(checkbox_sleep)
-          fireEvent.click(checkbox_weight)
-          fireEvent.click(checkbox_toilet)
-          fireEvent.click(checkbox_alcool)
-          fireEvent.click(checkbox_glycemia)
-          fireEvent.click(radio_pdf)
-      });
-
-      /*things to do here toget popup error
-      expect(screen.queryByRole('alert')).not.toBeNull();  //or
-      expect(screen.queryByText('error message todo')).toBeInTheDocument();
-      expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')*/
-
 
 
 
