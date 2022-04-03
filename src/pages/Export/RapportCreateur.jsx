@@ -85,40 +85,7 @@ export function addAlcoolTable(document, headers) {
         alcool.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
         });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#e7a54f"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#ffd39b"
-            },
-            columnStyles: {
-                4: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                5: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                6: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                7: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            }
-        });
+        createTable(document, headers, values, "#e7a54f", "#ffd39b");
 }
 export function addAlcoolMacrosTable(document) {
     let headers = nourritureHydraAlcoolAggrHeaders();
@@ -343,40 +310,7 @@ export function addHydratationTable(document, headers) {
         hydratation.forEach((data) => {
             values.push([{content: data.get('Date')}, {content: data.get('Nom')}, {content: data.get('Quantité')}, {content: data.get('Unité')}, {content: data.get('Protéine')}, {content: data.get('Glucide')}, {content: data.get('Fibre')}, {content: data.get('Gras')}]);
         });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#65afc5"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#beecff"
-            },
-            columnStyles: {
-                4: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                5: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                6: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                7: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            }
-        });
+        createTable(document, headers, values, "#65afc5", "#beecff");
 }
 export function addHydratationMacrosTable(document) {
     let headers = nourritureHydraAlcoolAggrHeaders();
@@ -464,40 +398,7 @@ export function addNourritureTable(document, headers) {
                         {content: data.get('Protéine')}, {content: data.get('Glucide')},
                         {content: data.get('Fibre')}, {content: data.get('Gras')}]);
         });
-
-        document.autoTable({
-            head: [headers],
-            body: values,
-            startY: document.lastAutoTable.finalY + 15,
-            headStyles: {
-                fillColor: "#185742"
-            },
-            bodyStyles: {
-                minCellHeight: 9,
-                halign: "left",
-                valign: "center",
-                fontSize: 11,
-                fillColor: "#b4ead8"
-            },
-            columnStyles: {
-                4: {
-                    fillColor: "#a52a2a",
-                    textColor: "#ffffff"
-                },
-                5: {
-                    fillColor: "#db4e3e",
-                    textColor: "#ffffff"
-                },
-                6: {
-                    fillColor: "#589051",
-                    textColor: "#ffffff"
-                },
-                7: {
-                    fillColor: "#c99b2e",
-                    textColor: "#ffffff"
-                }
-            },
-        });
+        createTable(document, headers, values, "#185742", "#b4ead8");
 }
 export function addNourritureMacros(document) {
     let headers = nourritureHydraAlcoolAggrHeaders();
@@ -1074,6 +975,43 @@ export function glycimiaAggrCSV(zip, date) {
 
 export function formedTitle(title, date){
     return translate.getText(title) + " - " + date.replaceAll('/', '-') + ".csv"
+}
+
+function createTable(document, headers, values, headerColor, bodyColor) {
+    document.autoTable({
+        head: [headers],
+        body: values,
+        startY: document.lastAutoTable.finalY + 15,
+        headStyles: {
+            fillColor: headerColor
+        },
+        bodyStyles: {
+            minCellHeight: 9,
+            halign: "left",
+            valign: "center",
+            fontSize: 11,
+            fillColor: bodyColor
+        },
+        columnStyles: {
+            4: {
+                fillColor: "#a52a2a",
+                textColor: "#ffffff"
+            },
+            5: {
+                fillColor: "#db4e3e",
+                textColor: "#ffffff"
+            },
+            6: {
+                fillColor: "#589051",
+                textColor: "#ffffff"
+            },
+            7: {
+                fillColor: "#c99b2e",
+                textColor: "#ffffff"
+            }
+        }
+    });
+
 }
 
 
