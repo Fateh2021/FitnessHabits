@@ -36,7 +36,7 @@ import {compilerBilan} from "./CompilerBilan";
 import {creerCSV, creerPdf} from "./RapportCreateur";
 
 
-const Settings = (props) => {
+const Export = (props) => {
 
     const [settings, setSettings] = useState({
         hydratation: {
@@ -142,7 +142,7 @@ const Settings = (props) => {
     // variable qui va contenir le format d'exportation désiré, par défaut pdf
     const [exportType, onChangeExport] = useState('pdf');
     // contient la date de debut et la date de fin choisi par l'utilisateur
-    const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)));
+    const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)) < new Date("03-22-2022") ? new Date("03-22-2022") : new Date(new Date().setMonth(new Date().getMonth() - 3)));
     const [d2, onChangeD2] = useState(new Date());
 
     // permet d'afficher le format de la date selon ce qui est dans son profile
@@ -273,7 +273,7 @@ const Settings = (props) => {
                             format={dateFormat}
                             onChange={onChangeD1}
                             value={d1}
-                            minDate={new Date("03-30-2022")} // Quand le data est bien formatté
+                            minDate={new Date("03-22-2022")} // Quand le data est bien formatté
                             maxDate={new Date(d2.valueOf() - 86400000)}
                             clearIcon={null}
                             autoFocus={true}
@@ -495,4 +495,4 @@ Date.prototype.addDays = function (days) {
     return date;
 };
 
-export default Settings;
+export default Export;
