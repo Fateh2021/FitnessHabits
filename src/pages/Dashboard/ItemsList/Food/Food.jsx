@@ -1,32 +1,55 @@
 import React, {useState, useEffect} from 'react';
-import { IonGrid, IonRow, IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton } from '@ionic/react';
-import {arrowDropdownCircle, star, addCircle, removeCircle, trash, eye} from 'ionicons/icons';
+import { IonGrid, IonRow, IonCol, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonList, IonCard, IonCardHeader, IonCardContent } from '@ionic/react';
+import {arrowDropdownCircle, star, addCircle, trash, eye} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase';
 import '../../../Tab1.css';
 import * as translate from '../../../../translate/Translator';
 
-const FoodItem = (props) => {
+export const SUPPORTED_UNITS_CONVERTER = {
+  g: {
+    name: 'g',
+    qtyPerGram: 1
+  },
+  oz: {
+    name: 'oz',
+    qtyPerGram: 28.3495
+  },
+  ml: {
+    name: 'ml',
+    qtyPerGram: 1
+  },
+  lb: {
+    name: 'lb',
+    qtyPerGram: 453.592
+  }
+};
 
-  const [item, setItem] = useState({
+const DECIMAL_PLACES_DEFAULT = 2;
+
+export const initSampleFoodItem = (props) => {
+  const sampleFoodItem = {
     id: props.item ? props.item.id : uuid(),
     favorite: props.item ? props.item.favorite : false, 
     name: props.item ? props.item.name : '', 
-    qty: props.item ? props.item.qty : 0, 
+    qtyConsumed: props.item ? props.item.qtyConsumed : 0,
+    refQty: props.item ? props.item.refQty : 0, 
     proteins: props.item ? props.item.proteins : 0, 
     carbs: props.item ? props.item.carbs : 0, 
     fibre: props.item ? props.item.fibre : 0, 
     fats: props.item ? props.item.fats : 0, 
-    unit: props.item ? props.item.unit : ''
-  });
+    unit: props.item ? props.item.unit : SUPPORTED_UNITS_CONVERTER.g.name
+  };
+  return sampleFoodItem;
+};
 
-  useEffect(() => {
-    if (item.favorite) {
-      const foodItemPopup = document.getElementById('divPopUp1-1');
-      const favButton = foodItemPopup.querySelector('#favoriteButton');
-      favButton.classList.add('active');
-    }
-  });
+export const round = (number) => {
+  return parseFloat(number.toFixed(DECIMAL_PLACES_DEFAULT));
+};
+
+const FoodItem = (props) => {
+
+  const [item, setItem] = useState(initSampleFoodItem(props));
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -49,68 +72,93 @@ const FoodItem = (props) => {
   }
 
   const saveChanges = () => {
-    if (item.name === undefined || item.name === '' || item.qty === 0 || item.unit === undefined || item.unit === '' || (item.proteins === 0 && item.carbs === 0 && item.fibre === 0 && item.fats === 0)) {
+    if (item.name === undefined || item.name === '' || item.qtyConsumed === 0 || item.refQty === 0 || item.unit === undefined || item.unit === '' 
+        || (item.proteins === 0 && item.carbs === 0 && item.fibre === 0 && item.fats === 0)) {
       alert(translate.getText('FOOD_MODULE', ['functions', 'addErrorMessage', 'saveItem']));
       return;
     }
     props.save(item);
   }
-  const qtyPlaceholder = translate.getText('FOOD_MODULE', ['macroNutriments', 'qty']);
-  const proteinPlaceholder = translate.getText('FOOD_MODULE', ['macroNutriments', 'proteins']);
-  const carbPlaceholder = translate.getText('FOOD_MODULE', ['macroNutriments', 'carbs']);
-  const fibrePlaceholder = translate.getText('FOOD_MODULE', ['macroNutriments', 'fibre']);
-  const fatsPlaceholder = translate.getText('FOOD_MODULE', ['macroNutriments', 'fats']);
 
   return (
-    <div id="divPopUp1-1">
-        <IonCol size="1">
-          <button id='saveButton' className="buttonOK" onClick={saveChanges}>OK</button>
-        </IonCol>  
-        <IonCol size="1">
-          <span id='closeButton' className="buttonCloseEdit" onClick={() => props.close()}>X</span>
-        </IonCol>
-        <IonItem  className="divAdd">
-          <IonCol size="1">
-            <IonIcon id='favoriteButton' className="starFavoris" onClick={handleFavorites} icon={star}/>
-          </IonCol>
-          <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder={translate.getText('FOOD_MODULE', ['functions', 'addDescription', 'placeholder'])} name="name" value={item.name} onIonChange={handleChange}/>
-          </IonCol>
-          <IonCol size="2">
-            <IonInput id='foodItemQty' className = 'divAddText nourTextInput' type= 'number' min = "1" placeholder={qtyPlaceholder} name="qty" value={item.qty} onIonChange={handleChangeQtyMacro}/>
-          </IonCol>
-          <select id="materialSelectAddHyd" name="unit" value={item.unit} onChange={handleChange} style={{ width: '10%' }}>
-            <option value="-1"></option>
-            <option value="gr">{ translate.getText('UNIT_GR') }</option>
-            <option value="oz">{ translate.getText('UNIT_OZ') }</option>
-            <option value="ml">{ translate.getText('UNIT_ML') }</option>
-            <option value="cup">{ translate.getText('UNIT_CUP') }</option>
-            <option value="unit">{ translate.getText('UNIT_TEXT') }</option>
-          </select>
-          <IonCol className ="colNutProteinesHyd" size="1"><div id='protQty' className ="divMacroAdd">{ proteinPlaceholder }</div>
-              <IonInput className = 'divAddTextNut nourTextInput' min="0" type= 'number' placeholder={proteinPlaceholder} name="proteins" value={item.proteins} onIonChange={handleChangeQtyMacro}/>
-            </IonCol>
-            <IonCol className ="colNutGlucidesHyd macroNutrimentEditSection" size="1"><div id='glucQty' className ="divMacroAdd">{ carbPlaceholder }</div>
-              <IonInput className = 'divAddTextNut nourTextInput' min="0" type= 'number' placeholder={carbPlaceholder} name="carbs" value={item.carbs} onIonChange={handleChangeQtyMacro}/>
-            </IonCol>
-            <IonCol className ="colNutFibresHyd macroNutrimentEditSection" size="1"><div id='fibQty' className ="divMacroAdd">{ fibrePlaceholder }</div>
-              <IonInput className = 'divAddTextNut nourTextInput' min="0" type= 'number' placeholder={fibrePlaceholder} name="fibre" value={item.fibre} onIonChange={handleChangeQtyMacro}/>
-            </IonCol>
-            <IonCol className ="colNutGrasHyd macroNutrimentEditSection" size="1"><div id='fatQty' className ="divMacroAdd">{ fatsPlaceholder }</div>
-              <IonInput className = 'divAddTextNut nourTextInput' min="0" type= 'number' placeholder={fatsPlaceholder} name="fats" value={item.fats} onIonChange={handleChangeQtyMacro}/>
-            </IonCol>
-        </IonItem>
-      </div>
+        <IonCard id='foodItemPopup'>
+          <IonCardHeader>
+            <IonButton id='closeButton' color='danger' onClick={() => props.close()} style={{  position: 'absolute', right: '1%'}}>X</IonButton>
+            <IonButton id='saveButton' color='success' onClick={ saveChanges } style={{  position: 'absolute', right: '15%'}}>OK</IonButton>
+            { item.favorite && <IonIcon id='favoriteButton' className="starFavoris active" onClick={ handleFavorites } icon={ star } /> }
+            { !item.favorite && <IonIcon id='favoriteButton' className="starFavoris" onClick={ handleFavorites } icon={ star } /> } 
+          </IonCardHeader>
+          <br/><br/><br/>
+          <IonCardContent>
+            <IonList>
+              <IonLabel className='addFoodItemPopupLabels'>{ translate.getText('FOOD_MODULE', ['functions', 'addLabel', 'name']) }:</IonLabel>
+              <IonItem>
+                <IonInput className = 'divAddTextNut nourTextInput' name="name" value={ item.name } onIonChange={ handleChange }/>
+              </IonItem>
+              <IonLabel className='addFoodItemPopupLabels'>{ translate.getText('FOOD_MODULE', ['functions', 'addLabel', 'qtyConsumed']) }:</IonLabel>
+              <IonItem>
+                <IonInput className = 'divAddTextNut nourTextInput' type= 'number' name="qtyConsumed" value={ item.qtyConsumed } onIonChange={ handleChangeQtyMacro }/>
+              </IonItem>
+              <IonLabel className='addFoodItemPopupLabels'>{ translate.getText('FOOD_MODULE', ['functions', 'addLabel', 'refQty']) }:</IonLabel>
+              <IonItem>
+                <IonInput className = 'divAddTextNut nourTextInput' type= 'number' name="refQty" value={ item.refQty } onIonChange={ handleChangeQtyMacro }/>
+              </IonItem>
+              <IonLabel className='addFoodItemPopupLabels'>{ translate.getText('FOOD_MODULE', ['functions', 'addLabel', 'unit']) }:</IonLabel>
+              <IonItem>
+                <select id="materialSelectAddHyd" name="unit" value={ item.unit } onChange={ handleChange } style={{ width: '20%', margin: 'auto'}}>
+                  <option>{ SUPPORTED_UNITS_CONVERTER.g.name }</option>
+                  <option>{ SUPPORTED_UNITS_CONVERTER.oz.name }</option>
+                  <option>{ SUPPORTED_UNITS_CONVERTER.ml.name }</option>
+                  <option>{ SUPPORTED_UNITS_CONVERTER.lb.name }</option>
+                </select>
+              </IonItem>
+              <br/><br/>
+              <IonLabel className='addFoodItemPopupLabels'>{ translate.getText('FOOD_MODULE', ['functions', 'addLabel', 'macroNutrients']) }: ({ item.unit }/{ item.refQty }{ item.unit })</IonLabel>
+              <IonItem>
+                <IonCol>
+                  <IonLabel id='proteinLabel' style={{ fontSize: 'small', color: 'green'}}>{ translate.getText('FOOD_MODULE', ['macroNutrients', 'proteins']) }:</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonInput className = 'divAddTextNut nourTextInput' type= 'number' name="proteins" value={ item.proteins } onIonChange={ handleChangeQtyMacro }/>
+                </IonCol>
+              </IonItem>
+              <IonItem>
+                <IonCol>
+                  <IonLabel id='carbLabel' style={{ fontSize: 'small', color: 'red'}}>{ translate.getText('FOOD_MODULE', ['macroNutrients', 'carbs']) }:</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonInput className = 'divAddTextNut nourTextInput' min={ 0 } type= 'number' name="carbs" value={ item.carbs } onIonChange={ handleChangeQtyMacro }/>
+                </IonCol>
+              </IonItem>        
+              <IonItem>
+                <IonCol>
+                  <IonLabel id='fibreLabel' style={{ fontSize: 'small', color: 'purple'}}>{ translate.getText('FOOD_MODULE', ['macroNutrients', 'fibre']) }:</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonInput className = 'divAddTextNut nourTextInput' min={ 0 } type= 'number' name="fibre" value={ item.fibre } onIonChange={ handleChangeQtyMacro }/>
+                </IonCol>
+              </IonItem>          
+              <IonItem>
+                <IonCol>
+                  <IonLabel id='fatLabel' style={{ fontSize: 'small', color: 'orange'}}>{ translate.getText('FOOD_MODULE', ['macroNutrients', 'fats']) }:</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonInput className = 'divAddTextNut nourTextInput' min={ 0 } type= 'number' name="fats" value={ item.fats } onIonChange={ handleChangeQtyMacro }/>
+                </IonCol>
+              </IonItem>
+            </IonList>
+            </IonCardContent>
+        </IonCard>
   );
 }
 
 const Food = (props) => {
   const [test] = useState(props.test);
   const [foodItems, setFoodItems] = useState(props.foodItems.sort((a, b) => b.favorite - a.favorite));
-  const [proteinConsumptionPerCategory, setGlobalProteinConsumption] = useState(props.macroNutrimentConsumption.proteins);
-  const [carbConsumptionPerCategory, setGlobalCarbConsumption] = useState(props.macroNutrimentConsumption.carbs);
-  const [fibreConsumptionPerCategory, setGlobalFibreConsumption] = useState(props.macroNutrimentConsumption.fibre);
-  const [fatConsumptionPerCategory, setGlobalFatsConsumption] = useState(props.macroNutrimentConsumption.fats);
+  const [proteinConsumptionPerCategory, setGlobalProteinConsumption] = useState(props.macroNutrientConsumption.proteins);
+  const [carbConsumptionPerCategory, setGlobalCarbConsumption] = useState(props.macroNutrientConsumption.carbs);
+  const [fibreConsumptionPerCategory, setGlobalFibreConsumption] = useState(props.macroNutrientConsumption.fibre);
+  const [fatConsumptionPerCategory, setGlobalFatsConsumption] = useState(props.macroNutrientConsumption.fats);
   const [currentDate, setCurrentDate] = useState({startDate: props.currentDate}); 
   const [foodItemToEdit, setFoodItemToEdit] = useState(props.foodItemToEdit);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(props.itemContainerDisplayStatus);
@@ -120,20 +168,20 @@ const Food = (props) => {
   }, [props.currentDate])
 
   useEffect(() => {
-    setGlobalProteinConsumption(props.macroNutrimentConsumption.proteins);
-  }, [props.macroNutrimentConsumption.proteins])
+    setGlobalProteinConsumption(props.macroNutrientConsumption.proteins);
+  }, [props.macroNutrientConsumption.proteins])
 
   useEffect(() => {
-    setGlobalCarbConsumption(props.macroNutrimentConsumption.carbs);
-  }, [props.macroNutrimentConsumption.carbs])
+    setGlobalCarbConsumption(props.macroNutrientConsumption.carbs);
+  }, [props.macroNutrientConsumption.carbs])
 
   useEffect(() => {
-    setGlobalFibreConsumption(props.macroNutrimentConsumption.fibre);
-  }, [props.macroNutrimentConsumption.fibre])
+    setGlobalFibreConsumption(props.macroNutrientConsumption.fibre);
+  }, [props.macroNutrientConsumption.fibre])
 
   useEffect(() => {
-    setGlobalFatsConsumption(props.macroNutrimentConsumption.fats);
-  }, [props.macroNutrimentConsumption.fats])
+    setGlobalFatsConsumption(props.macroNutrientConsumption.fats);
+  }, [props.macroNutrientConsumption.fats])
 
   useEffect(()=>{
     setFoodItems(props.foodItems)
@@ -150,37 +198,74 @@ const Food = (props) => {
     }
   }
 
+  const consumptionCalculatorFunc = (item, macroNutrientPerRefQty, oldData = undefined) => {
+    const unit = item.unit;
+    let qtyConsumed = oldData ? oldData.qtyConsumed : item.qtyConsumed;
+    let refQty = oldData ? oldData.refQty : item.refQty;
+    const qtyConsumedAdjusted = (qtyConsumed * macroNutrientPerRefQty) / refQty;
+    return round(qtyConsumedAdjusted * SUPPORTED_UNITS_CONVERTER[unit].qtyPerGram);
+  };
+
+  const updateFunc = (macroNutrientConsumption, updatedValue) => {
+    macroNutrientConsumption.proteins = round(updatedValue.proteins);
+    macroNutrientConsumption.carbs = round(updatedValue.carbs);
+    macroNutrientConsumption.fibre = round(updatedValue.fibre);
+    macroNutrientConsumption.fats = round(updatedValue.fats);
+  }
+
   const deleteItem = (index) => {
     const item = foodItems[index];
     foodItems.splice(index, 1);
-    updateCacheAndDB((macroNutrimentConsumption) => {
-      macroNutrimentConsumption.proteins = Math.max(macroNutrimentConsumption.proteins - item.proteins, 0);
-      macroNutrimentConsumption.carbs = Math.max(macroNutrimentConsumption.carbs - item.carbs, 0);
-      macroNutrimentConsumption.fibre = Math.max(macroNutrimentConsumption.fibre - item.fibre, 0);
-      macroNutrimentConsumption.fats = Math.max(macroNutrimentConsumption.fats - item.fats, 0);
+    updateCacheAndDB(macroNutrientConsumption => {
+      updateFunc(macroNutrientConsumption,
+        {
+          proteins: Math.max(macroNutrientConsumption.proteins - consumptionCalculatorFunc(item, item.proteins), 0), 
+          carbs: Math.max(macroNutrientConsumption.carbs - consumptionCalculatorFunc(item, item.carbs), 0), 
+          fibre: Math.max(macroNutrientConsumption.fibre - consumptionCalculatorFunc(item, item.fibre), 0), 
+          fats: Math.max(macroNutrientConsumption.fats - consumptionCalculatorFunc(item, item.fats), 0)
+        });
     });
   }
 
   const saveItem = (item) => {
     const index = foodItems.findIndex((e) => e.id === item.id);
 
+    if (index >= 0 && (JSON.stringify(foodItems[index]) === JSON.stringify(item))) {
+      return;
+    }
+    const proteinsConsumed = consumptionCalculatorFunc(item, item.proteins);
+    const carbsConsumed = consumptionCalculatorFunc(item, item.carbs);
+    const fibreConsumed = consumptionCalculatorFunc(item, item.fibre);
+    const fatsConsumed = consumptionCalculatorFunc(item, item.fats);
+
     if (index === -1) {
       foodItems.unshift(item);
-      updateCacheAndDB((macroNutrimentConsumption) => {
-        macroNutrimentConsumption.proteins += item.proteins;
-        macroNutrimentConsumption.carbs += item.carbs;
-        macroNutrimentConsumption.fibre += item.fibre;
-        macroNutrimentConsumption.fats += item.fats;
-      }); 
+      updateCacheAndDB(macroNutrientConsumption => { 
+        updateFunc(macroNutrientConsumption, 
+        {
+          proteins: macroNutrientConsumption.proteins + proteinsConsumed, 
+          carbs: macroNutrientConsumption.carbs + carbsConsumed, 
+          fibre: macroNutrientConsumption.fibre + fibreConsumed, 
+          fats: macroNutrientConsumption.fats + fatsConsumed
+        })
+      });
     } else {
       const oldItem = foodItems[index];
       foodItems[index] = item;
-      updateCacheAndDB((macroNutrimentConsumption) => {
-        macroNutrimentConsumption.proteins = Math.max(macroNutrimentConsumption.proteins - oldItem.proteins + item.proteins, 0);
-        macroNutrimentConsumption.carbs = Math.max(macroNutrimentConsumption.carbs - oldItem.carbs + item.carbs, 0);
-        macroNutrimentConsumption.fibre = Math.max(macroNutrimentConsumption.fibre - oldItem.fibre + item.fibre, 0);
-        macroNutrimentConsumption.fats = Math.max(macroNutrimentConsumption.fats - oldItem.fats + item.fats, 0);
-      }); 
+      const oldProteinQty = consumptionCalculatorFunc(oldItem, oldItem.proteins, { qtyConsumed: oldItem.qtyConsumed, refQty: oldItem.refQty });
+      const oldCarbQty = consumptionCalculatorFunc(oldItem, oldItem.carbs, { qtyConsumed: oldItem.qtyConsumed, refQty: oldItem.refQty });
+      const oldFibreQty = consumptionCalculatorFunc(oldItem, oldItem.fibre, { qtyConsumed: oldItem.qtyConsumed, refQty: oldItem.refQty });
+      const oldFatQty = consumptionCalculatorFunc(oldItem, oldItem.fats, { qtyConsumed: oldItem.qtyConsumed, refQty: oldItem.refQty });
+
+      updateCacheAndDB(macroNutrientConsumption => {
+        updateFunc(macroNutrientConsumption,
+          {
+            proteins: Math.max(macroNutrientConsumption.proteins - oldProteinQty + proteinsConsumed, 0), 
+            carbs: Math.max(macroNutrientConsumption.carbs - oldCarbQty + carbsConsumed, 0), 
+            fibre: Math.max(macroNutrientConsumption.fibre - oldFibreQty + fibreConsumed, 0), 
+            fats: Math.max(macroNutrientConsumption.fats - oldFatQty + fatsConsumed, 0)
+          });
+      });
     }
     closeItemContainer(); 
   }
@@ -189,12 +274,12 @@ const Food = (props) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.food.categories[props.categoryKey].items = foodItems;
     setFoodItems(foodItems);
-    updateTotalFunc(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption);
+    updateTotalFunc(dashboard.food.categories[props.categoryKey].macroNutrientConsumption);
     
-    setGlobalProteinConsumption(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption.proteins);
-    setGlobalCarbConsumption(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption.carbs);
-    setGlobalFibreConsumption(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption.fibre);
-    setGlobalFatsConsumption(dashboard.food.categories[props.categoryKey].macroNutrimentConsumption.fats);
+    setGlobalProteinConsumption(dashboard.food.categories[props.categoryKey].macroNutrientConsumption.proteins);
+    setGlobalCarbConsumption(dashboard.food.categories[props.categoryKey].macroNutrientConsumption.carbs);
+    setGlobalFibreConsumption(dashboard.food.categories[props.categoryKey].macroNutrientConsumption.fibre);
+    setGlobalFatsConsumption(dashboard.food.categories[props.categoryKey].macroNutrientConsumption.fats);
 
     props.updateFoodConsumptionCallback();
 
@@ -239,22 +324,22 @@ const Food = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeProteins'])}: 
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeProteins'])}: 
                 <div id='proteinConsumptionPerCategory'>{proteinConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeCarbs'])}:
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeCarbs'])}:
                 <div id='carbConsumptionPerCategory'>{carbConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeFibre'])}:
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeFibre'])}:
                 <div id='fibreConsumptionPerCategory'>{fibreConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrimentSummary', 'cumulativeFats'])}:
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeFats'])}:
                 <div id='fatConsumptionPerCategory'>{fatConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
@@ -286,7 +371,7 @@ const Food = (props) => {
           <IonButton id='addButton' className="ajoutbreuvage1" color="danger" size="medium" onClick={() => openAddItemContainer()}>
           <IonIcon icon={addCircle}/><label id='addFoodItem' className="labelAddItem">{ translate.getText('FOOD_MODULE', ['functions', 'addFoodItem']) }</label></IonButton>
         </div>
-        {itemContainerDisplayStatus && <FoodItem id='saveItem' close={closeItemContainer} item={foodItemToEdit} save={(item) => { saveItem(item); }}/>}
+        { itemContainerDisplayStatus && <FoodItem id='saveItem' close={closeItemContainer} item={foodItemToEdit} save={(item) => { saveItem(item); }}/> }
       </div>
     </div>    
   );

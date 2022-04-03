@@ -319,11 +319,11 @@ color: #ffffff;
   font-size: 20px;
   color: #5c3d0c;
   text-shadow: #5c3d0c;
-  margin-left: -8px;
+  margin-left: center;
 
 }
 
-.starFavoris.active {
+.active {
   color: #dbb600;
 }
 
@@ -594,7 +594,7 @@ color: #ffffff;
 
 .divAddTextNut{
 
-  font-size: 10px;
+  font-size: small;
   text-align: center;
 }
 
@@ -2165,4 +2165,15 @@ h2{
 
 #totalMacroNutriment {
   color: white;
+}
+
+.addFoodItemPopupLabels {
+  font-size: small;
+  font-weight: bold;
+  color: blue
+}
+
+#foodItemPopup {
+  --ion-background-color:#eed996;
+  border: #752222 solid;
 }
