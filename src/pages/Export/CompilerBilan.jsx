@@ -738,7 +738,6 @@ export function formatDate(date) {
                 month = new Date(date).toLocaleString(lang, { month: 'short' });
                 formatedDate = date.slice(3,5) + "-" + month + "-" + date.slice(-4);
                 break;
-            break;
         }
     // else, get date format of the user lang
     } else {
@@ -753,7 +752,6 @@ export function formatDate(date) {
             case "es":
                 formatedDate = new Date(date).toLocaleDateString('es-ES');
                 break;
-            break;
         }
     }
     return formatedDate;
