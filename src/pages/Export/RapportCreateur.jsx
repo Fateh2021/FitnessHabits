@@ -8,7 +8,7 @@ import * as CSV from 'csv-string'
 
 export async function creerPdf(dataSelected, d1, d2) {
     const doc = new jsPDF();
-    // logo 
+    // logo
     doc.autoTable({
         body: [[' ']],
         alternateRowStyles: {fillColor: "#ffffff"},
@@ -54,7 +54,7 @@ export async function creerPdf(dataSelected, d1, d2) {
                 manageTransit(doc);
                 break;
             case "supplements":
-                // TODO when it will be implemented
+                // A IMPLEMENTER
                 break;
 
             default:
@@ -765,7 +765,7 @@ export function toiletteAggrData() {
 /**
 *  ----------- SUPPLEMENTS --------------
 */
-//TODO : fonctions supléments (not implemented yet)
+//A IMPLEMENTER
 
 
 /**
@@ -832,9 +832,8 @@ export function createPeriod(d1, d2) {
     d1 = temp_d1.slice(-2) + '-' + temp_d1.slice(5, 7) + '-' + temp_d1.slice(0, 4);
     d2 = temp_d2.slice(-2) + '-' + temp_d2.slice(5, 7) + '-' + temp_d2.slice(0, 4);
 
-    let date = translate.getText("DE") + " " + CompilerBilan.formatDate(d1) + " " + translate.getText("A")
+    return translate.getText("DE") + " " + CompilerBilan.formatDate(d1) + " " + translate.getText("A")
         + " " + CompilerBilan.formatDate(d2);
-    return date;
 }
 
 
@@ -881,7 +880,7 @@ export function creerCSV(dataSelected, d1, d2) {
                 weightAggrCSV(zip, date);
                 break;
             case "supplements":
-                // TODO
+                // A IMPLEMENTER
                 break;
             default:
                 break;
@@ -896,7 +895,6 @@ export function creerCSV(dataSelected, d1, d2) {
 export function weightCSV(zip, date) {
     if (CompilerBilan.getWeights()) {
         let poid = CompilerBilan.getWeights();
-        let values = [];
         let headers = weightHeaders();
         let poidData = headers[0] + ", " + headers[1];
 
