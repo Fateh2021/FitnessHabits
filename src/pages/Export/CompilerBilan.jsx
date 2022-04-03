@@ -765,8 +765,7 @@ export function formatDate(date) {
 function formatTodayDate() {
     let today = new Date();
     let month = today.getMonth().toString().length === 1 ? '0' + today.getMonth() : today.getMonth();
-    let todayformatedDate = today.getDate() + '-' + month + '-' + today.getFullYear();
-    return todayformatedDate
+    return today.getDate() + '-' + month + '-' + today.getFullYear();
 }
 
 //----------TEST--------
