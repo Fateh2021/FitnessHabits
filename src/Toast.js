@@ -1,6 +1,6 @@
-export function toast(message, duration=2000){
+export function toast(message, duration=2000) {
 
-    const toast = document.createElement('ion-toast');
+    const toast = document.createElement("ion-toast");
     toast.message = message;
     toast.duration = duration;
 
