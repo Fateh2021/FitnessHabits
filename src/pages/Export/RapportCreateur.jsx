@@ -2,7 +2,6 @@ import {jsPDF} from "jspdf";
 import "jspdf-autotable";
 import * as CompilerBilan from './CompilerBilan';
 import * as translate from '../../translate/Translator';
-import mockData from './mockDatas.json';//to delete
 import JSZip from "jszip";
 import {saveAs} from 'file-saver';
 import * as CSV from 'csv-string'
@@ -593,7 +592,6 @@ export function addWeightAggregateTable(document) {
 export function weightHeaders() {
     var agg = CompilerBilan.getAggregateWeights();
     var Date = translate.getText("DATE_TITLE");
-    //var poids = translate.getText("EXP_REPORT_WEIGHT") + CompilerBilan.getAggregateWeights().get('weightUnit');
     var poids = translate.getText("EXP_REPORT_WEIGHT") + ' (' + agg.get('weightUnit') + ')';
     return [Date, poids];
 }
