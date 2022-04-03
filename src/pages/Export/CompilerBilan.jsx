@@ -143,14 +143,20 @@ function fetchData(data, formatedDate, categorySelected) {
     for (const category of categorySelected) {
         switch (category) {
             case "hydratation":
+                // eslint-disable-next-line no-case-declarations
                 let hydratations = data.hydratation.hydrates
                 fetchDrinks("hydratation", hydratations, formatedDate);
                 break;
             case "nourriture":
+                // eslint-disable-next-line no-case-declarations
                 let cereales = data.food.categories.grainFood;
+                // eslint-disable-next-line no-case-declarations
                 let legumes = data.food.categories.vegetables;
+                // eslint-disable-next-line no-case-declarations
                 let fruits = data.food.categories.fruit;
+                // eslint-disable-next-line no-case-declarations
                 let proteines = data.food.categories.proteinFood;
+                // eslint-disable-next-line no-case-declarations
                 let gras = data.food.categories.dairyProducts;
                 fetchNourriture(cereales, formatedDate);
                 fetchNourriture(legumes, formatedDate);
@@ -159,14 +165,17 @@ function fetchData(data, formatedDate, categorySelected) {
                 fetchNourriture(gras, formatedDate);
                 break;
             case "toilettes":
+                // eslint-disable-next-line no-case-declarations
                 let toilets = data.toilettes;
                 fetchToilets(toilets, formatedDate);
                 break;
             case "alcool":
+                // eslint-disable-next-line no-case-declarations
                 let alcools = data.alcool.alcools;
                 fetchDrinks("alcool", alcools, formatedDate);
                 break;
             case "glycémie":
+                // eslint-disable-next-line no-case-declarations
                 let glycemie = data.glycemie.dailyGlycemie;
                 fetchGlycemia(glycemie, formatedDate);
                 break;
@@ -179,6 +188,7 @@ function fetchData(data, formatedDate, categorySelected) {
                     */
                 break;
             case "poids":
+                // eslint-disable-next-line no-case-declarations
                 let weight;
                 weight = data.poids.dailyPoids;
                 fetchWeights(weight, formatedDate);
@@ -192,6 +202,7 @@ function fetchData(data, formatedDate, categorySelected) {
                 }
                 break;
             case "sommeil":
+                // eslint-disable-next-line no-case-declarations
                 let sommeil = data.sommeil;
                 fetchSleeps(sommeil, formatedDate);
                 break;
@@ -233,7 +244,7 @@ function fetchDrinks(typeOfDrink, drinks, formatedDate) {
 /**
  *
  */
-function  fetchNourriture(foods, formatedDate) {
+function fetchNourriture(foods, formatedDate) {
     if (foods.items) {
         for (const element of foods.items) {
             let mapResult = new Map();
@@ -302,7 +313,7 @@ function fetchWeights(weight, formatedDate) {
  *
  */
 function fetchActivities(activity, formatedDate) {
-    if(activity) {
+    if (activity) {
         let mapActivity = new Map();
         let minutes = parseInt(activity.heure * 60) + parseInt(activity.minute);
         let duration = formatDuration(minutes);
@@ -589,20 +600,18 @@ export function getWeights() {
  */
 export function calculateAggregateWeights() {
     let initialWeight = 0;
-    let finalWeight = 0;
+    getWeights();
+    let finalWeight = arrayWeights.length > 0 ? arrayWeights[0].get("weight") : 0;
+    if (arrayWeights.length === 1) {
+        initialWeight = finalWeight;
+    } else if (arrayWeights.length > 1 ) {
+        initialWeight = arrayWeights[arrayWeights.length - 1].get("weight");
+    }
 
-        getWeights();
-        finalWeight = arrayWeights[0].get("weight");
-        if (arrayWeights.length == 1) {
-            initialWeight = finalWeight;
-        } else {
-            initialWeight = arrayWeights[arrayWeights.length - 1].get("weight");
-        }
-
-        mapAggWeights.set("initalWeight", initialWeight);
-        mapAggWeights.set("finalWeight", finalWeight);
-        mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
-        mapAggWeights.set("weightUnit", localStorage.getItem("prefUnitePoids"));
+    mapAggWeights.set("initalWeight", initialWeight);
+    mapAggWeights.set("finalWeight", finalWeight);
+    mapAggWeights.set("deltaWeight", (finalWeight - initialWeight).toFixed(2));
+    mapAggWeights.set("weightUnit", localStorage.getItem("prefUnitePoids"));
 
 }
 
@@ -613,10 +622,8 @@ export function calculateAggregateWeights() {
  * @return a map with keys : initalWeight, finalWeight, deltaWeight, weightUnit
  */
 export function getAggregateWeights() {
-      return mapAggWeights;
+    return mapAggWeights;
 }
-
-
 
 
 /**
@@ -705,7 +712,6 @@ function getNumberOfUniqueDate(array_aliments) {
 }
 
 
-
 /**
  * @param {date} like dd-MM-yyyy (ex : 01-01-2022)
  * @private
@@ -720,26 +726,26 @@ export function formatDate(date) {
     if (dateFormat) {
         switch (dateFormat) {
             case "LL-dd-yyyy":
-                formatedDate = date.slice(3,5) + "-" + date.slice(0,2) + "-" + date.slice(-4);
+                formatedDate = date.slice(3, 5) + "-" + date.slice(0, 2) + "-" + date.slice(-4);
                 break;
             case "dd-LL-yyyy":
                 formatedDate = date;
                 break;
             case "yyyy-LL-dd":
-                formatedDate = date.slice(-4) + "-" + date.slice(3,5) + "-" + date.slice(0,2);
+                formatedDate = date.slice(-4) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2);
                 break;
             case "yyyy-LLL-dd":
                 date = date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3");
-                month = new Date(date).toLocaleString(lang, { month: 'short' });
-                formatedDate = date.slice(-4) + "-" + month + "-" + date.slice(3,5);
+                month = new Date(date).toLocaleString(lang, {month: 'short'});
+                formatedDate = date.slice(-4) + "-" + month + "-" + date.slice(3, 5);
                 break;
             case "dd-LLL-yyyy":
                 date = date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3");
-                month = new Date(date).toLocaleString(lang, { month: 'short' });
-                formatedDate = date.slice(3,5) + "-" + month + "-" + date.slice(-4);
+                month = new Date(date).toLocaleString(lang, {month: 'short'});
+                formatedDate = date.slice(3, 5) + "-" + month + "-" + date.slice(-4);
                 break;
         }
-    // else, get date format of the user lang
+        // else, get date format of the user lang
     } else {
         date = date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3");
         switch (lang) {
@@ -768,34 +774,41 @@ function formatTodayDate() {
 
 //----------TEST--------
 /**
-  * @Function used for testing
-  * Public function which hide a private function in order to keep integrity of frontEnd not using this method
-  * instead og getWeights and to be able to test it
-  */
- export function testReport_fetchActivities(activity, formatedDate){
-     return fetchActivities(activity, formatedDate)
- }
- export function testReport_fetchAlcohols(alcohol, formatedDate){
-     return fetchDrinks("alcool", alcohol, formatedDate)
- }
- export function testReport_fetchFood(food, formatedDate){
-     return fetchNourriture(food, formatedDate)
- }
- export function testReport_fetchGlycemias(glycemia, formatedDate){
-     return fetchGlycemia(glycemia, formatedDate)
- }
- export function testReport_fetchHydratation(hydrates, formatedDate){
+ * @Function used for testing
+ * Public function which hide a private function in order to keep integrity of frontEnd not using this method
+ * instead og getWeights and to be able to test it
+ */
+export function testReport_fetchActivities(activity, formatedDate) {
+    return fetchActivities(activity, formatedDate)
+}
+
+export function testReport_fetchAlcohols(alcohol, formatedDate) {
+    return fetchDrinks("alcool", alcohol, formatedDate)
+}
+
+export function testReport_fetchFood(food, formatedDate) {
+    return fetchNourriture(food, formatedDate)
+}
+
+export function testReport_fetchGlycemias(glycemia, formatedDate) {
+    return fetchGlycemia(glycemia, formatedDate)
+}
+
+export function testReport_fetchHydratation(hydrates, formatedDate) {
     return fetchDrinks("hydratation", hydrates, formatedDate);
- }
- export function testReport_fetchSleeps(sleep, formatedDate){
-     return fetchSleeps(sleep, formatedDate)
- }
- export function testReport_fetchTransits(transit, formatedDate){
+}
+
+export function testReport_fetchSleeps(sleep, formatedDate) {
+    return fetchSleeps(sleep, formatedDate)
+}
+
+export function testReport_fetchTransits(transit, formatedDate) {
     return fetchToilets(transit, formatedDate)
- }
- export function testReport_fetchWeights(weight, formatedDate){
-     return fetchWeights(weight, formatedDate)
- }
+}
+
+export function testReport_fetchWeights(weight, formatedDate) {
+    return fetchWeights(weight, formatedDate)
+}
 
 
 /**
@@ -805,6 +818,7 @@ export function test_fetchNourriture(array_nourriture, formatedDate) {
     fetchNourriture(array_nourriture, formatedDate);
     return arrayNourriture;
 }
+
 /**
  * @Function used for testing
  */
@@ -812,6 +826,7 @@ export function test_fetchToilets(toilets, formatedDate) {
     fetchToilets(toilets, formatedDate);
     return arrayToilets;
 }
+
 /**
  * @Function used for testing
  */
@@ -819,6 +834,7 @@ export function test_fetchActivites(activites, formatedDate) {
     fetchActivities(activites, formatedDate);
     return arrayActivities;
 }
+
 /**
  * @Function used for testing
  */
@@ -826,13 +842,15 @@ export function test_fetchSleep(sleeps, formatedDate) {
     fetchSleeps(sleeps, formatedDate);
     return arraySleeps;
 }
+
 /**
  * @Function used for testing
  */
 export function test_fetchGlycemia(glycemia, formatedDate) {
-    fetchGlycemia(glycemia,formatedDate)
+    fetchGlycemia(glycemia, formatedDate)
     return arrayGlycemia;
 }
+
 /**
  * @Function used for testing
  */
@@ -840,6 +858,7 @@ export function test_fetchDrinksHydratation(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayHydratations;
 }
+
 /**
  * @Function used for testing
  */
@@ -847,6 +866,7 @@ export function test_fetchDrinksAlcohol(typeOfDrink, drinks, formatedDate) {
     fetchDrinks(typeOfDrink, drinks, formatedDate);
     return arrayAlcohol;
 }
+
 /**
  * @Function used for testing
  */
@@ -868,63 +888,72 @@ export function resetDataArrays() {
 export function test_getNumberOfUniqueDate(array_aliments) {
     return getNumberOfUniqueDate(array_aliments);
 }
+
 /**
  * @Function used for testing
  */
 export function test_sortEntries(arrayToSort) {
     sortEntries(arrayToSort);
 }
+
 /**
  * @Function used for testing
  */
-export function test_formatDuration(min){
+export function test_formatDuration(min) {
     return formatDuration(min);
 }
+
 /**
  * @Function used for testing
  */
-export function test_getDuration(time){
+export function test_getDuration(time) {
     return getDuration(time);
 }
+
 /**
  * @Function used for testing
  */
-export function injectDataInArrayHydratation(value){
-    arrayHydratations=value;
-}
-/**
- * @Function used for testing
- */
-export function injectDataInArrayNourriture(value){
-    arrayNourriture=value;
+export function injectDataInArrayHydratation(value) {
+    arrayHydratations = value;
 }
 
-export function injectDataInArrayAlcohol(value){
-    arrayAlcohol=value;
-}
 /**
  * @Function used for testing
  */
-export function injectDataInArrayToilets(value){
-    arrayToilets=value;
+export function injectDataInArrayNourriture(value) {
+    arrayNourriture = value;
 }
+
+export function injectDataInArrayAlcohol(value) {
+    arrayAlcohol = value;
+}
+
 /**
  * @Function used for testing
  */
-export function injectDataInArraySleeps(value){
-    arraySleeps=value;
+export function injectDataInArrayToilets(value) {
+    arrayToilets = value;
 }
+
 /**
  * @Function used for testing
  */
-export function injectDataInArrayActivities(value){
-    arrayActivities=value;
+export function injectDataInArraySleeps(value) {
+    arraySleeps = value;
 }
+
 /**
  * @Function used for testing
  */
-export function injectDataInArrayGlycemia(value){
-    arrayGlycemia=value;
+export function injectDataInArrayActivities(value) {
+    arrayActivities = value;
+}
+
+/**
+ * @Function used for testing
+ */
+export function injectDataInArrayGlycemia(value) {
+    arrayGlycemia = value;
 }
 
 
