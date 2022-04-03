@@ -176,8 +176,8 @@ function manageActivities(doc){
         addActivitiesTable(doc, headers);
         addActivitiesAggregateTable(doc);
     } else {
-        insertHeaders(document, headers, "#0f5780");
-        insertNoDataFound(document);
+        insertHeaders(doc, headers, "#0f5780");
+        insertNoDataFound(doc);
     }
 }
 export function addActivitiesTable(document, headers) {
@@ -238,8 +238,8 @@ function manageGlycemia(doc){
         addGlycimiaTable(doc, headers);
         addAverageGlycimiaTable(doc);
     } else {
-        insertHeaders(document, headers, "#6e233d");
-        insertNoDataFound(document);
+        insertHeaders(doc, headers, "#6e233d");
+        insertNoDataFound(doc);
     }
 }
 export function addGlycimiaTable(document, headers) {
@@ -468,8 +468,8 @@ function manageWeight(doc){
         addWeightTable(doc, headers);
         addWeightAggregateTable(doc);
     } else {
-        insertHeaders(document, headers, "#113d37");
-        insertNoDataFound(document);
+        insertHeaders(doc, headers, "#113d37");
+        insertNoDataFound(doc);
     }
 }
 export function addWeightTable(document, headers) {
@@ -749,36 +749,27 @@ export function creerCSV(dataSelected, d1, d2) {
         switch (data) {
             case "hydratation":
                 hydratationCSV(zip, date);
-                hydratationAggrCSV(zip, date);
                 break;
             case "activities":
                 activitiesCSV(zip, date);
-                activitiesAggrCSV(zip, date);
                 break;
             case "nourriture":
                 nourritureCSV(zip, date);
-                nourritureAggrCSV(zip, date);
                 break;
             case "sommeil":
                 sleepsCSV(zip, date);
-                sleepAggrCSV(zip, date);
                 break;
             case "toilettes":
                 toiletteCSV(zip, date);
-                toiletteAggrCSV(zip, date);
                 break;
             case "alcool":
                 alcoolCSV(zip, date);
-                alcoolAggrCSV(zip, date);
                 break;
             case "glycémie":
                 glycimiaCSV(zip, date);
-                glycimiaAggrCSV(zip, date);
                 break;
             case "poids":
-                CompilerBilan.calculateAggregateWeights();
                 weightCSV(zip, date);
-                weightAggrCSV(zip, date);
                 break;
             case "supplements":
                 // A IMPLEMENTER
@@ -808,13 +799,6 @@ export function weightCSV(zip, date) {
     }
 }
 
-export function weightAggrCSV(zip, date) {
-    if (weightAggrData().length != 0) {
-        let data = CSV.stringify(weightAggrData());
-        zip.file(translate.getText("EXP_REPORT_WEIGHT") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
-    }
-}
-
 export function activitiesCSV(zip, date) {
     if (CompilerBilan.getActivities()) {
         let activities = CompilerBilan.getActivities();
@@ -828,13 +812,6 @@ export function activitiesCSV(zip, date) {
         zip.file(formedTitle("EXPORT_ACTIVITES_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
         zip.file(formedTitle("EXPORT_ACTIVITES_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
-    }
-}
-
-export function activitiesAggrCSV(zip, date) {
-    if (activitiesAggrData().length != 0) {
-        let data = CSV.stringify(activitiesAggrData());
-        zip.file(translate.getText("EXPORT_ACTIVITES_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
@@ -853,13 +830,6 @@ export function sleepsCSV(zip, date) {
     }
 }
 
-export function sleepAggrCSV(zip, date) {
-    if (sleepAggrData().length != 0) {
-        let data = CSV.stringify(sleepAggrData());
-        zip.file(translate.getText("SLEEP") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
-    }
-}
-
 export function nourritureCSV(zip, date) {
     if (CompilerBilan.getNourriture()) {
         let nourriture = CompilerBilan.getNourriture();
@@ -872,13 +842,6 @@ export function nourritureCSV(zip, date) {
         zip.file(formedTitle("NOURRITURE_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
         zip.file(formedTitle("NOURRITURE_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
-    }
-}
-
-export function nourritureAggrCSV(zip, date) {
-    if (nourritureAggrData().length != 0) {
-        let data = CSV.stringify([nourritureHydraAlcoolAggrHeaders(), nourritureAggrData()]);
-        zip.file(translate.getText("NOURRITURE_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
@@ -898,12 +861,6 @@ export function hydratationCSV(zip, date) {
     }
 }
 
-export function hydratationAggrCSV(zip, date) {
-    if (hydratationAggrData().length != 0) {
-        let data = CSV.stringify([nourritureHydraAlcoolAggrHeaders(), hydratationAggrData()]);
-        zip.file(translate.getText("HYDR_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
-    }
-}
 
 export function toiletteCSV(zip, date) {
     if (CompilerBilan.getToilets()) {
@@ -921,12 +878,6 @@ export function toiletteCSV(zip, date) {
     }
 }
 
-export function toiletteAggrCSV(zip, date) {
-    if (toiletteAggrData().length != 0) {
-        let data = CSV.stringify(toiletteAggrData());
-        zip.file(translate.getText("TOILETS_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
-    }
-}
 
 export function alcoolCSV(zip, date) {
     if (CompilerBilan.getAlcohol()) {
@@ -943,12 +894,6 @@ export function alcoolCSV(zip, date) {
     }
 }
 
-export function alcoolAggrCSV(zip, date) {
-    if (alcoolAggrData().length != 0) {
-        let data = CSV.stringify([nourritureHydraAlcoolAggrHeaders(), alcoolAggrData()]);
-        zip.file(translate.getText("ALCOOL_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
-    }
-}
 
 export function glycimiaCSV(zip, date) {
     if (CompilerBilan.getGlycemia()) {
@@ -963,13 +908,6 @@ export function glycimiaCSV(zip, date) {
         zip.file(formedTitle("GLYC_TITLE", date), CSV.stringify(values), {binary: true});
     } else {
         zip.file(formedTitle("GLYC_TITLE", date), translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE"), {binary: true});
-    }
-}
-
-export function glycimiaAggrCSV(zip, date) {
-    if (glycimiaAggrData().length != 0) {
-        let data = CSV.stringify(glycimiaAggrData());
-        zip.file(translate.getText("GLYC_TITLE") + "_ag - " + date.replaceAll('/', '-') + ".csv", data, {binary: true});
     }
 }
 
