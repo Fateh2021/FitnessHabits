@@ -64,7 +64,8 @@ describe('Dashboard AlcoolList', () => {
                         }
                     });
                 }
-            }
+            },
+            getNotificationMsg: () => 'Message'
         };
         jest.spyOn(mockAlcoolService.dashboard, 'updateGlobalConsumption');
         jest.spyOn(mockAlcoolService.dashboard, 'updateAlcools');
@@ -111,7 +112,8 @@ describe('Dashboard AlcoolList', () => {
                         }
                     });
                 }
-            }
+            },
+            getNotificationMsg: () => 'Message'
         };
         jest.spyOn(mockAlcoolService.dashboard, 'updateGlobalConsumption');
         jest.spyOn(mockAlcoolService.dashboard, 'updateAlcools');
@@ -157,7 +159,8 @@ describe('Dashboard AlcoolList', () => {
                         }
                     });
                 }
-            }
+            },
+            getNotificationMsg: () => 'Message'
         };
         jest.spyOn(mockAlcoolService.dashboard, 'updateGlobalConsumption');
         jest.spyOn(mockAlcoolService.dashboard, 'updateAlcools');
