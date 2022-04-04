@@ -116,6 +116,13 @@ const AlcoolService = {
             updateSettings(settings => settings.alcool.dailyTarget = dailyTarget),
         updateLimitConsom: (limitConsom) =>
             updateSettings(settings => settings.alcool.limitConsom = limitConsom)
+    },
+    getNotificationMsg: (userLang) => {
+        switch (userLang) {
+            case "fr": return "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel...";
+            case "en": return "According to EducAlcool guidelines, you just exceeded the limits of alcohol intake. This is just a reminder...";
+            case "es": return "Según las recomendaciones de ÉducAlcool, acaba de superar el límite. Es solo un recordatorio ...";
+        }
     }
 };
 
