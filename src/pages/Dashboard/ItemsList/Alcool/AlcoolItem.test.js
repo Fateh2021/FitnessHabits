@@ -5,7 +5,7 @@ import AlcoolItem from './AlcoolItem';
 
 configure({ adapter: new Adapter() });
 
-describe('Settings Alcool Section Test', () => {
+describe('Dashboard AlcoolItem', () => {
     let dummyAlcool;
     beforeEach(() => {
         dummyAlcool = {
