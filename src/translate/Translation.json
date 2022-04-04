@@ -133,31 +133,9 @@
          }
       },
       "macroNutrientSummary": {
-         "cumulativeProteins": {
-            "en": "Proteins",
-            "es": "Proteínas",
-            "fr": "Protéines"
-         },
-         "cumulativeCarbs": {
-            "en": "Carbs",
-            "es": "Carbohidratos",
-            "fr": "Glucides"
-         },
-         "cumulativeFibre": {
-            "en": "Fibre",
-            "es": "Fibras",
-            "fr": "Fibres"
-         },
-         "cumulativeFats": {
-            "en": "Fats",
-            "es": "Grasas",
-            "fr": "Gras"
-         },
-         "totalMacroNutrients": {
-            "en": "Total (g)",
-            "es": "Totales (g)",
-            "fr": "Total (g)"
-         }
+         "en": "Total (g)",
+         "es": "Totales (g)",
+         "fr": "Total (g)"
       },
       "functions": {
          "addFoodItem": {

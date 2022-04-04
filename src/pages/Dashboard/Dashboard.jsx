@@ -562,19 +562,19 @@ const Dashboard = (props) => {
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
-                                        <IonButton fill="clear" size='small'><span id="totalMacroNutriment">{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'totalMacroNutrients'])}:</span></IonButton>
+                                        <IonButton fill="clear" size='small'><span id="totalMacroNutrient">{translate.getText('FOOD_MODULE', ['macroNutrientSummary'])}:</span></IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeProteins"])}: {dashboard.food.globalMacroNutrientConsumption.proteins}</IonButton>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrients", "proteins"])}: {dashboard.food.globalMacroNutrientConsumption.proteins}</IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeCarbs"])}: {dashboard.food.globalMacroNutrientConsumption.carbs}</IonButton>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrients", "carbs"])}: {dashboard.food.globalMacroNutrientConsumption.carbs}</IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary'shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeFibre"])}: {dashboard.food.globalMacroNutrientConsumption.fibre}</IonButton>
+                                        <IonButton color='primary'shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrients", "fibre"])}: {dashboard.food.globalMacroNutrientConsumption.fibre}</IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeFats"])}: {dashboard.food.globalMacroNutrientConsumption.fats}</IonButton>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrients", "fats"])}: {dashboard.food.globalMacroNutrientConsumption.fats}</IonButton>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
