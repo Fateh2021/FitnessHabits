@@ -40,7 +40,7 @@ describe('Settings Alcool Section Test', () => {
                 ],
             }
         };
-    })
+    });
 
     test('Définition d\'un favoris', () => {
         const expectedFavoriIconColor = '#d18a17';
