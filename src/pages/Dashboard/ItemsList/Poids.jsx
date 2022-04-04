@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import * as poidsService from "../../Poids/configuration/poidsService"
 import * as translate from "../../../translate/Translator";
-
 import {
+// Branchement RollBack pour refaire la traduction des variables, fonction mais pas les variables dans la BD
   IonInput,
   IonIcon,
   IonLabel,
