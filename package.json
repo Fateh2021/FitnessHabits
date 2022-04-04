@@ -68,7 +68,10 @@
   "jest": {
     "coverageReporters": [
       "text"
-    ]
+    ],
+    "transform": {
+      "^.+\\.(js|jsx)$": "babel-jest"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
