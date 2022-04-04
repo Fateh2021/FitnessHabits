@@ -59,7 +59,10 @@ const FoodItem = (props) => {
   const handleChangeQtyMacro = event => {
     const { name, value } = event.target;
 
-    if (value >= 0) {
+    if (Number(value) >= 0) {
+      // TODO: Petit bogue au niveau de l'affichage des valeurs ayant des 0 après la virgule (p.ex., 0.01). 
+      // On peut toutefois saisir des valeurs comme ça en entrant d'abord 0.1 et, ensuite, se déplacer vers le gauche à l'aide des touches et ajouter les 0 manquants.
+      // C'est un bogue spécifiquement au niveau de l'affichage, car la logique du calcul permet des valeurs pareilles et plusieurs tests unitaires couvrant ses scénarios-là passent.
       setItem({ ...item, [name]: Number(value) });
     } else {
       setItem({ ...item, [name]: 0});
@@ -324,22 +327,22 @@ const Food = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeProteins'])}: 
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrients', 'proteins'])}: 
                 <div id='proteinConsumptionPerCategory'>{proteinConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeCarbs'])}:
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrients', 'carbs'])}:
                 <div id='carbConsumptionPerCategory'>{carbConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeFibre'])}:
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrients', 'fibre'])}:
                 <div id='fibreConsumptionPerCategory'>{fibreConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'cumulativeFats'])}:
+              <IonButton color='danger' size='small'>{translate.getText('FOOD_MODULE', ['macroNutrients', 'fats'])}:
                 <div id='fatConsumptionPerCategory'>{fatConsumptionPerCategory}</div>
               </IonButton>
             </IonCol>
