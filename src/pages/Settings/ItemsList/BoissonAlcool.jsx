@@ -12,18 +12,19 @@ const BoissonAlcool = (props) => {
   const [notifications, setNotifications] = useState(props.alcool.notifications);
   const [dailyTarget, setDailyTarget] = useState(props.alcool.dailyTarget);
   const [limitConsom, setLimitConsom] = useState(props.alcool.limitConsom);
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState(props.gender ? props.gender : '');
   const [alcoolService] = useState(props.alcoolService);
   const [profileService] = useState(props.profileService);
  
   // update state on prop change
+  useEffect(() => defineGender());
   useEffect(() => {
     setNotifications(props.alcool.notifications);
     defineGender().then(() =>{
       setDailyTarget(props.alcool.dailyTarget); 
       setLimitConsom(props.alcool.limitConsom);
     });
-  }, [props.alcool.dailyTarget, props.alcool.limitConsom, props.alcool.notifications])
+  }, [props.alcool.limitConsom.educAlcool, props.alcool.dailyTarget, props.alcool.limitConsom, props.alcool.notifications])
 
   const accorAlcool = (divId) => {
     const divElt=document.getElementById(divId);
@@ -40,7 +41,6 @@ const BoissonAlcool = (props) => {
   }
 
   const handleDailyTargetChangeAlcool = event => {
-    debugger;
     const { name, value } = event.target;
 
     let nameValue = '';
@@ -55,6 +55,7 @@ const BoissonAlcool = (props) => {
 
   const handleOnEducAlcool = event => {
     const updatedLimitConsom = { ...limitConsom, "educAlcool": event.detail.checked };
+    updatedLimitConsom.dailyTarget = 3;
     if(event.detail.checked){
       if(gender === "H" || gender === "")
       {
@@ -85,6 +86,8 @@ const BoissonAlcool = (props) => {
     profileService
       .get()
       .then(profile => {
+        console.log('WOLOLO')
+        console.log(profileService);
         if (profile) {
           setGender(profile.gender);
         }
@@ -130,7 +133,7 @@ const BoissonAlcool = (props) => {
             <IonCol size="1"></IonCol>
             <IonCol size="5" className="notifHeader"><h3>Activer les notifications</h3></IonCol>
             <IonCol size='3'></IonCol>
-            <IonCol size='3'><IonToggle color="dark" name="notifications" onIonChange={handleOnNotifications} checked={notifications.active} /></IonCol>
+            <IonCol size='3'><IonToggle id="notificationToggle" color="dark" name="notifications" onIonChange={handleOnNotifications} checked={notifications.active} /></IonCol>
           </IonItem>
         </IonItemGroup>
 
@@ -144,7 +147,7 @@ hidden={!notifications.active}
           </IonItem>
           <IonItem>
             <IonCol size="3">
-              <IonInput type='number' min='0' className='inputConsom' name="dailyTarget" onIonChange={handleOnLimitConsom} 
+              <IonInput id='dailyTargetToggle' type='number' min='0' className='inputConsom' name="dailyTarget" onIonChange={handleOnLimitConsom} 
 disabled={limitConsom.educAlcool} 
 value={limitConsom.dailyTarget}
               ></IonInput>
@@ -155,7 +158,7 @@ value={limitConsom.dailyTarget}
           </IonItem>
           <IonItem>
             <IonCol size="3">
-              <IonInput type='number' min='0' className='inputConsom' name="weeklyTarget" onIonChange={handleOnLimitConsom} 
+              <IonInput id='weeklyTargetToggle' type='number' min='0' className='inputConsom' name="weeklyTarget" onIonChange={handleOnLimitConsom} 
 disabled={limitConsom.educAlcool} 
 value={limitConsom.weeklyTarget}
               ></IonInput>
@@ -181,7 +184,7 @@ value={limitConsom.sobrietyDays}
           <IonItem>
             <IonCol size='1'></IonCol>
             <IonCol size='1'>
-              <IonCheckbox onIonChange={handleOnEducAlcool} 
+              <IonCheckbox id="educAlcoolToggle" onIonChange={handleOnEducAlcool} 
 checked={limitConsom.educAlcool} 
 value={limitConsom.educAlcool}
               ></IonCheckbox>
