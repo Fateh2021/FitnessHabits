@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import * as poidsService from "../../Poids/configuration/poidsService"
 import * as translate from "../../../translate/Translator";
-
 import {
-    IonInput,
-    IonIcon,
-    IonLabel,
-    IonItem,
-    IonAvatar
+// Branchement RollBack pour refaire la traduction des variables, fonction mais pas les variables dans la BD
+  IonInput,
+  IonIcon,
+  IonLabel,
+  IonItem,
+  IonAvatar
 } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
