@@ -1,12 +1,11 @@
-import React from 'react';
-import { configure, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import AlcoolItem from './AlcoolItem';
-import AlcoolList from './AlcoolList';
+import React from "react";
+import { configure, shallow } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import AlcoolList from "./AlcoolList";
 
 configure({ adapter: new Adapter() });
 
-describe('Dashboard AlcoolList', () => {
+describe("Dashboard AlcoolList", () => {
     let dummyAlcool;
     beforeEach(() => {
         dummyAlcool = {
@@ -14,20 +13,20 @@ describe('Dashboard AlcoolList', () => {
                 dailyTarget:
                 {
                     globalConsumption: 0,
-                    unit: '',
+                    unit: "",
                     value: 0
                 },
                 alcools: [
                     {
                         id: 0,
                         favoris: false,
-                        name: 'Vodka à la base de patates',
+                        name: "Vodka à la base de patates",
                         qtte: 0,
                         proteine: 0,
                         glucide: 0,
                         fibre: 0,
                         gras: 0,
-                        unit: '',
+                        unit: "",
                         consumption: 0,
                     }
                 ],
@@ -35,7 +34,7 @@ describe('Dashboard AlcoolList', () => {
         };
     });
 
-    test('Augmentation de la consomption quotidienne', () => {
+    test("Augmentation de la consomption quotidienne", () => {
         const today = new Date();
         const expectedCurrentDate = { startDate: today };
         const expectedTotalConsumption = 1;
@@ -65,10 +64,10 @@ describe('Dashboard AlcoolList', () => {
                     });
                 }
             },
-            getNotificationMsg: () => 'Message'
+            getNotificationMsg: () => "Message"
         };
-        jest.spyOn(mockAlcoolService.dashboard, 'updateGlobalConsumption');
-        jest.spyOn(mockAlcoolService.dashboard, 'updateAlcools');
+        jest.spyOn(mockAlcoolService.dashboard, "updateGlobalConsumption");
+        jest.spyOn(mockAlcoolService.dashboard, "updateAlcools");
         const component = shallow(<AlcoolList
             alcoolService={mockAlcoolService}
             alcool={dummyAlcool.alcool}
@@ -76,13 +75,13 @@ describe('Dashboard AlcoolList', () => {
             globalConsumption={dummyAlcool.alcool.dailyTarget.globalConsumption}
             currentDate={today}
         />);
-        component.find('.AddButtonHydr').simulate('click');
+        component.find(".AddButtonHydr").simulate("click");
 
         expect(mockAlcoolService.dashboard.updateGlobalConsumption).toBeCalledTimes(1);
         expect(mockAlcoolService.dashboard.updateAlcools).toBeCalledTimes(1);
     });
 
-    test('Diminution de la consomption quotidienne', () => {
+    test("Diminution de la consomption quotidienne", () => {
         dummyAlcool.alcool.alcools[0].consumption = 1;
         const today = new Date();
         const expectedCurrentDate = { startDate: today };
@@ -113,10 +112,10 @@ describe('Dashboard AlcoolList', () => {
                     });
                 }
             },
-            getNotificationMsg: () => 'Message'
+            getNotificationMsg: () => "Message"
         };
-        jest.spyOn(mockAlcoolService.dashboard, 'updateGlobalConsumption');
-        jest.spyOn(mockAlcoolService.dashboard, 'updateAlcools');
+        jest.spyOn(mockAlcoolService.dashboard, "updateGlobalConsumption");
+        jest.spyOn(mockAlcoolService.dashboard, "updateAlcools");
         const component = shallow(<AlcoolList
             alcoolService={mockAlcoolService}
             alcool={dummyAlcool.alcool}
@@ -124,13 +123,13 @@ describe('Dashboard AlcoolList', () => {
             globalConsumption={dummyAlcool.alcool.dailyTarget.globalConsumption}
             currentDate={today}
         />);
-        component.find('.trashButton').first().simulate('click');
+        component.find(".trashButton").first().simulate("click");
 
         expect(mockAlcoolService.dashboard.updateGlobalConsumption).toBeCalledTimes(1);
         expect(mockAlcoolService.dashboard.updateAlcools).toBeCalledTimes(1);
     });
 
-    test('Suppression d\'un alcool', () => {
+    test("Suppression d'un alcool", () => {
         dummyAlcool.alcool.alcools[0].consumption = 1;
         const today = new Date();
         const expectedCurrentDate = { startDate: today };
@@ -160,10 +159,10 @@ describe('Dashboard AlcoolList', () => {
                     });
                 }
             },
-            getNotificationMsg: () => 'Message'
+            getNotificationMsg: () => "Message"
         };
-        jest.spyOn(mockAlcoolService.dashboard, 'updateGlobalConsumption');
-        jest.spyOn(mockAlcoolService.dashboard, 'updateAlcools');
+        jest.spyOn(mockAlcoolService.dashboard, "updateGlobalConsumption");
+        jest.spyOn(mockAlcoolService.dashboard, "updateAlcools");
         const component = shallow(<AlcoolList
             alcoolService={mockAlcoolService}
             alcool={dummyAlcool.alcool}
@@ -171,7 +170,7 @@ describe('Dashboard AlcoolList', () => {
             globalConsumption={dummyAlcool.alcool.dailyTarget.globalConsumption}
             currentDate={today}
         />);
-        component.find('.trashButton').last().simulate('click');
+        component.find(".trashButton").last().simulate("click");
 
         expect(mockAlcoolService.dashboard.updateGlobalConsumption).toBeCalledTimes(1);
         expect(mockAlcoolService.dashboard.updateAlcools).toBeCalledTimes(1);

@@ -1,9 +1,8 @@
-import React from 'react';
-import {configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16';
-import BoissonAlcool from './BoissonAlcool';
-import firebase from 'firebase';
-import { render, unmountComponentAtNode } from "react-dom";
+import React from "react";
+import {configure, shallow } from "enzyme"
+import Adapter from "enzyme-adapter-react-16";
+import BoissonAlcool from "./BoissonAlcool";
+import firebase from "firebase";
 
 // Note: running cleanup afterEach is done automatically for you in @testing-library/react@9.0.0 or higher
 // unmount and cleanup DOM after the test is finished.
@@ -40,22 +39,22 @@ const dummyAlcool = {
             {
                 id: 0,
                 favoris: false,
-                name: '',
+                name: "",
                 qtte: 0,
                 proteine: 0,
                 glucide: 0,
                 fibre: 0,
                 gras: 0,
-                unit: '',
+                unit: "",
                 consumption: 0,
             }
         ],
     }
 };
 
-describe('BoissonAlcool Test', () => {
+describe("BoissonAlcool Test", () => {
 
-    test('change educ alcool setting as Female', () => {
+    test("change educ alcool setting as Female", () => {
         const mockAlcoolService = {
             settings: {
                 updateLimitConsom: (updatedLimitConsom) => {
@@ -64,21 +63,21 @@ describe('BoissonAlcool Test', () => {
                 }
             }
         };
-        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
+        jest.spyOn(mockAlcoolService.settings, "updateLimitConsom");
         const mockEvent = { detail: { checked: true } };
         const component = shallow(<BoissonAlcool 
             alcool = { dummyAlcool.alcool }
             alcoolService = {mockAlcoolService} 
-            gender = {'F'} />);
+            gender = {"F"} />);
 
-        component.find('#educAlcoolToggle').simulate('ionChange', mockEvent);
+        component.find("#educAlcoolToggle").simulate("ionChange", mockEvent);
         expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });
 
-    test('change educ alcool setting as Male', () => {
+    test("change educ alcool setting as Male", () => {
         const mockProfileSercice = {
             get: () => Promise.resolve({
-                gender: 'H'
+                gender: "H"
             })
         };
         const mockAlcoolService = {
@@ -89,19 +88,19 @@ describe('BoissonAlcool Test', () => {
                 }
             }
         };
-        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
+        jest.spyOn(mockAlcoolService.settings, "updateLimitConsom");
         const mockEvent = { detail: { checked: true } };
         const component = shallow(<BoissonAlcool 
             alcool = { dummyAlcool.alcool }
             alcoolService={mockAlcoolService}
             profileService = {mockProfileSercice} />);
 
-        component.find('#educAlcoolToggle').simulate('ionChange', mockEvent);
+        component.find("#educAlcoolToggle").simulate("ionChange", mockEvent);
 
         expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });
 
-    test('change notification setting', () => {
+    test("change notification setting", () => {
         let expectedNotificationsActiveValue = true;
         const mockAlcoolService = {
             settings: {
@@ -110,25 +109,25 @@ describe('BoissonAlcool Test', () => {
                 }
             }
         };
-        jest.spyOn(mockAlcoolService.settings, 'updateNotifications');
+        jest.spyOn(mockAlcoolService.settings, "updateNotifications");
         let mockEvent = { detail: { checked: expectedNotificationsActiveValue } };
         const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
 
         // Act.
-        component.find('#notificationToggle').simulate('ionChange', mockEvent);
+        component.find("#notificationToggle").simulate("ionChange", mockEvent);
         
         expect(mockAlcoolService.settings.updateNotifications).toBeCalledTimes(1);
 
         // Act.
         expectedNotificationsActiveValue = false;
         mockEvent.detail.checked = expectedNotificationsActiveValue;
-        component.find('#notificationToggle').simulate('ionChange', mockEvent);
+        component.find("#notificationToggle").simulate("ionChange", mockEvent);
 
         expect(mockAlcoolService.settings.updateNotifications).toBeCalledTimes(2);
 
     });
 
-    test('change daily target', () => {
+    test("change daily target", () => {
         const expectedCibleQqte = 89;
         const mockAlcoolService = {
             settings: {
@@ -137,16 +136,16 @@ describe('BoissonAlcool Test', () => {
                 }
             }
         };
-        jest.spyOn(mockAlcoolService.settings, 'updateDailyTarget');
-        const mockEvent = { target: { value: expectedCibleQqte, name: 'value' } };
+        jest.spyOn(mockAlcoolService.settings, "updateDailyTarget");
+        const mockEvent = { target: { value: expectedCibleQqte, name: "value" } };
         const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
         
-        component.find('#cibleQtte').simulate('ionChange', mockEvent);
+        component.find("#cibleQtte").simulate("ionChange", mockEvent);
         
         expect(mockAlcoolService.settings.updateDailyTarget).toBeCalledTimes(1);
     });
 
-    test('change limit consommation daily target', () => {
+    test("change limit consommation daily target", () => {
         const expectedDailyTarget = 89;
         const mockAlcoolService = {
             settings: {
@@ -155,16 +154,16 @@ describe('BoissonAlcool Test', () => {
                 }
             }
         };
-        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
-        const mockEvent = { target: { value: expectedDailyTarget, name: 'dailyTarget' } };
+        jest.spyOn(mockAlcoolService.settings, "updateLimitConsom");
+        const mockEvent = { target: { value: expectedDailyTarget, name: "dailyTarget" } };
         const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
         
-        component.find('#dailyTargetToggle').simulate('ionChange', mockEvent);
+        component.find("#dailyTargetToggle").simulate("ionChange", mockEvent);
         
         expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });
 
-    test('change limit consommation weekly target', () => {
+    test("change limit consommation weekly target", () => {
         const expectedWeeklyTarget = 89;
         const mockAlcoolService = {
             settings: {
@@ -173,11 +172,11 @@ describe('BoissonAlcool Test', () => {
                 }
             }
         };
-        jest.spyOn(mockAlcoolService.settings, 'updateLimitConsom');
-        const mockEvent = { target: { value: expectedWeeklyTarget, name: 'weeklyTarget' } };
+        jest.spyOn(mockAlcoolService.settings, "updateLimitConsom");
+        const mockEvent = { target: { value: expectedWeeklyTarget, name: "weeklyTarget" } };
         const component = shallow(<BoissonAlcool alcool = { dummyAlcool.alcool } alcoolService={mockAlcoolService} />);
         
-        component.find('#weeklyTargetToggle').simulate('ionChange', mockEvent);
+        component.find("#weeklyTargetToggle").simulate("ionChange", mockEvent);
         
         expect(mockAlcoolService.settings.updateLimitConsom).toBeCalledTimes(1);
     });

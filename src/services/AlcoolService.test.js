@@ -1,18 +1,17 @@
-import React from 'react';
-import AlcoolService from './AlcoolService';
-import firebase from 'firebase';
+import AlcoolService from "./AlcoolService";
+import firebase from "firebase";
 
-describe('AlcoolService', () => {
-    test('updateAlcools', () => {
-        const expectedUserId = 'awesomeUser007';
+describe("AlcoolService", () => {
+    test("updateAlcools", () => {
+        const expectedUserId = "awesomeUser007";
         const expectedDashboard = {
             alcool: {
-                alcools: ['patate']
+                alcools: ["patate"]
             }
         };
         const expectedCurrentDate = null;
-        localStorage.setItem('userUid', expectedUserId);
-        localStorage.setItem('dashboard', JSON.stringify({
+        localStorage.setItem("userUid", expectedUserId);
+        localStorage.setItem("dashboard", JSON.stringify({
             alcool: {
                 alcools: []
             }
@@ -28,25 +27,25 @@ describe('AlcoolService', () => {
             }
         );
         const actualDashboard = AlcoolService.dashboard.updateAlcools(expectedDashboard.alcool.alcools, expectedCurrentDate);
-        const actualLocalStorageDashboard = JSON.parse(localStorage.getItem('dashboard'));
+        const actualLocalStorageDashboard = JSON.parse(localStorage.getItem("dashboard"));
 
         expect(actualDashboard).toEqual(expectedDashboard);
         expect(actualLocalStorageDashboard).toEqual(expectedDashboard);
     });
 
-    test('addAlcool', () => {
-        const expectedUserId = 'awesomeUser007';
-        const newAlcool = 'tomate';
+    test("addAlcool", () => {
+        const expectedUserId = "awesomeUser007";
+        const newAlcool = "tomate";
         const expectedDashboard = {
             alcool: {
-                alcools: [newAlcool, 'patate']
+                alcools: [newAlcool, "patate"]
             }
         };
         const expectedCurrentDate = null;
-        localStorage.setItem('userUid', expectedUserId);
-        localStorage.setItem('dashboard', JSON.stringify({
+        localStorage.setItem("userUid", expectedUserId);
+        localStorage.setItem("dashboard", JSON.stringify({
             alcool: {
-                alcools: ['patate']
+                alcools: ["patate"]
             }
         }));
         firebase.database = () => (
@@ -60,14 +59,14 @@ describe('AlcoolService', () => {
             }
         );
         const actualDashboard = AlcoolService.dashboard.addAlcool(newAlcool, expectedCurrentDate);
-        const actualLocalStorageDashboard = JSON.parse(localStorage.getItem('dashboard'));
+        const actualLocalStorageDashboard = JSON.parse(localStorage.getItem("dashboard"));
 
         expect(actualDashboard).toEqual(expectedDashboard);
         expect(actualLocalStorageDashboard).toEqual(expectedDashboard);
     });
 
-    test('updateGlobalConsumption', () => {
-        const expectedUserId = 'awesomeUser007';
+    test("updateGlobalConsumption", () => {
+        const expectedUserId = "awesomeUser007";
         const expectedGlobalConsumption = 13;
         const expectedDashboard = {
             alcool: {
@@ -77,8 +76,8 @@ describe('AlcoolService', () => {
             }
         };
         const expectedCurrentDate = null;
-        localStorage.setItem('userUid', expectedUserId);
-        localStorage.setItem('dashboard', JSON.stringify({
+        localStorage.setItem("userUid", expectedUserId);
+        localStorage.setItem("dashboard", JSON.stringify({
             alcool: {
                 dailyTarget: {
                     globalConsumption: 0
@@ -96,7 +95,7 @@ describe('AlcoolService', () => {
             }
         );
         const actualDashboard = AlcoolService.dashboard.updateGlobalConsumption(expectedGlobalConsumption, expectedCurrentDate);
-        const actualLocalStorageDashboard = JSON.parse(localStorage.getItem('dashboard'));
+        const actualLocalStorageDashboard = JSON.parse(localStorage.getItem("dashboard"));
 
         expect(actualDashboard).toEqual(expectedDashboard);
         expect(actualLocalStorageDashboard).toEqual(expectedDashboard);
