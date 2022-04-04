@@ -4,6 +4,9 @@ import React, {useState, useEffect} from 'react';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
 
+//Added to translator
+import * as translate from '../../translate/Translator';
+
 const HydrateItem = (props) => {
 
   const [item, setItem] = useState({
@@ -28,6 +31,9 @@ const HydrateItem = (props) => {
     props.save(item);
   }
 
+
+  const descPlaceholder = translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']);
+
   return (
     <div id="divPopUp1-1">
         <IonCol size="1">
@@ -41,7 +47,7 @@ const HydrateItem = (props) => {
             <IonIcon className="starFavoris" icon={star}/>
           </IonCol>
           <IonCol size="3">
-            <IonInput className = 'divAddText' placeholder="Description" name="name" value={item.name} onIonChange={handleChange}></IonInput>  
+            <IonInput className = 'divAddText' placeholder={ descPlaceholder } name="name" value={item.name} onIonChange={handleChange}></IonInput>  
           </IonCol>
           <IonCol size="2">
             <IonInput className = 'divAddText' type= 'number' placeholder="Taille/portion" name="qtte" value={item.qtte} onIonChange={handleChange}></IonInput>  
@@ -49,11 +55,11 @@ const HydrateItem = (props) => {
           <IonCol size="2">
             <select id="PopUpUnitSelect" name="unit" defaultValue={item.unit} onChange={handleChange}>
               <option value="-1"></option>
-              <option value="gr">gr</option>
-              <option value="oz">oz</option>
-              <option value="ml">ml</option>
-              <option value="tasse">tasse</option>
-              <option value="unite">unité</option>
+              <option value="gr">{translate.getText('UNIT_GR')}</option>
+              <option value="oz">{translate.getText('UNIT_OZ')}</option>
+              <option value="ml">{translate.getText('UNIT_ML')}</option>
+              <option value="tasse">{translate.getText('UNIT_CUP')}</option>
+              <option value="unite">{translate.getText('UNIT_TEXT')}</option>
             </select>
           </IonCol>
           <IonCol className ="colNutProteinesHyd" size="1">
@@ -166,11 +172,11 @@ const Hydrate = (props) => {
               </IonCol>
               <select id="materialSelect" value={hydra.unit} disabled="disabled">
                 <option value1="-1"></option>
-                <option value1="gr">gr</option>
-                <option value1="oz">oz</option>
-                <option value1="ml">ml</option>
-                <option value1="tasse">tasse</option>
-                <option value1="unite">unité</option>
+                <option value="gr">{translate.getText('UNIT_GR')}</option>
+                <option value="oz">{translate.getText('UNIT_OZ')}</option>
+                <option value="ml">{translate.getText('UNIT_ML')}</option>
+                <option value="tasse">{translate.getText('UNIT_CUP')}</option>
+                <option value="unite">{translate.getText('UNIT_TEXT')}</option>
               </select>
               <IonButton className='editButton' color="danger" size="small" onClick={() => openEditItemContainer(index)}>
                 <IonIcon  icon={create} />
@@ -191,7 +197,7 @@ const Hydrate = (props) => {
       </div>
       <div className="ajoutBotton">    
         <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
-        <IonIcon icon={addCircle}/><label className="labelAddItem">breuvage</label></IonButton>
+        <IonIcon icon={addCircle}/><label className="labelAddItem">{ translate.getText('HYD_BUTTON_ADD_DRINK') }</label></IonButton>
       </div>
       {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(itemHydrate) => saveItem(itemHydrate)}/>}
     </div> 
