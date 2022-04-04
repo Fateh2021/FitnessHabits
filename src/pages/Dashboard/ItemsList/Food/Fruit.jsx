@@ -6,7 +6,7 @@ const Fruit = (props) => {
     <Food
       categoryKey = 'fruit'
       updateFoodConsumptionCallback = {props.updateFoodConsumptionCallback}
-      macroNutrimentConsumption = {props.macroNutrimentConsumption}
+      macroNutrientConsumption = {props.macroNutrientConsumption}
       foodItems = {props.foodItems}
       currentDate = {props.currentDate}
       foodItemToEdit = {undefined}

@@ -12,6 +12,8 @@ import ProteinFood from "./ItemsList/Food/ProteinFood"
 import Vegetables from "./ItemsList/Food/Vegetables"
 import GrainFood from "./ItemsList/Food/GrainFood"
 import DairyProducts from "./ItemsList/Food/DairyProducts";
+import { initSampleFoodItem } from './ItemsList/Food/Food';
+import { round } from './ItemsList/Food/Food';
 
 import Hydratation from "./ItemsList/Hydratation";
 import Glycemie from "./ItemsList/Glycemie"
@@ -57,55 +59,55 @@ const Dashboard = (props) => {
         });
     }
 
-    const initFoodDashboard = () => {
-        const foodDashboard = {
-            globalMacroNutrimentConsumption: {
+    const initFoodDashboardTemplate = () => {
+        const foodDashboardTemplate = {
+            globalMacroNutrientConsumption: {
                 proteins: 0,
-                glucides: 0,
+                carbs: 0,
                 fibre: 0,
                 fats: 0
             },
             categories: {
                 proteinFood: {
-                    macroNutrimentConsumption: {
+                    macroNutrientConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
                     items: []
                 },
                 grainFood: {
-                    macroNutrimentConsumption: {
+                    macroNutrientConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
                     items: []
                 }, 
                 vegetables: {
-                    macroNutrimentConsumption: {
+                    macroNutrientConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
                     items: []
                 },
                 fruit: {
-                    macroNutrimentConsumption: {
+                    macroNutrientConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
                     items: []
                 },
                 dairyProducts: {
-                    macroNutrimentConsumption: {
+                    macroNutrientConsumption: {
                         proteins: 0,
-                        glucides: 0,
+                        carbs: 0,
                         fibre: 0,
                         fats: 0
                     },
@@ -113,7 +115,7 @@ const Dashboard = (props) => {
                 }
             }
         };
-        return foodDashboard;
+        return foodDashboardTemplate;
     };
 
     const [dashboard, setDashboard] = useState({
@@ -133,7 +135,7 @@ const Dashboard = (props) => {
             },
             alcools: DefaultDashboard.alcools
         },
-        food: initFoodDashboard(),
+        food: initFoodDashboardTemplate(),
         glycemie: {
             dailyGlycemie: 0,
         },
@@ -158,30 +160,45 @@ const Dashboard = (props) => {
         },
     });
 
+    const checkAllKeysAreUpToDate = (templateNode, realNode) => {
+        Object.keys(templateNode).forEach(key => {
+            if (!realNode[key]) {
+                realNode[key] = templateNode[key];
+            }
+        });
+    };
+
     const checkAllFoodCategoriesAreDefined = (dashboard) => {
-        const foodDashboard = initFoodDashboard();
+        const foodDashboardTemplate = initFoodDashboardTemplate();
 
         if (!dashboard.food) {
-            dashboard.food = foodDashboard;
+            dashboard.food = foodDashboardTemplate;
             return;
         }
-        if (!dashboard.food.globalMacroNutrimentConsumption) {
-            dashboard.food.globalMacroNutrimentConsumption = foodDashboard.globalMacroNutrimentConsumption;
+        if (!dashboard.food.globalMacroNutrientConsumption) {
+            dashboard.food.globalMacroNutrientConsumption = foodDashboardTemplate.globalMacroNutrientConsumption;
+        } else {
+            checkAllKeysAreUpToDate(foodDashboardTemplate.globalMacroNutrientConsumption, dashboard.food.globalMacroNutrientConsumption);
         }
         if (!dashboard.food.categories || Object.keys(dashboard.food.categories).length === 0) {
-            dashboard.food.categories = foodDashboard.categories;
+            dashboard.food.categories = foodDashboardTemplate.categories;
             return;
         }
-        Object.keys(foodDashboard.categories).forEach(category => {
+        Object.keys(foodDashboardTemplate.categories).forEach(category => {
             if (!dashboard.food.categories[category]) {
-                dashboard.food.categories[category] = foodDashboard.categories[category];
+                dashboard.food.categories[category] = foodDashboardTemplate.categories[category];
                 return;
             }
-            if (!dashboard.food.categories[category].macroNutrimentConsumption) {
-                dashboard.food.categories[category].macroNutrimentConsumption = foodDashboard.categories[category].macroNutrimentConsumption;
+            if (!dashboard.food.categories[category].macroNutrientConsumption) {
+                dashboard.food.categories[category].macroNutrientConsumption = foodDashboardTemplate.categories[category].macroNutrientConsumption;
+            } else {
+                checkAllKeysAreUpToDate(foodDashboardTemplate.categories[category].macroNutrientConsumption, dashboard.food.categories[category].macroNutrientConsumption);
             }
             if (!dashboard.food.categories[category].items) {
-                dashboard.food.categories[category].items = foodDashboard.categories[category].items;
+                dashboard.food.categories[category].items = foodDashboardTemplate.categories[category].items;
+            } else {
+                const sampleFoodItem = initSampleFoodItem({});
+                dashboard.food.categories[category].items.forEach(item => { checkAllKeysAreUpToDate(sampleFoodItem, item); });
             }
         });
         return;
@@ -276,18 +293,18 @@ const Dashboard = (props) => {
         }
     }, []);
 
-    const updateGlobalMacroNutrimentConsumption = (sets) => {
-        sets.food.globalMacroNutrimentConsumption = {
+    const updateGlobalMacroNutrientConsumption = (sets) => {
+        sets.food.globalMacroNutrientConsumption = {
             proteins: 0,
-            glucides: 0,
+            carbs: 0,
             fibre: 0,
             fats: 0
         };
         Object.keys(sets.food.categories).forEach(category => {
-            sets.food.globalMacroNutrimentConsumption.proteins += sets.food.categories[category].macroNutrimentConsumption.proteins;
-            sets.food.globalMacroNutrimentConsumption.glucides += sets.food.categories[category].macroNutrimentConsumption.glucides;
-            sets.food.globalMacroNutrimentConsumption.fibre += sets.food.categories[category].macroNutrimentConsumption.fibre;
-            sets.food.globalMacroNutrimentConsumption.fats += sets.food.categories[category].macroNutrimentConsumption.fats;
+            sets.food.globalMacroNutrientConsumption.proteins = round(sets.food.globalMacroNutrientConsumption.proteins + sets.food.categories[category].macroNutrientConsumption.proteins);
+            sets.food.globalMacroNutrientConsumption.carbs = round(sets.food.globalMacroNutrientConsumption.carbs + sets.food.categories[category].macroNutrientConsumption.carbs);
+            sets.food.globalMacroNutrientConsumption.fibre = round(sets.food.globalMacroNutrientConsumption.fibre + sets.food.categories[category].macroNutrientConsumption.fibre);
+            sets.food.globalMacroNutrientConsumption.fats = round(sets.food.globalMacroNutrientConsumption.fats + sets.food.categories[category].macroNutrientConsumption.fats);
         });
     };
 
@@ -305,7 +322,7 @@ const Dashboard = (props) => {
                         sets.alcool.alcools=[]
                     }
                     const updatedSets = addMissingDashboard(sets);
-                    updateGlobalMacroNutrimentConsumption(updatedSets);
+                    updateGlobalMacroNutrientConsumption(updatedSets);
                     localStorage.setItem("dashboard", JSON.stringify(updatedSets));
                     setDashboard(updatedSets);
                     //console.log("sa marche::" + sets.nourriture.globalConsumption);
@@ -357,7 +374,7 @@ const Dashboard = (props) => {
                                 },
                                 alcools:DefaultDashboard.alcools
                             },
-                            food: initFoodDashboard(),
+                            food: initFoodDashboardTemplate(),
                             glycemie : {
                                 dailyGlycemie:0,
                             },
@@ -452,7 +469,7 @@ const Dashboard = (props) => {
                                 },
                                 alcools:DefaultDashboard.alcools
                             },
-                            food: initFoodDashboard(),
+                            food: initFoodDashboardTemplate(),
                             glycemie : {
                                 dailyGlycemie:0,
                             },
@@ -545,16 +562,19 @@ const Dashboard = (props) => {
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeProteins"])}: {dashboard.food.globalMacroNutrimentConsumption.proteins}</IonButton>
+                                        <IonButton fill="clear" size='small'><span id="totalMacroNutriment">{translate.getText('FOOD_MODULE', ['macroNutrientSummary', 'totalMacroNutrients'])}:</span></IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeGlucides"])}: {dashboard.food.globalMacroNutrimentConsumption.glucides}</IonButton>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeProteins"])}: {dashboard.food.globalMacroNutrientConsumption.proteins}</IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary'shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeFibre"])}: {dashboard.food.globalMacroNutrimentConsumption.fibre}</IonButton>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeCarbs"])}: {dashboard.food.globalMacroNutrientConsumption.carbs}</IonButton>
                                     </IonCol>
                                     <IonCol>
-                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrimentSummary", "cumulativeFats"])}: {dashboard.food.globalMacroNutrimentConsumption.fats}</IonButton>
+                                        <IonButton color='primary'shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeFibre"])}: {dashboard.food.globalMacroNutrientConsumption.fibre}</IonButton>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonButton color='primary' shape='round' size='small'>{translate.getText("FOOD_MODULE", ["macroNutrientSummary", "cumulativeFats"])}: {dashboard.food.globalMacroNutrientConsumption.fats}</IonButton>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
@@ -566,31 +586,31 @@ const Dashboard = (props) => {
                         <IonList id = "listNourriture">
                             <Fruit 
                                 updateFoodConsumptionCallback = { updateFoodConsumption } 
-                                macroNutrimentConsumption = { dashboard.food.categories.fruit.macroNutrimentConsumption }
+                                macroNutrientConsumption = { dashboard.food.categories.fruit.macroNutrientConsumption }
                                 foodItems = { dashboard.food.categories.fruit.items }
                                 currentDate = { currentDate }
                             />
                             <ProteinFood 
                                 updateFoodConsumptionCallback = { updateFoodConsumption } 
-                                macroNutrimentConsumption = { dashboard.food.categories.proteinFood.macroNutrimentConsumption }
+                                macroNutrientConsumption = { dashboard.food.categories.proteinFood.macroNutrientConsumption }
                                 foodItems = { dashboard.food.categories.proteinFood.items }
                                 currentDate = { currentDate }
                             />
                             <Vegetables 
                                 updateFoodConsumptionCallback = { updateFoodConsumption }
-                                macroNutrimentConsumption = { dashboard.food.categories.vegetables.macroNutrimentConsumption }
+                                macroNutrientConsumption = { dashboard.food.categories.vegetables.macroNutrientConsumption }
                                 foodItems = { dashboard.food.categories.vegetables.items }
                                 currentDate = { currentDate }
                             />
                             <GrainFood 
                                 updateFoodConsumptionCallback = { updateFoodConsumption }
-                                macroNutrimentConsumption = { dashboard.food.categories.grainFood.macroNutrimentConsumption }
+                                macroNutrientConsumption = { dashboard.food.categories.grainFood.macroNutrientConsumption }
                                 foodItems = { dashboard.food.categories.grainFood.items }
                                 currentDate = { currentDate }
                             />
                             <DairyProducts 
                                 updateFoodConsumptionCallback = { updateFoodConsumption }
-                                macroNutrimentConsumption = { dashboard.food.categories.dairyProducts.macroNutrimentConsumption }
+                                macroNutrientConsumption = { dashboard.food.categories.dairyProducts.macroNutrientConsumption }
                                 foodItems = { dashboard.food.categories.dairyProducts.items }
                                 currentDate = { currentDate }
                             />
