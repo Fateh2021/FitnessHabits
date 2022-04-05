@@ -9,19 +9,19 @@ import * as translate from '../../../../translate/Translator';
 export const SUPPORTED_UNITS_CONVERTER = {
   g: {
     name: 'g',
-    qtyPerGram: 1
+    gramQtyPerUnit: 1
   },
   oz: {
     name: 'oz',
-    qtyPerGram: 28.3495
+    gramQtyPerUnit: 28.3495
   },
   ml: {
     name: 'ml',
-    qtyPerGram: 1
+    gramQtyPerUnit: 1
   },
   lb: {
     name: 'lb',
-    qtyPerGram: 453.592
+    gramQtyPerUnit: 453.592
   }
 };
 
@@ -206,7 +206,7 @@ const Food = (props) => {
     let qtyConsumed = oldData ? oldData.qtyConsumed : item.qtyConsumed;
     let refQty = oldData ? oldData.refQty : item.refQty;
     const qtyConsumedAdjusted = (qtyConsumed * macroNutrientPerRefQty) / refQty;
-    return round(qtyConsumedAdjusted * SUPPORTED_UNITS_CONVERTER[unit].qtyPerGram);
+    return round(qtyConsumedAdjusted * SUPPORTED_UNITS_CONVERTER[unit].gramQtyPerUnit);
   };
 
   const updateFunc = (macroNutrientConsumption, updatedValue) => {

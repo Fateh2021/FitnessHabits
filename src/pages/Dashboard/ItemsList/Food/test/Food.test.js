@@ -499,7 +499,7 @@ it("test edit and save", () => {
         const newUnits = ['lb', 'oz', 'ml', 'g', 'oz'];
 
         const consumptionUpdateFunc = (oldMacroNutrientConsumptionPerCategory, oldConsumption, newMacroNutrientQtyPerRefQty, qtyConsumed, refQty, unit) => {
-            const newConsumption = round((newMacroNutrientQtyPerRefQty * qtyConsumed / refQty) * SUPPORTED_UNITS_CONVERTER[unit].qtyPerGram);
+            const newConsumption = round((newMacroNutrientQtyPerRefQty * qtyConsumed / refQty) * SUPPORTED_UNITS_CONVERTER[unit].gramQtyPerUnit);
             return round(oldMacroNutrientConsumptionPerCategory - oldConsumption + newConsumption);
         };
 
