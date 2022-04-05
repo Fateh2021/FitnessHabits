@@ -9,15 +9,15 @@
       "es": "Por favor, elija su idioma",
       "fr": "Veuillez choisir votre langue"
    },
-   "LANG_TITLE": {
-      "en": "Language",
-      "es": "Lengua",
-      "fr": "Langue"
+   "LANG_TITLE":{
+      "en":"Language",
+      "es":"Lengua",
+      "fr":"Langue"
    },
-   "HYD_TITLE_TARGET": {
-      "en": "Daily target",
-      "es": "Objetivo diario",
-      "fr": "Cible quotidienne"
+   "HYD_TITLE_TARGET":{
+      "en":"Daily target",
+      "es":"Objetivo diario",
+      "fr":"Cible quotidienne"
    },
    "HYD_ALERT_GT_3000_P1": {
       "en": "Be careful, it is advisable not to exceed",
@@ -601,6 +601,41 @@
       "en":"Sleep",
       "es":"Dormir",
       "fr":"Sommeil"
+   },
+   "HYDRATION":{
+      "en":"Hydration",
+      "es":"Hidratación",
+      "fr":"Hydratation"
+   },
+   "FOOD":{
+      "en":"Food",
+      "es":"Comida",
+      "fr":"Nourriture"
+   },
+   "ALCOHOL": {
+      "en":"Alcohol",
+      "es":"Alcohol",
+      "fr":"Alcool"
+   },
+   "ACTIVITIES": {
+      "en":"Activities",
+      "es":"Ocupaciones",
+      "fr":"Activités"
+   },
+   "WEIGHT": {
+      "en":"Weight",
+      "es":"Peso",
+      "fr":"Poids"
+   },
+   "TOILET": {
+      "en":"Toilet",
+      "es":"Baño",
+      "fr":"Toilettes"
+   },
+   "GLYCEMIC": {
+      "en":"Glycemic",
+      "es":"Glucémico",
+      "fr":"Glycémique"
    },
    "SOMMEIL_DUREE_ERROR":{
       "en":"The sleep time cannot be 0 minutes.",
@@ -1230,3 +1265,4 @@
       "fr": "Moyenne gras"
     }
 }
+

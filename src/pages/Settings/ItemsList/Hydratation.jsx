@@ -21,14 +21,24 @@ const Hydratation = (props) => {
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
+      if(!divElt.style.display || divElt.style.display === "none") {
+         divElt.style.display = "block"
+      } else {
+        divElt.style.display = "none";
+      }
     }
   }
 
   const handleDailyTargetChange = event => {
     const userUID = localStorage.getItem('userUid');
     const { name, value } = event.target;
-    const updatedDailyTarget = { ...dailyTarget, [name]: value ? value : (name === 'value') ? 0 : '' };
+    let retval;
+    if (name === 'value') {
+      retval = 0;
+    } else {
+      retval = '';
+    }
+    const updatedDailyTarget = { ...dailyTarget, [name]: value ? value : retval };
     setDailyTarget({ ...dailyTarget, [name]: value });
     // update the cache and persist in DB
     const settings = JSON.parse(localStorage.getItem('settings'));

@@ -128,7 +128,11 @@ const Hydrate = (props) => {
   const deleteItem = (item) => {
     var array = [...hydrates];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.splice(item, 1): array[item] = item;
+    if (index === -1) {
+      array.splice(item, 1);
+    } else {
+      array[item] = item;
+    }
     setHydrates (array);
     closeItemContainer();
 
@@ -139,7 +143,11 @@ const Hydrate = (props) => {
   const saveItem = (item) => {
     var array = [...hydrates];
     const index = array.findIndex((e) => e.id === item.id);
-    index === -1 ? array.unshift(item): array[index] = item;
+    if (index === -1) {
+      array.unshift(item);
+    } else {
+      array[index] = item;
+    }
     setHydrates (array);
     closeItemContainer();
 
