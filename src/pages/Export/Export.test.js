@@ -95,31 +95,31 @@ test('ExportModule - TestEnglishTranslation', async() => {
     renderWithRouter(<App />, {route: '/Export'});
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
-    expect(nourriture.textContent).toBe('Food');
+    expect(nourriture.textContent).toBe("Food");
 
     const acti = screen.getByTestId(/checkbox-activities/i);
     expect(acti.textContent).toBe('Physical activities');
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
-    expect(hyd.textContent).toBe('Hydration');
+    expect(hyd.textContent).toBe("Hydration");
 
     const supp = screen.getByTestId(/checkbox-supplements/i);
-    expect(supp.textContent).toBe('Supplements');
+    expect(supp.textContent).toBe("Supplements");
 
     const sleep = screen.getByTestId(/checkbox-sleep/i);
-    expect(sleep.textContent).toBe('Sleep');
+    expect(sleep.textContent).toBe("Sleep");
 
     const weight = screen.getByTestId(/checkbox-weight/i);
-    expect(weight.textContent).toBe('Weight');
+    expect(weight.textContent).toBe("Weight");
 
     const glyc = screen.getByTestId(/checkbox-glycemia/i);
-    expect(glyc.textContent).toBe('Blood sugar level');
+    expect(glyc.textContent).toBe("Blood sugar level");
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    expect(alcool.textContent).toBe('Alcohol');
+    expect(alcool.textContent).toBe("Alcohol");
 
     const toilet = screen.getByTestId(/checkbox-toilet/i);
-    expect(toilet.textContent).toBe('Toilets');
+    expect(toilet.textContent).toBe("Toilets");
 });
 
 /**
@@ -130,31 +130,31 @@ test('ExportModule - TestFrenchTranslation', async() => {
     renderWithRouter(<App />, {route: '/Export'});
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
-    expect(nourriture.textContent).toBe('Nourriture')
+    expect(nourriture.textContent).toBe("Nourriture")
 
     const acti = screen.getByTestId(/checkbox-activities/i);
     expect(acti.textContent).toBe('Activités physiques');
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
-    expect(hyd.textContent).toBe('Hydratation');
+    expect(hyd.textContent).toBe("Hydratation");
 
     const supp = screen.getByTestId(/checkbox-supplements/i);
-    expect(supp.textContent).toBe('Suppléments');
+    expect(supp.textContent).toBe("Suppléments");
 
     const sleep = screen.getByTestId(/checkbox-sleep/i);
-    expect(sleep.textContent).toBe('Sommeil');
+    expect(sleep.textContent).toBe("Sommeil");
 
     const weight = screen.getByTestId(/checkbox-weight/i);
-    expect(weight.textContent).toBe('Poids');
+    expect(weight.textContent).toBe("Poids");
 
     const glyc = screen.getByTestId(/checkbox-glycemia/i);
-    expect(glyc.textContent).toBe('Glycémie');
+    expect(glyc.textContent).toBe("Glycémie");
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    expect(alcool.textContent).toBe('Alcool');
+    expect(alcool.textContent).toBe("Alcool");
 
     const toilet = screen.getByTestId(/checkbox-toilet/i);
-    expect(toilet.textContent).toBe('Toilettes');
+    expect(toilet.textContent).toBe("Toilettes");
 });
 
 /**
@@ -166,31 +166,31 @@ test('ExportModule - TestSpanishTranslation', async() => {
 
     const nourriture = screen.getByTestId(/checkbox-food/i);
     expect(nourriture).toBeInTheDocument();
-    expect(nourriture.textContent).toBe('Alimentos')
+    expect(nourriture.textContent).toBe("Alimentos")
 
     const acti = screen.getByTestId(/checkbox-activities/i);
     expect(acti.textContent).toBe('Actividades físicas');
 
     const hyd = screen.getByTestId(/checkbox-hydration/i);
-    expect(hyd.textContent).toBe('Hidratación');
+    expect(hyd.textContent).toBe("Hidratación");
 
     const supp = screen.getByTestId(/checkbox-supplements/i);
-    expect(supp.textContent).toBe('Suplementos');
+    expect(supp.textContent).toBe("Suplementos");
 
     const sleep = screen.getByTestId(/checkbox-sleep/i);
-    expect(sleep.textContent).toBe('Dormir');
+    expect(sleep.textContent).toBe("Dormir");
 
     const weight = screen.getByTestId(/checkbox-weight/i);
-    expect(weight.textContent).toBe('Peso');
+    expect(weight.textContent).toBe("Peso");
 
     const glyc = screen.getByTestId(/checkbox-glycemia/i);
-    expect(glyc.textContent).toBe('Glucemia');
+    expect(glyc.textContent).toBe("Glucemia");
 
     const alcool = screen.getByTestId(/checkbox-alcool/i);
-    expect(alcool.textContent).toBe('Alcohol');
+    expect(alcool.textContent).toBe("Alcohol");
 
     const toilet = screen.getByTestId(/checkbox-toilet/i);
-    expect(toilet.textContent).toBe('Aseos');
+    expect(toilet.textContent).toBe("Aseos");
 
 });
 
@@ -212,10 +212,10 @@ test('ExportModule - TestNoChangeOnAttributes_whenSelectingReportFormat', async(
 
     const radio_pdf = screen.getByTestId("radio-pdf")
     await act( async () => {
-          fireEvent.click(checkbox_food)
-          fireEvent.click(checkbox_sleep)
-          fireEvent.click(checkbox_weight)
-          fireEvent.click(radio_pdf)
+        fireEvent.click(checkbox_food)
+        fireEvent.click(checkbox_sleep)
+        fireEvent.click(checkbox_weight)
+        fireEvent.click(radio_pdf)
     });
     expect(checkbox_food.getAttribute("aria-checked")).toBe("false")
     expect(checkbox_sleep.getAttribute("aria-checked")).toBe("false")
@@ -590,7 +590,7 @@ test('ExportModule - TestFetchDrinksHydratation', async() => {
     let arrayExpected=[]
     data_hydratation.forEach((element)=>{
         let mapExpected = new Map();
-        mapExpected.set("Date", '18-03-2022');
+        mapExpected.set("Date", "18-03-2022");
         mapExpected.set("Nom", element.name);
         mapExpected.set("Quantité", element.qtte);
         mapExpected.set("Unité", element.unit);
@@ -782,15 +782,15 @@ test('ExportModule - TestFetchWeight_AGGREGATE', async() => {
  */
 test('ExportModule - Test_getNumberOfUniqueDate', async() => {
 
-    let arrayDateNotUnique=['31-12-2023','18-05-2022',
-    '31-12-2023','15-10-2011','03-01-2022','18-05-2022',
-    '15-10-2011','18-05-2022','03-01-2022','18-05-2022',
-    '03-01-2022','31-12-2023','04-01-2025']
+    let arrayDateNotUnique=["31-12-2023", "18-05-2022",
+        "31-12-2023", "15-10-2011", "03-01-2022", "18-05-2022",
+        "15-10-2011", "18-05-2022", "03-01-2022", "18-05-2022",
+        "03-01-2022", "31-12-2023", "04-01-2025"]
     let arrayOfMapOfNotUniqueDate=[]
 
     arrayDateNotUnique.forEach((element)=>{
         let map= new Map()
-        map.set('Date',element)
+        map.set("Date", element)
         arrayOfMapOfNotUniqueDate.push(map);
     });
     let numberUniqueExpected=5;
@@ -802,12 +802,12 @@ test('ExportModule - Test_getNumberOfUniqueDate', async() => {
  */
 test('ExportModule - test_sortEntries', async() => {
 
-    let arrayDateNotSorted=['31-12-2023','18-05-2022',
-    '31-12-2023','15-10-2011','03-01-2022','18-05-2022','13-08-2019']
+    let arrayDateNotSorted=["31-12-2023", "18-05-2022",
+        "31-12-2023", "15-10-2011", "03-01-2022", "18-05-2022", "13-08-2019"]
     let arrayOfMapDateNotSorted=[]
     arrayDateNotSorted.forEach((element)=>{
         let map= new Map()
-        map.set('Date',element)
+        map.set("Date", element)
         arrayOfMapDateNotSorted.push(map);
     });
 

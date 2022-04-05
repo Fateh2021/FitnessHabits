@@ -5,12 +5,12 @@
  */
 export const convertToCM = (currentUnitDisplay, value, imperial) => {
     switch (currentUnitDisplay) {
-        case "CM":
-            return value;    
-        case "M":
-            return value *100;    
-        default:
-            return Math.round(Number(2.54)*(Number(imperial.feet*12)+Number(imperial.inches)));
+    case "CM":
+        return value;    
+    case "M":
+        return value *100;    
+    default:
+        return Math.round(Number(2.54)*(Number(imperial.feet*12)+Number(imperial.inches)));
     }
 }
 
@@ -20,12 +20,12 @@ export const convertToCM = (currentUnitDisplay, value, imperial) => {
  * ("CM",168,null)
  * returns obecjt {feet:5,inches:6}
  */
-export const convertToImperial = (currentDisplay,value) => {
+export const convertToImperial = (currentDisplay, value) => {
     if (currentDisplay === "M") {
         value = Number(value*100);
     }
     var inches = value/2.54;
     var feet = Math.floor(inches / 12);
     var restant = Math.round(inches - (feet * 12));
-    return {feet:feet,inches:restant};
+    return {feet:feet, inches:restant};
 }

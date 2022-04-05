@@ -319,11 +319,11 @@ color: #ffffff;
   font-size: 20px;
   color: #5c3d0c;
   text-shadow: #5c3d0c;
-  margin-left: -8px;
+  margin-left: center;
 
 }
 
-.starFavoris.active {
+.active {
   color: #dbb600;
 }
 
@@ -594,7 +594,7 @@ color: #ffffff;
 
 .divAddTextNut{
 
-  font-size: 10px;
+  font-size: small;
   text-align: center;
 }
 
@@ -1904,6 +1904,7 @@ h2{
 
 .colNutProteinesHyd {
   background-color:  brown;
+  text-align: center;
 }
 
 .divMacroAdd{
@@ -1913,14 +1914,17 @@ h2{
 
 .colNutGlucidesHyd {
   background-color:  #db4e3e;
+  text-align: center;
 }
 
 .colNutFibresHyd {
   background-color:  #589051;
+  text-align: center;
 }
 
 .colNutGrasHyd {
   background-color: rgb(202, 154, 23);
+  text-align: center;
 }
 
 .divTitre1 {
@@ -2157,4 +2161,19 @@ h2{
   font-weight: bold;
   color: black;
   right: 50px;
+}
+
+#totalMacroNutrient {
+  color: white;
+}
+
+.addFoodItemPopupLabels {
+  font-size: small;
+  font-weight: bold;
+  color: blue
+}
+
+#foodItemPopup {
+  --ion-background-color:#eed996;
+  border: #752222 solid;
 }

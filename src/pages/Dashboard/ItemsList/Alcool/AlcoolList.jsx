@@ -212,14 +212,7 @@ const AlcoolList = (props) => {
     return date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
   }
 
-  const getNotificationMsg = () => {
-    var userLang = getLang()
-    switch (userLang) {
-      case "fr": return "Selon les recommandations d'ÉducAlcool, vous venez de dépasser la limite. C'est juste un rappel..."
-      case "en": return "According to EducAlcool guidelines, you just exceeded the limits of alcohol intake. This is just a reminder..."
-      case "es": return "Según las recomendaciones de ÉducAlcool, acaba de superar el límite. Es solo un recordatorio ..."
-    }
-  }
+  const getNotificationMsg = () => alcoolService.getNotificationMsg(getLang());
 
   const getConsumptionsCount = (consommations, date) => {
     let count = 0;

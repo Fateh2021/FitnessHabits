@@ -10,7 +10,8 @@
     ],
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+        "global": "readonly"
     },
     "parserOptions": {
         "ecmaFeatures": {
@@ -22,6 +23,7 @@
     "plugins": [
         "react"
     ],
+    "parser": "babel-eslint",
     "rules": {
         "block-spacing": 1,
         "comma-spacing": 1,
