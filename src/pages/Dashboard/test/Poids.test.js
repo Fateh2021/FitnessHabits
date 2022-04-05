@@ -6,16 +6,8 @@ import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
 import Poids from "../ItemsList/Poids";
 
-import {
-    formatPoids,
-    formatToKG,
-    getDailyPoids,
-    initPrefPoids,
-    saveEntreeDePoids,
-    setPrefUnitePoids,
-    trouver_nouvelle_categorie
-} from "../../Poids/configuration/poidsService";
-import firebase from "firebase";
+import { formatWeight, formatToKG , find_new_category, formatDate, initPrefWeight, setPrefUnitWeight} from '../../Poids/configuration/poidsService';
+import { doneAll } from 'ionicons/icons';
 
 jest.mock("firebase", () => {
     return {
@@ -146,35 +138,20 @@ test("select down", async() => {
     })
 });
 
-
-describe("saveEntreeDePoids", () => {
-    it("valeur should be 88", async() => {
-        saveEntreeDePoids(88);
-        var tmp = JSON.parse(localStorage.getItem("dashboard")).poids.dailyPoids;
-        expect(tmp).toBe(88);
-    });
+describe('Test sur la fonction -> setPrefUnitePoids', () => {
+  it('should return undefined', async() => {
+    setPrefUnitWeight('LBS');
+    var tmp = localStorage.getItem("prefUnitePoids");
+    expect(tmp).toBe('LBS');
+  });
 });
 
-describe("Test sur la fonction -> setPrefUnitePoids", () => {
-    it("should return undefined", async() => {
-        setPrefUnitePoids("LBS");
-        var tmp = localStorage.getItem("prefUnitePoids");
-        expect(tmp).toBe("LBS");
-    });
-});
-
-describe("Test sur la fonction -> getDailyPoids", () => {
-    it("should return undefined", async() => {
-        expect(getDailyPoids()).toBe(undefined);
-    });
-});
-
-describe("Test sur la fonction -> initPrefPoids", () => {
-    it("should return KG", async() => {
-        initPrefPoids();
-        const local_unite = localStorage.getItem("prefUnitePoids");
-        expect(local_unite).toBe("KG");
-    });
+describe('Test sur la fonction -> initPrefPoids', () => {
+  it('should return KG', async() => {
+    initPrefWeight();
+    const local_unite = localStorage.getItem('prefUnitePoids');
+    expect(local_unite).toBe('KG');
+  });
 });
 
 /* Ne marche pas - Benoit
@@ -185,16 +162,16 @@ describe('formatDate', () => {
 });
 */
 
-describe("Test sur la fonction -> trouver_nouvelle_categorie", () => {
-    it("should return CATEGORIE_IDEAL", async() => {
-        expect(trouver_nouvelle_categorie(20)).toBe("CATEGORIE_IDEAL");
-    });
+describe('Test sur la fonction -> trouver_nouvelle_categorie', () => {
+  it('should return IDEAL_CATEGORY', async() => {
+      expect(find_new_category(20)).toBe('IDEAL_CATEGORY');
+  });
 });
 
-describe("Test sur la fonction -> formatPoids", () => {
-    it("should return 77", async() => {
-        expect(formatPoids(77)).toBe(77);
-    });
+describe('Test sur la fonction -> formatPoids', () => {
+  it('should return 77', async() => {
+      expect(formatWeight(77)).toBe(77);
+  });
 });
 
 describe("Test sur la fonction -> formatToKG", () => {

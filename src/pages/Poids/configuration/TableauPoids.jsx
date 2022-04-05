@@ -5,10 +5,11 @@ import firebase from 'firebase'
 import * as poidsService from "../../Poids/configuration/poidsService"
 import * as translate from "../../../translate/Translator";
 
+// Variables in Firebase remains in French for now with a translation in comment
 const TableauPoids = () => {
   const [refData, setRefData] = useState()
-  const [poidsInitial, setPoidsInitial] = useState("");
-  const [poidsCible, setPoidsCible] = useState("");
+  const [initialWeight, setInitialWeight] = useState("");
+  const [targetWeight, setTargetWeight] = useState("");
 
   function formatDate (date) {
      return moment(date).format('YYYY-MM-DD');
@@ -16,35 +17,41 @@ const TableauPoids = () => {
 
   useEffect(() => {
       const userUID = localStorage.getItem('userUid');
-      let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-      preferencesPoidsRef.once("value").then(function(snapshot) {
+      let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+      preferencesWeightRef.once("value").then(function(snapshot) {
           if (snapshot.val() != null) {
-            setPoidsInitial(parseFloat(snapshot.val().poidsInitial));
-            setPoidsCible(parseFloat(snapshot.val().poidsCible));
+            // Firebase : poidsInitial = initialWeight
+            // Firebase : poidsCible = targetWeight
+            setInitialWeight(parseFloat(snapshot.val().poidsInitial));
+            setTargetWeight(parseFloat(snapshot.val().poidsCible));
           }
         })
   }, [])
 
   useEffect(() => {
       const userUID = localStorage.getItem('userUid');
-      let poidsRef = firebase.database().ref('dashboard/' + userUID)
-        poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
+      let weightRef = firebase.database().ref('dashboard/' + userUID)
+        weightRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
         setRefData(snapshot.val())
       });
   }, [])
 
+	// Preparing to build the graph
   var graphData = []
   if (refData != null) {
-  // On doit comprendre à quoi sert la variable _
-  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-   for (const [,value] of Object.entries(refData)) {
-      
+    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+    for (const [,value] of Object.entries(refData)) {
+
       if (value.poids.datePoids !== undefined) {
-        let datePoids = formatDate(value.poids.datePoids)
-        let poids = poidsService.formatPoids(value.poids.dailyPoids)
-        if(datePoids == formatDate(new Date()))
-          poids = dashboard.poids.dailyPoids
-        graphData.push ({x: datePoids, y: poids})
+        let dateWeight = formatDate(value.poids.datePoids)
+        let weight = poidsService.formatWeight(value.poids.dailyPoids)
+
+				// To do the live update of the value of the day without reloading the page
+        if (dateWeight == formatDate(new Date())){
+          weight = poidsService.formatWeight(dashboard.poids.dailyPoids)
+        }
+
+        graphData.push ({x: dateWeight, y: weight})
       }
     }
 
@@ -55,31 +62,31 @@ const TableauPoids = () => {
 
   start.setDate(start.getDate() - 90); // set to 'now' minus 7 days.
   start.setHours(0, 0, 0, 0); // set to midnight.
-  let poidsIni = poidsService.formatPoids(poidsInitial)
-  let poidsCib = poidsService.formatPoids(poidsCible)
-  let dataPoidsInitial = [{x: start, y: poidsIni},{x: end, y: poidsIni}]
-  let dataPoidsCible = [{x: start, y: poidsCib},{x: end, y: poidsCib}]
+  let weightIni = poidsService.formatWeight(initialWeight)
+  let weightCib = poidsService.formatWeight(targetWeight)
+  let dataWeightInitial = [{x: start, y: weightIni},{x: end, y: weightIni}]
+  let dataWeightTarget = [{x: start, y: weightCib},{x: end, y: weightCib}]
 
   const data = {
     datasets: [
     {
-        label: translate.getText("POIDS_PREF_POIDS_INITIAL"),
-        data: dataPoidsInitial,
+        label: translate.getText("WEIGHT_PREF_WEIGHT_INITIAL"),
+        data: dataWeightInitial,
         fill: false,
         borderColor: "#F45650",
         backgroundColor: "#F45650",
         pointRadius: 0
     },
     {
-        label: translate.getText("POIDS_NOM_SECTION"),
+        label: translate.getText("WEIGHT_NAME_SECTION"),
         data: graphData,
         fill: false,
         borderColor: "#3B81C4",
         backgroundColor: "#3B81C4"
     },
     {
-        label: translate.getText("POIDS_PREF_POIDS_CIBLE"),
-        data: dataPoidsCible,
+        label: translate.getText("WEIGHT_PREF_WEIGHT_TARGET"),
+        data: dataWeightTarget,
         fill: false,
         borderColor: "#37F52E",
         backgroundColor: "#37F52E",
@@ -88,7 +95,7 @@ const TableauPoids = () => {
     ]
   };
   var options = {
-    title: {text: translate.getText("POIDS_TABL_EVO_3_MOIS"), display: true},
+    title: {text: translate.getText("WEIGHT_TABL_EVO_3_MONTH"), display: true},
     legend: {
       position: "bottom",
       align: "middle"
@@ -105,7 +112,7 @@ const TableauPoids = () => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: translate.getText("POIDS_NOM_SECTION") + ' (' + poidsService.getPrefUnitePoids() + ")" 
+          labelString: translate.getText("WEIGHT_NAME_SECTION") + ' (' + poidsService.getPrefUnitWeight() + ")" 
         }
       }]
     }

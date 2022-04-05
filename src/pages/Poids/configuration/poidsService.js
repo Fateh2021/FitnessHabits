@@ -2,108 +2,95 @@ import firebase from "firebase"
 import moment from "moment";
 import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
-const DIFF_UNITE_POIDS = 2.2;
+const DIFF_UNITY_WEIGHT = 2.2;
 
-export function initPrefPoids() {
-    const userUID = localStorage.getItem("userUid");
-    let prefPoidsRef = firebase.database().ref("profiles/"+ userUID +"/preferencesPoids")
-    prefPoidsRef.once("value").then(function(snapshot) {
-    // Permet de récupération de la préférence de poids que nous avons dans firebase avant de mettre ça dans le localstorage
-        if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
-            localStorage.setItem("prefUnitePoids", snapshot.val().unitePoids.toString());
-        } else {
-            localStorage.setItem("prefUnitePoids", "KG");
-        }
-    })
-}
-
-export function formatPoids(poids) {
-    let prefUnitePoids = localStorage.getItem("prefUnitePoids");
-    if (prefUnitePoids === "LBS") {
-        return (poids * DIFF_UNITE_POIDS).toFixed(2)
+// Variables in Firebase and localstorage remains in French for now with a translation in comment
+export function initPrefWeight() {
+  const userUID = localStorage.getItem('userUid');
+	// Firebase : preferencesPoids = preferencesWeight
+  let prefWeightRef = firebase.database().ref('profiles/'+ userUID +"/preferencesPoids")
+  prefWeightRef.once("value").then(function(snapshot) {
+    // Lets retrieve the weight preference we have in firebase before putting it in localstorage
+    // Firebase : unitePoids = unitWeight
+    if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
+			// LocalStorage : prefUnitePoids = prefUnitWeight
+      localStorage.setItem("prefUnitePoids", snapshot.val().unitePoids.toString());
+    } else {
+      localStorage.setItem("prefUnitePoids", "KG");
     }
-    return poids
+  })
 }
 
-export function formatToKG(poids) {
-    let prefUnitePoids = localStorage.getItem("prefUnitePoids");
-    if (prefUnitePoids === "LBS") {
-        return (poids / DIFF_UNITE_POIDS).toFixed(2)
-    }
-    // Nous retournons la valeur avec 2 chiffres après la virgules pour la BD firebase et le localstorage
-    return poids;
+export function formatWeight(weight) {
+	// LocalStorage : prefUnitePoids = prefUnitWeight
+  let prefUnitWeight = localStorage.getItem('prefUnitePoids');
+  if (prefUnitWeight === "LBS") {
+    return (weight * DIFF_UNITY_WEIGHT).toFixed(2)
+  }
+  return weight
 }
 
-export function getDailyPoids() {
-    const userUID = localStorage.getItem("userUid");
-    let preferencesPoidsRef = firebase.database().ref("dashboard/" + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear())
-    preferencesPoidsRef.once("value").then(function(snapshot) {
-        if (snapshot.val() !== null && snapshot.val().dailyPoids !== null ) {
-            return formatPoids(snapshot.val().dailyPoids)
-        }
-    })
+
+export function formatToKG(weight) {
+	// LocalStorage : prefUnitePoids = prefUnitWeight
+  let prefUnitWeight = localStorage.getItem('prefUnitePoids');
+  if (prefUnitWeight === "LBS") {
+    return (weight / DIFF_UNITY_WEIGHT).toFixed(2)
+  }
+
+  return weight;
 }
 
-export function getPrefUnitePoids() {
-    return localStorage.getItem("prefUnitePoids");
+// LocalStorage : prefUnitePoids = prefUnitWeight
+export function getPrefUnitWeight() {
+    return localStorage.getItem('prefUnitePoids');
 }
 
-export function setPrefUnitePoids(val) {
-    const userUID = localStorage.getItem("userUid");
-    localStorage.setItem("prefUnitePoids", val)
-    firebase.database().ref("profiles/" + userUID +"/preferencesPoids").update({"unitePoids": val})
+export function setPrefUnitWeight(value) {
+    const userUID = localStorage.getItem('userUid');
+    // LocalStorage : prefUnitePoids = prefUnitWeight
+    localStorage.setItem("prefUnitePoids",value)
+    // Firebase : preferencesPoids = preferencesWeight, unitePoids = unitWeight
+    firebase.database().ref('profiles/' + userUID +"/preferencesPoids").update({"unitePoids": value})
 }
 
-export function saveEntreeDePoids(dailyPoids) {
-    let prefUnitePoids = localStorage.getItem("prefUnitePoids");
-    if (prefUnitePoids === "LBS") {
-        dailyPoids = ((dailyPoids / 2.2).toFixed(2))
-    }
-    const userUID = localStorage.getItem("userUid");
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    dashboard.poids.dailyPoids = dailyPoids;
-    dashboard.poids.datePoids = new Date()
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
-    firebase.database().ref("dashboard/" + userUID + "/" + currentDate.getDate() + (currentDate.getMonth() + 1) + currentDate.getFullYear()).update(dashboard);
+
+export function calculation_BMI(height, dailyWeight){
+	return (dailyWeight / ((height / 100) * (height / 100))).toFixed(2);
 }
 
-// Simplification de la fonction IMC
-export function calculIMC(taille, dailyPoids){
-    return (dailyPoids / ((taille / 100) * (taille / 100))).toFixed(2);
+export function check_BMI_change(BMI_value){
+  var BMI_category = find_new_category(BMI_value);
+  let BMI_category_local = localStorage.getItem('BMI_group');
+
+  localStorage.setItem('BMI_group', BMI_category);
+  if (BMI_category_local !== null && BMI_category.localeCompare(BMI_category_local) ) {
+      alert(translate.getText(BMI_category));
+  }
 }
 
-export function verifier_changement_IMC(valeur_imc){
-    var imc_category = trouver_nouvelle_categorie(valeur_imc);
-    let imc_category_local = localStorage.getItem("groupe_IMC");
+export function find_new_category(BMI_value){
+    var BMI_group = '';
+    if (BMI_value <= 18.49) {
+      BMI_group = 'SKIN_CATEGORY';
 
-    localStorage.setItem("groupe_IMC", imc_category);
-    if (imc_category_local !== null && imc_category.localeCompare(imc_category_local) ) {
-        alert(translate.getText(imc_category));
-    }
-}
+    } else if (BMI_value >= 18.5 && BMI_value <= 25) {
+      BMI_group = 'IDEAL_CATEGORY';
 
-export function trouver_nouvelle_categorie(valeur_imc) {
-    var groupe_IMC = "";
-    if (valeur_imc <= 18.49) {
-        groupe_IMC = "CATEGORIE_MAIGRE";
+    } else if (BMI_value >= 25.01 && BMI_value <= 30) {
+      BMI_group = 'OVERWEIGHT_CATEGORY';
 
-    } else if (valeur_imc >= 18.5 && valeur_imc <= 25) {
-        groupe_IMC = "CATEGORIE_IDEAL";
+    } else if (BMI_value >= 30.01 && BMI_value <= 35) {
+      BMI_group = 'CATEGORY_OB_CLASS_1';
 
-    } else if (valeur_imc >= 25.01 && valeur_imc <= 30) {
-        groupe_IMC = "CATEGORIE_SURPOIDS";
+    } else if (BMI_value >= 35.01 && BMI_value <= 40) {
+      BMI_group = 'CATEGORY_OB_CLASS_2';
 
-    } else if (valeur_imc >= 30.01 && valeur_imc <= 35) {
-        groupe_IMC = "CATEGORIE_OB_CLASSE_1";
-
-    } else if (valeur_imc >= 35.01 && valeur_imc <= 40) {
-        groupe_IMC = "CATEGORIE_OB_CLASSE_2";
-
-    } else if (valeur_imc > 40) {
-        groupe_IMC = "CATEGORIE_OB_CLASSE_3";
+    } else if (BMI_value > 40) {
+      BMI_group = 'CATEGORY_OB_CLASS_3';
     }
 
-    return groupe_IMC+"";
+    return BMI_group+"";
 }
 
 export function formatDate (date) {

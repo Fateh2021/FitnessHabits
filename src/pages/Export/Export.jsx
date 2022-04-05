@@ -363,7 +363,7 @@ const Export = (props) => {
                              manageCategories("poids")
                          }}>
                         <IonItem>
-                            <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
+                            <IonLabel>{translate.getText("WEIGHT_NAME_SECTION")}</IonLabel>
                             <IonCheckbox
                                 checked={dataSelected.includes("poids")}
                             />
