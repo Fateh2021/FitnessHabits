@@ -1,6 +1,5 @@
 import firebase from "firebase";
 import React, {useState, useEffect} from "react";
-import {ExportToCsv} from "export-to-csv";
 import {toast} from "../../Toast";
 import {
     IonList,
@@ -34,10 +33,10 @@ import "../Tab1.css";
 import * as translate from '../../translate/Translator'
 import {getLang} from "../../translate/Translator";
 import {compilerBilan} from "./CompilerBilan";
-import {creerPdf} from "./RapportCreateur";
+import {creerCSV, creerPdf} from "./RapportCreateur";
 
 
-const Settings = (props) => {
+const Export = (props) => {
 
     const [settings, setSettings] = useState({
         hydratation: {
@@ -140,11 +139,16 @@ const Settings = (props) => {
         changeSelection([...newSelection])
     }
 
-    // variable qui va contenir le format d'exportation désiré, par défaut csv
+    // variable qui va contenir le format d'exportation désiré, par défaut pdf
     const [exportType, onChangeExport] = useState('pdf');
     // contient la date de debut et la date de fin choisi par l'utilisateur
-    const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)));
+    const [d1, onChangeD1] = useState(new Date(new Date().setMonth(new Date().getMonth() - 3)) < new Date("03-22-2022") ? new Date("03-22-2022") : new Date(new Date().setMonth(new Date().getMonth() - 3)));
     const [d2, onChangeD2] = useState(new Date());
+
+    // permet d'afficher le format de la date selon ce qui est dans son profile
+    // si pas de format dans son profile, retourne null
+    const dateFormat = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")).dateFormat.replace(/[L*]/g, 'M')
+        : null;
 
     // load the current settings from the local storage if it exists, otherwise load it from the DB
     useEffect(() => {
@@ -266,10 +270,11 @@ const Settings = (props) => {
 
                         <DatePicker
                             locale={getLang()}
+                            format={dateFormat}
                             onChange={onChangeD1}
                             value={d1}
-                            minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 10))} // max 10 ans plus tôt
-                            maxDate={d2}
+                            minDate={new Date("03-22-2022")} // Quand le data est bien formatté
+                            maxDate={new Date(d2.valueOf() - 86400000)}
                             clearIcon={null}
                             autoFocus={true}
                             onKeyDown={(e) => {
@@ -282,6 +287,7 @@ const Settings = (props) => {
                         &nbsp;{translate.getText("A")} &nbsp;
                         <DatePicker
                             locale={getLang()}
+                            format={dateFormat}
                             onChange={onChangeD2}
                             value={d2}
                             minDate={d1}
@@ -413,12 +419,12 @@ const Settings = (props) => {
 
                         <IonItem data-testid="radio-csv">
                             <IonLabel>CSV</IonLabel>
-                            <IonRadio slot="start" value="csv" checked={exportType === "csv"} disabled="true"/>
+                            <IonRadio slot="start" value="csv" checked={exportType === "csv"}/>
                         </IonItem>
 
                         <IonItem data-testid="radio-csv-and-pdf">
                             <IonLabel>{translate.getText("CSV_AND_PDF_TITLE")}</IonLabel>
-                            <IonRadio slot="start" value="hybride" checked={exportType === "hybride"} disabled="true"/>
+                            <IonRadio slot="start" value="hybride" checked={exportType === "hybride"}/>
                         </IonItem>
                     </IonRadioGroup>
                 </IonList>
@@ -450,31 +456,13 @@ const Settings = (props) => {
                                     if (dataSelected.length === 0) {
                                         toast(toastMessage);
                                     } else {
-                                        var date = new Date().toISOString().slice(0, 10);
                                         if (exportType === "pdf" || exportType === "hybride") {
                                             await compilerBilan(dataSelected, d1, d2);
                                             await creerPdf(dataSelected, d1, d2);
                                         }
                                         if (exportType === "csv" || exportType === "hybride") {
-                                            var overviewCsv = await compilerBilan(dataSelected, d1, d2);
-                                            if (overviewCsv.length <= 0) {
-                                                toast(
-                                                    translate.getText("NO_DATA_FOUND_IN_SELECTED_DATES_TITLE")
-                                                );
-                                            } else {
-                                                const options = {
-                                                    title: `FitnessHabits-data-${new Date()
-                                                        .toISOString()
-                                                        .slice(0, 10)}`,
-                                                    filename: `FitnessHabits-data-${new Date()
-                                                        .toISOString()
-                                                        .slice(0, 10)}`,
-                                                    useKeysAsHeaders: true,
-                                                };
-
-                                                const csvExporter = new ExportToCsv(options);
-                                                await csvExporter.generateCsv(overviewCsv);
-                                            }
+                                            await compilerBilan(dataSelected, d1, d2);
+                                            await creerCSV(dataSelected, d1, d2);
                                         }
                                     }
                                 }}
@@ -507,4 +495,4 @@ Date.prototype.addDays = function (days) {
     return date;
 };
 
-export default Settings;
+export default Export;
