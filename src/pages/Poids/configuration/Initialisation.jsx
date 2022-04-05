@@ -8,10 +8,11 @@ import * as poidsService from "../../Poids/configuration/poidsService"
 
 import moment from "moment"
 
-const DIFF_UNITE_POIDS = 2.2;
+const DIFF_UNITY_WEIGHT = 2.2;
 const userUID = localStorage.getItem('userUid'); // Récupération du userID
 
-// Au moment d'afficher la page, nous allons afficher l'information qui se trouve dans «preferencesPoids» du profil de l'utilisateur
+// Variables in Firebase remains in French for now with a translation in comment
+// When displaying the page, we will display the information found in "preferencesPoids" of the user's profile
 const Initialisation = () => {
 
 // Retour à la page principale de l'application
@@ -23,45 +24,46 @@ function formatDate (date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
-const [poidsInitial, setPoidsInitial] = useState("");
-const [poidsCible, setPoidsCible] = useState("");
-const [dateCible, setDateCible] = useState("");
-const [unitePoids, setUnitePoids] = useState("");
+const [initialWeight, setInitialWeight] = useState("");
+const [targetWeight, setTargetWeight] = useState("");
+const [targetDate, setTargetDate] = useState("");
+const [unitWeight, setUnitWeight] = useState("");
 
-const handlePoidsInitialChange = (value) => {
-  setPoidsInitial(value)
+const handleWeightInitialChange = (value) => {
+  setInitialWeight(value)
 }
 
-const handlePoidsCibleChange = (value) => {
-  setPoidsCible(value)
+const handleWeightTargetChange = (value) => {
+  setTargetWeight(value)
 }
 
-const handleDateCibleChange = (value) => {
-  setDateCible(value);
+const handleDateTargetChange = (value) => {
+  setTargetDate(value);
 };
 
-const handleUnitePoidsChange = (e) => {
-  let value = e.detail.value
-  let OldUnitePoids = unitePoids; // On récupère l'ancienne unité de poids
-  setUnitePoids(value);
+const handleUnitWeightChange = (e) => {
+  let new_value = e.detail.value
+  let OldUnitWeight = unitWeight; // Recover the old unit of weight
+  setUnitWeight(new_value);
 
-  if (OldUnitePoids === "KG" && value === "LBS") {
-    setPoidsCible((poidsCible * DIFF_UNITE_POIDS).toFixed(1))
-    setPoidsInitial((poidsInitial * DIFF_UNITE_POIDS).toFixed(1))
-  } else if (OldUnitePoids === "LBS" && value === "KG") {
-    setPoidsCible((poidsCible / DIFF_UNITE_POIDS).toFixed(1))
-    setPoidsInitial((poidsInitial / DIFF_UNITE_POIDS).toFixed(1))
+  if (OldUnitWeight === "KG" && new_value === "LBS") {
+    setTargetWeight((targetWeight * DIFF_UNITY_WEIGHT).toFixed(1))
+    setInitialWeight((initialWeight * DIFF_UNITY_WEIGHT).toFixed(1))
+  } else if (OldUnitWeight === "LBS" && new_value === "KG") {
+    setTargetWeight((targetWeight / DIFF_UNITY_WEIGHT).toFixed(1))
+    setInitialWeight((initialWeight / DIFF_UNITY_WEIGHT).toFixed(1))
   }
 }
 
-// Récupération des informations initiale et cible du client pour les afficher
-let preferencesPoidsRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids");
+// Retrieving initial and target customer information for display
+let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids");
 useEffect(() => {
-  preferencesPoidsRef.once("value").then(function(snapshot) {
+  preferencesWeightRef.once("value").then(function(snapshot) {
     if (snapshot.val() !== null) {
+      // Firebase : poidsCible = targetWeight, poidsInitial = initialWeight
       var ini = snapshot.val().poidsInitial;
       var ci = snapshot.val().poidsCible;
-      // Nous devons mettre des valeurs de 0 si elle n'éxiste pas encore...
+      // We must put values of 0 if it does not exist yet...
       if (ini == null){
         ini = 0;
       }
@@ -70,50 +72,50 @@ useEffect(() => {
         ci = 0;
       }
 
-      setUnitePoids(snapshot.val().unitePoids);
-      // Si le type unité de poids est en livre, nous devons faire x 2.2 (DIFF_UNITE_POIDS)
+			// Firebase : unitePoids = unitWeight
+      setUnitWeight(snapshot.val().unitePoids);
       if (snapshot.val().unitePoids === "LBS") {
-        ini *= DIFF_UNITE_POIDS;
-        ci *= DIFF_UNITE_POIDS;
+        ini *= DIFF_UNITY_WEIGHT;
+        ci *= DIFF_UNITY_WEIGHT;
       }
-
-      setPoidsInitial(parseFloat(ini).toFixed(1));
-      setPoidsCible(parseFloat(ci).toFixed(1));
-      setDateCible(snapshot.val().dateCible)
+			// Firebase : dateCible = targetDate
+      setInitialWeight(parseFloat(ini).toFixed(1));
+      setTargetWeight(parseFloat(ci).toFixed(1));
+      setTargetDate(snapshot.val().dateCible)
     }
   })
 },[])
 
-// Event qui viendra remettre aux valeurs de départ soit null pour tous les champs sauf le type de poids qui doit etre par défaut KG
-const handleReinitialisation = () => {
-	// Récupération de la première donnée par rapport au poids, comme nous avons fait un reset des informations de base.
-	// Déplacement de la récupération de l'info du poids via firebase ici, car ailleurs la BD est callé plusieurs fois.
-  let poidsRef = firebase.database().ref('dashboard/' + userUID)
-  poidsRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
+// Event that will return to the starting values either null for all fields except the type of weight which must be KG by default
+const handleReinitialization = () => {
+// Retrieve the first data in relation to the weight, as we have reset the basic information.
+// Move the weight info retrieval via firebase here, because elsewhere the DB is called several times.
+  let weightRef = firebase.database().ref('dashboard/' + userUID)
+  weightRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
     var graphData = []
-    // J'ai retiré la validation si le retour de fireball contenait ou pas des données pour enlever un code smell
-    // Si le résultat est null, le graphique restera null et mettra 0 comme valeur par défault
+    // I removed the validation whether or not the fireball return contained data to remove a smell code
+    // If the result is null, the graph will remain null and put 0 as the default value
     for (const [,value] of Object.entries(snapshot.val())) {
         if (value.poids.datePoids !== undefined) {
-            let datePoids = formatDate(value.poids.datePoids)
-            let poids = poidsService.formatPoids(value.poids.dailyPoids)
-            graphData.push ({x: datePoids, y: poids})
+            let dateWeight = formatDate(value.poids.datePoids)
+            let weight = poidsService.formatWeight(value.poids.dailyPoids)
+            graphData.push ({x: dateWeight, y: weight})
         }
     }
-    // Triage pour avoir les informations de la plus vieille date à la plus récente
+    // Sorting to have the information from the oldest date to the most recent
     graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
 
     if(graphData.length > 0){
-      // Récupération de la première valeur que le user a saisie à ses début avec l'application
-      setPoidsInitial(parseFloat(graphData[0].y).toFixed(1));
+      // Retrieve the first value that the user entered when he started with the application
+      setInitialWeight(parseFloat(graphData[0].y).toFixed(1));
     } else {
-      setPoidsInitial("0.0");
+      setInitialWeight("0.0");
     }
-    // Si nous mettons le retour à KG au début de la fonction, la mécanique va simplement changer le type de poids sans vraiment réinitialiser
-    // Sauf que à cette endroit, c'est juste parfait
-    setUnitePoids("KG");
-    setPoidsCible("0.0");
-    setDateCible("");
+    // If we put the return to KG at the start of the function, the mechanic will just change the type of weight without actually resetting
+    // Except that at this place, it's just perfect
+    setUnitWeight("KG");
+    setTargetWeight("0.0");
+    setTargetDate("");
   });
 }
 
@@ -122,35 +124,37 @@ const handlerConfirmation = () => {
   let pi = 0.0, pc = 0.0;
 	// Si l'utilisateur omet de saisir ses informations de base, il devra saisir les champs manquant
 	// unitePoids ne pourrait jamais être vide, donc on enlève cette condition
-  if (poidsInitial !== 0 && poidsCible !== 0 && dateCible !== ""){
-    pi = poidsInitial;
-    pc = poidsCible;
+  if (initialWeight !== 0 && targetWeight !== 0 && targetDate !== ""){
+    pi = initialWeight;
+    pc = targetWeight;
     // On stock les informations en KG dans la BD
     // On garde 2 virgules pour la BD donc on créer des variables temporaires en parallelle
-    if (unitePoids === "LBS") {
-      pi = (poidsInitial / DIFF_UNITE_POIDS).toFixed(2)
-      pc = (poidsCible / DIFF_UNITE_POIDS).toFixed(2)
+    if (unitWeight === "LBS") {
+      pi = (initialWeight / DIFF_UNITY_WEIGHT).toFixed(2)
+      pc = (targetWeight / DIFF_UNITY_WEIGHT).toFixed(2)
     }
-    let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitePoids, dateCible: dateCible}
-    poidsService.setPrefUnitePoids(unitePoids)
+    // Firebase : poidsInitial = initialWeight, poidsCible = targetWeight
+    // Firebase : unitePoids = unitWeight, dateCible = targetDate
+    let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitWeight, dateCible: targetDate}
+    poidsService.setPrefUnitWeight(unitWeight)
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
     redirectDashboard();
   } else {
       var message_alert = "";
-			message_alert += translate.getText("POIDS_DEBUT_MESSAGE_ALERT");
-			// Nous allons faire 3 condition indépendente l'entre elle
-			if (poidsInitial == 0){
-				message_alert += translate.getText("POIDS_INITIAL_VIDE");
+			message_alert += translate.getText("WEIGHT_BEGINNING_ALERT_MESSAGE");
+			// We will make 3 independent condition between it
+			if (initialWeight == 0){
+				message_alert += translate.getText("INITIAL_EMPTY_WEIGHT");
 			}
 
-			if (poidsCible == 0){
-        message_alert += translate.getText("POIDS_CIBLE_VIDE");
+			if (targetWeight == 0){
+        message_alert += translate.getText("EMPTY_TARGET_WEIGHT");
       }
 
-      if (dateCible === ""){
-        message_alert += translate.getText("POIDS_DATE_CIBLE_VIDE");
+      if (targetDate === ""){
+        message_alert += translate.getText("EMPTY_TARGET_WEIGHT_DATE");
       }
-			message_alert += translate.getText("POIDS_FIN_MESSAGE_ALERT");
+			message_alert += translate.getText("WEIGHT_END_MESSAGE_ALERT");
       alert(message_alert);
   }
 }
@@ -161,32 +165,32 @@ const handlerConfirmation = () => {
         <IonCardContent>
           <IonItemGroup>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_UNITE_POIDS")}</IonLabel>
-              <IonSelect data-testid = "pop_up_unite" slot ="end" value={unitePoids} okText={translate.getText("POIDS_PREF_CHOISIR")} cancelText={translate.getText("POIDS_PREF_ANNULER")} onIonChange={e => handleUnitePoidsChange(e)}>
+              <IonLabel slot="start">{translate.getText("WEIGHT_PREF_UNIT_WEIGHT")}</IonLabel>
+              <IonSelect data-testid = "pop_up_unite" slot ="end" value={unitWeight} okText={translate.getText("WEIGHT_PREF_CHOOSE")} cancelText={translate.getText("WEIGHT_PREF_CANCEL")} onIonChange={e => handleUnitWeightChange(e)}>
                 <IonSelectOption value="LBS">LBS</IonSelectOption>
                 <IonSelectOption value="KG">KG</IonSelectOption>
               </IonSelect>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_INITIAL")}</IonLabel>
-              <IonInput data-testid = "poids_init" class="ion-text-right" slot="end" value={poidsInitial} onIonChange={e => handlePoidsInitialChange(e.target.value)}></IonInput>
-              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
+              <IonLabel slot="start">{translate.getText("WEIGHT_PREF_WEIGHT_INITIAL")}</IonLabel>
+              <IonInput data-testid = "poids_init" class="ion-text-right" slot="end" value={initialWeight} onIonChange={e => handleWeightInitialChange(e.target.value)}></IonInput>
+              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitWeight}</IonText>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_POIDS_CIBLE")}</IonLabel>
-              <IonInput class="ion-text-right" slot="end" value={poidsCible} onIonChange={e => handlePoidsCibleChange(e.target.value)}></IonInput>
-              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitePoids}</IonText>
+              <IonLabel slot="start">{translate.getText("WEIGHT_PREF_WEIGHT_TARGET")}</IonLabel>
+              <IonInput class="ion-text-right" slot="end" value={targetWeight} onIonChange={e => handleWeightTargetChange(e.target.value)}></IonInput>
+              <IonText class="ion-text-left" style={{margin: 5}} slot="end">{unitWeight}</IonText>
             </IonItemDivider>
             <IonItemDivider>
-              <IonLabel slot="start">{translate.getText("POIDS_PREF_DATE_CIBLE")}</IonLabel>
+              <IonLabel slot="start">{translate.getText("WEIGHT_PREF_DATE_TARGET")}</IonLabel>
               <IonDatetime
-                monthShortNames = {translate.getText("ABBREVIATION_MOIS")}
+                monthShortNames = {translate.getText("ABBREVIATION_MONTH")}
                 slot="end"
                 displayFormat="YYYY MMM DD"
-                placeholder={translate.getText("POIDS_SUGGESTION_DATE")}
+                placeholder={translate.getText("WEIGHT_SUGGESTION_DATE")}
                 max="2099-10-31"
-                value={dateCible}
-                onIonChange={(e) => handleDateCibleChange(e.target.value)}
+                value={targetDate}
+                onIonChange={(e) => handleDateTargetChange(e.target.value)}
               ></IonDatetime>
             </IonItemDivider>
           </IonItemGroup>
@@ -196,10 +200,10 @@ const handlerConfirmation = () => {
         <IonGrid>
           <IonRow>
             <IonCol size="6">
-              <IonButton shape="round" expand="block" onClick={handleReinitialisation}>{translate.getText("POIDS_PREF_REINITIALISER")}</IonButton>
+              <IonButton shape="round" expand="block" onClick={handleReinitialization}>{translate.getText("WEIGHT_PREF_RESET")}</IonButton>
             </IonCol>
             <IonCol size="6">
-              <IonButton shape="round" expand="block" onClick={handlerConfirmation}>{translate.getText("POIDS_PREF_CONFIRMER")}</IonButton>
+              <IonButton shape="round" expand="block" onClick={handlerConfirmation}>{translate.getText("WEIGHT_PREF_CONFIRM")}</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>

@@ -1,5 +1,5 @@
 {
-	"ABBREVIATION_MOIS": {
+	"ABBREVIATION_MONTH": {
 		"en":"Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec",
 		"es":"Ene, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Set, Oct, Nov, Dic",
 		"fr":"Jan, Fev, Mar, Avr, Mai, Jun, Jul, Aou, Sep, Oct, Nov, Dec "
@@ -646,62 +646,57 @@
 		"es":"Espere por favor..",
 		"fr":"Veuillez patienter.."
 	},
-	"POIDS_NOM_SECTION":{
+	"WEIGHT_NAME_SECTION":{
 		"en":"Weight",
 		"es":"Peso",
 		"fr":"Poids"
 	},
-	"POIDS_PREF_UNITE_POIDS":{
+	"WEIGHT_PREF_UNIT_WEIGHT":{
 		"en":"Weight unit",
 		"es":"Unidad de peso",
 		"fr":"Unité de poids"
 	},
-	"POIDS_PREF_POIDS_INITIAL":{
+	"WEIGHT_PREF_WEIGHT_INITIAL":{
 		"en":"Initial weight",
 		"es":"Peso inicial",
 		"fr":"Poids initial"
 	},
-	"POIDS_PREF_POIDS_CIBLE":{
+	"WEIGHT_PREF_WEIGHT_TARGET":{
 		"en":"Weight target",
 		"es":"Peso objetivo",
 		"fr":"Poids cible"
 	},
-	"POIDS_PREF_DATE_CIBLE":{
+	"WEIGHT_PREF_DATE_TARGET":{
 		"en":"Target date",
 		"es":"Fecha objetivo",
 		"fr":"Date cible"
 	},
-	"POIDS_PREF_DATE_INITIALE":{
-		"en":"Initial date",
-		"es":"Fecha inicial",
-		"fr":"Date initiale"
-	},
-	"POIDS_PREF_REINITIALISER":{
+	"WEIGHT_PREF_RESET":{
 		"en":"Reset",
 		"es":"Reiniciar",
 		"fr":"Réinitialiser"
 	},
-	"POIDS_PREF_CONFIRMER":{
+	"WEIGHT_PREF_CONFIRM":{
 		"en":"Confirm",
 		"es":"Confirmar",
 		"fr":"Confirmer"
 	},
-	"POIDS_PREF_CHOISIR": {
+	"WEIGHT_PREF_CHOOSE": {
 		"en":"Select",
 		"es":"Seleccionar",
 		"fr":"Sélectionner"
 	},
-	"POIDS_PREF_ANNULER": {
+	"WEIGHT_PREF_CANCEL": {
 		"en":"Cancel",
 		"es":"Anular",
 		"fr":"Annuler"
 	},
-	"POIDS_TABL_EVO_3_MOIS": {
+	"WEIGHT_TABL_EVO_3_MONTH": {
 		"en":"Last 3 months weight evolution",
 		"es":"Evolución del peso de los últimos 3 meses",
 		"fr":"Évolution du poids des 3 derniers mois"
 	},
-	"POIDS_IMC_ACCRONIME": {
+	"WEIGHT_BMI_ACRONYM": {
 		"en":"BMI",
 		"es":"IMC",
 		"fr":"IMC"
@@ -1068,62 +1063,62 @@
 		"es": "DD-mmm-AAAA (16-feb-2021)",
 		"fr": "JJ-mmm-AAAA (16-fev-2021)"
 	},
-	"POIDS_DEBUT_MESSAGE_ALERT": {
+	"WEIGHT_BEGINNING_ALERT_MESSAGE": {
 		"en":"Warning, please enter the missing information in the following fields :\n",
 		"es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
 		"fr":"Attention, veuillez saisir les informations manquantes dans les champs suivant :\n"
 	},
-	"POIDS_INITIAL_VIDE":{
+	"INITIAL_EMPTY_WEIGHT":{
 		"en":"\nThe initial weight must not be empty !",
 		"es":"\n¡El peso inicial no debe estar vacío !",
 		"fr":"\nLe poids initiale ne doit pas être vide !"
 	},
-	"POIDS_CIBLE_VIDE":{
+	"EMPTY_TARGET_WEIGHT":{
 		"en":"\nThe target weight must not be empty !",
 		"es":"\nEl peso objetivo no debe estar vacío !",
 		"fr":"\nLe poids cible ne doit pas être vide !"
 	},
-	"POIDS_DATE_CIBLE_VIDE":{
+	"EMPTY_TARGET_WEIGHT_DATE":{
 		"en":"\nThe target date must not be empty !",
 		"es":"\n¡La fecha objetivo no debe estar vacía !",
 		"fr":"\nLa date cible ne doit pas être vide !"
 	},
-	"POIDS_FIN_MESSAGE_ALERT":{
+	"WEIGHT_END_MESSAGE_ALERT":{
 		"en":"\n\nHave a good day",
 		"es":"\n\nQue tenga un buen día",
 		"fr":"\n\nBonne journée"
 	},
-	"POIDS_SUGGESTION_DATE":{
+	"WEIGHT_SUGGESTION_DATE":{
 		"en":"Select a date",
 		"es":"Seleccione una fecha",
 		"fr":"Choisir une date"
 	},
-	"CATEGORIE_MAIGRE":{
+	"SKIN_CATEGORY":{
 		"en": "Too skinny",
 		"es": "Demaciado flaco",
 		"fr": "Trop maigre"
 	},
-	"CATEGORIE_IDEAL":{
+	"IDEAL_CATEGORY":{
 		"en": "Ideal weight",
 		"es": "Peso ideal",
 		"fr": "Poids idéal"
 	},
-	"CATEGORIE_SURPOIDS":{
+	"OVERWEIGHT_CATEGORY":{
 		"en": "Overweight",
 		"es": "Exceso de peso",
 		"fr": "Surpoids"
 	},
-	"CATEGORIE_OB_CLASSE_1":{
+	"CATEGORY_OB_CLASS_1":{
 		"en": "Class 1 obesity",
 		"es": "Obesidad clase 1",
 		"fr": "Obésité classe 1"
 	},
-	"CATEGORIE_OB_CLASSE_2":{
+	"CATEGORY_OB_CLASS_2":{
 		"en": "Class 2 obesity - severe",
 		"es": "Obesidad clase 2 - severa",
 		"fr": "Obésité classe 2 - sévère"
 	},
-	"CATEGORIE_OB_CLASSE_3":{
+	"CATEGORY_OB_CLASS_3":{
 		"en": "Morbid obesity",
 		"es": "Obesidad mórbida",
 		"fr": "Obésité morbide"
