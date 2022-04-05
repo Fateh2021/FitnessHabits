@@ -1,9 +1,10 @@
 import React from "react";
-import {configure, shallow, mount } from "enzyme";
+import { act } from "react-dom/test-utils"
+import { configure, shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import Alcool from "./Alcool";
 
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("Settings Alcool Section Test", () => {
     let dummyAlcool;
@@ -47,7 +48,7 @@ describe("Settings Alcool Section Test", () => {
         const currentDate = { startDate: new Date(2020, 3, 1) };
         const dateSpy = jest
             .spyOn(global, "Date")
-            .mockImplementation(() => currentDate.startDate )
+            .mockImplementation(() => currentDate.startDate)
         const mockAlcoolService = {
             dashboard: {
                 addAlcool: (alcool, date) => {
@@ -63,16 +64,19 @@ describe("Settings Alcool Section Test", () => {
         };
         jest.spyOn(mockAlcoolService.dashboard, "addAlcool");
         jest.spyOn(mockAlcoolService.settings, "updateAlcools");
-        const component = shallow(<Alcool 
-            alcools = { dummyAlcool.alcool.alcools }
-            alcoolService = {mockAlcoolService} />);
-        const eventData = { stopPropagation: () => {}, target: { style: { color: null }} };
-        
-        component.find(".starFavoris").simulate(
-            "click", 
-            eventData
-        );
-        
+        const eventData = { stopPropagation: () => { }, target: { style: { color: null } } };
+
+        act(() => {
+            const component = shallow(<Alcool
+                alcools={dummyAlcool.alcool.alcools}
+                alcoolService={mockAlcoolService} />);
+
+            component.find(".starFavoris").simulate(
+                "click",
+                eventData
+            );
+        });
+
         expect(eventData.target.style.color).toEqual(expectedFavoriIconColor);
         expect(dummyAlcool.alcool.alcools[0].favoris).toBeTruthy();
         expect(mockAlcoolService.dashboard.addAlcool).toBeCalledTimes(1);
@@ -86,7 +90,7 @@ describe("Settings Alcool Section Test", () => {
         const expectedFavoriIconColor = "";
         const mockAlcoolService = {
             dashboard: {
-                addAlcool: () => {}
+                addAlcool: () => { }
             },
             settings: {
                 updateAlcools: (alcools) => {
@@ -96,22 +100,24 @@ describe("Settings Alcool Section Test", () => {
         };
         jest.spyOn(mockAlcoolService.dashboard, "addAlcool");
         jest.spyOn(mockAlcoolService.settings, "updateAlcools");
-        const component = shallow(<Alcool 
-            alcools = { dummyAlcool.alcool.alcools }
-            alcoolService = {mockAlcoolService} />);
-        const eventData = { stopPropagation: () => {}, target: { style: { color: null }} };
-        
-        component.find(".starFavoris").simulate(
-            "click", 
-            eventData
-        );
-        
+        const eventData = { stopPropagation: () => { }, target: { style: { color: null } } };
+
+        act(() => {
+            const component = shallow(<Alcool
+                alcools={dummyAlcool.alcool.alcools}
+                alcoolService={mockAlcoolService} />);
+            component.find(".starFavoris").simulate(
+                "click",
+                eventData
+            );
+        });
+
         expect(eventData.target.style.color).toEqual(expectedFavoriIconColor);
         expect(dummyAlcool.alcool.alcools[0].favoris).toBeFalsy();
         expect(mockAlcoolService.dashboard.addAlcool).toBeCalledTimes(0);
         expect(mockAlcoolService.settings.updateAlcools).toBeCalledTimes(1);
     });
-    
+
     test("Enlèvement d'un alcool", () => {
         const mockAlcoolService = {
             settings: {
@@ -121,16 +127,18 @@ describe("Settings Alcool Section Test", () => {
             }
         };
         jest.spyOn(mockAlcoolService.settings, "updateAlcools");
-        const component = shallow(<Alcool 
-            alcools = { dummyAlcool.alcool.alcools }
-            alcoolService = {mockAlcoolService} />);
-    
-        component.find(".trashButton").simulate("click");
         
+        act(() => {
+            const component = shallow(<Alcool
+                alcools={dummyAlcool.alcool.alcools}
+                alcoolService={mockAlcoolService} />);
+            component.find(".trashButton").simulate("click");
+        });
+
         expect(mockAlcoolService.settings.updateAlcools).toBeCalledTimes(1);
     });
-    
-    test("Ajout d'un alcool", () => {
+
+    test("Ajout d'un alcool", async () => {
         const newAlcoolName = "Sangrila";
         const mockAlcoolService = {
             settings: {
@@ -142,14 +150,17 @@ describe("Settings Alcool Section Test", () => {
             }
         };
         jest.spyOn(mockAlcoolService.settings, "updateAlcools");
-        const component = mount(<Alcool 
-            alcools = { dummyAlcool.alcool.alcools }
-            alcoolService = {mockAlcoolService} />);
 
-        component.find(".ajoutBotton IonButton.ajoutbreuvage1").simulate("click");
-        component.find("AlcoolItem IonInput[name='name']").get(0).props.onIonChange({ target: { value: newAlcoolName, name: "name" }});
-        component.find("AlcoolItem button.buttonOK").simulate("click");
-        
+        await act(async () => {
+            const component = mount(<Alcool
+                alcools={dummyAlcool.alcool.alcools}
+                alcoolService={mockAlcoolService} />);
+            await new Promise(res => setTimeout(res, 0));
+            component.find(".ajoutBotton IonButton.ajoutbreuvage1").simulate("click");
+            component.find("AlcoolItem IonInput[name='name']").get(0).props.onIonChange({ target: { value: newAlcoolName, name: "name" } });
+            component.find("AlcoolItem button.buttonOK").simulate("click");
+        });
+
         expect(mockAlcoolService.settings.updateAlcools).toBeCalledTimes(1);
     });
 });
