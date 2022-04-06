@@ -1,18 +1,18 @@
 import React from 'react';
-import HeaderPoids from "./header";
-import InitialisationPoids from "./Initialisation";
+import HeaderWeight from "./header";
+import InitializationWeight from "./Initialisation";
 
-// nous avons nettoyer tous ce qui ne touchait pas la page initilisation,
-// car la section configuration des notifications étaient tout simplement une coquille vide
-// et ne servait à rien selon nos analyses.
+// we have cleaned up everything that did not affect the initialization page,
+// because the notification configuration section was just an empty shell
+// and was useless according to our analyses.
 const Configuration = (props) => {
   return (
     <ion-app>
-      <HeaderPoids url="/dashboard" />
+      <HeaderWeight url="/dashboard" />
       <ion-content class="ion-padding" overflow-scroll="true">
         <ion-tabs>
           <ion-tab tab="Initialisation">
-            <InitialisationPoids />
+            <InitializationWeight />
           </ion-tab>
         </ion-tabs>
       </ion-content>
