@@ -6,7 +6,7 @@ import * as weightService from "../../Poids/configuration/weightService"
 import * as translate from "../../../translate/Translator";
 
 // Variables in Firebase remains in French for now with a translation in comment
-const TableauPoids = () => {
+const TableWeight = () => {
   const [refData, setRefData] = useState()
   const [initialWeight, setInitialWeight] = useState("");
   const [targetWeight, setTargetWeight] = useState("");
@@ -121,4 +121,4 @@ const TableauPoids = () => {
   return (<Line className="ionTableau poidsGraph" data={data} options={options} />)
 }
 
-export default TableauPoids;
+export default TableWeight;
