@@ -2,7 +2,7 @@ import { Line } from "react-chartjs-2";
 import moment from "moment"
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
-import * as weightService from "../../Poids/configuration/weightService"
+import * as weightService from "../../Weight/configuration/weightService"
 import * as translate from "../../../translate/Translator";
 
 // Variables in Firebase remains in French for now with a translation in comment

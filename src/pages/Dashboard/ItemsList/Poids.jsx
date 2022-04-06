@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
-import * as weightService from "../../Poids/configuration/weightService"
+import * as weightService from "../../Weight/configuration/weightService"
 import * as translate from "../../../translate/Translator";
 import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/poids.css";
-import TableWeight from "../../Poids/configuration/TableWeight";
+import TableWeight from "../../Weight/configuration/TableWeight";
 
 const accor = (divId) => {
   const divElt = document.getElementById(divId);

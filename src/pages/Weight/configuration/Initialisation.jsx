@@ -4,7 +4,7 @@ import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, Ion
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
 import "../../poids.css";
 import * as translate from "../../../translate/Translator";
-import * as weightService from "../../Poids/configuration/weightService"
+import * as weightService from "../../Weight/configuration/weightService"
 
 import moment from "moment"
 
