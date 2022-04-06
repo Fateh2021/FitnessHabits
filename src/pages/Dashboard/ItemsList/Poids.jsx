@@ -5,7 +5,7 @@ import * as translate from "../../../translate/Translator";
 import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
-import "../../../pages/poids.css";
+import "../../../pages/weight.css";
 import TableWeight from "../../Weight/configuration/TableWeight";
 
 const accor = (divId) => {
