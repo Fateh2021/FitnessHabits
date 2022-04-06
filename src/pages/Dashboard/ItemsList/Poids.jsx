@@ -6,7 +6,7 @@ import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/poids.css";
-import TableauPoids from "../../Poids/configuration/TableauPoids";
+import TableWeight from "../../Poids/configuration/TableWeight";
 
 const accor = (divId) => {
   const divElt = document.getElementById(divId);
@@ -165,7 +165,7 @@ const Poids = (props) => {
         />
       </IonItem>
       <div id="accordeonPoids" className="accordeonPoids">
-        <TableauPoids></TableauPoids>
+        <TableWeight></TableWeight>
       </div>
     </div>
   );
