@@ -6,7 +6,7 @@ import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
 import Poids from "../ItemsList/Poids";
 
-import { formatWeight, formatToKG , find_new_category, formatDate, initPrefWeight, setPrefUnitWeight} from '../../Poids/configuration/poidsService';
+import { formatWeight, formatToKG , find_new_category, formatDate, initPrefWeight, setPrefUnitWeight} from '../../Poids/configuration/weightService';
 import { doneAll } from 'ionicons/icons';
 
 jest.mock("firebase", () => {
