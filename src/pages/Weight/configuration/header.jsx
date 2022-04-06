@@ -12,7 +12,7 @@ const Header = ({ url }) => {
                     <IonBackButton defaultHref={url} />
                 </IonButtons>
                 <IonTitle>
-                    {translate.getText("POIDS_NOM_SECTION")}
+                    {translate.getText("WEIGHT_NAME_SECTION")}
                     </IonTitle>
             </IonToolbar>
         </IonHeader>

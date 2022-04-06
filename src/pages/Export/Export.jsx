@@ -36,7 +36,7 @@ import {getLang} from "../../translate/Translator";
 import {compilerBilan} from "./CompilerBilan";
 import {creerPdf} from "./RapportCreateur";
 
-
+// Equipe Gestion Poids a ajusté la ligne 360 environ : <IonLabel>{translate.getText("WEIGHT_NAME_SECTION")}</IonLabel>
 const Settings = (props) => {
 
     const [settings, setSettings] = useState({
@@ -357,7 +357,7 @@ const Settings = (props) => {
                              manageCategories("poids")
                          }}>
                         <IonItem>
-                            <IonLabel>{translate.getText("POIDS_NOM_SECTION")}</IonLabel>
+                            <IonLabel>{translate.getText("WEIGHT_NAME_SECTION")}</IonLabel>
                             <IonCheckbox
                                 checked={dataSelected.includes("poids")}
                             />
