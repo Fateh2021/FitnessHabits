@@ -10,7 +10,7 @@ import Languages from './pages/Dashboard/Languages';
 import GrapheGlycemie from './pages/GrapheGlycemie/graphe';
 import Settings from './pages/Settings/Settings'
 import Export from './pages/Export/Export'
-import ConfigurationPoids from './pages/Poids/configuration/configuration';
+import ConfigurationPoids from './pages/Weight/configuration/configuration';
 import { Settings as LuxonSettings } from "luxon";
 import GlycemieInitial from "./pages/Glycemie/Initial";
 import GlycemieAjout from "./pages/Glycemie/Ajout";
