@@ -1,4 +1,4 @@
-import firebase from "firebase"
+import firebase from 'firebase'
 import moment from "moment";
 import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
@@ -93,5 +93,5 @@ export function find_new_category(BMI_value){
 }
 
 export function formatDate (date) {
-    return moment(date).format("YYYY-MM-DD");
+    return moment(date).format('YYYY-MM-DD');
 }

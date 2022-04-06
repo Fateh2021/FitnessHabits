@@ -30,8 +30,8 @@ afterEach(() => {
 });
 
 //Méthode générique à mettre dans Test.utils (ref: ExportTeam BooleanBurritos)
-const renderWithRouter = (ui, { route = "/" } = {}) => {
-    window.history.pushState({}, "Test page", route);
+const renderWithRouter = (ui, { route = '/' } = {}) => {
+    window.history.pushState({}, 'Test page', route);
     return render(ui, { wrapper: BrowserRouter });
 }
 
