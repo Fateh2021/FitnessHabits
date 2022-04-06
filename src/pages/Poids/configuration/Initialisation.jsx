@@ -4,7 +4,7 @@ import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, Ion
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
 import "../../poids.css";
 import * as translate from "../../../translate/Translator";
-import * as poidsService from "../../Poids/configuration/poidsService"
+import * as weightService from "../../Poids/configuration/weightService"
 
 import moment from "moment"
 
@@ -98,7 +98,7 @@ const handleReinitialization = () => {
     for (const [,value] of Object.entries(snapshot.val())) {
         if (value.poids.datePoids !== undefined) {
             let dateWeight = formatDate(value.poids.datePoids)
-            let weight = poidsService.formatWeight(value.poids.dailyPoids)
+            let weight = weightService.formatWeight(value.poids.dailyPoids)
             graphData.push ({x: dateWeight, y: weight})
         }
     }
@@ -136,7 +136,7 @@ const handlerConfirmation = () => {
     // Firebase : poidsInitial = initialWeight, poidsCible = targetWeight
     // Firebase : unitePoids = unitWeight, dateCible = targetDate
     let preferencesPoids = {poidsInitial: pi, poidsCible : pc, unitePoids: unitWeight, dateCible: targetDate}
-    poidsService.setPrefUnitWeight(unitWeight)
+    weightService.setPrefUnitWeight(unitWeight)
     firebase.database().ref('profiles/' + userUID + "/preferencesPoids").update(preferencesPoids);
     redirectDashboard();
   } else {

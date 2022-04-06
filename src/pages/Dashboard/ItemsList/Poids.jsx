@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
-import * as poidsService from "../../Poids/configuration/poidsService"
+import * as weightService from "../../Poids/configuration/weightService"
 import * as translate from "../../../translate/Translator";
 import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
@@ -16,7 +16,6 @@ const accor = (divId) => {
 };
 
 // Variables in Firebase remains in French for now with a translation in comment
-
 const Poids = (props) => {
   // Ajout de cette variable dans le but de vérifier quel était la préférence d'affichage du poids.
   var prefWeight = localStorage.getItem("prefUnitePoids");
@@ -39,7 +38,7 @@ const Poids = (props) => {
   }, [props.poids.dailyPoids]);
 
   useEffect(() => {
-    poidsService.initPrefWeight();
+    weightService.initPrefWeight();
     let preferencesPoidsRef = firebase.database().ref("profiles/" + userUID + "/preferencesPoids");
     preferencesPoidsRef.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
@@ -54,13 +53,13 @@ const Poids = (props) => {
       }
     });
 
-    setBMI(poidsService.calculation_BMI(size, poidsService.formatToKG(dailyWeight)));
+    setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
   });
 
 	// Capture of the vent if the weight preference unit changes
   const handleUnitWeightChange = (event) => {
     let newUnitWeight = event.target.value;
-    poidsService.setPrefUnitWeight(newUnitWeight);
+    weightService.setPrefUnitWeight(newUnitWeight);
     let oldUnitWeight = unitWeight;
     setUnitWeight(newUnitWeight);
 
@@ -81,13 +80,13 @@ const Poids = (props) => {
     let new_dailyWeight = event.detail.value;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
-		dashboard.poids.dailyPoids = poidsService.formatToKG(new_dailyWeight);
+		dashboard.poids.dailyPoids = weightService.formatToKG(new_dailyWeight);
     dashboard.poids.datePoids = new Date();
     localStorage.setItem("dashboard", JSON.stringify(dashboard));
 
 		setDailyWeight(new_dailyWeight);
 		// On utilise directement la valeur qu'on a sauvé dans le localstorage du dashboard
-		setBMI(poidsService.calculation_BMI(size, dashboard.poids.dailyPoids));
+		setBMI(weightService.calculation_BMI(size, dashboard.poids.dailyPoids));
 
     firebase
       .database()
@@ -110,7 +109,7 @@ const Poids = (props) => {
        il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
     */
     if (BMI_Change > 10) {
-      poidsService.check_BMI_change(BMI_Change);
+      weightService.check_BMI_change(BMI_Change);
     }
   }
 

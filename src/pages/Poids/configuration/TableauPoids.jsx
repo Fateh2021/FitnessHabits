@@ -2,7 +2,7 @@ import { Line } from "react-chartjs-2";
 import moment from "moment"
 import React, { useState, useEffect } from "react"
 import firebase from 'firebase'
-import * as poidsService from "../../Poids/configuration/poidsService"
+import * as weightService from "../../Poids/configuration/weightService"
 import * as translate from "../../../translate/Translator";
 
 // Variables in Firebase remains in French for now with a translation in comment
@@ -44,11 +44,11 @@ const TableauPoids = () => {
 
       if (value.poids.datePoids !== undefined) {
         let dateWeight = formatDate(value.poids.datePoids)
-        let weight = poidsService.formatWeight(value.poids.dailyPoids)
+        let weight = weightService.formatWeight(value.poids.dailyPoids)
 
 				// To do the live update of the value of the day without reloading the page
         if (dateWeight == formatDate(new Date())){
-          weight = poidsService.formatWeight(dashboard.poids.dailyPoids)
+          weight = weightService.formatWeight(dashboard.poids.dailyPoids)
         }
 
         graphData.push ({x: dateWeight, y: weight})
@@ -62,8 +62,8 @@ const TableauPoids = () => {
 
   start.setDate(start.getDate() - 90); // set to 'now' minus 7 days.
   start.setHours(0, 0, 0, 0); // set to midnight.
-  let weightIni = poidsService.formatWeight(initialWeight)
-  let weightCib = poidsService.formatWeight(targetWeight)
+  let weightIni = weightService.formatWeight(initialWeight)
+  let weightCib = weightService.formatWeight(targetWeight)
   let dataWeightInitial = [{x: start, y: weightIni},{x: end, y: weightIni}]
   let dataWeightTarget = [{x: start, y: weightCib},{x: end, y: weightCib}]
 
@@ -112,7 +112,7 @@ const TableauPoids = () => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: translate.getText("WEIGHT_NAME_SECTION") + ' (' + poidsService.getPrefUnitWeight() + ")" 
+          labelString: translate.getText("WEIGHT_NAME_SECTION") + ' (' + weightService.getPrefUnitWeight() + ")" 
         }
       }]
     }
