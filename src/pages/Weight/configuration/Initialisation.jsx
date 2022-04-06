@@ -2,7 +2,7 @@ import React, { useState , useEffect} from 'react';
 import firebase from 'firebase'
 import { IonItemGroup, IonItemDivider, IonInput, IonRow, IonButton, IonCard, IonCardContent,
          IonLabel, IonGrid, IonCol, IonContent, IonDatetime, IonText, IonSelect, IonSelectOption } from '@ionic/react';
-import "../../poids.css";
+import "../../weight.css";
 import * as translate from "../../../translate/Translator";
 import * as weightService from "../../Weight/configuration/weightService"
 

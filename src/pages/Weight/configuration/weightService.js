@@ -30,7 +30,6 @@ export function formatWeight(weight) {
   return weight
 }
 
-
 export function formatToKG(weight) {
 	// LocalStorage : prefUnitePoids = prefUnitWeight
   let prefUnitWeight = localStorage.getItem('prefUnitePoids');
