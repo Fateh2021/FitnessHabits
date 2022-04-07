@@ -1,4 +1,124 @@
 {
+	"ABBREVIATION_MONTH": {
+		"en":"Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec",
+		"es":"Ene, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Set, Oct, Nov, Dic",
+		"fr":"Jan, Fev, Mar, Avr, Mai, Jun, Jul, Aou, Sep, Oct, Nov, Dec "
+	},
+	"WEIGHT_NAME_SECTION":{
+		"en":"Weight",
+		"es":"Peso",
+		"fr":"Poids"
+	},
+	"WEIGHT_PREF_UNIT_WEIGHT":{
+		"en":"Weight unit",
+		"es":"Unidad de peso",
+		"fr":"Unité de poids"
+	},
+	"WEIGHT_PREF_WEIGHT_INITIAL":{
+		"en":"Initial weight",
+		"es":"Peso inicial",
+		"fr":"Poids initial"
+	},
+	"WEIGHT_PREF_WEIGHT_TARGET":{
+		"en":"Weight target",
+		"es":"Peso objetivo",
+		"fr":"Poids cible"
+	},
+	"WEIGHT_PREF_DATE_TARGET":{
+		"en":"Target date",
+		"es":"Fecha objetivo",
+		"fr":"Date cible"
+	},
+	"WEIGHT_PREF_RESET":{
+		"en":"Reset",
+		"es":"Reiniciar",
+		"fr":"Réinitialiser"
+	},
+	"WEIGHT_PREF_CONFIRM":{
+		"en":"Confirm",
+		"es":"Confirmar",
+		"fr":"Confirmer"
+	},
+	"WEIGHT_PREF_CHOOSE": {
+		"en":"Select",
+		"es":"Seleccionar",
+		"fr":"Sélectionner"
+	},
+	"WEIGHT_PREF_CANCEL": {
+		"en":"Cancel",
+		"es":"Anular",
+		"fr":"Annuler"
+	},
+	"WEIGHT_TABL_EVO_3_MONTH": {
+		"en":"Last 3 months weight evolution",
+		"es":"Evolución del peso de los últimos 3 meses",
+		"fr":"Évolution du poids des 3 derniers mois"
+	},
+	"WEIGHT_BMI_ACRONYM": {
+		"en":"BMI",
+		"es":"IMC",
+		"fr":"IMC"
+	},
+	"WEIGHT_BEGINNING_ALERT_MESSAGE": {
+		"en":"Warning, please enter the missing information in the following fields :\n",
+		"es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
+		"fr":"Attention, veuillez saisir les informations manquantes dans les champs suivant :\n"
+	},
+	"INITIAL_EMPTY_WEIGHT":{
+		"en":"\nThe initial weight must not be empty !",
+		"es":"\n¡El peso inicial no debe estar vacío !",
+		"fr":"\nLe poids initiale ne doit pas être vide !"
+	},
+	"EMPTY_TARGET_WEIGHT":{
+		"en":"\nThe target weight must not be empty !",
+		"es":"\nEl peso objetivo no debe estar vacío !",
+		"fr":"\nLe poids cible ne doit pas être vide !"
+	},
+	"EMPTY_TARGET_WEIGHT_DATE":{
+		"en":"\nThe target date must not be empty !",
+		"es":"\n¡La fecha objetivo no debe estar vacía !",
+		"fr":"\nLa date cible ne doit pas être vide !"
+	},
+	"WEIGHT_END_MESSAGE_ALERT":{
+		"en":"\n\nHave a good day",
+		"es":"\n\nQue tenga un buen día",
+		"fr":"\n\nBonne journée"
+	},
+	"WEIGHT_SUGGESTION_DATE":{
+		"en":"Select a date",
+		"es":"Seleccione una fecha",
+		"fr":"Choisir une date"
+	},
+	"SKIN_CATEGORY":{
+		"en": "Too skinny",
+		"es": "Demaciado flaco",
+		"fr": "Trop maigre"
+	},
+	"IDEAL_CATEGORY":{
+		"en": "Ideal weight",
+		"es": "Peso ideal",
+		"fr": "Poids idéal"
+	},
+	"OVERWEIGHT_CATEGORY":{
+		"en": "Overweight",
+		"es": "Exceso de peso",
+		"fr": "Surpoids"
+	},
+	"CATEGORY_OB_CLASS_1":{
+		"en": "Class 1 obesity",
+		"es": "Obesidad clase 1",
+		"fr": "Obésité classe 1"
+	},
+	"CATEGORY_OB_CLASS_2":{
+		"en": "Class 2 obesity - severe",
+		"es": "Obesidad clase 2 - severa",
+		"fr": "Obésité classe 2 - sévère"
+	},
+	"CATEGORY_OB_CLASS_3":{
+		"en": "Morbid obesity",
+		"es": "Obesidad mórbida",
+		"fr": "Obésité morbide"
+	},
    "ABBREVIATION_MOIS": {
       "en": "Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec",
       "es": "Ene, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Set, Oct, Nov, Dic",
@@ -23,11 +143,6 @@
       "en": "Be careful, it is advisable not to exceed",
       "es": "¡Cuidado, es recomendable de no exceder",
       "fr": "Attention, il est conseillé de ne pas dépasser"
-   },
-   "HYD_ALERT_GT_3000_P2": {
-      "en": "of water per day!",
-      "es": "de agua por día!",
-      "fr": "d'eau par jour !"
    },
    "HYD_BUTTON_CONFIRM_2": {
       "en": "I confirm",
@@ -723,10 +838,10 @@
       "fr": "Évolution du poids des 3 derniers mois"
    },
    "GLYC_TITLE":{
-      "en":"Glycaemia",
-      "es":"Glicemia",
+      "en":"Blood sugar level",
+      "es":"Glucemia",
       "fr":"Glycémie"
-    }, 
+   },
    "POIDS_IMC_ACCRONIME": {
       "en":"BMI",
       "es":"IMC",
@@ -735,7 +850,7 @@
    "SELECT_DATA_REQUIRED_TITLE":{
       "en":"Veuillez sélectionner au moins un type de donnée",
       "es":"Seleccione al menos un tipo de datos",
-      "fr":"Veuillez sélectionner au moins un type de donnée" 
+      "fr":"Veuillez sélectionner au moins un type de donnée"
    },
    "HYDR_TITLE":{
       "en":"Hydration",
@@ -776,11 +891,6 @@
       "en":"Physical activities",
       "es":"Actividades físicas",
       "fr":"Activités physiques"
-   },
-   "GLYC_TITLE":{
-      "en":"Blood sugar level",
-      "es":"Glucemia",
-      "fr":"Glycémie"
    },
    "TOILETS_TITLE":{
       "en":"Toilets",
@@ -823,100 +933,100 @@
       "fr":"Urine"
    },
    "SEND_MAIL": {
-    "en": "Send by email",
-    "es": "Enviar por correo elec.",
-    "fr": "Envoyer par courriel"
-  },
-  "SAVE_TO_DEV": {
-    "en": "Save to device",
-    "es": "Guardar en el dispositivo",
-    "fr": "Enregistrer sur appareil"
-  },
-  "DE": {
-    "en": "From",
-    "es": "Del",
-    "fr": "De"
-  },
-  "A": {
-    "en": "To",
-    "es": "Al",
-    "fr": "À"
-  },
-  "EXP_REPORT_UNIT": {
-    "en": "Unit",
-    "es": "Unidad",
-    "fr": "Unité"
-  },
-  "EXP_REPORT_WEIGHT": {
-    "en": "Weight",
-    "es": "Peso",
-    "fr": "Poids"
-  },
-  "EXP_REPORT_INITIAL_WEIGHT": {
-    "en": "Initial weight",
-    "es": "Peso original",
-    "fr": "Poids initial"
-  },
-  "EXP_REPORT_FINAL_WEIGHT": {
-    "en": "Final weight",
-    "es": "Peso final",
-    "fr": "Poids final"
-  },
-  "EXP_REPORT_DIFF_WEIGHT": {
-    "en": "Weight difference",
-    "es": "Diferencia de peso",
-    "fr": "Différence de poids"
-  },
-  "EXP_REPORT_DURATION": {
-    "en": "Duration",
-    "es": "Duración",
-    "fr": "Durée"
-  },
-  "EXP_REF_GLY": {
-    "en" : "Reference",
-    "es" : "Referencia",
-    "fr" : "Référence"
-  },
-  "EXP_REPORT_AVERAGE_DURATION_ACTIVITY": {
-    "en": "Average",
-    "es": "promedio",
-    "fr": "Moyenne"
-  },
-  "EXP_REPORT_START_HOUR_SLEEP": {
-    "en": "Bedtime",
-    "es": "Hora de acostarse",
-    "fr": "Heure de coucher"
-  },
-  "EXP_REPORT_END_HOUR_SLEEP": {
-    "en": "Waking hour",
-    "es": "Hora de despertar",
-    "fr": "Heure de réveil"
-  },
-  "EXP_REPORT_WAKEUP_QT_SLEEP": {
-    "en": "Woke up quantity",
-    "es": "Despertador cantidad",
-    "fr": "Quantité de réveils"
-  },
-  "EXP_REPORT_AVG_END_HOUR_SLEEP": {
-    "en": "Average waking hour",
-    "es": "Tiempo hora de despertar",
-    "fr": "Heure de réveil moyen"
-  },
-  "EXP_REPORT_AVG_START_HOUR_SLEEP": {
-    "en": "Average bedtime",
-    "es": "Hora de acostarse promedio",
-    "fr": "Heure de coucher moyen"
-  },
-  "EXP_REPORT_AVG_DURATION_SLEEP": {
-    "en": "Average duration",
-    "es": "Duración promedio",
-    "fr": "Durée moyenne"
-  },
-  "EXP_REPORT_AVG_WAKEUP_QT": {
-    "en": "Wake up(s) per night",
-    "es": "Despertar(es) por noche",
-    "fr": "Réveil(s) par nuit"
-  },
+      "en": "Send by email",
+      "es": "Enviar por correo elec.",
+      "fr": "Envoyer par courriel"
+   },
+   "SAVE_TO_DEV": {
+      "en": "Save to device",
+      "es": "Guardar en el dispositivo",
+      "fr": "Enregistrer sur appareil"
+   },
+   "DE": {
+      "en": "From",
+      "es": "Del",
+      "fr": "De"
+   },
+   "A": {
+      "en": "To",
+      "es": "Al",
+      "fr": "À"
+   },
+   "EXP_REPORT_UNIT": {
+      "en": "Unit",
+      "es": "Unidad",
+      "fr": "Unité"
+   },
+   "EXP_REPORT_WEIGHT": {
+      "en": "Weight",
+      "es": "Peso",
+      "fr": "Poids"
+   },
+   "EXP_REPORT_INITIAL_WEIGHT": {
+      "en": "Initial weight",
+      "es": "Peso original",
+      "fr": "Poids initial"
+   },
+   "EXP_REPORT_FINAL_WEIGHT": {
+      "en": "Final weight",
+      "es": "Peso final",
+      "fr": "Poids final"
+   },
+   "EXP_REPORT_DIFF_WEIGHT": {
+      "en": "Weight difference",
+      "es": "Diferencia de peso",
+      "fr": "Différence de poids"
+   },
+   "EXP_REPORT_DURATION": {
+      "en": "Duration",
+      "es": "Duración",
+      "fr": "Durée"
+   },
+   "EXP_REF_GLY": {
+      "en" : "Reference",
+      "es" : "Referencia",
+      "fr" : "Référence"
+   },
+   "EXP_REPORT_AVERAGE_DURATION_ACTIVITY": {
+      "en": "Average",
+      "es": "promedio",
+      "fr": "Moyenne"
+   },
+   "EXP_REPORT_START_HOUR_SLEEP": {
+      "en": "Bedtime",
+      "es": "Hora de acostarse",
+      "fr": "Heure de coucher"
+   },
+   "EXP_REPORT_END_HOUR_SLEEP": {
+      "en": "Waking hour",
+      "es": "Hora de despertar",
+      "fr": "Heure de réveil"
+   },
+   "EXP_REPORT_WAKEUP_QT_SLEEP": {
+      "en": "Woke up quantity",
+      "es": "Despertador cantidad",
+      "fr": "Quantité de réveils"
+   },
+   "EXP_REPORT_AVG_END_HOUR_SLEEP": {
+      "en": "Average waking hour",
+      "es": "Tiempo hora de despertar",
+      "fr": "Heure de réveil moyen"
+   },
+   "EXP_REPORT_AVG_START_HOUR_SLEEP": {
+      "en": "Average bedtime",
+      "es": "Hora de acostarse promedio",
+      "fr": "Heure de coucher moyen"
+   },
+   "EXP_REPORT_AVG_DURATION_SLEEP": {
+      "en": "Average duration",
+      "es": "Duración promedio",
+      "fr": "Durée moyenne"
+   },
+   "EXP_REPORT_AVG_WAKEUP_QT": {
+      "en": "Wake up(s) per night",
+      "es": "Despertar(es) por noche",
+      "fr": "Réveil(s) par nuit"
+   },
    "EXP_REPORT_WAKEUP_STATE": {
       "en": "Wake-up state",
       "es": "Estado de despertar",
@@ -1219,50 +1329,49 @@
       "es": "prefieren no contestar",
       "fr": "Préfère ne pas répondre"
    },
-    "AVG": {
+   "AVG": {
       "en": "Average",
       "es": "Promedio",
       "fr": "Moyenne"
-    },
-    "TOT_FIB": {
+   },
+   "TOT_FIB": {
       "en": "Total fibers",
       "es": "Fibras total",
       "fr": "Total fibres"
-    },
-    "TOT_PROT": {
+   },
+   "TOT_PROT": {
       "en": "Total proteins",
       "es": "Proteinas total",
       "fr": "Total proteines"
-    },
-    "TOT_GLUC": {
+   },
+   "TOT_GLUC": {
       "en": "Total carbs",
       "es": "Glúcidos total",
       "fr": "Total glucides"
-    },
-    "TOT_FAT": {
+   },
+   "TOT_FAT": {
       "en": "Total fats",
       "es": "Grassa total",
       "fr": "Total gras"
-    },
-    "AVG_FIB": {
+   },
+   "AVG_FIB": {
       "en": "Average fibers",
       "es": "Fibras promedio",
       "fr": "Moyenne fibres"
-    },
-    "AVG_PROT": {
+   },
+   "AVG_PROT": {
       "en": "Average proteins",
       "es": "Proteinas promedio",
       "fr": "Moyenne proteines"
-    },
-    "AVG_GLUC": {
+   },
+   "AVG_GLUC": {
       "en": "Average carbs",
       "es": "Glúcidos pormedio",
       "fr": "Moyenne glucides"
-    },
-    "AVG_FAT": {
+   },
+   "AVG_FAT": {
       "en": "Average fats",
       "es": "Grassa pormedio",
       "fr": "Moyenne gras"
-    }
+   }
 }
-

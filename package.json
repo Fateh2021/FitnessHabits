@@ -33,7 +33,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^7.17.1",
     "ionicons": "^4.6.3",
-    "jspdf": "^2.3.1",
+    "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.23",
     "jszip": "^3.7.1",
     "luxon": "^1.27.0",
@@ -63,7 +63,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false --coverage --testResultsProcessor jest-sonar-reporter",
+    "test": "react-scripts test --coverage --testResultsProcessor=jest-sonar-reporter",
     "test:ci": "react-scripts test --coverage --colors",
     "eject": "react-scripts eject",
     "lint": "eslint ./src"
