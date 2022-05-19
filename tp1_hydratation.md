@@ -85,7 +85,7 @@ L’exigence de départ de notre projet est la refonte de l'interface utilisateu
 
 Voici les maquettes que nous voulons reproduire lors de notre sprint :
 
-**Sprint 1** :    ![](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits/-/tree/MadKingsInferno-Hydratation/img/sprint_1_hydratation.png)
+**Sprint 1** :  ![sprint_1_hydratation](/img/sprint_1_hydratation.png)
 
 
 
@@ -95,8 +95,8 @@ Voici les maquettes que nous voulons reproduire lors de notre sprint :
 
 **Sprint 2 et 3 :**
 
-![](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits/-/tree/MadKingsInferno-Hydratation/img/sprint_2_hydratation.png)
-![](https://gitlab.info.uqam.ca/trudel_syl/fitnesshabits/-/tree/MadKingsInferno-Hydratation/img/sprint_3_hydratation.png)
+![sprint_2_hydratation](/img/sprint_2_hydratation.png)
+![sprint_3_hydratation](/img/sprint_3_hydratation.png)
 
 
 
