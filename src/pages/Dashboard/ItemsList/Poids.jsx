@@ -22,21 +22,38 @@ const Poids = (props) => {
   const [unitWeight, setUnitWeight] = useState(prefWeight);
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyWeight, setDailyWeight] = useState(props.poids.dailyPoids);
+  var [initialWeight, setInitialWeight] = useState(props.poids.poidsInitial);
+  var [targetWeight, setTargetWeight] = useState(props.poids.poidsCible);
   var [size, setSize] = useState("");
   var [BMI, setBMI] = useState("0.00");
   const userUID = localStorage.getItem("userUid");
 
+
+  /*
+  *** si preference unité poids change ===> on update 
+  *** la valeur de poids actuel et de poids cible et de poids initial  
+  */
   useEffect(() => {
-    var tmp = 0;
+    var poidsDai, poidsIni = 0;
     if (prefWeight == "LBS") {
-      tmp = props.poids.dailyPoids * 2.2;
+      poidsDai = props.poids.dailyPoids * 2.2;
+      poidsIni = 123
     } else {
-      tmp = props.poids.dailyPoids;
+      poidsDai = props.poids.dailyPoids;
+      poidsIni = props.poids.poidsInitial;
     }
 
-    setDailyWeight(parseFloat(tmp).toFixed(1));
-  }, [props.poids.dailyPoids]);
-
+    setDailyWeight(parseFloat(poidsDai).toFixed(1));
+    setInitialWeight(parseFloat(poidsIni).toFixed(1));
+    
+  }, [props.poids.dailyPoids, props.poids.poidsInitial]);
+  
+  /*
+  *** 
+  *** update unité de poids as stocked in database 
+  *** update la taille as waht existed at database
+  *** update imc  dependant la taille et dailypoids
+  */
   useEffect(() => {
     weightService.initPrefWeight();
     let preferencesPoidsRef = firebase.database().ref("profiles/" + userUID + "/preferencesPoids");
@@ -56,6 +73,23 @@ const Poids = (props) => {
     setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
   });
 
+  /*
+  *** update initialweight and targetweight as what we have in database   
+  */
+  
+  useEffect(() => {
+    const userUID = localStorage.getItem('userUid');
+    let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+    preferencesWeightRef.once("value").then(function(snapshot) {
+        if (snapshot.val() != null) {
+          // Firebase : poidsInitial = initialWeight
+          // Firebase : poidsCible = targetWeight
+          setInitialWeight(parseFloat(snapshot.val().poidsInitial));
+          setTargetWeight(parseFloat(snapshot.val().poidsCible));
+        }
+      })
+}, [])
+
 	// Capture of the vent if the weight preference unit changes
   const handleUnitWeightChange = (event) => {
     let newUnitWeight = event.target.value;
@@ -64,15 +98,19 @@ const Poids = (props) => {
     setUnitWeight(newUnitWeight);
 
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-
-    var weightAdjust = 0;
+    console.log(dashboard);
+    var weightAdjustdaily = 0;
+    var  poidsInit = 0;
     if (oldUnitWeight === "KG" && newUnitWeight === "LBS") {
-      weightAdjust = dashboard.poids.dailyPoids * 2.2;
+      weightAdjustdaily = dashboard.poids.dailyPoids * 2.2;
+     // poidsInit = dashboard.props.poids.poidsInitial * 2.2;
     } else {
-      weightAdjust = dashboard.poids.dailyPoids;
+      weightAdjustdaily = dashboard.poids.dailyPoids;
+     // poidsInit = dashboard.props.poids.poidsInitial;
     }
 		// Then we reduce to one decimal point but using parseFloat to use toFixed
-    setDailyWeight(parseFloat(weightAdjust).toFixed(1));
+    setDailyWeight(parseFloat(weightAdjustdaily).toFixed(1));
+    setInitialWeight(parseFloat(poidsInit).toFixed(1));
   };
 
 	// Capture de l'éventement si le dailyPoids change
@@ -142,6 +180,25 @@ const Poids = (props) => {
             readonly
             onIonChange={handleBMIChange}  
             
+          ></IonInput>
+        </div>
+        <div>
+          <h1>test</h1>
+          <p>{props.poids.poidsInitial}</p>
+          
+        </div>
+        <div className="titrePoidsIni">
+          <IonLabel>
+            <h2 className="poidsIni" style={{ marginLeft: 13 }}>
+              <b>{translate.getText("WEIGHT_INITIAL_NAME")}</b>
+            </h2>
+          </IonLabel>
+          <IonInput
+            value={initialWeight}
+            data-testid = "poids_init_value" 
+            className="poidsIni"
+            aria-label="poidsInit"
+            readonly 
           ></IonInput>
         </div>
           <IonInput

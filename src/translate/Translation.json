@@ -1373,5 +1373,10 @@
       "en": "Average fats",
       "es": "Grassa pormedio",
       "fr": "Moyenne gras"
+   },
+   "WEIGHT_INITIAL_NAME" : {
+      "en": "Initial weight",
+      "es": "Peso inicial",
+      "fr": "Poids initial"
    }
 }
