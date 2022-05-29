@@ -121,6 +121,9 @@ const Sidebar = ({ handleClose, pictureDisabled }) => {
         unitDisplayCalculations(currentUnitDisplay,value);
         value = convertToCM(currentUnitDisplay,value);
         }
+        if (name === "dateFormat") {
+            localStorage.setItem("prefDateFormat", value);
+        }
         if (currentUnitDisplay === "IMP") {
             switch (name) {
                 case "inches":

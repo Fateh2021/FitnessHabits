@@ -629,7 +629,7 @@ const Dashboard = (props) => {
                         globalConsumption={dashboard.alcool.dailyTarget.globalConsumption}
                         currentDate={currentDate} 
                     />
-                    <Poids poids={dashboard.poids} currentDate={currentDate} />
+                    <Poids poids={dashboard.poids} currentDate={currentDate} formatedCurrentDate={formatedCurrentDate}/>
                 </IonList>
             </IonContent>
 

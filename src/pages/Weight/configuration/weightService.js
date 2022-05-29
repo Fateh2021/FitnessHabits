@@ -95,3 +95,21 @@ export function find_new_category(BMI_value){
 export function formatDate (date) {
     return moment(date).format('YYYY-MM-DD');
 }
+
+export function initPrefDate() {
+  const userUID = localStorage.getItem('userUid');
+  let prefDatetRef = firebase.database().ref('profiles/'+ userUID +"/dateFormat")
+  prefDatetRef.once("value").then(function(snapshot) {
+    // Lets retrieve the date format preference we have in firebase before putting it in localstorage
+    if (snapshot.val() !== null) {
+			// LocalStorage : prefUnitePoids = prefUnitWeight
+      localStorage.setItem("prefDateFormat", snapshot.val().toString());
+    } else {
+      localStorage.setItem("prefDateFormat", "dd-LL-yyyy");
+    }
+  })
+}
+
+export function getPrefDate() {
+  return localStorage.getItem("prefDateFormat")
+}

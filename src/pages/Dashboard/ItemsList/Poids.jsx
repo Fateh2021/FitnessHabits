@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import * as weightService from "../../Weight/configuration/weightService"
 import * as translate from "../../../translate/Translator";
-import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar, IonButton, IonModal, IonContent, IonSelect, IonSelectOption, IonDatetime } from "@ionic/react";
-import { arrowDropdownCircle, calendar, time} from "ionicons/icons";
+import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar} from "@ionic/react";
+import { arrowDropdownCircle} from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
 import TableWeight from "../../Weight/configuration/TableWeight";
+import WeightInput from "../../Weight/WeightInput";
 
 const accor = (divId) => {
     const divElt = document.getElementById(divId);
@@ -26,10 +27,6 @@ const Poids = (props) => {
   var [BMI, setBMI] = useState("0.00");
   const userUID = localStorage.getItem("userUid");
   const [showInputWeight, setShowInputWeight] = useState(false);
-  const [popoverDate, setPopoverDate] = useState(weightService.formatDate(new Date()));
-  const [popoverTime, setPopoverTime] = useState(popoverDate);
-  const [dateFormat, setDateFormat] = useState("YYYY/MM/DD");
-  var [newDailyWeight, setNewDailyWeight] = useState(props.poids.dailyPoids);
 
   useEffect(() => {
     var tmp = 0;
@@ -40,7 +37,6 @@ const Poids = (props) => {
     }
 
     setDailyWeight(parseFloat(tmp).toFixed(1));
-    setNewDailyWeight(parseFloat(tmp).toFixed(1));
   }, [props.poids.dailyPoids]);
 
   useEffect(() => {
@@ -60,42 +56,11 @@ const Poids = (props) => {
     });
 
     setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
-
-    let date_format_BD = firebase.database().ref("profiles/" + userUID + "/dateFormat");
-    date_format_BD.once("value").then(function (snapshot) {
-      if (snapshot.val() != null) {
-        let format = "" + snapshot.val();
-        format = format.replace(/y/gi, 'Y');
-        format = format.replace(/L/gi, 'M');
-        format = format.replace(/d/gi, 'D');
-        setDateFormat(format);
-
-      }
-    });
-  });
-
-	// Capture of the vent if the weight preference unit changes
-  const handleUnitWeightChange = (event) => {
-    let newUnitWeight = event.target.value;
-    weightService.setPrefUnitWeight(newUnitWeight);
-    let oldUnitWeight = unitWeight;
-    setUnitWeight(newUnitWeight);
-
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-
-    var weightAdjust = 0;
-    if (oldUnitWeight === "KG" && newUnitWeight === "LBS") {
-      weightAdjust = dashboard.poids.dailyPoids * 2.2;
-    } else {
-      weightAdjust = dashboard.poids.dailyPoids;
-    }
-		// Then we reduce to one decimal point but using parseFloat to use toFixed
-    setDailyWeight(parseFloat(weightAdjust).toFixed(1));
-  };
+  }, []);
 
 	// Capture de l'éventement si le dailyPoids change
-  const handleChange = () => {
-    let new_dailyWeight = newDailyWeight;
+  const handleChange = (newWeight) => {
+    let new_dailyWeight = newWeight;
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
 
 		dashboard.poids.dailyPoids = weightService.formatToKG(new_dailyWeight);
@@ -136,11 +101,6 @@ const Poids = (props) => {
     const handleRouteToConfigurationPoids = () => {
         window.location.href = "/configurationPoids";
     };
-
-    const handleCloseModal = () => {
-      setShowInputWeight(false);
-      setNewDailyWeight(dailyWeight);
-    }
 
   return (
     <div>
@@ -189,58 +149,14 @@ const Poids = (props) => {
           onClick={() => accor("accordeonPoids")}
         />
 
-        <IonModal isOpen={showInputWeight} id="input-weight-modal" onDidDismiss={handleCloseModal}>
-          <IonContent>
-
-              <IonItem className="no-focus">
-                <IonLabel className="new-weight">
-                  {translate.getText("WEIGHT_NEW")}
-                </IonLabel>
-                <IonInput
-                value={newDailyWeight}
-                className="input-weight"
-                type="tel"
-                maxlength={5}
-                onIonChange={ev => setNewDailyWeight(ev.detail.value)}
-                
-                /*data-testid = "poids_input"  
-                
-                
-                onIonChange={handleChange}
-                aria-label="weight"
-                title="Daily weight"*/
-                ></IonInput>
-                <IonSelect  data-testid = "select" value={unitWeight} interface="popover" onIonChange={handleUnitWeightChange} >
-                  <IonSelectOption  value="LBS">LBS</IonSelectOption >
-                  <IonSelectOption  value="KG">KG</IonSelectOption >
-                </IonSelect >
-              </IonItem>
-              <IonItem>                  
-                        
-                  <IonDatetime
-                    className="date-format"
-                    value={popoverDate}
-                    display-format={dateFormat}
-                    style={{ color: "black" }}
-                    onIonChange={ev => setPopoverDate(weightService.formatDate(ev.detail.value))}
-                  />
-                  <IonIcon className="date-icon" icon={calendar} />
-                  
-                  
-                  <IonDatetime
-                    className="time-format"
-                    value={popoverTime}
-                    display-format="HH:mm"
-                    style={{ color: "black" }}
-                    onIonChange={ev => setPopoverTime(ev.detail.value)}
-                  />
-                  <IonIcon className="date-icon" icon={time} />
-                  
-
-              </IonItem>
-            <IonButton id="input-weight-button" shape="round" expand="block" onClick={handleChange}>{translate.getText("WEIGHT_ADD")}</IonButton>
-          </IonContent>
-        </IonModal>
+        <WeightInput 
+          dailyWeight={dailyWeight} 
+          onSubmit={handleChange} 
+          setDailyWeight={setDailyWeight} 
+          showInputWeight={showInputWeight} 
+          setShowInputWeight={setShowInputWeight}
+          formatedCurrentDate={props.formatedCurrentDate}
+        ></WeightInput>
       </IonItem>
       <div id="accordeonPoids" className="accordeonPoids">
         <TableWeight></TableWeight>
