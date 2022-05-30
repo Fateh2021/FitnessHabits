@@ -1378,5 +1378,10 @@
       "en": "Initial weight",
       "es": "Peso inicial",
       "fr": "Poids initial"
+   },
+   "WEIGHT_TARGET_NAME" : {
+      "en": "Target",
+      "es": "Objetivo",
+      "fr": "Cible"
    }
 }

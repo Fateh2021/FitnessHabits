@@ -95,3 +95,10 @@ export function find_new_category(BMI_value){
 export function formatDate (date) {
     return moment(date).format('YYYY-MM-DD');
 }
+
+export function formatDateShape (date,shape) {
+    shape = shape.toUpperCase();
+    shape = shape.replace("LL","MM");
+    shape = shape.replaceAll("-","/");
+    return moment(date).format(shape);
+}

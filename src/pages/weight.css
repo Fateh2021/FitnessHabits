@@ -8,29 +8,72 @@
   margin-right: 5px;
 }
 
-.icone{
+.icone img{
   cursor: pointer;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.divIcone {
+  width: 20%;
+  height: 100px;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+
+}
+
+.divInfos {
+  background-color: #FFFFFF;
+  height: 110px;
+  width: 100%;
+  float: right;
+
+}
 .dailyPoids {
-  width: 60px;
+  text-align: right;
 }
-
+.titre{
+  display: flex;
+  justify-content: space-between;
+}
 .titrePoids {
-  width: 20px;
+  display:inline
 }
-
+.titrePoidsIni{
+   margin-left: 13px;
+}
+.titrePoidsCible{
+  width:100%
+}
+.poidsIni{
+  color:#707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13pt;
+}
+.poidsCib{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 10pt;
+  color:#707070;
+  
+  
+}
+.divPoidsCib {
+  background-color: #24A78817;
+  margin-left: 13px;
+}
 .titreImc {
-  width: 80px;
+  text-align: right;
 }
 
-.IMC {
-  color: #ffd31a;
-}
 
-.unitePoids {
-  color: #ffd31a;
-}
+
 
 .poids-text-md {
   font-size: 16px;
@@ -69,4 +112,17 @@
 
 .test11 {
   align-content: right;
+}
+.titrePoids{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 25pt;
+  color:#707070;
+  
+
+}
+.IMC {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15pt;
+  color:#707070;
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import * as weightService from "../../Weight/configuration/weightService"
 import * as translate from "../../../translate/Translator";
-import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar } from "@ionic/react";
+import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar, IonCard,IonReorder } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
@@ -22,8 +22,11 @@ const Poids = (props) => {
   const [unitWeight, setUnitWeight] = useState(prefWeight);
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyWeight, setDailyWeight] = useState(props.poids.dailyPoids);
-  var [initialWeight, setInitialWeight] = useState(props.poids.poidsInitial);
-  var [targetWeight, setTargetWeight] = useState(props.poids.poidsCible);
+  var [initialWeight, setInitialWeight] = useState("");
+  var [targetWeight, setTargetWeight] = useState("");
+  var [targetWeightDate, setTargetWeightDate] = useState("");
+  const [profile, setProfile] = useState({
+    dateFormat: "" });
   var [size, setSize] = useState("");
   var [BMI, setBMI] = useState("0.00");
   const userUID = localStorage.getItem("userUid");
@@ -34,19 +37,16 @@ const Poids = (props) => {
   *** la valeur de poids actuel et de poids cible et de poids initial  
   */
   useEffect(() => {
-    var poidsDai, poidsIni = 0;
+    var tmp= 0;
     if (prefWeight == "LBS") {
-      poidsDai = props.poids.dailyPoids * 2.2;
-      poidsIni = 123
+      tmp = props.poids.dailyPoids * 2.2;
     } else {
-      poidsDai = props.poids.dailyPoids;
-      poidsIni = props.poids.poidsInitial;
+      tmp = props.poids.dailyPoids;
     }
 
-    setDailyWeight(parseFloat(poidsDai).toFixed(1));
-    setInitialWeight(parseFloat(poidsIni).toFixed(1));
+    setDailyWeight(parseFloat(tmp).toFixed(1));
     
-  }, [props.poids.dailyPoids, props.poids.poidsInitial]);
+  }, [props.poids.dailyPoids]);
   
   /*
   *** 
@@ -74,7 +74,7 @@ const Poids = (props) => {
   });
 
   /*
-  *** update initialweight and targetweight as what we have in database   
+  *** update initialweight and targetweight and targetdate as what we have in database   
   */
   
   useEffect(() => {
@@ -84,11 +84,26 @@ const Poids = (props) => {
         if (snapshot.val() != null) {
           // Firebase : poidsInitial = initialWeight
           // Firebase : poidsCible = targetWeight
-          setInitialWeight(parseFloat(snapshot.val().poidsInitial));
-          setTargetWeight(parseFloat(snapshot.val().poidsCible));
+          let weightIni = weightService.formatWeight(snapshot.val().poidsInitial);
+          let weightCib = weightService.formatWeight(snapshot.val().poidsCible);
+          setInitialWeight(parseFloat(weightIni));
+          setTargetWeight(parseFloat(weightCib));
+          setTargetWeightDate(snapshot.val().dateCible);
         }
       })
-}, [])
+  }, [])
+
+  useEffect(() => {
+    const userUID = localStorage.getItem("userUid");
+    firebase.database().ref("profiles/" + userUID).once("value", (snapshot) => {
+      const dbProfile = snapshot.val();
+      if (dbProfile) {
+        setProfile(dbProfile);         
+      }
+    });
+  })
+
+
 
 	// Capture of the vent if the weight preference unit changes
   const handleUnitWeightChange = (event) => {
@@ -100,7 +115,7 @@ const Poids = (props) => {
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
     console.log(dashboard);
     var weightAdjustdaily = 0;
-    var  poidsInit = 0;
+    //var  poidsInit = 0;
     if (oldUnitWeight === "KG" && newUnitWeight === "LBS") {
       weightAdjustdaily = dashboard.poids.dailyPoids * 2.2;
      // poidsInit = dashboard.props.poids.poidsInitial * 2.2;
@@ -110,7 +125,7 @@ const Poids = (props) => {
     }
 		// Then we reduce to one decimal point but using parseFloat to use toFixed
     setDailyWeight(parseFloat(weightAdjustdaily).toFixed(1));
-    setInitialWeight(parseFloat(poidsInit).toFixed(1));
+    //setInitialWeight(parseFloat(poidsInit).toFixed(1));
   };
 
 	// Capture de l'éventement si le dailyPoids change
@@ -158,68 +173,36 @@ const Poids = (props) => {
   return (
     <div>
       <IonItem className="divTitre9" lines="none">
-        <IonAvatar class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
-          <img data-testid = "img_sauter" src="/assets/Poids.jpg" alt="" />
-        </IonAvatar>{" "}
-        <IonLabel classeName="titrePoids" style={{ width: 60 }}>
-          <h2 color="warning">
-	        <b>{translate.getText("WEIGHT_NAME_SECTION")}</b>
-          </h2>
-        </IonLabel>
-        <div className="titreImc">
-          <IonLabel>
-            <h2 className="IMC" style={{ marginLeft: 13 }}>
-              <b>{translate.getText("WEIGHT_BMI_ACRONYM")}</b>
-            </h2>
-          </IonLabel>
-          <IonInput
-            value={BMI == "Infinity" ? "" : BMI}
-            data-testid = "IMC_value" 
-            className="IMC"
-            aria-label="imc"
-            readonly
-            onIonChange={handleBMIChange}  
+        <div className="divIcone">
+          <div class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
+            <img data-testid = "img_sauter" src="/assets/Poids.jpg" alt="" />
+          </div>
+        </div>
+        <div className="divInfos">
+        <div className="titre">
+            <div>
+              <b className="titrePoids">{translate.getText("WEIGHT_NAME_SECTION")}</b><br></br>
+              <div className="divPoidsCib">
+              <span className="poidsCib"><b>{translate.getText("WEIGHT_TARGET_NAME")} : {targetWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}, </b>{weightService.formatDateShape(targetWeightDate, profile.dateFormat)} </span>
+              </div>
+            </div>
+            <div>
+              <b className="titrePoids" onChange={handleChange}>{dailyWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}</b><br></br>
+              <span className="IMC">
+                    {translate.getText("WEIGHT_BMI_ACRONYM")} : {BMI == "Infinity" ? "" : BMI}
+            </span>
             
-          ></IonInput>
-        </div>
-        <div>
-          <h1>test</h1>
-          <p>{props.poids.poidsInitial}</p>
+            </div>
+          </div>
           
+          <div className="titrePoidsIni">
+            <br></br>
+            <b className="poidsIni" >
+              {translate.getText("WEIGHT_INITIAL_NAME")} : </b><span className="poidsIni" >{initialWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}</span>
         </div>
-        <div className="titrePoidsIni">
-          <IonLabel>
-            <h2 className="poidsIni" style={{ marginLeft: 13 }}>
-              <b>{translate.getText("WEIGHT_INITIAL_NAME")}</b>
-            </h2>
-          </IonLabel>
-          <IonInput
-            value={initialWeight}
-            data-testid = "poids_init_value" 
-            className="poidsIni"
-            aria-label="poidsInit"
-            readonly 
-          ></IonInput>
         </div>
-          <IonInput
-            data-testid = "poids_input"  
-            className="input poidsActuel"
-            value={dailyWeight}
-            onIonChange={handleChange}
-            aria-label="weight"
-            title="Daily weight"
-          ></IonInput>
-
-        <select data-testid = "select" className="input" value={unitWeight} onChange={handleUnitWeightChange} >
-          <option value="LBS">LBS</option>
-          <option value="KG">KG</option>
-        </select>
-
-        <IonIcon
-          className="arrowDashItem"
-          icon={arrowDropdownCircle}
-          onClick={() => accor("accordeonPoids")}
-        />
+        
+       
       </IonItem>
       <div id="accordeonPoids" className="accordeonPoids">
         <TableWeight></TableWeight>

@@ -1980,9 +1980,13 @@ h2{
 }
 
 .divTitre9 {
-  
-  width: 100%;
-  --ion-background-color: #113d37;
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 110px;
+  --ion-background-color:#3E7D65;
+  border-radius: 25px;
+  box-shadow: 0.2px 0.2px #00000029;
+ 
 }
 
 .divTitre11{
