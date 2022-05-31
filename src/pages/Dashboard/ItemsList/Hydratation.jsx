@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol} from '@ionic/react';
+import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol,IonFooter , IonModal} from '@ionic/react';
 import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
@@ -90,6 +90,7 @@ const Hydratation = (props) => {
   const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
@@ -226,7 +227,7 @@ const Hydratation = (props) => {
     setHydrateToEdit(undefined);
     setItemContainerDisplayStatus(true);
   }
-  
+
   return (
     <div>
       <IonItem className="divTitre1">
@@ -237,22 +238,44 @@ const Hydratation = (props) => {
           </h2>
           </IonLabel>
         <IonInput className='inputTextGly' value = {globalConsumption} readonly></IonInput> 
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIV1")} />
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => setShowModal(true)} />
       </IonItem>
-      <div id="myDIV1">
-        <div> 
-          <div className="divHyd">
-            <div className="sett">
-              { hydrates.map((hydra, index) => (      
-                <IonItem className="divTitre11" key={hydra.id}>
-                  <IonCol size="1">
+    <IonModal isOpen={showModal} style="background: rgba(0, 0, 0, 0.5) !important; padding: 20% 10%  !important;"  id="input-hydra-modal" onDismiss={ () => props.setShowModal(false)}  >
+      <div>
+       <ion-header>
+             <div style={{clear:'both'}}>
+                <h3 style={{color: '#70ACE8',float: 'left'}}>&emsp;Hydratation </h3>
+                <h3  style={{backgroundColor: '#ebf7f4', color:'#707070', float:'right' }} >Cible: 0.000 L &emsp;</h3>
+             </div>
+
+       </ion-header>
+       <ion-body>
+            <h4  style={{ color:'#707070' }}>&emsp;Quantité totale bue : 0.000 L</h4>
+            <div style={{clear:'both'}}>
+                <p style={{ color:'#707070',float:'right' }}>Prot : 000g&ensp;</p>
+                <p style={{ color:'#707070',float:'left' }}>&ensp;Gr : 000g</p>
+            </div>
+
+            <p style={{ color:'#707070' ,float:'right' }}>F : 000g&ensp;</p>
+            <p style={{ color:'#707070' }}>&ensp;Gl : 000g</p>
+
+       </ion-body>
+
+
+          <div className="divHyd" style={{height: '80%'}}>
+            <div className="sett" >
+              { hydrates.map((hydra, index) => (
+                <IonItem className="divTitre11"  key={hydra.id}>
+                  <IonCol size="2">
+
                   </IonCol>
-                  <IonLabel className="nameDscripDashboard"><h2><b>{hydra.name}</b></h2></IonLabel>      
+                  <IonLabel className="nameDscripDashboard"><h2><b>{hydra.name}</b></h2></IonLabel>
+                  <br></br>
                   <IonButton className="trashButton" color="danger" size="small" onClick={()=>DailyConsumptionDecrementHydrate(index)}>
                     <IonIcon  icon={removeCircle} />
                   </IonButton>
                   <IonCol size="2" >
-                    <IonInput className='inputTextDashboard' value = {hydra.consumption} readonly></IonInput>  
+                    <IonInput className='inputTextDashboard' value = {hydra.consumption} readonly></IonInput>
                   </IonCol>
                   <IonButton className='AddButtonHydr' color="danger" size="small" onClick={()=>DailyConsumptionIncrement(index)}>
                     <IonIcon  icon={addCircle} />
@@ -262,19 +285,27 @@ const Hydratation = (props) => {
                   </IonButton>
                 </IonItem>
                 ))
-              } 
+              }
             </div>
           </div>
-          <div className="ajoutBotton">    
-            <IonButton className="ajoutbreuvage1" color="danger" size="small" onClick={() => openAddItemContainer()}>
-            <IonIcon icon={addCircle}/>
-            <label id="addDrink"  className="labelAddItem">{ translate.getText('HYD_BUTTON_ADD_DRINK') }
-            </label></IonButton>
-          </div>
-          {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashHydrate) => saveItem(itemDashHydrate)}/>}   
+
+             <div className="ajoutBotton"  style= {{ display: 'flex',flexDirection: 'column',height: '100px', backgroundColor:'#ffff' }} >
+               <IonButton className="ajoutbreuvage1" color="primary" size="large" onClick={() => openAddItemContainer()}>
+               <IonIcon icon={addCircle}/>
+               <label id="addDrink"  className="labelAddItem">{ translate.getText('HYD_BUTTON_ADD_DRINK') }
+               </label></IonButton>
+                {itemContainerDisplayStatus && <HydrateItem  close={closeItemContainer} item={hydrateToEdit} save={(itemDashHydrate) => saveItem(itemDashHydrate)}/>}
+             </div>
+
+
+
+
         </div>
-      </div>
-    </div>             
+
+
+    </IonModal>
+    </div>
+
   );
 }
 export default Hydratation;
