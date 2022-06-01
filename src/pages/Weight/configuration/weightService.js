@@ -97,8 +97,10 @@ export function formatDate (date) {
 }
 
 export function formatDateShape (date,shape) {
+    console.log(shape);
     shape = shape.toUpperCase();
-    shape = shape.replace("LL","MM");
+
+    shape = shape.replaceAll("L","M");
     shape = shape.replaceAll("-","/");
     return moment(date).format(shape);
 }
