@@ -113,3 +113,25 @@ export function initPrefDate() {
 export function getPrefDate() {
   return localStorage.getItem("prefDateFormat")
 }
+
+export function updateWeightDashboard(newWeight, currentDate) {
+  const userUID = localStorage.getItem('userUid');
+  let new_dailyWeight = newWeight;
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+
+  dashboard.poids.dailyPoids = formatToKG(new_dailyWeight);
+  dashboard.poids.datePoids = new Date();
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+
+  firebase
+      .database()
+      .ref(
+          "dashboard/" +
+    userUID +
+    "/" +
+    currentDate.startDate.getDate() +
+    (currentDate.startDate.getMonth() + 1) +
+    currentDate.startDate.getFullYear()
+  )
+  .update(dashboard);
+}

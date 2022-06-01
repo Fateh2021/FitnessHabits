@@ -60,30 +60,13 @@ const Poids = (props) => {
 
 	// Capture de l'éventement si le dailyPoids change
   const handleChange = (newWeight) => {
-    let new_dailyWeight = newWeight;
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-
-		dashboard.poids.dailyPoids = weightService.formatToKG(new_dailyWeight);
-    dashboard.poids.datePoids = new Date();
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
-
-		setDailyWeight(parseFloat(new_dailyWeight).toFixed(1));
+    weightService.updateWeightDashboard(newWeight, currentDate)
+    
+		setDailyWeight(parseFloat(newWeight).toFixed(1));
 		// On utilise directement la valeur qu'on a sauvé dans le localstorage du dashboard
-		setBMI(weightService.calculation_BMI(size, dashboard.poids.dailyPoids));
+		setBMI(weightService.calculation_BMI(size, weightService.formatToKG(newWeight)));
 
     setShowInputWeight(false)
-
-        firebase
-            .database()
-            .ref(
-                "dashboard/" +
-          userUID +
-          "/" +
-          currentDate.startDate.getDate() +
-          (currentDate.startDate.getMonth() + 1) +
-          currentDate.startDate.getFullYear()
-      )
-      .update(dashboard);
   };
 
   // Capture de l'éventement si IMC change
