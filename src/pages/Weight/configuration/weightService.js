@@ -53,7 +53,6 @@ export function setPrefUnitWeight(value) {
     firebase.database().ref('profiles/' + userUID +"/preferencesPoids").update({"unitePoids": value})
 }
 
-
 export function calculation_BMI(height, dailyWeight){
 	return (dailyWeight / ((height / 100) * (height / 100))).toFixed(2);
 }
@@ -99,7 +98,6 @@ export function formatDate (date) {
 export function formatDateShape (date,shape) {
     console.log(shape);
     shape = shape.toUpperCase();
-
     shape = shape.replaceAll("L","M");
     shape = shape.replaceAll("-","/");
     return moment(date).format(shape);

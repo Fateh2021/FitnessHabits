@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import * as weightService from "../../Weight/configuration/weightService"
 import * as translate from "../../../translate/Translator";
-import { IonInput, IonIcon, IonLabel, IonItem, IonAvatar, IonCard,IonReorder } from "@ionic/react";
+import { IonInput, IonIcon, IonLabel, IonText, IonItem, IonItemDivider, IonImg, IonAvatar, IonContent} from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
@@ -69,6 +69,7 @@ const Poids = (props) => {
         setSize(snapshot.val().size);
       }
     });
+    console.log(size,dailyWeight);
 
     setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
   });
@@ -173,36 +174,59 @@ const Poids = (props) => {
   return (
     <div>
       <IonItem className="divTitre9" lines="none">
-        <div className="divIcone">
-          <div class="icone" slot="start" onClick={handleRouteToConfigurationPoids}>
-            <img data-testid = "img_sauter" src="/assets/Poids.jpg" alt="" />
-          </div>
-        </div>
-        <div className="divInfos">
-        <div className="titre">
-            <div>
-              <b className="titrePoids">{translate.getText("WEIGHT_NAME_SECTION")}</b><br></br>
-              <div className="divPoidsCib">
-              <span className="poidsCib"><b>{translate.getText("WEIGHT_TARGET_NAME")} : {targetWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}, </b>{weightService.formatDateShape(targetWeightDate, profile.dateFormat)} </span>
+          <IonItemDivider className="divIcone">
+            <div className="icone"  onClick={handleRouteToConfigurationPoids}>
+              <IonImg  src="/assets/Poids.jpg"/>
+            </div>
+          </IonItemDivider>
+          <IonItemDivider  className="divInfos">
+            <IonContent className="leftContentInfos">
+              <div  className="titrePoids">
+                <IonText>
+                    {translate.getText("WEIGHT_NAME_SECTION")}
+                </IonText>
               </div>
-            </div>
-            <div>
-              <b className="titrePoids" onChange={handleChange}>{dailyWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}</b><br></br>
-              <span className="IMC">
+              <div className="divPoidsCib">
+                <IonLabel>
+                <b className="poidsCib">
+                  <span  onChange={handleUnitWeightChange} >
+                    {translate.getText("WEIGHT_TARGET_NAME")} : {targetWeight} 
+                    {unitWeight === "KG" ? "Kg" : "Lbs"}, </span></b>
+                <span className="da">
+                  {weightService.formatDateShape(targetWeightDate, profile.dateFormat)} 
+                </span>
+                </IonLabel>
+              </div>
+              <div className="titrePoidsIni">
+                <IonLabel>
+                  <div className="poidsIni">
+                    <b>
+                      <span> 
+                      {translate.getText("WEIGHT_INITIAL_NAME")} : </span>
+                    </b>
+                    <span>
+                      {initialWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}
+                    </span>
+                    </div>
+                </IonLabel>
+              </div>
+            </IonContent>
+            <IonContent className="rightContentInfos">
+              <div className="dailyPoids">
+                <IonLabel>
+                  <span onChange={handleChange}>{dailyWeight} </span>
+                  <span onChange={handleUnitWeightChange}>{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
+                </IonLabel>
+              </div>
+              <div className="divImc">
+                <IonLabel>
+                  <span onChange={handleBMIChange}   className="IMC">
                     {translate.getText("WEIGHT_BMI_ACRONYM")} : {BMI == "Infinity" ? "" : BMI}
-            </span>
-            
-            </div>
-          </div>
-          
-          <div className="titrePoidsIni">
-            <br></br>
-            <b className="poidsIni" >
-              {translate.getText("WEIGHT_INITIAL_NAME")} : </b><span className="poidsIni" >{initialWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}</span>
-        </div>
-        </div>
-        
-       
+                  </span>
+                </IonLabel>
+              </div>
+            </IonContent>
+          </IonItemDivider>       
       </IonItem>
       <div id="accordeonPoids" className="accordeonPoids">
         <TableWeight></TableWeight>

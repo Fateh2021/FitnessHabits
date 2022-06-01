@@ -4,77 +4,6 @@
   border-radius: 5px;
 }
 
-.poidsActuel{
-  margin-right: 5px;
-}
-
-.icone img{
-  cursor: pointer;
-  width: 40px !important;
-  height: 40px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.divIcone {
-  width: 20%;
-  height: 100px;
-  float: left;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-
-}
-
-.divInfos {
-  background-color: #FFFFFF;
-  height: 110px;
-  width: 80%;
-  float: right;
-
-}
-.dailyPoids {
-  text-align: right;
-}
-.titre{
-  display: flex;
-  justify-content: space-between;
-}
-.titrePoids {
-  display:inline
-}
-.titrePoidsIni{
-   margin-left: 13px;
-}
-.titrePoidsCible{
-  width:100%
-}
-.poidsIni{
-  color:#707070;
-  font-family: 'Roboto', sans-serif;
-  font-size: 13pt;
-}
-.poidsCib{
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  font-size: 10pt;
-  color:#707070;
-  
-  
-}
-.divPoidsCib {
-  background-color: #24A78817;
-  margin-left: 13px;
-}
-.titreImc {
-  text-align: right;
-}
-
-
-
-
 .poids-text-md {
   font-size: 16px;
   line-height: 100%;
@@ -113,16 +42,94 @@
 .test11 {
   align-content: right;
 }
+.icone{
+  cursor: pointer;
+  width: 40px !important;
+  height: 40px !important;
+  margin: auto;
+  
+}
+
+.divIcone {
+  width: 120px;
+  height: 120px;
+  float: left;
+  --padding-start: 0px;
+  border-bottom: 0px;
+  border-radius: 8px;
+  background-color: #3E7D65;
+}
+
+.divInfos {
+  background-color: #FFFFFF;
+  height: 120px;
+  width: 80%;
+  float: right;
+  border-bottom: 0px;
+
+}
+
+
+.titrePoidsIni{
+  color: #707070;
+  margin-top: 15px;
+   
+}
+
+.poidsIni{
+  color:#707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15pt;
+}
+
+.divPoidsCib {
+  background-color: #24A78817;
+  color: #707070;
+  width: 180px;
+  margin-top: 15px;
+}
+
+.PoidsCib {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 10pt;
+  color:#707070;
+  margin: auto;
+}
+.dateCible{
+  font-family: 'Roboto', sans-serif;
+  font-size: 10pt;
+  color:#707070;
+
+}
+
+
 .titrePoids{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 25pt;
-  color:#707070;
-  
-
+  color:#707070
+}
+.dailyPoids {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 20pt;
+  color: #707070;
 }
 .IMC {
   font-family: 'Roboto', sans-serif;
-  font-size: 15pt;
+  font-size: 13pt;
   color:#707070;
+}
+.divImc {
+  margin-top: 5px;
+}
+
+.rightContentInfos {
+    text-align: right;
+  --padding-top: 15px;
+
+}
+.leftContentInfos{
+  --padding-top: 10px;
 }

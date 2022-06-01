@@ -1982,10 +1982,13 @@ h2{
 .divTitre9 {
   margin-left: 20px;
   margin-right: 20px;
-  height: 110px;
-  --ion-background-color:#3E7D65;
+  height: 120px;
+  --ion-background-color: #FFFFFFFF
+  ;
   border-radius: 25px;
   box-shadow: 0.2px 0.2px #00000029;
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
  
 }
 
