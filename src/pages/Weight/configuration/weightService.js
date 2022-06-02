@@ -25,7 +25,7 @@ export function formatWeight(weight) {
 	// LocalStorage : prefUnitePoids = prefUnitWeight
   let prefUnitWeight = localStorage.getItem('prefUnitePoids');
   if (prefUnitWeight === "LBS") {
-    return (weight * DIFF_UNITY_WEIGHT).toFixed(2)
+    return (weight * DIFF_UNITY_WEIGHT).toFixed(1)
   }
   return weight
 }
@@ -96,9 +96,47 @@ export function formatDate (date) {
 }
 
 export function formatDateShape (date,shape) {
-    console.log(shape);
     shape = shape.toUpperCase();
     shape = shape.replaceAll("L","M");
-    shape = shape.replaceAll("-","/");
     return moment(date).format(shape);
+}
+
+export function initPrefDate() {
+  const userUID = localStorage.getItem('userUid');
+  let prefDatetRef = firebase.database().ref('profiles/'+ userUID +"/dateFormat")
+  prefDatetRef.once("value").then(function(snapshot) {
+    // Lets retrieve the date format preference we have in firebase before putting it in localstorage
+    if (snapshot.val() !== null) {
+			// LocalStorage : prefUnitePoids = prefUnitWeight
+      localStorage.setItem("prefDateFormat", snapshot.val().toString());
+    } else {
+      localStorage.setItem("prefDateFormat", "dd-LL-yyyy");
+    }
+  })
+}
+
+export function getPrefDate() {
+  return localStorage.getItem("prefDateFormat")
+}
+
+export function updateWeightDashboard(newWeight, currentDate) {
+  const userUID = localStorage.getItem('userUid');
+  let new_dailyWeight = newWeight;
+  const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+
+  dashboard.poids.dailyPoids = formatToKG(new_dailyWeight);
+  dashboard.poids.datePoids = new Date();
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+
+  firebase
+      .database()
+      .ref(
+          "dashboard/" +
+    userUID +
+    "/" +
+    currentDate.startDate.getDate() +
+    (currentDate.startDate.getMonth() + 1) +
+    currentDate.startDate.getFullYear()
+  )
+  .update(dashboard);
 }

@@ -133,3 +133,71 @@
 .leftContentInfos{
   --padding-top: 10px;
 }
+
+#input-weight-modal {
+  --height: 200px;
+  --width: 90%;
+}
+
+.input-weight {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  width: 50px !important;
+  
+}
+
+.sc-ion-popover-md-h {
+  --width: 100px;
+}
+
+.new-weight {
+  font-size: 12px !important;
+  width: 130px;
+}
+
+ion-select-popover ion-list ion-item ion-radio {
+  --color: transparent;
+  --color-checked: transparent;
+}
+
+ion-select {
+  margin-left: 30px;
+  width: 70px;
+}
+
+#input-weight-button {
+  margin-inline: 60px;
+  margin-top: 20px;
+  --background: #3E7D65;
+}
+
+ion-content>ion-item {
+  margin-top: 15px;
+  --border-width: 0 0 0 0;
+  
+}
+
+.date-format {
+  font-size: 12px;
+  margin-right: 5px;
+  margin-left: 10px;
+  padding: 0;
+  width: auto;
+}
+
+.time-format {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  margin-left: 70px;
+  padding: 0;
+  margin-right: 5px;
+  width: auto;
+}
+
+.date-icon {
+  font-size: 40px;
+}
+
+.no-focus {
+  --highlight-color-focused: none;
+}

@@ -7,6 +7,7 @@ import { arrowDropdownCircle } from "ionicons/icons";
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
 import TableWeight from "../../Weight/configuration/TableWeight";
+import WeightInput from "../../Weight/WeightInput";
 
 const accor = (divId) => {
     const divElt = document.getElementById(divId);
@@ -25,11 +26,11 @@ const Poids = (props) => {
   var [initialWeight, setInitialWeight] = useState("");
   var [targetWeight, setTargetWeight] = useState("");
   var [targetWeightDate, setTargetWeightDate] = useState("");
-  const [profile, setProfile] = useState({
-    dateFormat: "" });
+  const [dateFormat, setDateFormat] = useState("YYYY/MM/DD");
   var [size, setSize] = useState("");
   var [BMI, setBMI] = useState("0.00");
   const userUID = localStorage.getItem("userUid");
+  const [showInputWeight, setShowInputWeight] = useState(false);
 
 
   /*
@@ -55,23 +56,18 @@ const Poids = (props) => {
   *** update imc  dependant la taille et dailypoids
   */
   useEffect(() => {
-    weightService.initPrefWeight();
-    let preferencesPoidsRef = firebase.database().ref("profiles/" + userUID + "/preferencesPoids");
-    preferencesPoidsRef.once("value").then(function (snapshot) {
-      if (snapshot.val() != null) {
-        setUnitWeight(snapshot.val().unitePoids);
-      }
-    });
 
+    weightService.initPrefWeight();
+    setUnitWeight(localStorage.getItem("prefUnitePoids"));
     var size_from_BD = firebase.database().ref("profiles/" + userUID);
     size_from_BD.once("value").then(function (snapshot) {
       if (snapshot.val() != null) {
         setSize(snapshot.val().size);
       }
     });
-    console.log(size,dailyWeight);
-
+    
     setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
+   // console.log(props.poids.dailyPoids)
   });
 
   /*
@@ -85,8 +81,8 @@ const Poids = (props) => {
         if (snapshot.val() != null) {
           // Firebase : poidsInitial = initialWeight
           // Firebase : poidsCible = targetWeight
-          let weightIni = weightService.formatWeight(snapshot.val().poidsInitial);
-          let weightCib = weightService.formatWeight(snapshot.val().poidsCible);
+          let weightIni = snapshot.val().poidsInitial;
+          let weightCib = snapshot.val().poidsCible;
           setInitialWeight(parseFloat(weightIni));
           setTargetWeight(parseFloat(weightCib));
           setTargetWeightDate(snapshot.val().dateCible);
@@ -94,15 +90,24 @@ const Poids = (props) => {
       })
   }, [])
 
+
+
   useEffect(() => {
-    const userUID = localStorage.getItem("userUid");
-    firebase.database().ref("profiles/" + userUID).once("value", (snapshot) => {
-      const dbProfile = snapshot.val();
-      if (dbProfile) {
-        setProfile(dbProfile);         
-      }
-    });
-  })
+    weightService.initPrefDate();
+    let format = localStorage.getItem("prefDateFormat");
+    format = format.replace(/y/gi, 'Y');
+    format = format.replace(/L/gi, 'M');
+    format = format.replace(/d/gi, 'D');
+    setDateFormat(format);
+  }, []);
+
+  useEffect(() => {
+    let format = weightService.getPrefDate();;
+    format = format.replace(/y/gi, 'Y');
+    format = format.replace(/L/gi, 'M');
+    format = format.replace(/d/gi, 'D');
+    setDateFormat(format);
+  }, [props.formatedCurrentDate]);
 
 
 
@@ -130,31 +135,20 @@ const Poids = (props) => {
   };
 
 	// Capture de l'éventement si le dailyPoids change
-  const handleChange = (event) => {
-    let new_dailyWeight = event.detail.value;
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-
-		dashboard.poids.dailyPoids = weightService.formatToKG(new_dailyWeight);
-    dashboard.poids.datePoids = new Date();
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
-
-		setDailyWeight(new_dailyWeight);
+  const handleChange = (newWeight) => {
+    weightService.updateWeightDashboard(newWeight, currentDate)
+    
+		setDailyWeight(parseFloat(newWeight).toFixed(1));
 		// On utilise directement la valeur qu'on a sauvé dans le localstorage du dashboard
-		setBMI(weightService.calculation_BMI(size, dashboard.poids.dailyPoids));
-
-        firebase
-            .database()
-            .ref(
-                "dashboard/" +
-          userUID +
-          "/" +
-          currentDate.startDate.getDate() +
-          (currentDate.startDate.getMonth() + 1) +
-          currentDate.startDate.getFullYear()
-      )
-      .update(dashboard);
+		setBMI(weightService.calculation_BMI(size, weightService.formatToKG(newWeight)));
+    
+    setShowInputWeight(false)
   };
 
+  const adjustUnit = (newUnit) => {
+    setUnitWeight(newUnit);
+
+  }  
   // Capture de l'éventement si IMC change
   const handleBMIChange = (event) => {
     let BMI_Change = event.target.value;
@@ -175,7 +169,7 @@ const Poids = (props) => {
     <div>
       <IonItem className="divTitre9" lines="none">
           <IonItemDivider className="divIcone">
-            <div className="icone"  onClick={handleRouteToConfigurationPoids}>
+            <div className="icone"  onClick={() => setShowInputWeight(true)}>
               <IonImg  src="/assets/Poids.jpg"/>
             </div>
           </IonItemDivider>
@@ -190,10 +184,11 @@ const Poids = (props) => {
                 <IonLabel>
                 <b className="poidsCib">
                   <span  onChange={handleUnitWeightChange} >
-                    {translate.getText("WEIGHT_TARGET_NAME")} : {targetWeight} 
+                    {translate.getText("WEIGHT_TARGET_NAME")} : {weightService.formatWeight(targetWeight)} </span>
+                  <span>
                     {unitWeight === "KG" ? "Kg" : "Lbs"}, </span></b>
-                <span className="da">
-                  {weightService.formatDateShape(targetWeightDate, profile.dateFormat)} 
+                <span className="">
+                  {weightService.formatDateShape(targetWeightDate, dateFormat)} 
                 </span>
                 </IonLabel>
               </div>
@@ -204,8 +199,8 @@ const Poids = (props) => {
                       <span> 
                       {translate.getText("WEIGHT_INITIAL_NAME")} : </span>
                     </b>
-                    <span>
-                      {initialWeight} {unitWeight === "KG" ? "Kg" : "Lbs"}
+                    <span onChange={handleUnitWeightChange}>
+                      { weightService.formatWeight(initialWeight)} {unitWeight === "KG" ? "Kg" : "Lbs"}
                     </span>
                     </div>
                 </IonLabel>
@@ -214,20 +209,33 @@ const Poids = (props) => {
             <IonContent className="rightContentInfos">
               <div className="dailyPoids">
                 <IonLabel>
-                  <span onChange={handleChange}>{dailyWeight} </span>
-                  <span onChange={handleUnitWeightChange}>{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
+                  <span>{dailyWeight} </span>
+                  <span>{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
                 </IonLabel>
               </div>
               <div className="divImc">
                 <IonLabel>
-                  <span onChange={handleBMIChange}   className="IMC">
+                  <span  className="IMC">
                     {translate.getText("WEIGHT_BMI_ACRONYM")} : {BMI == "Infinity" ? "" : BMI}
                   </span>
                 </IonLabel>
               </div>
             </IonContent>
-          </IonItemDivider>       
+            
+          </IonItemDivider> 
+          <WeightInput 
+            dailyWeight={dailyWeight} 
+            onSubmit={handleChange} 
+            setDailyWeight={setDailyWeight} 
+            showInputWeight={showInputWeight} 
+            setShowInputWeight={setShowInputWeight}
+            formatedCurrentDate={props.formatedCurrentDate}
+            adjustUnit = {adjustUnit}
+            dateFormat = {dateFormat}
+            
+          ></WeightInput>      
       </IonItem>
+      
       <div id="accordeonPoids" className="accordeonPoids">
         <TableWeight></TableWeight>
       </div>
