@@ -38,6 +38,8 @@ const Supplements = (props) => {
     }),
   });
 
+  const [moduleSupplementsEstAffiche, setModuleSupplementsEstAffiche] = useState(false);
+  const [formulaireAjoutEstAffiche, setFormulaireAjoutEstAffiche] = useState(false);
   const [checked, setChecked] = useState(false);
   const [boxEveryDay, setBoxEveryDay] = useState(false);
   const [posoValue, setPosoValue] = useState("");
@@ -64,21 +66,6 @@ const Supplements = (props) => {
   const inputChangeHandler = () => {
     setBoxEveryDay(!boxEveryDay);
     setChecked(!checked);
-  };
-
-  useEffect(() => {
-    var divElt = document.getElementById("myDIVSuppl");
-    divElt.style.display = "none";
-    
-    });
-
-  const accor = (divId) => {
-    const divElt = document.getElementById(divId);
-    if (divElt) {
-      !divElt.style.display || divElt.style.display === "none"
-        ? (divElt.style.display = "block")
-        : (divElt.style.display = "none");
-    }
   };
 
   function everydayTrue(v){
@@ -176,9 +163,9 @@ const Supplements = (props) => {
           </h2>
         </IonLabel>
         <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("myDIVSuppl")}/>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => setModuleSupplementsEstAffiche(!moduleSupplementsEstAffiche)}/>
       </IonItem>
-      <div id="myDIVSuppl">
+      {moduleSupplementsEstAffiche && <div id="myDIVSuppl">
         <IonList>
           <IonItem className="trashButton" color="danger">
             <IonAvatar slot="start">
@@ -192,12 +179,12 @@ const Supplements = (props) => {
             <IonIcon
               className="arrowDashItem"
               icon={arrowDropdownCircle}
-              onClick={() => accor("myDIVAjoutSupp1")}
+              onClick={ () => setFormulaireAjoutEstAffiche(!formulaireAjoutEstAffiche)}
             />
           </IonItem>
           
           {/* Première partie nouvelle version du formulaire*/}
-          {true && <div id="myDIVAjoutSupp1">
+          {true && formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
             <IonList>
               <IonItem>
                 <IonLabel color="light">{translate.getText("SUPPL_NOM")}</IonLabel>
@@ -364,7 +351,7 @@ const Supplements = (props) => {
           </div>}
 
           {/* Formulaire original */}
-          {false && <div id="myDIVAjoutSupp1">
+          {false && formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
             <IonList>
               <IonItem>
                 <IonLabel color="light">{translate.getText("SUPPL_NOM")}</IonLabel>
@@ -550,7 +537,7 @@ const Supplements = (props) => {
             />
           </IonItem>
         </IonList>
-      </div>
+      </div>}
     </div>
   );
 };
