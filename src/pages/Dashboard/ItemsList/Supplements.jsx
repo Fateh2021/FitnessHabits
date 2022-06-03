@@ -53,7 +53,7 @@ const Supplements = (props) => {
                                             ]);
   {/*TODO : à traduire*/}
   const [restrictions, setRestrictions] = useState([
-                                          "Doit être prise en mangeant"]);
+                                          {valeur: "Doit être prise en mangeant", estCoche: false}]);
   const [nomChoisi, setNomChoisi] = useState("");
   const [typeChoisi, setTypeChoisi] = useState("");
   const [quantiteChoisie, setQuantiteChoisie] = useState("");
@@ -142,11 +142,19 @@ const Supplements = (props) => {
 
   }
 
-  function mettreAJourRestrictionsChoisies(restriction, estCochee) {
+  function mettreAJourRestrictionsChoisies(valeurRestriction, estCochee) {
+    setRestrictions(restrictions.map(restrictionCourante => 
+      {
+        if(restrictionCourante.valeur === valeurRestriction) {
+          restrictionCourante.estCoche = estCochee;
+        }
+        return restrictionCourante;
+      }));
+
     if (estCochee) {
-      setRestrictionsChoisies(restrictionsChoisiesCourantes => [...restrictionsChoisiesCourantes, restriction]);
+      setRestrictionsChoisies(restrictionsChoisiesCourantes => [...restrictionsChoisiesCourantes, valeurRestriction]);
     } else {
-      setRestrictionsChoisies(restrictionsChoisies.filter(restrictionCourante => restrictionCourante !== restriction));
+      setRestrictionsChoisies(restrictionsChoisies.filter(restrictionCourante => restrictionCourante !== valeurRestriction));
     }
   }
 
@@ -275,12 +283,12 @@ const Supplements = (props) => {
                 </IonItemDivider>
 
                 {restrictions.map(restriction => 
-                                  <IonItem key={restriction}>
-                                    <IonLabel color="light">{restriction}</IonLabel>
+                                  <IonItem key={restriction.valeur}>
+                                    <IonLabel color="light">{restriction.valeur}</IonLabel>
                                     <IonCheckbox
                                       color="primary"
-                                      value={restriction}
-                                      checked={false}
+                                      value={restriction.valeur}
+                                      checked={restriction.estCoche}
                                       slot="start"
                                       onIonChange={e => mettreAJourRestrictionsChoisies(e.detail.value, e.detail.checked)}
                                     ></IonCheckbox>
@@ -311,8 +319,7 @@ const Supplements = (props) => {
                       {
                         text: /*TODO : à traduire*/"Ajouter",
                         handler: (donneesAlerte) => {
-                          console.log(restrictionsChoisies);
-                          setRestrictions(restrictionsCourantes => [...restrictionsCourantes, donneesAlerte.nouvelleRestriction]);
+                          setRestrictions(restrictionsCourantes => [...restrictionsCourantes, {valeur: donneesAlerte.nouvelleRestriction, estCoche: false}]);
                         }
                       }
                     ]}
