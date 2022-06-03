@@ -518,7 +518,6 @@ const Supplements = (props) => {
             <IonIcon
               className="arrowDashItem"
               icon={arrowDropdownCircle}
-              onClick={""}
             />
           </IonItem>
           <IonItem className="trashButton" color="danger">
@@ -533,7 +532,6 @@ const Supplements = (props) => {
             <IonIcon
               className="arrowDashItem"
               icon={arrowDropdownCircle}
-              onClick={""}
             />
           </IonItem>
         </IonList>
