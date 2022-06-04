@@ -11,6 +11,7 @@ const PratiquesList = (props) =>  {
   const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
   const [activities, setActivities] = useState (props.activities);
 
+
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
@@ -51,7 +52,7 @@ const PratiquesList = (props) =>  {
           <h1 className='activityTitle' >Activités</h1>
           {
             activities.map((activity) => (
-                <PratiqueItem key={activity.id} currentDate={currentDate} activity={activity} />
+                <PratiqueItem key={activity.id} currentDate={currentDate.startDate} activity={activity} />
             ))
           }
         </div>

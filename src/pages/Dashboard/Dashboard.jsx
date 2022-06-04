@@ -627,7 +627,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <PratiquesList currentDate={currentDate} activities={dashboard.activities} />
+                    <PratiquesList activities={dashboard.activities} currentDate={currentDate} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 
