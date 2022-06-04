@@ -19,7 +19,7 @@ import Hydratation from "./ItemsList/Hydratation";
 import Glycemie from "./ItemsList/Glycemie"
 import Supplements from "./ItemsList/Supplements";
 import Toilettes from "./ItemsList/Toilettes";
-import Activities from "./ItemsList/Activities";
+import PratiquesList from "./ItemsList/Activities/PratiquesList";
 import Sommeil from "./ItemsList/Sommeil";
 import AlcoolList from "./ItemsList/Alcool/AlcoolList";
 import Poids from "./ItemsList/Poids"
@@ -154,10 +154,26 @@ const Dashboard = (props) => {
             nbReveils: 0,
             etatReveil: null
         },
-        activities: {
-            heure: 0,
-            minute: 0
-        },
+        activities: [
+            {
+                id: 1,
+                name: "Karate",
+                intensity: "High",
+                time: 60
+            },
+            {
+                id: 2,
+                name: "Run",
+                intensity: "Low",
+                time: 234
+            },
+            {
+                id: 3,
+                name: "KickBoxing",
+                intensity: "HIIT",
+                time: 140
+            }
+        ],
     });
 
     const checkAllKeysAreUpToDate = (templateNode, realNode) => {
@@ -249,10 +265,7 @@ const Dashboard = (props) => {
             }
         }
         if (!dashboard.activities) {
-            dashboard.activities = {
-                heure: 0,
-                minute: 0
-            }
+            dashboard.activities = []
         }
         return dashboard;
     }
@@ -391,10 +404,7 @@ const Dashboard = (props) => {
                                 nbReveils: 0,
                                 etatReveil: null
                             },
-                            activities : {
-                                heure:0,
-                                minute:0
-                            },     
+                            activities : [],
                         }
                     )
                     // .then(dt => {
@@ -486,10 +496,7 @@ const Dashboard = (props) => {
                                 nbReveils: 0,
                                 etatReveil: null
                             },
-                            activities : {
-                                heure:0,
-                                minute:0
-                            },     
+                            activities : [],
                         }
                     )
                     firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
@@ -620,7 +627,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <Activities heures={dashboard.activities.heure} minutes={dashboard.activities.minute} currentDate={currentDate} sommeil={dashboard.activities} />
+                    <PratiquesList currentDate={currentDate} activities={dashboard.activities} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 
