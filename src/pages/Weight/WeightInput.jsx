@@ -43,7 +43,7 @@ const WeightInput = (props) => {
 
 	// Capture of the vent if the weight preference unit changes
   const handleUnitWeightChange = (event) => {
-    let newUnitWeight = event.target.value;
+    let newUnitWeight = event.detail.value;
     weightService.setPrefUnitWeight(newUnitWeight);
     let oldUnitWeight = unitWeight;
     setUnitWeight(newUnitWeight);
@@ -68,7 +68,7 @@ const WeightInput = (props) => {
   }
 
   return (
-    <IonModal isOpen={props.showInputWeight} id="input-weight-modal" onDidDismiss={handleCloseModal}>
+    <IonModal data-testid = "modal" isOpen={props.showInputWeight} id="input-weight-modal" onDidDismiss={handleCloseModal} onDidPresent={() => console.log("open")}>
       <IonContent>
           <IonItem className="no-focus">
             <IonLabel className="new-weight">
@@ -81,8 +81,8 @@ const WeightInput = (props) => {
             maxlength={5}
             onIonChange={ev => setNewDailyWeight(ev.detail.value)}
             
-            /*data-testid = "poids_input"  
-            aria-label="weight"
+            data-testid = "weight"  
+            /*aria-label="weight"
             title="Daily weight"*/
             ></IonInput>
             <IonSelect  data-testid = "select" value={unitWeight} interface="popover" onIonChange={handleUnitWeightChange} >
@@ -96,7 +96,8 @@ const WeightInput = (props) => {
                 value={popoverDate}
                 display-format={props.dateFormat}
                 style={{ color: "black" }}
-                onIonChange={ev => setPopoverDate(weightService.formatDate(ev.detail.value))}
+                onIonChange={ev => setPopoverDate(ev.detail.value)}
+                data-testid = "date" 
               />
               <IonIcon className="date-icon" icon={calendar} />
               
@@ -106,11 +107,12 @@ const WeightInput = (props) => {
                 display-format="HH:mm"
                 style={{ color: "black" }}
                 onIonChange={ev => setPopoverTime(ev.detail.value)}
+                data-testid = "time" 
               />
               <IonIcon className="date-icon" icon={time} />
               
           </IonItem>
-        <IonButton id="input-weight-button" shape="round" expand="block" onClick={() => props.onSubmit(newDailyWeight)}>{translate.getText("WEIGHT_ADD")}</IonButton>
+        <IonButton data-testid = "add" id="input-weight-button" shape="round" expand="block" onClick={() => props.onSubmit(newDailyWeight)}>{translate.getText("WEIGHT_ADD")}</IonButton>
       </IonContent>
     </IonModal>
   );
