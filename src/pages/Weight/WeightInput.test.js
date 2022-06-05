@@ -25,7 +25,7 @@ jest.mock("firebase", () => {
 
 const dailyWeight = 77;
 var showInputWeight = true;
-const dateFormat = "AAAA/MM/DD"
+const dateFormat = "YYYY/MM/DD"
 const currentDate = {startDate: "2022-06-03 10:30"}
 
 beforeEach(() => {
@@ -182,7 +182,7 @@ test("Changement de valeur pour la date", async() => {
     }) 
 
     expect(date.value).toBe("2021-06-04");
-    expect(date.getAttribute('display-format')).toBe("AAAA/MM/DD");
+    expect(date.getAttribute('display-format')).toBe("YYYY/MM/DD");
 });
 
 test("Changement de valeur pour l'heure", async() => {

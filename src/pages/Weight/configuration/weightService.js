@@ -101,7 +101,7 @@ export function toDate (date) {
 
 export function formatDateShape (date,shape) {
     shape = shape.toUpperCase();
-    shape = shape.replaceAll("L","M");
+    shape = shape.replace(/L/gi,"M");
     return moment(date).format(shape);
 }
 
