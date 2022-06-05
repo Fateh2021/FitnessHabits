@@ -3,7 +3,6 @@ import firebase from "firebase"
 
 export async function FormatDate(date) {
     return new Promise((resolve) => {
-        console.log(date)
         const dt = DateTime.fromJSDate(date);
         let format = "LL-dd-yyyy";
         const userUID = localStorage.getItem("userUid");

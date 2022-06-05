@@ -9,7 +9,8 @@ import '../../../Tab1.css';
 const PratiquesList = (props) =>  {
 
   const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
-  const [module, setModule] = useState (props.module);
+  const [practices, setPractices] = useState (props.practicies);
+  const [activities, setActivities] = useState (props.activities);
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
@@ -18,37 +19,17 @@ const PratiquesList = (props) =>  {
     }    
   }
 
-
-  const handleChangeMinute = event => {
-    const activitiesMinute = event.target.value;
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.activities.minute = activitiesMinute;
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  }
-  
-  const handleChangeHeure = event => {
-    const activitiesHeure = event.target.value;
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-    dashboard.activities.heure= activitiesHeure;
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
-    const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
-  }
-
   const addPractice = () => {
     const userUID = localStorage.getItem('userUid');
-    const newId = module.practices.length === 0 ? 1 : Math.max.apply(Math, module.practices.map((practice) => {return practice.id})) + 1
-    module.practices.push({
+    const newId = practices.length === 0 ? 1 : Math.max.apply(Math, practices.map((practice) => {return practice.id})) + 1
+    setPractices(practices.concat({
       id: newId,
       name: "Karate",
       date: currentDate.startDate,
       time: 60,
       intensity: "High"
-    })
-    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update(module);
-    setModule(module);
+    }));
+    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices, activities: activities});
   }
 
   return (
@@ -64,7 +45,7 @@ const PratiquesList = (props) =>  {
         <div className='popUpWindow-inner' onClick={(e) => e.stopPropagation()}>
           <h1 className='activityTitle' >Activités</h1>
           {
-            module.practices.map((practice) => (
+            practices.map((practice) => (
                 <PratiqueItem key={practice.id} practice={practice} />
             ))
           }

@@ -156,7 +156,8 @@ const Dashboard = (props) => {
         },
     });
 
-    const [moduleActivity, setModuleActivity] = useState({practices: [], activities: []});
+    const [activities, setActivities] = useState([]);
+    const [practices, setPracticies] = useState([]);
 
     const checkAllKeysAreUpToDate = (templateNode, realNode) => {
         Object.keys(templateNode).forEach(key => {
@@ -255,6 +256,7 @@ const Dashboard = (props) => {
             setFormatedCurrentDate(dt);
         });
 
+        const userUID = localStorage.getItem("userUid");
 
         if (localDashboard) {
             const updatedSets = addMissingDashboard(JSON.parse(localDashboard));
@@ -262,7 +264,6 @@ const Dashboard = (props) => {
             setDashboard(updatedSets);
         } else {
             //console.log("Loading Dashboard From DB...");
-            const userUID = localStorage.getItem("userUid");
             firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
                 .once("value", (snapshot) => {
                     const sets = snapshot.val();
@@ -284,27 +285,27 @@ const Dashboard = (props) => {
                     }              
                 });
         }
-    }, []);
 
-    useEffect(() => {
-        const userUID = localStorage.getItem("userUid");
         firebase.database().ref("dashboard/" + userUID + "/moduleActivity")
             .once("value", (snapshot) => {
-                let module = snapshot.val();
-                if (module) {
-                    if (!(module.practices)) {
-                        module.practices = [];
+                let moduleActivity = snapshot.val();
+                let oldActivities, oldPracticies;
+                if (moduleActivity) {
+                    if (!(moduleActivity.practices)) {
+                        oldPracticies = [];
                     }
-                    if (!(module.activities)) {
-                        module.activities = [];
+                    if (!(moduleActivity.activities)) {
+                        oldActivities = [];
                     }
                 }
                 else {
-                    module = {practices: [], activities: []};
+                    oldPracticies = [];
+                    oldActivities = [];
                 }
-                setModuleActivity(module);
+                setActivities(oldActivities);
+                setPracticies(oldPracticies);
             });
-    }, [moduleActivity]);
+    }, []);
 
     const updateGlobalMacroNutrientConsumption = (sets) => {
         sets.food.globalMacroNutrientConsumption = {
@@ -625,7 +626,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <PratiquesList module={moduleActivity} currentDate={currentDate} />
+                    <PratiquesList activities={activities} practicies={practices} currentDate={currentDate} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 
