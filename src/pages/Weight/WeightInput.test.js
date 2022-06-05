@@ -52,7 +52,7 @@ afterEach(() => {
     localStorage.clear();
 });
 
-test("affiche Nouveau poids et Ajouter si en francais", async() => {
+test("Afficher Nouveau poids et Ajouter si en francais", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                             showInputWeight={showInputWeight}
                             currentDate={currentDate} 
@@ -93,7 +93,7 @@ test("Traduction des mots Nouveau poids et Ajouter en anglais", async() => {
     expect(mot2).toBeDefined();
 });
 
-test("Valeurs initialles", async() => {
+test("Valeurs initiales", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                             showInputWeight={showInputWeight}
                             currentDate={currentDate}  
