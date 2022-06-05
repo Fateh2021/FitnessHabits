@@ -289,21 +289,19 @@ const Dashboard = (props) => {
         firebase.database().ref("dashboard/" + userUID + "/moduleActivity")
             .once("value", (snapshot) => {
                 let moduleActivity = snapshot.val();
-                let oldActivities, oldPracticies;
                 if (moduleActivity) {
                     if (!(moduleActivity.practices)) {
-                        oldPracticies = [];
+                        moduleActivity.practices = [];
                     }
                     if (!(moduleActivity.activities)) {
-                        oldActivities = [];
+                        moduleActivity.activities = [];
                     }
                 }
                 else {
-                    oldPracticies = [];
-                    oldActivities = [];
+                    moduleActivity = {practices: [], activities: []};
                 }
-                setActivities(oldActivities);
-                setPracticies(oldPracticies);
+                setActivities(moduleActivity.activities);
+                setPracticies(moduleActivity.practices);
             });
     }, []);
 
@@ -626,7 +624,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <PratiquesList activities={activities} practicies={practices} currentDate={currentDate} />
+                    <PratiquesList activities={activities} practices={practices} currentDate={currentDate} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 

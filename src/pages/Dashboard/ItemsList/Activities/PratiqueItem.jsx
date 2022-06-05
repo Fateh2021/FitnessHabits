@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
 import {create, trash} from 'ionicons/icons';
 import FormatDate from "../../../../DateUtils";
+import {fixPropTypesSort} from "eslint-plugin-react/lib/util/propTypesSort";
 
 const accor = (divId) => {
   const divElt=document.getElementById(divId);
@@ -25,7 +26,7 @@ const PratiquesItem = (props) =>  {
     const [formatedCurrentDate, setFormatedCurrentDate] = useState('');
 
     useEffect(() => {
-        FormatDate(practice.date.startDate).then(dt => setFormatedCurrentDate(dt))
+        FormatDate(new Date(practice.date)).then(dt => setFormatedCurrentDate(dt))
     }, [practice.date])
 
     return (
@@ -36,14 +37,10 @@ const PratiquesItem = (props) =>  {
           <IonCol size='3'>{formatHourMinute(practice.time)}</IonCol>
           <IonCol size='3'>{practice.intensity}</IonCol>
           <IonCol>
-            <IonButton onClick={() => accor("modifyActivity")}>
-              <IonIcon icon={create}></IonIcon>
-            </IonButton>
+              <IonIcon icon={create} onClick={() => accor("modifyActivity")}></IonIcon>
           </IonCol>
           <IonCol>
-            <IonButton onClick={() => accor("deleteActivity")}>
-              <IonIcon icon={trash}></IonIcon>
-            </IonButton>
+              <IonIcon icon={trash} onClick={() => accor("deleteActivity")}></IonIcon>
           </IonCol>
         </IonRow>
 

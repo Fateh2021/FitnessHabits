@@ -8,9 +8,18 @@ import '../../../Tab1.css';
 
 const PratiquesList = (props) =>  {
 
-  const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
-  const [practices, setPractices] = useState (props.practicies);
-  const [activities, setActivities] = useState (props.activities);
+  const [currentDate, setCurrentDate] = useState('');
+  const [practices, setPractices] = useState ([]);
+  const [activities, setActivities] = useState ([]);
+
+  useEffect(() => {
+    setCurrentDate(props.currentDate.startDate);
+  }, [props.currentDate])
+
+  useEffect(() => {
+    setPractices(props.practices);
+    setActivities(props.activities);
+  }, [props.practices, props.activities])
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
@@ -22,14 +31,16 @@ const PratiquesList = (props) =>  {
   const addPractice = () => {
     const userUID = localStorage.getItem('userUid');
     const newId = practices.length === 0 ? 1 : Math.max.apply(Math, practices.map((practice) => {return practice.id})) + 1
-    setPractices(practices.concat({
+    let newPractice = {
       id: newId,
       name: "Karate",
-      date: currentDate.startDate,
+      date: currentDate.toISOString(),
       time: 60,
       intensity: "High"
-    }));
-    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices, activities: activities});
+    };
+    setPractices(practices.concat(newPractice));
+    //firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").remove();
+    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice), activities: activities});
   }
 
   return (
