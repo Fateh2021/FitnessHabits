@@ -62,6 +62,13 @@ const Supplements = (props) => {
   const [nombreDosesChoisi, setNombreDosesChoisi] = useState("");
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
 
+  {/* Variable formulaire 2e partie*/}
+  const [heuresChoisies, setHeuresChoisies] = useState([]);
+  const [joursChoisis, setJoursChoisis] = useState([]);
+  const [dateDebutChoisie, setDateDebutChoisie] = useState("");
+  const [dateFineChoisie, setDateFinChoisie] = useState("");
+  const [statutActifChoisi, setStatutActifChoisi] = useState(false);
+
 
 
   const inputChangeHandler = () => {
