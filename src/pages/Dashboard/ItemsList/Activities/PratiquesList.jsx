@@ -49,7 +49,7 @@ const PratiquesList = (props) =>  {
       </IonItem>
       <div id="pratiquesList" className='popUpWindow' onClick={() => accor("pratiquesList")}>
         <div className='popUpWindow-inner' onClick={(e) => e.stopPropagation()}>
-          <h1 className='activityTitle' >Activités</h1>
+        <IonLabel><h1 className='activityTitle' >Activités</h1></IonLabel>
           {
             activities.map((activity) => (
                 <PratiqueItem key={activity.id} currentDate={currentDate.startDate} activity={activity} />
