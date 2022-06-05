@@ -12,18 +12,17 @@ const formatHourMinute = (time) => {
 }
 
 const PratiquesItem = (props) =>  {
-    const [activity, setActivity] = useState(props.activity)
-    const [currentDate, setCurrentDate] = useState({startDate: props.currentDate.startDate});
+    const [practice, setPractice] = useState(props.practice)
     const [formatedCurrentDate, setFormatedCurrentDate] = useState('');
 
     useEffect(() => {
-        FormatDate(props.currentDate.startDate).then(dt => setFormatedCurrentDate(dt))
-    }, [props.currentDate])
+        FormatDate(practice.date.startDate).then(dt => setFormatedCurrentDate(dt))
+    }, [practice.date])
 
     return (
         <div className='activityItem'>
-            <b className='activityName'>{activity.name}</b>
-            <p className='activityOther'>{formatedCurrentDate} | {formatHourMinute(activity.time)}, {activity.intensity}</p>
+            <b className='activityName'>{practice.name}</b>
+            <p className='activityOther'>{formatedCurrentDate} | {formatHourMinute(practice.time)}, {practice.intensity}</p>
         </div>
     )
 }

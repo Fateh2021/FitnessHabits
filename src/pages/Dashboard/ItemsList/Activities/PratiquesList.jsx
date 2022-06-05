@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import firebase from 'firebase'
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
-import {arrowDropdownCircle} from 'ionicons/icons';
+import {arrowDropdownCircle, addCircle} from 'ionicons/icons';
 import PratiqueItem from "./PratiqueItem";
 
 import '../../../Tab1.css';
@@ -9,8 +9,7 @@ import '../../../Tab1.css';
 const PratiquesList = (props) =>  {
 
   const [currentDate, setCurrentDate] = useState({startDate:props.currentDate});
-  const [activities, setActivities] = useState (props.activities);
-
+  const [module, setModule] = useState (props.module);
 
   const accor = (divId) => {
     const divElt=document.getElementById(divId);
@@ -38,6 +37,20 @@ const PratiquesList = (props) =>  {
     firebase.database().ref('dashboard/'+userUID+ "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
+  const addPractice = () => {
+    const userUID = localStorage.getItem('userUid');
+    const newId = module.practices.length === 0 ? 1 : Math.max.apply(Math, module.practices.map((practice) => {return practice.id})) + 1
+    module.practices.push({
+      id: newId,
+      name: "Karate",
+      date: currentDate.startDate,
+      time: 60,
+      intensity: "High"
+    })
+    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update(module);
+    setModule(module);
+  }
+
   return (
     <div>
       <IonItem className="divTitre6">
@@ -51,10 +64,11 @@ const PratiquesList = (props) =>  {
         <div className='popUpWindow-inner' onClick={(e) => e.stopPropagation()}>
           <h1 className='activityTitle' >Activités</h1>
           {
-            activities.map((activity) => (
-                <PratiqueItem key={activity.id} currentDate={currentDate.startDate} activity={activity} />
+            module.practices.map((practice) => (
+                <PratiqueItem key={practice.id} practice={practice} />
             ))
           }
+          <IonIcon className='addButtonActivity' icon={addCircle} onClick={addPractice} />
         </div>
       </div>
     </div>    

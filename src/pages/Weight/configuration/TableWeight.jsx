@@ -42,7 +42,7 @@ const TableWeight = () => {
     const dashboard = JSON.parse(localStorage.getItem("dashboard"));
     for (const [,value] of Object.entries(refData)) {
 
-      if (value.poids.datePoids !== undefined) {
+      if (value.poids?.datePoids) {
         let dateWeight = formatDate(value.poids.datePoids)
         let weight = weightService.formatWeight(value.poids.dailyPoids)
 

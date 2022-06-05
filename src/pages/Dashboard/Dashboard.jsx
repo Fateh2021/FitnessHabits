@@ -154,27 +154,9 @@ const Dashboard = (props) => {
             nbReveils: 0,
             etatReveil: null
         },
-        activities: [
-            {
-                id: 1,
-                name: "Karate",
-                intensity: "High",
-                time: 60
-            },
-            {
-                id: 2,
-                name: "Run",
-                intensity: "Low",
-                time: 234
-            },
-            {
-                id: 3,
-                name: "KickBoxing",
-                intensity: "HIIT",
-                time: 140
-            }
-        ],
     });
+
+    const [moduleActivity, setModuleActivity] = useState({practices: [], activities: []});
 
     const checkAllKeysAreUpToDate = (templateNode, realNode) => {
         Object.keys(templateNode).forEach(key => {
@@ -264,9 +246,6 @@ const Dashboard = (props) => {
                 minute: 0
             }
         }
-        if (!dashboard.activities) {
-            dashboard.activities = []
-        }
         return dashboard;
     }
 
@@ -276,13 +255,14 @@ const Dashboard = (props) => {
             setFormatedCurrentDate(dt);
         });
 
+
         if (localDashboard) {
             const updatedSets = addMissingDashboard(JSON.parse(localDashboard));
             localStorage.setItem("dashboard", JSON.stringify(updatedSets));
             setDashboard(updatedSets);
         } else {
-            const userUID = localStorage.getItem("userUid");
             //console.log("Loading Dashboard From DB...");
+            const userUID = localStorage.getItem("userUid");
             firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
                 .once("value", (snapshot) => {
                     const sets = snapshot.val();
@@ -305,6 +285,26 @@ const Dashboard = (props) => {
                 });
         }
     }, []);
+
+    useEffect(() => {
+        const userUID = localStorage.getItem("userUid");
+        firebase.database().ref("dashboard/" + userUID + "/moduleActivity")
+            .once("value", (snapshot) => {
+                let module = snapshot.val();
+                if (module) {
+                    if (!(module.practices)) {
+                        module.practices = [];
+                    }
+                    if (!(module.activities)) {
+                        module.activities = [];
+                    }
+                }
+                else {
+                    module = {practices: [], activities: []};
+                }
+                setModuleActivity(module);
+            });
+    }, [moduleActivity]);
 
     const updateGlobalMacroNutrientConsumption = (sets) => {
         sets.food.globalMacroNutrientConsumption = {
@@ -403,8 +403,7 @@ const Dashboard = (props) => {
                                 heureFin: "00:00",
                                 nbReveils: 0,
                                 etatReveil: null
-                            },
-                            activities : [],
+                            }
                         }
                     )
                     // .then(dt => {
@@ -495,8 +494,7 @@ const Dashboard = (props) => {
                                 heureFin: "00:00",
                                 nbReveils: 0,
                                 etatReveil: null
-                            },
-                            activities : [],
+                            }
                         }
                     )
                     firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
@@ -627,7 +625,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <PratiquesList activities={dashboard.activities} currentDate={currentDate} />
+                    <PratiquesList module={moduleActivity} currentDate={currentDate} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 
