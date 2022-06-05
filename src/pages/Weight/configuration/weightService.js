@@ -92,7 +92,11 @@ export function find_new_category(BMI_value){
 }
 
 export function formatDate (date) {
-    return moment(date).format('YYYY-MM-DD');
+    return moment(date).format('YYYY-MM-DD HH:mm');
+}
+
+export function toDate (date) {
+  return moment(date).toDate();
 }
 
 export function formatDateShape (date,shape) {

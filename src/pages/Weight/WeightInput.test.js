@@ -5,6 +5,8 @@ import "@testing-library/jest-dom"
 import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
 import WeightInput from "./WeightInput";
+import Poids from "../Dashboard/ItemsList/Poids"
+import {formatDate, toDate} from "./configuration/weightService"
 
 jest.mock("firebase", () => {
     return {
@@ -22,8 +24,9 @@ jest.mock("firebase", () => {
 });
 
 const dailyWeight = 77;
-const showInputWeight = true;
+var showInputWeight = true;
 const dateFormat = "AAAA/MM/DD"
+const currentDate = {startDate: "2022-06-03 10:30"}
 
 beforeEach(() => {
     var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
@@ -51,7 +54,8 @@ afterEach(() => {
 
 test("affiche Nouveau poids et Ajouter si en francais", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate} 
                             dateFormat={dateFormat}/>);
     })
 
@@ -64,7 +68,8 @@ test("affiche Nouveau poids et Ajouter si en francais", async() => {
 test("Traduction des mots Nouveau poids et Ajouter en espagnol", async() => {
     localStorage.setItem("userLanguage", "es")
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat}/>);
     })
 
@@ -77,7 +82,8 @@ test("Traduction des mots Nouveau poids et Ajouter en espagnol", async() => {
 test("Traduction des mots Nouveau poids et Ajouter en anglais", async() => {
     localStorage.setItem("userLanguage", "en")
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat}/>);
     })
 
@@ -89,21 +95,26 @@ test("Traduction des mots Nouveau poids et Ajouter en anglais", async() => {
 
 test("Valeurs initialles", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat}/>);
     })
 
     const weight = screen.getByTestId("weight");
     const select = screen.getByTestId("select");
-    //doit ajouter pour la date aujourd'hui
+    const date = screen.getByTestId("date");
+    const time = screen.getByTestId("time");
 
     expect(weight.value).toBe(parseFloat(dailyWeight).toFixed(1).toString());
     expect(select.value).toBe("KG");
+    expect(date.value).toBe(currentDate.startDate);
+    expect(time.value).toBe(currentDate.startDate);
 });
 
 test("Changement de KG a LBS", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight}
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat} 
                             setDailyWeight={jest.fn()} 
                             adjustUnit={jest.fn()}/>);
@@ -124,7 +135,8 @@ test("Changement de KG a LBS", async() => {
 test("Changement de LBS a KG", async() => {
     localStorage.setItem("prefUnitePoids", "LBS");
     act(() => { render(<WeightInput dailyWeight={dailyWeight * 2.2}
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat} 
                             setDailyWeight={jest.fn()} 
                             adjustUnit={jest.fn()}/>);
@@ -142,7 +154,8 @@ test("Changement de LBS a KG", async() => {
 
 test("Changement de valeur pour le poids", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat}/>);
     })
 
@@ -157,7 +170,8 @@ test("Changement de valeur pour le poids", async() => {
 
 test("Changement de valeur pour la date", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat}/>);
     })
 
@@ -173,7 +187,8 @@ test("Changement de valeur pour la date", async() => {
 
 test("Changement de valeur pour l'heure", async() => {
     act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
+                            showInputWeight={showInputWeight}
+                            currentDate={currentDate}  
                             dateFormat={dateFormat}/>);
 })
 
@@ -187,21 +202,41 @@ test("Changement de valeur pour l'heure", async() => {
     expect(time.getAttribute('display-format')).toBe("HH:mm");
 });
 
-// don't know how to call the onDidDismiss
-/*test("Fermer le modal", async() => {
-    act(() => { render(<WeightInput dailyWeight={dailyWeight} showInputWeight={showInputWeight} dateFormat={dateFormat}/>);
-        const modal = screen.getByTestId("modal");
-        console.log(modal);
-        fireEvent.ionDidClose(modal)
+test("Ouvrir et fermer le modal", async() => {
+    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+    act(() => { 
+        render(<Poids poids={ dashboard.poids } currentDate={currentDate}/>);
     })
-});*/
 
-test("Cliquer sur Ajouter", async() => {
-    act(() => { render(<WeightInput dailyWeight={dailyWeight} 
-                            showInputWeight={showInputWeight} 
-                            dateFormat={dateFormat} 
-                            onSubmit={jest.fn()} />);
-        const add = screen.getByTestId("add");
-        fireEvent.click(add);
+    var modal = screen.queryByTestId("modal");
+    expect(modal).toBeNull();
+
+    const openModal = screen.getByTestId("openModal");
+
+    // open modal
+    act(() => { 
+        fireEvent.click(openModal);
     })
+
+    const time = screen.getByTestId("time");
+    
+    let newTime = (new Date()).getTime();
+    let timeValue = toDate(currentDate.startDate);
+    timeValue.setTime(newTime);
+    timeValue = formatDate(timeValue)
+
+    expect(time.value).toBe(timeValue);
+
+    modal = screen.queryByTestId("modal");
+    expect(modal).not.toBeNull();
+
+    const add = screen.getByTestId("add");
+    
+    // close modal
+    act(() => { 
+        fireEvent.click(add);  
+    })
+
+    modal = screen.queryByTestId("modal");
+    expect(modal).toBeNull();
 });
