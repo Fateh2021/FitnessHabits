@@ -63,6 +63,7 @@ const Supplements = (props) => {
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
 
 
+
   const inputChangeHandler = () => {
     setBoxEveryDay(!boxEveryDay);
     setChecked(!checked);
@@ -355,8 +356,62 @@ const Supplements = (props) => {
                 </IonItem>
               </IonItemGroup>
             </IonList>
+          
+
+          {/* Partie 2 */}
+
+          <IonItemGroup>
+            <IonItem>
+              <IonLabel color="light">{/*TODO : à traduire*/}Heures de prise de la dose</IonLabel>
+                <IonDatetime displayFormat="HH:mm" placeholder="00:00">
+                </IonDatetime>
+            </IonItem>
+            <IonButton>
+              Ajouter heure de prise
+            </IonButton>
+          </IonItemGroup>
+          
+          <IonItemGroup>
+            <IonItem>
+              <IonLabel color="light">{/*TODO: traduire */}Repetition</IonLabel>
+
+              <IonSelect multiple = "true">
+                <IonSelectOption value="monday">Lundi</IonSelectOption>
+                <IonSelectOption value="tuesday">Mardi</IonSelectOption>
+                <IonSelectOption value="wednesday">Mercredi</IonSelectOption>
+                <IonSelectOption value="thursday">Jeudi</IonSelectOption>
+                <IonSelectOption value="friday">Vendredi</IonSelectOption>
+                <IonSelectOption value="saturday">Samedi</IonSelectOption>
+                <IonSelectOption value="Sunday">Dimanche</IonSelectOption>
+              </IonSelect>
+            </IonItem>
+            <IonButton>
+                    Ajouter Repetition
+            </IonButton>
+          </IonItemGroup>
+
+          <IonItem>
+            <IonLabel color="light">{translate.getText("SUPPL_DATE_DEBUT")}</IonLabel>
+              <IonDatetime
+                display-timezone="utc"
+                class="timeBox"
+                ></IonDatetime>
+                <IonIcon name="calendar" color="black" slot="end"></IonIcon>
+          </IonItem>
+          <IonItem>
+            <IonLabel color="light">{translate.getText("SUPPL_DATE_FIN")}</IonLabel>
+            <IonDatetime
+              display-timezone="utc"
+              class="timeBox"
+            ></IonDatetime>
+            <IonIcon name="calendar" color="dark" slot="end"></IonIcon>
+          </IonItem>
+
+
+
           </div>}
 
+            
           {/* Formulaire original */}
           {false && formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
             <IonList>
