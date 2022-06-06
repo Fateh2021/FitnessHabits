@@ -45,11 +45,15 @@ const Supplements = (props) => {
   const [posoValue, setPosoValue] = useState("");
   const [afficherAlerteAjoutRestriction, setAfficherAlerteAjoutRestriction] = useState(false);
   const [afficherAlerteAjoutFormatDose, setAfficherAlerteAjoutFormatDose] = useState(false);
+  {/*TODO : à traduire*/}
   const [formatsDose, setFormatsDose] = useState([
-                                          translate.getText("SUPPL_FORME_CAPSULE"),
                                           translate.getText("SUPPL_FORME_TABLET"),
+                                          translate.getText("SUPPL_FORME_CAPSULE"),
+                                          translate.getText("SUPPL_FORME_SYROP"),
                                           translate.getText("SUPPL_FORME_DROP"),
-                                          translate.getText("SUPPL_FORME_SYROP")
+                                          "Bouteilles (unités)",
+                                          "Gel (pré-dosé)",
+                                          "Injection (pré-dosé)"
                                             ]);
   {/*TODO : à traduire*/}
   const [restrictions, setRestrictions] = useState([
