@@ -20,7 +20,7 @@ import Glycemie from "./ItemsList/Glycemie"
 import Supplements from "./ItemsList/Supplements";
 import Toilettes from "./ItemsList/Toilettes";
 import Activities from "./ItemsList/Activities";
-import Sommeil from "./ItemsList/Sommeil";
+import Sommeil from "./ItemsList/Sommeil/Sommeil";
 import AlcoolList from "./ItemsList/Alcool/AlcoolList";
 import Poids from "./ItemsList/Poids"
 import DefaultDashboard from "./DefaultDashboard"

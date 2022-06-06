@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react"
 import firebase from 'firebase'
-import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton, IonDatetime, IonGrid, IonSelect, IonSelectOption, IonText } from '@ionic/react';
+import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton, IonDatetime, IonGrid, IonSelect, IonSelectOption, IonText, IonModal } from '@ionic/react';
 import { arrowDropdownCircle } from 'ionicons/icons';
-import { toast } from '../../../Toast'
-import * as translate from '../../../translate/Translator'
-import '../../Tab1.css';
+import { toast } from '../../../../Toast'
+import * as translate from '../../../../translate/Translator'
+import '../../../Tab1.css';
+import './SommeilModal';
+import SommeilModal from "./SommeilModal";
 
 
 const Sommeil = (props) => {
+
+  const [showModal, setShowModal] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState({ startDate: props.currentDate });
@@ -91,12 +95,19 @@ const Sommeil = (props) => {
 
   return (
     <div>
+      <IonModal isOpen={showModal}>
+        <SommeilModal></SommeilModal>
+          <IonButton color="success" onClick={() => setShowModal(false)}>
+          Fermer
+        </IonButton>
+      </IonModal>
       <IonItem className="divTitre7">
         <IonAvatar slot="start">
           <img src="/assets/Sommeil3.png" alt="Moon" />
         </IonAvatar>
         <IonLabel><h2><b className="text-white">{translate.getText("SLEEP")}</b></h2></IonLabel>
         <IonInput className='inputTextGly etiquette-sommeil ion-text-center' value={duree_format_heure} readonly></IonInput>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => setShowModal(true)} />
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => setIsOpen(!isOpen)} />
       </IonItem>
 
