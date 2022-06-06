@@ -57,6 +57,7 @@ const Supplements = (props) => {
                                             ]);
   {/*TODO : à traduire*/}
   const [restrictions, setRestrictions] = useState([
+                                          {valeur: "Doit être prise à jeun", estCoche: false},
                                           {valeur: "Doit être prise en mangeant", estCoche: false}]);
   const [nomChoisi, setNomChoisi] = useState("");
   const [typeChoisi, setTypeChoisi] = useState("");
