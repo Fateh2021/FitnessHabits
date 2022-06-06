@@ -65,6 +65,7 @@ const Supplements = (props) => {
   const [formatDoseChoisi, setFormatDoseChoisi] = useState("");
   const [restrictionsChoisies, setRestrictionsChoisies] = useState([]);
   const [nombreDosesChoisi, setNombreDosesChoisi] = useState("");
+  const [nombreFrequenceDosesChoisie, setNombreFrequenceDosesChoisi] = useState("");
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
 
   {/* Variable formulaire 2e partie*/}
@@ -348,11 +349,14 @@ const Supplements = (props) => {
                 <IonItem>
                   <IonLabel color="light">{/*TODO : à traduire*/}Nombre de doses</IonLabel>
                   <IonInput className="inputSuppConsom"
-                    value={nombreDosesChoisi} 
+                    value={nombreDosesChoisi}
                     onIonChange={e => setNombreDosesChoisi(e.detail.value)}></IonInput>
                 </IonItem>
                 <IonItem>
                   <IonLabel color="light">{/*TODO : à traduire*/}Fréquence des doses</IonLabel>
+                  <IonInput className="inputSuppConsom"
+                    value={nombreFrequenceDosesChoisie} 
+                    onIonChange={e => setNombreFrequenceDosesChoisi(e.detail.value)}></IonInput>
                   <IonSelect
                     placeholder={translate.getText("SUPPL_FORMAT")}
                     className="inputSuppConsom"
