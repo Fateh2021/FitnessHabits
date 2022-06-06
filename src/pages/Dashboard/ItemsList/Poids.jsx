@@ -29,13 +29,13 @@ const Poids = (props) => {
   const [dateFormat, setDateFormat] = useState("YYYY/MM/DD");
   var [size, setSize] = useState("");
   var [BMI, setBMI] = useState("0.00");
-  const userUID = localStorage.getItem("userUid");
   const [showInputWeight, setShowInputWeight] = useState(false);
 
 
   /*
-  *** si preference unité poids change ===> on update 
-  *** la valeur de poids actuel et de poids cible et de poids initial  
+  ***********************************************************************
+  ** update the daily weight value if the favorite unit change
+  ***********************************************************************
   */
   useEffect(() => {
     var tmp= 0;
@@ -48,50 +48,48 @@ const Poids = (props) => {
     setDailyWeight(parseFloat(tmp).toFixed(1));
     
   }, [props.poids.dailyPoids]);
+
+
   
   /*
-  *** 
-  *** update unité de poids as stocked in database 
-  *** update la taille as waht existed at database
-  *** update imc  dependant la taille et dailypoids
+  ***********************************************************************
+  ** get favorite unite weight form database and set it to localstorage 
+  ** get size value form database and set it to localstorage
+  ** calculate the BMI value 
+  ***********************************************************************
   */
   useEffect(() => {
 
     weightService.initPrefWeight();
+    weightService.initSize();
     setUnitWeight(localStorage.getItem("prefUnitePoids"));
-    var size_from_BD = firebase.database().ref("profiles/" + userUID);
-    size_from_BD.once("value").then(function (snapshot) {
-      if (snapshot.val() != null) {
-        setSize(snapshot.val().size);
-      }
-    });
-    
+    setSize(localStorage.getItem("taille"));
     setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
-   // console.log(props.poids.dailyPoids)
-  });
+  },[dailyWeight]);
 
-  /*
-  *** update initialweight and targetweight and targetdate as what we have in database   
+
+
+   /*
+  ***********************************************************************
+  ** get weight values (initial, target) form database and set them to 
+  ** localstorage 
+  ** get target weight date form database and set it to localstorage
+  ***********************************************************************
   */
-  
   useEffect(() => {
-    const userUID = localStorage.getItem('userUid');
-    let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-    preferencesWeightRef.once("value").then(function(snapshot) {
-        if (snapshot.val() != null) {
-          // Firebase : poidsInitial = initialWeight
-          // Firebase : poidsCible = targetWeight
-          let weightIni = snapshot.val().poidsInitial;
-          let weightCib = snapshot.val().poidsCible;
-          setInitialWeight(parseFloat(weightIni));
-          setTargetWeight(parseFloat(weightCib));
-          setTargetWeightDate(snapshot.val().dateCible);
-        }
-      })
+    weightService.initWeights()
+    setInitialWeight(localStorage.getItem("poidsInitial"));
+    setTargetWeight(localStorage.getItem("poidsCible"));
+    setTargetWeightDate(localStorage.getItem("dateCible"));
   }, [])
 
-
-
+   /*
+  ***********************************************************************
+  ** get the favorite date format form database and set it to 
+  ** localstorage 
+  ** update the date format 
+  ***********************************************************************
+  */
   useEffect(() => {
     weightService.initPrefDate();
     let format = localStorage.getItem("prefDateFormat");
@@ -102,7 +100,7 @@ const Poids = (props) => {
   }, []);
 
   useEffect(() => {
-    let format = weightService.getPrefDate();;
+    let format = weightService.getPrefDate();
     format = format.replace(/y/gi, 'Y');
     format = format.replace(/L/gi, 'M');
     format = format.replace(/d/gi, 'D');
@@ -110,7 +108,7 @@ const Poids = (props) => {
   }, [props.formatedCurrentDate]);
 
 
-
+/*
 	// Capture of the vent if the weight preference unit changes
   const handleUnitWeightChange = (event) => {
     let newUnitWeight = event.target.value;
@@ -133,8 +131,13 @@ const Poids = (props) => {
     setDailyWeight(parseFloat(weightAdjustdaily).toFixed(1));
     //setInitialWeight(parseFloat(poidsInit).toFixed(1));
   };
+*/
 
-	// Capture de l'éventement si le dailyPoids change
+  /*
+  ***********************************************************************
+  ** handle the event if daily weight change
+  ***********************************************************************
+  */
   const handleChange = (newWeight) => {
     weightService.updateWeightDashboard(newWeight, currentDate)
     
@@ -145,25 +148,33 @@ const Poids = (props) => {
     setShowInputWeight(false)
   };
 
+  /*
+  ***********************************************************************
+  ** update the favorite unit weight
+  ***********************************************************************
+  */
   const adjustUnit = (newUnit) => {
     setUnitWeight(newUnit);
 
-  }  
+  } 
+
+/* 
   // Capture de l'éventement si IMC change
   const handleBMIChange = (event) => {
     let BMI_Change = event.target.value;
     /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
        mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
        il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
-    */
+    
     if (BMI_Change > 10) {
       weightService.check_BMI_change(BMI_Change);
     }
   }
 
-    const handleRouteToConfigurationPoids = () => {
+  const handleRouteToConfigurationPoids = () => {
         window.location.href = "/configurationPoids";
-    };
+  };
+*/
 
   return (
     <div>
@@ -183,11 +194,20 @@ const Poids = (props) => {
               <div className="divPoidsCib">
                 <IonLabel>
                 <b className="poidsCib">
-                  <span  onChange={handleUnitWeightChange} >
-                    {translate.getText("WEIGHT_TARGET_NAME")} : {weightService.formatWeight(targetWeight)} </span>
                   <span>
-                    {unitWeight === "KG" ? "Kg" : "Lbs"}, </span></b>
-                <span className="">
+                    {translate.getText("WEIGHT_TARGET_NAME")} :
+                  </span>
+                  &nbsp;
+                  <span data-testid = "targWeight">
+                     {weightService.formatWeight(targetWeight)}
+                  </span>
+                  &nbsp;
+                  <span>
+                    {unitWeight === "KG" ? "Kg" : "Lbs"}, 
+                  </span>
+                </b>
+                &nbsp;
+                <span data-testid = "targWeightDate">
                   {weightService.formatDateShape(targetWeightDate, dateFormat)} 
                 </span>
                 </IonLabel>
@@ -199,8 +219,12 @@ const Poids = (props) => {
                       <span> 
                       {translate.getText("WEIGHT_INITIAL_NAME")} : </span>
                     </b>
-                    <span onChange={handleUnitWeightChange}>
-                      { weightService.formatWeight(initialWeight)} {unitWeight === "KG" ? "Kg" : "Lbs"}
+
+                    <span  data-testid = "initWeight">
+                      { weightService.formatWeight(initialWeight)}
+                    </span>
+                    &nbsp;
+                    <span data-test-id = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}
                     </span>
                     </div>
                 </IonLabel>
@@ -209,21 +233,25 @@ const Poids = (props) => {
             <IonContent className="rightContentInfos">
               <div className="dailyPoids">
                 <IonLabel>
-                  <span>{dailyWeight} </span>
-                  <span>{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
+                  <span data-testid = "dlyPoids">{dailyWeight}</span>
+                  &nbsp;
+                  <span data-testid = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
                 </IonLabel>
               </div>
               <div className="divImc">
                 <IonLabel>
                   <span  className="IMC">
-                    {translate.getText("WEIGHT_BMI_ACRONYM")} : {BMI == "Infinity" ? "" : BMI}
+                    {translate.getText("WEIGHT_BMI_ACRONYM")} :
+                  </span>
+                  &nbsp;
+                  <span  className="IMC" data-testid = "imc">
+                     {BMI == "Infinity" ? "" : BMI}
                   </span>
                 </IonLabel>
               </div>
             </IonContent>
-            
           </IonItemDivider> 
-          <WeightInput 
+          <WeightInput
             dailyWeight={dailyWeight} 
             onSubmit={handleChange} 
             setDailyWeight={setDailyWeight} 
