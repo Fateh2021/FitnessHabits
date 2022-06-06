@@ -19,7 +19,7 @@ const PracticeList = (props) =>  {
   }, [props.currentDate])
 
   useEffect(() => {
-    setPractices(props.practices);
+    setPractices(PratiqueUtil.getPracticesFilter(props.practices, currentDate));
     setActivities(props.activities);
   }, [props.practices, props.activities])
 
@@ -33,7 +33,7 @@ const PracticeList = (props) =>  {
       time: Practice.time,
       intensity: Practice.intensity
     };
-    setPractices(practices.concat(newPractice));
+    setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate));
     firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice), activities: activities});
   }
 
@@ -51,6 +51,7 @@ const PracticeList = (props) =>  {
         <IonLabel><h1 className='activityTitle' >Activités</h1></IonLabel>
           <br/>
           {
+
             practices.map((practice) => (
                 <PracticeItem key={practice.id} practice={practice} />
             ))

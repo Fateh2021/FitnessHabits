@@ -15,4 +15,21 @@ const formatHourMinute = (time) => {
     })
 }
 
-export default {accor, formatHourMinute}
+const getPracticesFilter = (practices, currentDate) => {
+    return practices.filter((practice) => {
+        let dateToFilter = new Date(practice.date)
+        let date3MontsPrior = currentDate.setMonth(currentDate.getMonth() - 3)
+        return dateToFilter > date3MontsPrior
+    }).sort(function (a, b) {
+        let d1 = new Date(a.date)
+        let d2 = new Date(b.date)
+        if (d1.getUTCDate() === d2.getUTCDate()) {
+            return a.id - b.id
+        }
+        else {
+            return d1 - d2
+        }
+    })
+}
+
+export default {accor, formatHourMinute, getPracticesFilter}

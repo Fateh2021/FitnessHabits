@@ -41,7 +41,7 @@ const PracticeForm = (props) => {
             props.onSubmitAction({name, time: (parseInt(hour) * 60 + parseInt(minute)), intensity})
 
             setName('')
-            setTime(0)
+            setTime('00:00')
             setIntensity("INTENSITY_LOW")
             setFirstSubmit(false)
             PratiqueUtil.accor(divId)
@@ -69,10 +69,10 @@ const PracticeForm = (props) => {
                     </IonRow>
                     <br/>
                     <IonRow>
-                        <IonCol size='8'>
+                        <IonCol size='4'>
                             <IonLabel>{translate.getText("EXP_REPORT_DURATION")}</IonLabel>
                         </IonCol>
-                        <IonCol size='4'>
+                        <IonCol size='8'>
                             <IonDatetime className="inputFormActivity"
                                          cancelText={translate.getText("CANCEL")}
                                          doneText="OK"
