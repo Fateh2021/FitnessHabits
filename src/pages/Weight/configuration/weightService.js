@@ -1,5 +1,7 @@
 import firebase from 'firebase'
 import moment from "moment";
+import 'moment/locale/fr' 
+import 'moment/locale/es' 
 import * as translate from "../../../translate/Translator";
 const currentDate = new Date()
 const DIFF_UNITY_WEIGHT = 2.2;
@@ -20,6 +22,39 @@ export function initPrefWeight() {
     }
   })
 }
+export function initWeights() {
+  const userUID = localStorage.getItem('userUid');
+  let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+  preferencesWeightRef.once("value").then(function(snapshot) {
+      if (snapshot.val() != null) {
+        // Firebase : poidsInitial = initialWeight
+        // Firebase : poidsCible = targetWeight
+        localStorage.setItem("poidsInitial", snapshot.val().poidsInitial);
+        localStorage.setItem("poidsCible", snapshot.val().poidsCible);
+        localStorage.setItem("dateCible", snapshot.val().dateCible);
+      }
+      else {
+        localStorage.setItem("poidsInitial", 0);
+        localStorage.setItem("poidsCible", 0);
+        localStorage.setItem("dateCible", "1999-9-9");
+
+      }
+    })
+}
+
+export function initSize() {
+  const userUID = localStorage.getItem('userUid');
+  var size_from_BD = firebase.database().ref("profiles/" + userUID);
+    size_from_BD.once("value").then(function (snapshot) {
+      if (snapshot.val() != null) {
+        localStorage.setItem("taille", snapshot.val().size);
+      }
+      else {
+        localStorage.setItem("taille", 0);
+      }
+    })
+}
+
 
 export function formatWeight(weight) {
 	// LocalStorage : prefUnitePoids = prefUnitWeight
@@ -27,7 +62,7 @@ export function formatWeight(weight) {
   if (prefUnitWeight === "LBS") {
     return (weight * DIFF_UNITY_WEIGHT).toFixed(1)
   }
-  return weight
+  return parseFloat(weight).toFixed(1)
 }
 
 export function formatToKG(weight) {
@@ -96,8 +131,17 @@ export function formatDate (date) {
 }
 
 export function formatDateShape (date,shape) {
+  var lang = localStorage.getItem("userLanguage")
     shape = shape.toUpperCase();
     shape = shape.replaceAll("L","M");
+    if(lang === 'fr'){
+      moment.locale('fr')
+      return moment(date).format(shape);
+    }
+    else if(lang == 'es'){
+      moment.locale('es')
+      return moment(date).format(shape);
+    }
     return moment(date).format(shape);
 }
 
