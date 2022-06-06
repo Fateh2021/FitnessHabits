@@ -127,22 +127,29 @@ export function find_new_category(BMI_value){
 }
 
 export function formatDate (date) {
-    return moment(date).format('YYYY-MM-DD');
+    return moment(date).format('YYYY-MM-DD HH:mm');
+}
+
+export function toDate (date) {
+  return moment(date).toDate();
 }
 
 export function formatDateShape (date,shape) {
   var lang = localStorage.getItem("userLanguage")
     shape = shape.toUpperCase();
-    shape = shape.replaceAll("L","M");
-    if(lang === 'fr'){
-      moment.locale('fr')
+    shape = shape.replace(/L/gi,"M");
+    if(lang === 'en'){
+      moment.locale('en')
+      return moment(date).format(shape);
+    }
+    else if(lang === 'fr'){
+      
       return moment(date).format(shape);
     }
     else if(lang == 'es'){
       moment.locale('es')
       return moment(date).format(shape);
     }
-    return moment(date).format(shape);
 }
 
 export function initPrefDate() {

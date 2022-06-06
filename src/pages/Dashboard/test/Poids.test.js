@@ -36,7 +36,7 @@ var poids={
     dailyPoids:"77",
     datePoids:"2022-03-17T15:24:10.792Z",
 }
-
+var currentDate= {startDate: "2022-06-03 10:30"}
 beforeEach(() => {
     var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
     var poids={
@@ -69,7 +69,7 @@ afterEach(() => {
 
 test(" Test 1 : Traduction du mot Poids en espagnol", async() => {
     localStorage.setItem("userLanguage", "es")
-    act(() => { render(<Poids poids/>);
+    act(() => { render(<Poids poids currentDate={currentDate}/>);
         const mot= screen.getAllByText(/Peso/i);
         expect(mot).toBeDefined();
     })
@@ -77,7 +77,7 @@ test(" Test 1 : Traduction du mot Poids en espagnol", async() => {
 
 test(" Test 2 : Traduction du mot IMC (indice masse corporel) en espagnol", async() => {
     localStorage.setItem("userLanguage", "es")
-    act(() => { render(<Poids poids/>)
+    act(() => { render(<Poids poids currentDate={currentDate}/>)
         const mot = screen.getByText(/IMC/i);
         expect(mot).toBeDefined();
     })
@@ -85,7 +85,7 @@ test(" Test 2 : Traduction du mot IMC (indice masse corporel) en espagnol", asyn
 
 test(" Test 3 : Traduction du mot Cible  en espagnol", async() => {
     localStorage.setItem("userLanguage", "es")
-    act(() => { render(<Poids poids/>)
+    act(() => { render(<Poids poids currentDate={currentDate}/>)
         const mot = screen.getByText(/Objetivo/i);
         expect(mot).toBeDefined();
     })
@@ -93,7 +93,7 @@ test(" Test 3 : Traduction du mot Cible  en espagnol", async() => {
 
 test(" Test 4 : Traduction du mot initial en espagnol", async() => {
     localStorage.setItem("userLanguage", "es")
-    act(() => { render(<Poids poids/>)
+    act(() => { render(<Poids poids currentDate={currentDate}/>)
         const mot = screen.getByText(/inicial/i);
         expect(mot).toBeDefined();
     })
@@ -101,7 +101,7 @@ test(" Test 4 : Traduction du mot initial en espagnol", async() => {
 
 test(" Test 5 : Traduction du mot Poids en anglais", async() => {
     localStorage.setItem("userLanguage", "en")
-    act(() => { render(<Poids poids/>);
+    act(() => { render(<Poids poids currentDate={currentDate}/>);
         const mot = screen.getAllByText(/Weight/i);
         expect(mot).toBeDefined();
     })
@@ -109,14 +109,14 @@ test(" Test 5 : Traduction du mot Poids en anglais", async() => {
 
 test(" Test 6 : Traduction du mot IMC (indice masse corporel) en anglais", async() => {
     localStorage.setItem("userLanguage", "en")
-    act(() => { render(<Poids poids/>)
+    act(() => { render(<Poids poids currentDate={currentDate}/>)
         const mot = screen.getByText(/BMI/i);
         expect(mot).toBeDefined();
     })
 });
 test(" Test 7 : Traduction du mot Cible en anglais", async() => {
     localStorage.setItem("userLanguage", "en")
-    act(() => { render(<Poids poids/>)
+    act(() => { render(<Poids poids currentDate={currentDate}/>)
         const mot = screen.getByText(/Target/i);
         expect(mot).toBeDefined();
     })
@@ -124,7 +124,7 @@ test(" Test 7 : Traduction du mot Cible en anglais", async() => {
 
 test(" Test 8 : Traduction du mot initial en anglais", async() => {
     localStorage.setItem("userLanguage", "en")
-    act(() => { render(<Poids poids/>)
+    act(() => { render(<Poids poids currentDate={currentDate}/>)
         const mot = screen.getByText(/Initial/i);
         expect(mot).toBeDefined();
     })
@@ -132,7 +132,7 @@ test(" Test 8 : Traduction du mot initial en anglais", async() => {
 
 
 test(" Test 9 : Affichage des valeurs initialles dans le dashboard", async() => {
-    act(() => { render(<Poids poids={poids}/>);
+    act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
     const initialWeight = screen.getByTestId("initWeight");
     const targetWeight = screen.getByTestId("targWeight");
@@ -151,7 +151,7 @@ test(" Test 9 : Affichage des valeurs initialles dans le dashboard", async() => 
 
 test(" Test 10 : Changement du format de date préférée", async() => {
     localStorage.setItem("prefDateFormat", "DD/MM/YYYY");
-    act(() => { render(<Poids poids={poids}/>);
+    act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
     const targetDate = screen.getByTestId("targWeightDate");
     const targetDateString= targetDate.textContent.toString();
@@ -161,7 +161,7 @@ test(" Test 10 : Changement du format de date préférée", async() => {
 
 test(" Test 11 : changement de l'unité de poids préférée : KG à LBS", async() => {
     localStorage.setItem("prefUnitePoids", "LBS");
-    act(() => { render(<Poids poids={poids}/>);
+    act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
     const favUnit = screen.getByTestId("prefUnit");
     const initialWeight = screen.getByTestId("initWeight");
@@ -175,7 +175,7 @@ test(" Test 11 : changement de l'unité de poids préférée : KG à LBS", async
 
 test(" Test 12 : changement de l'unité de poids préférée : LBS à KG", async() => {
     localStorage.setItem("prefUnitePoids", "KG");
-    act(() => { render(<Poids poids={poids}/>);
+    act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
     const favUnit = screen.getByTestId("prefUnit");
     const initialWeight = screen.getByTestId("initWeight");
@@ -189,7 +189,7 @@ test(" Test 12 : changement de l'unité de poids préférée : LBS à KG", async
 
 test(" Test 13 : Valeur de l'IMC si le Poids actuel change", async() => {
     poids.dailyPoids = 60;
-    act(() => { render(<Poids poids={poids}/>);
+    act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
     const bmi = screen.getByTestId("imc");
     expect(bmi.textContent).toBe(calculation_BMI(size, poids.dailyPoids));
@@ -198,7 +198,7 @@ test(" Test 13 : Valeur de l'IMC si le Poids actuel change", async() => {
 test(" Test 14 : Valeur de l'IMC si la taille change", async() => {
     localStorage.setItem("taille", 163);
     size = 163;
-    act(() => { render(<Poids poids={poids}/>);
+    act(() => { render(<Poids poids={poids}  currentDate={currentDate} />);
     })
     const bmi = screen.getByTestId("imc");
     expect(bmi.textContent).toBe(calculation_BMI(size,poids.dailyPoids));

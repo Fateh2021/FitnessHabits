@@ -137,13 +137,16 @@
 #input-weight-modal {
   --height: 200px;
   --width: 90%;
+  --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
 }
 
 .input-weight {
   border-width: 0 0 1px 0;
   border-style: solid;
-  width: 50px !important;
-  
+  width: 60px !important;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #707070 !important;
 }
 
 .sc-ion-popover-md-h {
@@ -151,8 +154,12 @@
 }
 
 .new-weight {
-  font-size: 12px !important;
-  width: 130px;
+  font-size: 15px !important;
+  width: auto;
+  font-family: 'Roboto', sans-serif;
+  padding-left: 16px;
+  padding-top: 16px;
+  color: #707070 !important;
 }
 
 ion-select-popover ion-list ion-item ion-radio {
@@ -160,44 +167,75 @@ ion-select-popover ion-list ion-item ion-radio {
   --color-checked: transparent;
 }
 
-ion-select {
-  margin-left: 30px;
-  width: 70px;
+ion-select-popover ion-list ion-item ion-label {
+  --color: #707070 !important;
+  font-weight: bold;
+  font-size: 20px !important;
+}
+
+.weight-type {
+  width: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-right: 16px;
+  --padding-start: 5px;
+  font-weight: bold;
+  background: #D5D5D530;
+  color: #707070;
 }
 
 #input-weight-button {
   margin-inline: 60px;
   margin-top: 20px;
   --background: #3E7D65;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
-ion-content>ion-item {
-  margin-top: 15px;
+ion-content>ion-item-group>ion-item {
   --border-width: 0 0 0 0;
-  
 }
 
 .date-format {
-  font-size: 12px;
+  font-size: 15px;
   margin-right: 5px;
-  margin-left: 10px;
   padding: 0;
   width: auto;
+  font-family: 'Roboto', sans-serif;
+  color: #707070 !important;
 }
 
 .time-format {
   border-width: 0 0 1px 0;
   border-style: solid;
-  margin-left: 70px;
   padding: 0;
   margin-right: 5px;
   width: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #707070 !important;
 }
 
 .date-icon {
-  font-size: 40px;
+  font-size: 37px;
+  color: #707070 !important;
 }
 
-.no-focus {
+.weight-date {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  --border-width: 0 0 0 0;
+}
+
+.input-weight-item {
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
   --highlight-color-focused: none;
+}
+
+.select-icon-inner {
+  opacity: 1 !important;
 }

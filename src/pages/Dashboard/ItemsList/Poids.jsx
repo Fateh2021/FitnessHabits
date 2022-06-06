@@ -180,7 +180,7 @@ const Poids = (props) => {
     <div>
       <IonItem className="divTitre9" lines="none">
           <IonItemDivider className="divIcone">
-            <div className="icone"  onClick={() => setShowInputWeight(true)}>
+            <div data-testid = "openModal" className="icone"  onClick={() => setShowInputWeight(true)}>
               <IonImg  src="/assets/Poids.jpg"/>
             </div>
           </IonItemDivider>
@@ -257,10 +257,9 @@ const Poids = (props) => {
             setDailyWeight={setDailyWeight} 
             showInputWeight={showInputWeight} 
             setShowInputWeight={setShowInputWeight}
-            formatedCurrentDate={props.formatedCurrentDate}
             adjustUnit = {adjustUnit}
             dateFormat = {dateFormat}
-            
+            currentDate = {props.currentDate}
           ></WeightInput>      
       </IonItem>
       
