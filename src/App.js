@@ -14,6 +14,7 @@ import ConfigurationPoids from './pages/Weight/configuration/configuration';
 import { Settings as LuxonSettings } from "luxon";
 import GlycemieInitial from "./pages/Glycemie/Initial";
 import GlycemieAjout from "./pages/Glycemie/Ajout";
+import SommeilPage from './pages/Sommeil/SommeilPage';
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -51,6 +52,7 @@ const RoutingSystem = () => {
           <Route path="/glycemieAjout" component={GlycemieAjout} />
           <Route path="/configurationPoids" component={ConfigurationPoids} />
           <Route path="/languages" component={Languages} />
+          <Route path="/sleep" component={SommeilPage}/>
           <Route path="/" render={() => <Redirect to="/intro" />} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>
@@ -65,7 +67,7 @@ const App = () => {
         setUser(user);
         getCurrentUser().then(user => {
             if (user) {
-                window.history.replaceState({}, "", "/dashboard");
+                //window.history.replaceState({}, "", "/dashboard");
             } else {
                 window.history.replaceState({}, "", "/")
             }
