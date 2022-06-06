@@ -19,7 +19,7 @@ import Hydratation from "./ItemsList/Hydratation";
 import Glycemie from "./ItemsList/Glycemie"
 import Supplements from "./ItemsList/Supplements";
 import Toilettes from "./ItemsList/Toilettes";
-import PratiquesList from "./ItemsList/Activities/PratiquesList";
+import PracticeList from "./ItemsList/Activities/PracticeList";
 import Sommeil from "./ItemsList/Sommeil";
 import AlcoolList from "./ItemsList/Alcool/AlcoolList";
 import Poids from "./ItemsList/Poids"
@@ -624,7 +624,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <PratiquesList activities={activities} practices={practices} currentDate={currentDate} />
+                    <PracticeList activities={activities} practices={practices} currentDate={currentDate} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 

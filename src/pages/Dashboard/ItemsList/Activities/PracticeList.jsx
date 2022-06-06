@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react"
 import firebase from 'firebase'
 import { IonInput, IonRow, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
 import {arrowDropdownCircle, addCircle} from 'ionicons/icons';
-import PratiqueItem from "./PratiqueItem";
-
+import * as translate from "../../../../translate/Translator";
+import PracticeItem from "./PracticeItem";
+import PratiqueUtil from "./Practice.js"
+import PracticeForm from "./PracticeForm";
 import '../../../Tab1.css';
 
-const PratiquesList = (props) =>  {
+const PracticeList = (props) =>  {
 
   const [currentDate, setCurrentDate] = useState('');
   const [practices, setPractices] = useState ([]);
@@ -21,25 +23,17 @@ const PratiquesList = (props) =>  {
     setActivities(props.activities);
   }, [props.practices, props.activities])
 
-  const accor = (divId) => {
-    const divElt=document.getElementById(divId);
-    if (divElt) {
-      (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "flex":divElt.style.display = "none";
-    }    
-  }
-
-  const addPractice = () => {
+  const addPractice = (Practice) => {
     const userUID = localStorage.getItem('userUid');
     const newId = practices.length === 0 ? 1 : Math.max.apply(Math, practices.map((practice) => {return practice.id})) + 1
     let newPractice = {
       id: newId,
-      name: "Karate",
+      name: Practice.name,
       date: currentDate.toISOString(),
-      time: 60,
-      intensity: "High"
+      time: Practice.time,
+      intensity: Practice.intensity
     };
     setPractices(practices.concat(newPractice));
-    //firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").remove();
     firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice), activities: activities});
   }
 
@@ -49,21 +43,24 @@ const PratiquesList = (props) =>  {
         <IonAvatar slot="start">
           <img src="/assets/Running.jpg" alt=""/>
         </IonAvatar>
-        <IonLabel><h2><b>Activités</b></h2></IonLabel>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => accor("pratiquesList")}/>
+        <IonLabel><h2><b>{translate.getText("ACTIVITIES")}</b></h2></IonLabel>
+        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => PratiqueUtil.accor("pratiquesList")}/>
       </IonItem>
-      <div id="pratiquesList" className='popUpWindow' onClick={() => accor("pratiquesList")}>
+      <div id="pratiquesList" className='popUpWindow' onClick={() => PratiqueUtil.accor("pratiquesList")}>
         <div className='popUpWindow-inner' onClick={(e) => e.stopPropagation()}>
         <IonLabel><h1 className='activityTitle' >Activités</h1></IonLabel>
+          <br/>
           {
             practices.map((practice) => (
-                <PratiqueItem key={practice.id} practice={practice} />
+                <PracticeItem key={practice.id} practice={practice} />
             ))
           }
-          <IonIcon className='addButtonActivity' icon={addCircle} onClick={addPractice} />
+          <br/>
+          <IonIcon className='addButtonActivity' icon={addCircle} onClick={() => PratiqueUtil.accor("PracticeFormAdd")} />
+          <PracticeForm onSubmitAction={addPractice} />
         </div>
       </div>
     </div>    
   );
 }
-export default PratiquesList;
+export default PracticeList;

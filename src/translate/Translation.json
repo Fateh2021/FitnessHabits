@@ -316,7 +316,31 @@
          }
       }
    },
-
+   "INTENSITY": {
+     "en":"Intensity",
+     "es":"Intensidad",
+     "fr":"Intensité"
+   },
+  "INTENSITY_LOW": {
+    "en":"Low",
+    "es":"Abajo",
+    "fr":"Bas"
+  },
+  "INTENSITY_MEDIUM": {
+    "en":"Medium",
+    "es":"Medio",
+    "fr":"Moyen"
+  },
+  "INTENSITY_HIGH": {
+    "en":"High",
+    "es":"Alto",
+    "fr":"Haute"
+  },
+  "INTENSITY_HIIT": {
+    "en":"HIIT",
+    "es":"Muy intenso",
+    "fr":"Très intense"
+  },
    "SUPPL_TITLE":{
       "en":"Supplements",
       "es":"Suplementos",
@@ -617,6 +641,16 @@
       "es":"Error de autentificación. ¡El nombre de usuario y/o contraseña no son válidos!",
       "fr":"Erreur d'authentification. L'identifiant et/ou le mot passe sont invalides !"
    },
+  "NAME_ERROR":{
+    "en":"An activity name is required!",
+    "es":"\n¡Se requiere un nombre de actividad!",
+    "fr":"Un nom d'activité est nécessaire!"
+  },
+  "TIME_ERROR":{
+    "en":"Activity duration cannot be 0 minutes!",
+    "es":"¡La duración de la actividad no puede ser de 0 minutos!",
+    "fr":"La durée de l'activité ne peut pas être de 0 minutes!"
+  },
    "OR":{
       "en":"OR",
       "es":"O",
@@ -892,6 +926,16 @@
       "es":"Actividades físicas",
       "fr":"Activités physiques"
    },
+  "MODIFY_ACTIVITY": {
+    "en":"Edit activity",
+    "es":"Editar actividad",
+    "fr":"Modifier activité"
+  },
+  "ADD_ACTIVITY": {
+    "en":"Add activity",
+    "es":"Añadir actividad",
+    "fr":"Ajouter activité"
+  },
    "TOILETS_TITLE":{
       "en":"Toilets",
       "es":"Aseos",
