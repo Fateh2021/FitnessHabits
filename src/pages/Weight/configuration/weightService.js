@@ -143,7 +143,7 @@ export function formatDateShape (date,shape) {
       return moment(date).format(shape);
     }
     else if(lang === 'fr'){
-      
+      moment.locale('fr')
       return moment(date).format(shape);
     }
     else if(lang == 'es'){

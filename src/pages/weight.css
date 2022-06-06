@@ -66,6 +66,7 @@
   width: 80%;
   float: right;
   border-bottom: 0px;
+  --padding-start: 10px;
 
 }
 
@@ -79,26 +80,25 @@
 .poidsIni{
   color:#707070;
   font-family: 'Roboto', sans-serif;
-  font-size: 15pt;
+  font-size: 13px;
 }
 
 .divPoidsCib {
   background-color: #24A78817;
   color: #707070;
-  width: 220px;
   margin-top: 15px;
 }
 
 .PoidsCib {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  font-size: 10pt;
+  font-size: 10px;
   color:#707070;
   margin: auto;
 }
 .dateCible{
   font-family: 'Roboto', sans-serif;
-  font-size: 10pt;
+  font-size: 10px;
   color:#707070;
 
 }
@@ -107,18 +107,18 @@
 .titrePoids{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  font-size: 25pt;
+  font-size: 25px;
   color:#707070
 }
 .dailyPoids {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  font-size: 20pt;
+  font-size: 20px;
   color: #707070;
 }
 .IMC {
   font-family: 'Roboto', sans-serif;
-  font-size: 13pt;
+  font-size: 13px;
   color:#707070;
 }
 .divImc {
@@ -127,7 +127,8 @@
 
 .rightContentInfos {
     text-align: right;
-  --padding-top: 15px;
+    padding-top: 15px;
+    height: 100%;
 
 }
 .leftContentInfos{

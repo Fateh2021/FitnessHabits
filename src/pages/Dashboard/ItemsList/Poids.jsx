@@ -9,12 +9,12 @@ import "../../../pages/weight.css";
 import TableWeight from "../../Weight/configuration/TableWeight";
 import WeightInput from "../../Weight/WeightInput";
 
-const accor = (divId) => {
+/*const accor = (divId) => {
     const divElt = document.getElementById(divId);
     if (divElt) {
         divElt.style.display =  !divElt.style.display || divElt.style.display === "none"? "block": "none";
     }
-};
+};*/
 
 // Variables in Firebase remains in French for now with a translation in comment
 const Poids = (props) => {
@@ -148,15 +148,6 @@ const Poids = (props) => {
     setShowInputWeight(false)
   };
 
-  /*
-  ***********************************************************************
-  ** update the favorite unit weight
-  ***********************************************************************
-  */
-  const adjustUnit = (newUnit) => {
-    setUnitWeight(newUnit);
-
-  } 
 
 /* 
   // Capture de l'éventement si IMC change
@@ -185,7 +176,7 @@ const Poids = (props) => {
             </div>
           </IonItemDivider>
           <IonItemDivider  className="divInfos">
-            <IonContent className="leftContentInfos">
+            <div className="leftContentInfos">
               <div  className="titrePoids">
                 <IonText>
                     {translate.getText("WEIGHT_NAME_SECTION")}
@@ -193,7 +184,7 @@ const Poids = (props) => {
               </div>
               <div className="divPoidsCib">
                 <IonLabel>
-                <b className="poidsCib">
+                <b className="PoidsCib">
                   <span>
                     {translate.getText("WEIGHT_TARGET_NAME")} :
                   </span>
@@ -207,7 +198,7 @@ const Poids = (props) => {
                   </span>
                 </b>
                 &nbsp;
-                <span data-testid = "targWeightDate">
+                <span data-testid = "targWeightDate" className="dateCible" >
                   {weightService.formatDateShape(targetWeightDate, dateFormat)} 
                 </span>
                 </IonLabel>
@@ -229,8 +220,8 @@ const Poids = (props) => {
                     </div>
                 </IonLabel>
               </div>
-            </IonContent>
-            <IonContent className="rightContentInfos">
+            </div>
+            <div className="rightContentInfos">
               <div className="dailyPoids">
                 <IonLabel>
                   <span data-testid = "dlyPoids">{dailyWeight}</span>
@@ -249,7 +240,7 @@ const Poids = (props) => {
                   </span>
                 </IonLabel>
               </div>
-            </IonContent>
+            </div>
           </IonItemDivider> 
           <WeightInput
             dailyWeight={dailyWeight} 
@@ -257,7 +248,7 @@ const Poids = (props) => {
             setDailyWeight={setDailyWeight} 
             showInputWeight={showInputWeight} 
             setShowInputWeight={setShowInputWeight}
-            adjustUnit = {adjustUnit}
+            adjustUnit = {setUnitWeight}
             dateFormat = {dateFormat}
             currentDate = {props.currentDate}
           ></WeightInput>      

@@ -87,7 +87,7 @@ test("Traduction des mots Nouveau poids et Ajouter en anglais", async() => {
                             dateFormat={dateFormat}/>);
     })
 
-    const mot1 = screen.getByText(/New weigth/i);
+    const mot1 = screen.getByText(/New weight/i);
     const mot2 = screen.getByText(/Add/i);
     expect(mot1).toBeDefined();
     expect(mot2).toBeDefined();
@@ -240,3 +240,39 @@ test("Ouvrir et fermer le modal", async() => {
     modal = screen.queryByTestId("modal");
     expect(modal).toBeNull();
 });
+
+test("Ajouter un nouveau poids", async() => {
+    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
+    act(() => { 
+        render(<Poids poids={ dashboard.poids } currentDate={currentDate}/>);
+    })
+
+    const openModal = screen.getByTestId("openModal");
+
+    // open modal
+    act(() => { 
+        fireEvent.click(openModal);
+    })
+
+    const add = screen.getByTestId("add");
+
+    const weight = screen.getByTestId("weight");
+    act(() => { 
+        fireEvent.ionChange(weight, 100)
+    }) 
+    
+    // close modal
+    act(() => { 
+        fireEvent.click(add);  
+    })
+    const dailyWeight = screen.getByTestId("dlyPoids");
+    expect(dailyWeight.textContent).toBe("100.0");
+    
+
+
+
+
+   
+
+
+})

@@ -149,7 +149,18 @@ test(" Test 9 : Affichage des valeurs initialles dans le dashboard", async() => 
 
 });
 
-test(" Test 10 : Changement du format de date préférée", async() => {
+test(" Test 10 : Affichage du poids actuel et l'unité si l'unité préférée change", async() => {
+    localStorage.setItem("prefUnitePoids", "LBS");
+    act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
+    })
+    const dailyWeight = screen.getByTestId("dlyPoids");
+    const favUnit = screen.getByTestId("prefUnit");
+    expect(dailyWeight.textContent).toBe(formatWeight(dailyPoids));
+    expect(favUnit.textContent.toString().toUpperCase()).toBe("LBS");
+
+});
+
+test(" Test 11 : Changement du format de date préférée", async() => {
     localStorage.setItem("prefDateFormat", "DD/MM/YYYY");
     act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
@@ -159,10 +170,20 @@ test(" Test 10 : Changement du format de date préférée", async() => {
     expect(targetDateReceived.creationData().format).toBe("DD/MM/YYYY");
 })
 
-test(" Test 11 : changement de l'unité de poids préférée : KG à LBS", async() => {
-    localStorage.setItem("prefUnitePoids", "LBS");
+test(" Test 12 : changement de l'unité de poids préférée : KG à LBS", async() => {
     act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
+    const openModal = screen.getByTestId("openModal");
+    // open modal
+    act(() => { 
+        fireEvent.click(openModal);
+    })
+
+    const select = screen.getByTestId("select");
+    act(() => { 
+        fireEvent.ionChange(select, "LBS");
+    })
+    
     const favUnit = screen.getByTestId("prefUnit");
     const initialWeight = screen.getByTestId("initWeight");
     const targetWeight = screen.getByTestId("targWeight");
@@ -173,9 +194,18 @@ test(" Test 11 : changement de l'unité de poids préférée : KG à LBS", async
     expect(dailyWeight.textContent).toBe(formatWeight(dailyPoids));
 })
 
-test(" Test 12 : changement de l'unité de poids préférée : LBS à KG", async() => {
-    localStorage.setItem("prefUnitePoids", "KG");
+test(" Test 13 : changement de l'unité de poids préférée : LBS à KG", async() => {
     act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
+    })
+    const openModal = screen.getByTestId("openModal");
+    // open modal
+    act(() => { 
+        fireEvent.click(openModal);
+    })
+
+    const select = screen.getByTestId("select");
+    act(() => { 
+        fireEvent.ionChange(select, "KG");
     })
     const favUnit = screen.getByTestId("prefUnit");
     const initialWeight = screen.getByTestId("initWeight");
@@ -187,7 +217,7 @@ test(" Test 12 : changement de l'unité de poids préférée : LBS à KG", async
     expect(dailyWeight.textContent).toBe(formatWeight(dailyPoids));
 })
 
-test(" Test 13 : Valeur de l'IMC si le Poids actuel change", async() => {
+test(" Test 14 : Valeur de l'IMC si le Poids actuel change", async() => {
     poids.dailyPoids = 60;
     act(() => { render(<Poids poids={poids} currentDate={currentDate}/>);
     })
@@ -195,7 +225,7 @@ test(" Test 13 : Valeur de l'IMC si le Poids actuel change", async() => {
     expect(bmi.textContent).toBe(calculation_BMI(size, poids.dailyPoids));
 })
 
-test(" Test 14 : Valeur de l'IMC si la taille change", async() => {
+test(" Test 15 : Valeur de l'IMC si la taille change", async() => {
     localStorage.setItem("taille", 163);
     size = 163;
     act(() => { render(<Poids poids={poids}  currentDate={currentDate} />);

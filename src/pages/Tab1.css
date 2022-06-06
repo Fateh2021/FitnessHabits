@@ -1986,7 +1986,8 @@ h2{
   --ion-background-color: #FFFFFFFF
   ;
   border-radius: 25px;
-  box-shadow: 0.2px 0.2px #00000029;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+
   --padding-start: 0px;
   --inner-padding-end: 0px;
  
