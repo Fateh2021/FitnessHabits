@@ -1,52 +1,7 @@
-ion-text {
-    color: #707070;
-    font-family: roboto;
-}
-
-.tab-icon{
-    border-radius: 25px 5px 0px 25px;
-    z-index: 32;
-    padding: 2px 0;
-    background-color: #404395;
-}
-
-.tab-sommeil{
-    border-radius: 25px;
-    z-index: 3;
-    padding: 2px 0;
-    --ion-background-color: white;
-    box-shadow: 1px 2px;
-    margin-left: 5px;
-    margin-right: 5px;
-    
-}
-
-.marg0 {
-    margin: 0;
-    padding:  0;
-    width: 100%
-}
-
-.white-bg {
-    background-color: white;
-}
-
-.sommeil-title {
-    font-size: 25px;
-}
-
-.compte {
-    font-size: 20px;
-}
-
 .cible {
     background-color: #EBF7F4;
     padding: 5px;
     font-size: 13px;
-}
-
-.textO {
-    font-size: 15px;
 }
 
 .modal-sommeil {
@@ -57,4 +12,33 @@ ion-text {
 .moon {
     filter: brightness(0) invert(1);
     margin: 30px;
+}
+
+.sommeil-title {
+    font-size: 25px;
+}
+
+.compte {
+    font-size: 20px;
+}
+
+.tab-icon {
+    border-radius: 25px 5px 0px 25px;
+    z-index: 32;
+    padding: 2px 0;
+    background-color: #404395;
+}
+
+.tab-sommeil {
+    border-radius: 25px;
+    z-index: 3;
+    padding: 2px 0;
+    --ion-background-color: white;
+    box-shadow: 1px 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.white-bg {
+    background-color: white;
 }

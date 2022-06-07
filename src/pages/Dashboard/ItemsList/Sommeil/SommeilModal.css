@@ -3,6 +3,34 @@ ion-text {
     font-family: roboto;
 }
 
+.cible-modal {
+    font-size: 20px;
+    background-color: #EBF7F4;
+    padding: 5px;
+}
+
+.compte-modal {
+    font-size: 20px;
+}
+
+.data-text {
+    font-size: 15px;
+}
+
+.data-time {
+    font-size: 20px;
+}
+
+.gear-avatar {
+    position: relative;
+    right: 0px;
+}
+
+.hr {
+    border-bottom: 1px solid #ccc;
+    margin: 10px;
+}
+
 .hr-modal-title-back {
     background-color: #ccc;
     border-radius: 25px;
@@ -18,40 +46,12 @@ ion-text {
     height: 8px;
 }
 
-.hr {
-    border-bottom: 1px solid #ccc;
-    margin: 10px;
-}
-
-.cible-modal {
-    font-size: 20px;
-    background-color: #EBF7F4;
-    padding: 5px;
-}
-
-.sommeil-modal-title {
-    font-size: 25px;
-    color: #404395;
-}
-
-.data-text {
-    font-size: 15px;
-}
-
-.data-time {
-    font-size: 20px;
-}
-
-.compte-modal {
-    font-size: 20px;
-}
-
 .modal-data {
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-.gear-avatar {
-    position: relative;
-    right: 0px;
+.sommeil-modal-title {
+    font-size: 25px;
+    color: #404395;
 }

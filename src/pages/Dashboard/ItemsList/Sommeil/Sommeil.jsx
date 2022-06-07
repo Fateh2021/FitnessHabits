@@ -103,7 +103,7 @@ const Sommeil = (props) => {
         </IonButton>
       </IonModal>
       <ion-grid class="tab-sommeil">
-        <ion-row class=" ">
+        <ion-row>
           <ion-col class="tab-icon" size="auto">
             <img width="50" class="moon"
               src="https://cdn-sharing.adobecc.com/content/storage/id/urn:aaid:sc:US:16ea145b-ccaa-4052-8e60-6130c324c6aa;revision=0?component_id=99a406e6-778a-4c46-baf4-18b271040690&api_key=CometServer1&access_token=1654668333_urn%3Aaaid%3Asc%3AUS%3A16ea145b-ccaa-4052-8e60-6130c324c6aa%3Bpublic_396eaa7d0ba2a2d8500abf7ed6ee012abab5d2cb" alt="Moon" />
@@ -133,7 +133,7 @@ const Sommeil = (props) => {
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <IonText class="textO" color="dark">Moyenne quotidienne / 7j | 00:00</IonText>
+                  <IonText color="dark">Moyenne quotidienne / 7j | 00:00</IonText>
                 </ion-col>
               </ion-row>
             </ion-grid>

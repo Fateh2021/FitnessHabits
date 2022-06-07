@@ -8,7 +8,7 @@ class SommeilModal extends React.Component {
   render() {
     return <>
       <IonContent className="ion-padding">
-        <ion-grid class="">
+        <ion-grid>
           <ion-row>
             <ion-col>
               <IonText color="dark" class="sommeil-modal-title">
@@ -38,7 +38,7 @@ class SommeilModal extends React.Component {
           <div class="hr"></div>
           <ion-row>
             <ion-col>
-              <IonText color="dark" class="">
+              <IonText color="dark">
                 Afficher le graphique
               </IonText>
             </ion-col>
