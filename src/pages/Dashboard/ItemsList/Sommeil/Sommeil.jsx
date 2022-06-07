@@ -96,51 +96,50 @@ const Sommeil = (props) => {
 
   return (
     <div>
-      <IonModal isOpen={showModal}>
+      <IonModal isOpen={showModal} class="modal-sommeil">
         <SommeilModal></SommeilModal>
         <IonButton color="success" onClick={() => setShowModal(false)}>
           Fermer
         </IonButton>
       </IonModal>
-        <ion-grid class="tab-sommeil">
-          <ion-row class=" ">
-            <ion-col class="tab-icon"> 
-              <IonAvatar>
-                <img src="/assets/Sommeil3.png"  alt="Moon" />
-              </IonAvatar>
-            </ion-col>
-            <ion-col class=" white-bg" size="10">
-              <ion-grid>
-                <ion-row>
-                  <ion-col>
-                    <IonText color="dark" class="Sommeil-Title">
-                      <b>
-                        {translate.getText("SLEEP")}
-                      </b>
-                    </IonText>
-                  </ion-col>
-                  <ion-col class="ion-text-right">
-                    <IonText color="dark" class="compte">
-                      <b>
-                        0 : 00
-                      </b>
-                    </IonText>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <IonText class="cible" color="dark">Cible | 9:00</IonText>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <IonText class="textO" color="dark">Moyenne quotidienne / 7j | 00:00</IonText>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+      <ion-grid class="tab-sommeil">
+        <ion-row class=" ">
+          <ion-col class="tab-icon" size="auto">
+            <img width="50" class="moon"
+              src="https://cdn-sharing.adobecc.com/content/storage/id/urn:aaid:sc:US:16ea145b-ccaa-4052-8e60-6130c324c6aa;revision=0?component_id=99a406e6-778a-4c46-baf4-18b271040690&api_key=CometServer1&access_token=1654668333_urn%3Aaaid%3Asc%3AUS%3A16ea145b-ccaa-4052-8e60-6130c324c6aa%3Bpublic_396eaa7d0ba2a2d8500abf7ed6ee012abab5d2cb" alt="Moon" />
+          </ion-col>
+          <ion-col class=" white-bg" onClick={() => setShowModal(true)}>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <IonText color="dark" class="sommeil-title">
+                    <b>
+                      {translate.getText("SLEEP")}
+                    </b>
+                  </IonText>
+                </ion-col>
+                <ion-col class="ion-text-right">
+                  <IonText color="dark" class="compte">
+                    <b>
+                      0 : 00
+                    </b>
+                  </IonText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <IonText class="cible" color="dark">Cible | 9:00</IonText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <IonText class="textO" color="dark">Moyenne quotidienne / 7j | 00:00</IonText>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
       <IonItem className="divTitre7">
         <IonAvatar slot="start">

@@ -3,14 +3,14 @@ ion-text {
     font-family: roboto;
 }
 
-.tabb{
+.tab-icon{
     border-radius: 25px 5px 0px 25px;
     z-index: 32;
     padding: 2px 0;
     background-color: #404395;
 }
 
-.tabbb{
+.tab-sommeil{
     border-radius: 25px;
     z-index: 3;
     padding: 2px 0;
@@ -31,7 +31,7 @@ ion-text {
     background-color: white;
 }
 
-.Sommeil-Title {
+.sommeil-title {
     font-size: 25px;
 }
 
@@ -47,4 +47,14 @@ ion-text {
 
 .textO {
     font-size: 15px;
+}
+
+.modal-sommeil {
+    --max-width: 400px;
+    --max-height: 600px;
+}
+
+.moon {
+    filter: brightness(0) invert(1);
+    margin: 30px;
 }
