@@ -45,20 +45,18 @@ const Supplements = (props) => {
   const [posoValue, setPosoValue] = useState("");
   const [afficherAlerteAjoutRestriction, setAfficherAlerteAjoutRestriction] = useState(false);
   const [afficherAlerteAjoutFormatDose, setAfficherAlerteAjoutFormatDose] = useState(false);
-  {/*TODO : à traduire*/}
   const [formatsDose, setFormatsDose] = useState([
                                           translate.getText("SUPPL_FORME_TABLET"),
                                           translate.getText("SUPPL_FORME_CAPSULE"),
-                                          translate.getText("SUPPL_FORME_SYROP"),
+                                          translate.getText("SUPPL_FORME_SIROP"),
                                           translate.getText("SUPPL_FORME_DROP"),
-                                          "Bouteilles (unités)",
-                                          "Gel (pré-dosé)",
-                                          "Injection (pré-dosé)"
+                                          translate.getText("SUPPL_FORMAT_BOUTEILLE"),
+                                          translate.getText("SUPPL_FORMAT_GEL"),
+                                          translate.getText("SUPPL_FORMAT_INJECTION")
                                             ]);
-  {/*TODO : à traduire*/}
   const [restrictions, setRestrictions] = useState([
-                                          {valeur: "Doit être prise à jeun", estCoche: false},
-                                          {valeur: "Doit être prise en mangeant", estCoche: false}]);
+                                          {valeur: translate.getText("SUPPL_RESTRICTION_JEUN"), estCoche: false},
+                                          {valeur: translate.getText("SUPPL_RESTRICTION_MANGEANT"), estCoche: false}]);
   const [nomChoisi, setNomChoisi] = useState("");
   const [typeChoisi, setTypeChoisi] = useState("");
   const [quantiteChoisie, setQuantiteChoisie] = useState("");
@@ -115,7 +113,7 @@ const Supplements = (props) => {
                   <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
                   <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
                   <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
-                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SYROP")}</IonSelectOption>
+                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SIROP")}</IonSelectOption>
         </IonSelect>
       )
     }else{
@@ -217,7 +215,7 @@ const Supplements = (props) => {
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Type</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_TYPE")}</IonLabel>
                 </IonItemDivider>
 
                 <IonRadioGroup 
@@ -240,7 +238,7 @@ const Supplements = (props) => {
                 </IonItemDivider>
 
                 <IonItem>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Quantité</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_QUANTITE")}</IonLabel>
                   <IonInput className="inputSuppConsom" 
                     id="inputDose"
                     value={quantiteChoisie} 
@@ -266,12 +264,12 @@ const Supplements = (props) => {
                     expand="block"
                     onClick={() => setAfficherAlerteAjoutFormatDose(true)}
                   >
-                    {/*TODO : à traduire*/}Ajouter Format
+                    {translate.getText("SUPPL_AJOUTER_FORMAT")}
                   </IonButton>
                   <IonAlert
                     isOpen={afficherAlerteAjoutFormatDose}
                     onDidDismiss={() => setAfficherAlerteAjoutFormatDose(false)}
-                    header={/*TODO : à traduire*/"Nouveau format"}
+                    header={translate.getText("SUPPL_NOUVEAU_FORMAT")}
                     inputs={[
                       {
                         name: "nouveauFormat",
@@ -279,11 +277,11 @@ const Supplements = (props) => {
                       }]}
                     buttons={[
                       {
-                        text: /*TODO : à traduire*/"Cancel",
+                        text: translate.getText("SUPPL_CANCEL"),
                         role: "cancel",
                       },
                       {
-                        text: /*TODO : à traduire*/"Ajouter",
+                        text: translate.getText("SUPPL_ADD_SELECT"),
                         handler: (donneesAlerte) => {
                           setFormatsDose(formatsDoseCourants => [...formatsDoseCourants, donneesAlerte.nouveauFormat]);
                         }
@@ -293,7 +291,7 @@ const Supplements = (props) => {
                 </IonItem>
 
                 <IonItemDivider>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Restrictions</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_RESTRICTION")}</IonLabel>
                 </IonItemDivider>
 
                 {restrictions.map(restriction => 
@@ -314,12 +312,12 @@ const Supplements = (props) => {
                     expand="block"
                     onClick={() => setAfficherAlerteAjoutRestriction(true)}
                   >
-                    {/*TODO : à traduire*/}Ajouter restriction
+                    {translate.getText("SUPPL_AJOUTER_RESTRICTION")}
                   </IonButton>
                   <IonAlert
                     isOpen={afficherAlerteAjoutRestriction}
                     onDidDismiss={() => setAfficherAlerteAjoutRestriction(false)}
-                    header={/*TODO : à traduire*/"Nouvelle restriction"}
+                    header={translate.getText("SUPPL_NOUVELLE_RESTRICTION")}
                     inputs={[
                       {
                         name: "nouvelleRestriction",
@@ -327,11 +325,11 @@ const Supplements = (props) => {
                       }]}
                     buttons={[
                       {
-                        text: /*TODO : à traduire*/"Cancel",
+                        text: translate.getText("SUPPL_CANCEL"),
                         role: "cancel"
                       },
                       {
-                        text: /*TODO : à traduire*/"Ajouter",
+                        text: translate.getText("SUPPL_ADD_SELECT"),
                         handler: (donneesAlerte) => {
                           setRestrictions(restrictionsCourantes => [...restrictionsCourantes, {valeur: donneesAlerte.nouvelleRestriction, estCoche: false}]);
                         }
@@ -347,13 +345,13 @@ const Supplements = (props) => {
                 </IonItemDivider>
 
                 <IonItem>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Nombre de doses</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_NOMBRE_DOSES")}</IonLabel>
                   <IonInput className="inputSuppConsom"
                     value={nombreDosesChoisi}
                     onIonChange={e => setNombreDosesChoisi(e.detail.value)}></IonInput>
                 </IonItem>
                 <IonItem>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Fréquence des doses</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_FREQUENCE_DOSES")}</IonLabel>
                   <IonInput className="inputSuppConsom"
                     value={nombreFrequenceDosesChoisie} 
                     onIonChange={e => setNombreFrequenceDosesChoisi(e.detail.value)}></IonInput>
