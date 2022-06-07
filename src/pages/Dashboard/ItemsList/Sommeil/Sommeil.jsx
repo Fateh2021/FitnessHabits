@@ -5,6 +5,7 @@ import { arrowDropdownCircle } from 'ionicons/icons';
 import { toast } from '../../../../Toast'
 import * as translate from '../../../../translate/Translator'
 import '../../../Tab1.css';
+import './Sommeil.css';
 import './SommeilModal';
 import SommeilModal from "./SommeilModal";
 
@@ -58,7 +59,7 @@ const Sommeil = (props) => {
     return duree_totale;
   }
 
-  
+
   // Formattage de la durée 
   const duree = calculer_duree();
   const duree_heures = Math.floor(duree / 60)
@@ -69,9 +70,9 @@ const Sommeil = (props) => {
   // Fontion qui sauvegarde les resultat dans le local storage et dans le backend
   const handleSave = () => {
 
-    if(duree === 0)
+    if (duree === 0)
       return toast(translate.getText("SOMMEIL_DUREE_ERROR"))
-    else if(selectedEtatReveil === null)
+    else if (selectedEtatReveil === null)
       return toast(translate.getText("SOMMEIL_ETAT_REVEIL_ERROR"))
 
     // Calcul de l'heure
@@ -97,10 +98,50 @@ const Sommeil = (props) => {
     <div>
       <IonModal isOpen={showModal}>
         <SommeilModal></SommeilModal>
-          <IonButton color="success" onClick={() => setShowModal(false)}>
+        <IonButton color="success" onClick={() => setShowModal(false)}>
           Fermer
         </IonButton>
       </IonModal>
+        <ion-grid class="tab-sommeil">
+          <ion-row class=" ">
+            <ion-col class="tab-icon"> 
+              <IonAvatar>
+                <img src="/assets/Sommeil3.png"  alt="Moon" />
+              </IonAvatar>
+            </ion-col>
+            <ion-col class=" white-bg" size="10">
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <IonText color="dark" class="Sommeil-Title">
+                      <b>
+                        {translate.getText("SLEEP")}
+                      </b>
+                    </IonText>
+                  </ion-col>
+                  <ion-col class="ion-text-right">
+                    <IonText color="dark" class="compte">
+                      <b>
+                        0 : 00
+                      </b>
+                    </IonText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <IonText class="cible" color="dark">Cible | 9:00</IonText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <IonText class="textO" color="dark">Moyenne quotidienne / 7j | 00:00</IonText>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
       <IonItem className="divTitre7">
         <IonAvatar slot="start">
           <img src="/assets/Sommeil3.png" alt="Moon" />
@@ -124,12 +165,12 @@ const Sommeil = (props) => {
                     <IonLabel><b className="text-white">{translate.getText("BED_TIME")}</b></IonLabel>
                   </IonCol>
                   <IonCol size="12">
-                    <IonDatetime className="input-sommeil" 
-                    cancelText={translate.getText("CANCEL")}
-                    doneText="OK" 
-                    displayFormat="HH:mm" 
-                    value={selectedHeureDebut} 
-                    onIonChange={e => setSelectedHeureDebut(e.detail.value)}></IonDatetime>
+                    <IonDatetime className="input-sommeil"
+                      cancelText={translate.getText("CANCEL")}
+                      doneText="OK"
+                      displayFormat="HH:mm"
+                      value={selectedHeureDebut}
+                      onIonChange={e => setSelectedHeureDebut(e.detail.value)}></IonDatetime>
                   </IonCol>
                 </IonRow>
               </IonCol>
@@ -141,10 +182,10 @@ const Sommeil = (props) => {
                     <IonLabel><b className="text-white">{translate.getText("WAKE_UP_TIME")}</b></IonLabel>
                   </IonCol>
                   <IonCol size="12">
-                    <IonDatetime className="input-sommeil" 
-                      cancelText={translate.getText("CANCEL")} 
+                    <IonDatetime className="input-sommeil"
+                      cancelText={translate.getText("CANCEL")}
                       doneText="OK"
-                      displayFormat="HH:mm" value={selectedHeureFin} 
+                      displayFormat="HH:mm" value={selectedHeureFin}
                       onIonChange={e => setSelectedHeureFin(e.detail.value)}></IonDatetime>
                   </IonCol>
                 </IonRow>
@@ -168,7 +209,7 @@ const Sommeil = (props) => {
               <IonCol size="8">
                 <IonItem className="ion-no-padding" lines="none" >
                   <IonLabel className="ion-hide">{translate.getText("STATE_OF_MIND")}</IonLabel>
-                  <IonSelect style={{ minWidth: "100%" }} className="input-sommeil"  cancelText={translate.getText("CANCEL")} value={selectedEtatReveil} placeholder={translate.getText("STATE_OF_MIND")} onIonChange={(e) => setEtatReveil(e.detail.value)}>
+                  <IonSelect style={{ minWidth: "100%" }} className="input-sommeil" cancelText={translate.getText("CANCEL")} value={selectedEtatReveil} placeholder={translate.getText("STATE_OF_MIND")} onIonChange={(e) => setEtatReveil(e.detail.value)}>
                     <IonSelectOption value="repose">{translate.getText("RESTED")}</IonSelectOption>
                     <IonSelectOption value="heureux">{translate.getText("HAPPY")}</IonSelectOption>
                     <IonSelectOption value="fatigue">{translate.getText("FATIGUE")}</IonSelectOption>
