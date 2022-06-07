@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol,IonFooter , IonModal} from '@ionic/react';
-import { arrowDropdownCircle, star, trash, addCircle, removeCircle} from 'ionicons/icons';
+import { arrowDropdownCircle, star, trash, addCircle, removeCircle, create} from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
 
@@ -285,18 +285,16 @@ const Hydratation = (props) => {
                                 <ion-card-content class="ion-text-center">
                                      <IonButton    size="small" onClick={()=>DailyConsumptionIncrement(index)}>
                                                                                               <IonIcon  icon={addCircle} />
-                                                                                            </IonButton>
-                                     <IonButton  color="primary" size="small" onClick={()=>DailyConsumptionDecrementHydrate(index)}>
-                                                         <IonIcon  icon={removeCircle} />
-                                     </IonButton>
+                                      </IonButton>
 
+                                       <IonButton  size="small" onClick={() => DailyConsumptionIncrement(index)}>
+                                              <IonIcon icon={create}/>
+                                        </IonButton>
 
-                                      <IonButton color="primary" size="small" onClick={() => deleteItemHydrate(index)}>
-                                                          <IonIcon  icon={trash} />
-                                                        </IonButton>
-                                      <IonButton color="primary" size="small" onClick={() => DailyConsumptionIncrement(index)}>
+                                      <IonButton  size="small" onClick={() => deleteItemHydrate(index)}>
+                                                          <IonIcon icon={trash}/>
+                                      </IonButton>
 
-                                                                                              </IonButton>
                                 </ion-card-content>
                                   </ion-card>
                             </ion-col>
