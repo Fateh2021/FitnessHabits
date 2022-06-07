@@ -16,9 +16,9 @@ const formatHourMinute = (time) => {
 }
 
 const getPracticesFilter = (practices, currentDate) => {
+    let date3MontsPrior = new Date(currentDate.getYear(), currentDate.getMonth() - 3, currentDate.getDate())
     return practices.filter((practice) => {
         let dateToFilter = new Date(practice.date)
-        let date3MontsPrior = currentDate.setMonth(currentDate.getMonth() - 3)
         return dateToFilter > date3MontsPrior
     }).sort(function (a, b) {
         let d1 = new Date(a.date)

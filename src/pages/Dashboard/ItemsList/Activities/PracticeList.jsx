@@ -10,13 +10,9 @@ import '../../../Tab1.css';
 
 const PracticeList = (props) =>  {
 
-  const [currentDate, setCurrentDate] = useState('');
+  const [currentDate, setCurrentDate] = useState(props.currentDate.startDate);
   const [practices, setPractices] = useState ([]);
   const [activities, setActivities] = useState ([]);
-
-  useEffect(() => {
-    setCurrentDate(props.currentDate.startDate);
-  }, [props.currentDate])
 
   useEffect(() => {
     setPractices(PratiqueUtil.getPracticesFilter(props.practices, currentDate));
