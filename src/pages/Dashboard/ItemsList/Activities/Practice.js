@@ -27,7 +27,7 @@ const getPracticesFilter = (practices, currentDate) => {
             return a.id - b.id
         }
         else {
-            return d1 - d2
+            return d2 - d1
         }
     })
 }
