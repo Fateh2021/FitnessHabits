@@ -361,10 +361,10 @@ const Supplements = (props) => {
                     value={frequenceDosesChoisie}
                     onIonChange={ v => everydayTrue(v) }
                   >
-                    <IonSelectOption value="hours">{translate.getText("SUPPL_HOURS")}</IonSelectOption>
-                    <IonSelectOption value="day">{translate.getText("SUPPL_DAY")}</IonSelectOption>
-                    <IonSelectOption value="week">{translate.getText("SUPPL_WEEK")}</IonSelectOption>
-                    <IonSelectOption value="month">{translate.getText("SUPPL_MONTH")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_HOURS")}>{translate.getText("SUPPL_HOURS")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_DAY")}>{translate.getText("SUPPL_DAY")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_WEEK")}>{translate.getText("SUPPL_WEEK")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_MONTH")}>{translate.getText("SUPPL_MONTH")}</IonSelectOption>
                     
                   </IonSelect>
                 </IonItem>

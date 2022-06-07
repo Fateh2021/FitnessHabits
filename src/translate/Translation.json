@@ -518,23 +518,23 @@
       "fr":"Dimanche"
    },
    "SUPPL_HOURS":{
-      "en":"Hours",
-      "es":"Horas",
-      "fr":"Heures"
+      "en":"Hour(s)",
+      "es":"Hora(s)",
+      "fr":"Heure(s)"
    },
    "SUPPL_DAY":{
-      "en":"Days",
-      "es":"Dias",
-      "fr":"Jours"
+      "en":"Day(s)",
+      "es":"Dia(s)",
+      "fr":"Jour(s)"
    },
    "SUPPL_WEEK":{
-      "en":"Week",
-      "es":"Semana",
-      "fr":"Semaine"
+      "en":"Week(s)",
+      "es":"Semana(s)",
+      "fr":"Semaine(s)"
    },
    "SUPPL_MONTH":{
-      "en":"Month",
-      "es":"Mes",
+      "en":"Month(s)",
+      "es":"Mes(es)",
       "fr":"Mois"
    },
    "SUPPL_MORNING":{
