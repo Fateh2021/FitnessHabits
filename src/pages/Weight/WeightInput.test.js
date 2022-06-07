@@ -39,6 +39,7 @@ describe("WeightInput", () => {
     var showInputWeight = true;
     const dateFormat = "YYYY/MM/DD"
     const currentDate = {startDate: "2022-06-03 10:30"}
+    const unitWeight = "KG"
 
     beforeEach(() => {
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
@@ -70,7 +71,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate} 
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
         })
 
         const mot1 = screen.getByText(/Nouveau poids/i);
@@ -84,7 +86,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
         })
 
         const mot1 = screen.getByText(/Nuevo peso/i);
@@ -98,7 +101,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
         })
 
         const mot1 = screen.getByText(/New weight/i);
@@ -111,7 +115,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
         })
 
         const weight = screen.getByTestId("weight");
@@ -131,7 +136,8 @@ describe("WeightInput", () => {
                                 currentDate={currentDate}  
                                 dateFormat={dateFormat} 
                                 setDailyWeight={jest.fn()} 
-                                adjustUnit={jest.fn()}/>);
+                                adjustUnit={jest.fn()}
+                                unitWeight = {unitWeight}/>);
         })
 
         const select = screen.getByTestId("select");
@@ -153,7 +159,8 @@ describe("WeightInput", () => {
                                 currentDate={currentDate}  
                                 dateFormat={dateFormat} 
                                 setDailyWeight={jest.fn()} 
-                                adjustUnit={jest.fn()}/>);
+                                adjustUnit={jest.fn()}
+                                unitWeight = {unitWeight}/>);
         })
         const weight = screen.getByTestId("weight");
         const select = screen.getByTestId("select");
@@ -170,7 +177,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
         })
 
         const weight = screen.getByTestId("weight");
@@ -186,7 +194,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
         })
 
         const date = screen.getByTestId("date");
@@ -203,7 +212,8 @@ describe("WeightInput", () => {
         act(() => { render(<WeightInput dailyWeight={dailyWeight} 
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
-                                dateFormat={dateFormat}/>);
+                                dateFormat={dateFormat}
+                                unitWeight = {unitWeight}/>);
     })
 
         const time = screen.getByTestId("time");
