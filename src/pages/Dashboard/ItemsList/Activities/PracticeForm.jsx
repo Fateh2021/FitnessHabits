@@ -9,48 +9,47 @@ const PracticeForm = (props) => {
     const [name, setName] = useState('')
     const [time, setTime] = useState('00:00')
     const [errors, setErrors] = useState({})
-    const [firstSubmit, setFirstSubmit] = useState(false)
 
     const divId = "PracticeForm" + (props.practice ? props.practice.id : "Add")
 
     const handleValidation = () => {
-        let formValid = true
         let errorsFound = {}
         let [hour, minute] = time.split(":")
 
         if ((parseInt(hour) * 60 + parseInt(minute)) === 0) {
-            formValid = false
             errorsFound["time"] = translate.getText("TIME_ERROR")
         }
         if (name.length === 0) {
-            formValid = false
             errorsFound["name"] = translate.getText("NAME_ERROR")
         }
-
-        setErrors({...errorsFound})
-        return formValid
+        return errorsFound
     }
 
     const beforeSubmit = (e) => {
         e.preventDefault()
-        setFirstSubmit(true)
         let [hour, minute] = time.split(":")
         let formValid = handleValidation()
 
-        if (formValid) {
+        if (Object.keys(formValid).length === 0) {
             props.onSubmitAction({name, time: (parseInt(hour) * 60 + parseInt(minute)), intensity})
-
-            setName('')
-            setTime('00:00')
-            setIntensity("INTENSITY_LOW")
-            setFirstSubmit(false)
-            PratiqueUtil.accor(divId)
+            resetForm()
         }
+        setErrors(formValid)
+    }
+
+    const resetForm = () => {
+        setName('')
+        setTime('00:00')
+        setIntensity("INTENSITY_LOW")
+        setErrors({})
+        PratiqueUtil.accor(divId)
     }
 
     return (
-        <div id={divId} className='popUpWindow' onClick={() => PratiqueUtil.accor(divId)}>
-            <div className='popUpWindow-inner-small' onClick={(e) => e.stopPropagation()}>
+        <div id={divId} className='popUpWindow' onClick={resetForm}>
+            <div className='popUpWindow-inner-small' onClick={(e) => {
+                e.stopPropagation()
+            }}>
                 <IonLabel><h1 className='activityTitle' >{(props.practice ? translate.getText("MODIFY_ACTIVITY") : translate.getText("ADD_ACTIVITY"))}</h1></IonLabel>
                 <form onSubmit={beforeSubmit}>
                     <br/>
@@ -59,9 +58,7 @@ const PracticeForm = (props) => {
                                value={name}
                                onChange={(e) => {
                                    setName(e.target.value)
-                                   if (firstSubmit) {
-                                       handleValidation()
-                                   }
+                                   handleValidation()
                                 }}/>
                         <span style={{ color: "red" }}>{errors["name"]}</span>
                     </IonRow>
@@ -78,9 +75,7 @@ const PracticeForm = (props) => {
                                          value={time}
                                          onIonChange={e =>  {
                                              setTime(e.detail.value)
-                                             if (firstSubmit) {
-                                                 handleValidation()
-                                             }
+                                             handleValidation()
                                          }}/>
                         </IonCol>
                         <span style={{ color: "red" }}>{errors["time"]}</span>

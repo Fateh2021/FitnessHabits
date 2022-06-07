@@ -7,6 +7,7 @@ import PracticeItem from "./PracticeItem";
 import PratiqueUtil from "./Practice.js"
 import PracticeForm from "./PracticeForm";
 import '../../../Tab1.css';
+import practice from "./Practice.js";
 
 const PracticeList = (props) =>  {
 
@@ -20,6 +21,9 @@ const PracticeList = (props) =>  {
   }, [props.practices, props.activities])
 
   const addPractice = (Practice) => {
+    if (currentDate.setHours(0, 0, 0, 0) > (new Date()).setHours(0, 0, 0, 0))
+      return
+
     const userUID = localStorage.getItem('userUid');
     const newId = practices.length === 0 ? 1 : Math.max.apply(Math, practices.map((practice) => {return practice.id})) + 1
     let newPractice = {
@@ -29,6 +33,7 @@ const PracticeList = (props) =>  {
       time: Practice.time,
       intensity: Practice.intensity
     };
+
     setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate));
     firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice), activities: activities});
   }
@@ -44,10 +49,9 @@ const PracticeList = (props) =>  {
       </IonItem>
       <div id="pratiquesList" className='popUpWindow' onClick={() => PratiqueUtil.accor("pratiquesList")}>
         <div className='popUpWindow-inner' onClick={(e) => e.stopPropagation()}>
-        <IonLabel><h1 className='activityTitle' >Activités</h1></IonLabel>
+        <IonLabel><h1 className='activityTitle' >{translate.getText("ACTIVITIES")}</h1></IonLabel>
           <br/>
           {
-
             practices.map((practice) => (
                 <PracticeItem key={practice.id} practice={practice} />
             ))

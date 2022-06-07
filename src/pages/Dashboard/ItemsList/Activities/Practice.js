@@ -1,7 +1,7 @@
 const accor = (divId) => {
     const divElt=document.getElementById(divId);
     if (divElt) {
-        (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "flex":divElt.style.display = "none";
+        (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
     }
 }
 
