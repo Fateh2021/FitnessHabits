@@ -3,56 +3,64 @@ import moment from "moment";
 import 'moment/locale/fr' 
 import 'moment/locale/es' 
 import * as translate from "../../../translate/Translator";
-const currentDate = new Date()
 const DIFF_UNITY_WEIGHT = 2.2;
 
 // Variables in Firebase and localstorage remains in French for now with a translation in comment
 export function initPrefWeight() {
-  const userUID = localStorage.getItem('userUid');
-	// Firebase : preferencesPoids = preferencesWeight
-  let prefWeightRef = firebase.database().ref('profiles/'+ userUID +"/preferencesPoids")
-  prefWeightRef.once("value").then(function(snapshot) {
-    // Lets retrieve the weight preference we have in firebase before putting it in localstorage
-    // Firebase : unitePoids = unitWeight
-    if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
-			// LocalStorage : prefUnitePoids = prefUnitWeight
-      localStorage.setItem("prefUnitePoids", snapshot.val().unitePoids.toString());
-    } else {
-      localStorage.setItem("prefUnitePoids", "KG");
-    }
-  })
+  return new Promise((resolve) => {
+    const userUID = localStorage.getItem('userUid');
+    // Firebase : preferencesPoids = preferencesWeight
+    let prefWeightRef = firebase.database().ref('profiles/'+ userUID +"/preferencesPoids")
+    prefWeightRef.once("value").then(function(snapshot) {
+      // Lets retrieve the weight preference we have in firebase before putting it in localstorage
+      // Firebase : unitePoids = unitWeight
+      if (snapshot.val() !== null && snapshot.val().unitePoids !== null) {
+        // LocalStorage : prefUnitePoids = prefUnitWeight
+        localStorage.setItem("prefUnitePoids", snapshot.val().unitePoids.toString());
+      } else {
+        localStorage.setItem("prefUnitePoids", "KG");
+      }
+      resolve();
+    })
+  });
 }
 export function initWeights() {
-  const userUID = localStorage.getItem('userUid');
-  let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-  preferencesWeightRef.once("value").then(function(snapshot) {
-      if (snapshot.val() != null) {
-        // Firebase : poidsInitial = initialWeight
-        // Firebase : poidsCible = targetWeight
-        localStorage.setItem("poidsInitial", snapshot.val().poidsInitial);
-        localStorage.setItem("poidsCible", snapshot.val().poidsCible);
-        localStorage.setItem("dateCible", snapshot.val().dateCible);
-      }
-      else {
-        localStorage.setItem("poidsInitial", 0);
-        localStorage.setItem("poidsCible", 0);
-        localStorage.setItem("dateCible", "1999-9-9");
-
-      }
-    })
+  console.log("why is not working")
+  return new Promise((resolve) => {
+    const userUID = localStorage.getItem('userUid');
+    let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
+    preferencesWeightRef.once("value").then(function(snapshot) {
+        if (snapshot.val() != null) {
+          // Firebase : poidsInitial = initialWeight
+          // Firebase : poidsCible = targetWeight
+          localStorage.setItem("poidsInitial", snapshot.val().poidsInitial);
+          localStorage.setItem("poidsCible", snapshot.val().poidsCible);
+          localStorage.setItem("dateCible", snapshot.val().dateCible);
+        }
+        else {
+          localStorage.setItem("poidsInitial", 0);
+          localStorage.setItem("poidsCible", 0);
+          localStorage.setItem("dateCible", "1999-9-9");
+        }
+        resolve();
+      })
+  });
 }
 
 export function initSize() {
-  const userUID = localStorage.getItem('userUid');
-  var size_from_BD = firebase.database().ref("profiles/" + userUID);
-    size_from_BD.once("value").then(function (snapshot) {
-      if (snapshot.val() != null) {
-        localStorage.setItem("taille", snapshot.val().size);
-      }
-      else {
-        localStorage.setItem("taille", 0);
-      }
-    })
+  return new Promise((resolve) => {
+    const userUID = localStorage.getItem('userUid');
+    var size_from_BD = firebase.database().ref("profiles/" + userUID);
+      size_from_BD.once("value").then(function (snapshot) {
+        if (snapshot.val() != null) {
+          localStorage.setItem("taille", snapshot.val().size);
+        }
+        else {
+          localStorage.setItem("taille", 0);
+        }
+        resolve();
+      })
+  });
 }
 
 
@@ -153,17 +161,20 @@ export function formatDateShape (date,shape) {
 }
 
 export function initPrefDate() {
-  const userUID = localStorage.getItem('userUid');
-  let prefDatetRef = firebase.database().ref('profiles/'+ userUID +"/dateFormat")
-  prefDatetRef.once("value").then(function(snapshot) {
-    // Lets retrieve the date format preference we have in firebase before putting it in localstorage
-    if (snapshot.val() !== null) {
-			// LocalStorage : prefUnitePoids = prefUnitWeight
-      localStorage.setItem("prefDateFormat", snapshot.val().toString());
-    } else {
-      localStorage.setItem("prefDateFormat", "dd-LL-yyyy");
-    }
-  })
+  return new Promise((resolve) => {
+    const userUID = localStorage.getItem('userUid');
+    let prefDatetRef = firebase.database().ref('profiles/'+ userUID +"/dateFormat")
+    prefDatetRef.once("value").then(function(snapshot) {
+      // Lets retrieve the date format preference we have in firebase before putting it in localstorage
+      if (snapshot.val() !== null) {
+        // LocalStorage : prefUnitePoids = prefUnitWeight
+        localStorage.setItem("prefDateFormat", snapshot.val().toString());
+      } else {
+        localStorage.setItem("prefDateFormat", "dd-LL-yyyy");
+      }
+      resolve();
+    })
+  });
 }
 
 export function getPrefDate() {

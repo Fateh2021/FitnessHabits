@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
-import firebase from "firebase";
 import * as weightService from "../../Weight/configuration/weightService"
 import * as translate from "../../../translate/Translator";
-import { IonInput, IonIcon, IonLabel, IonText, IonItem, IonItemDivider, IonImg, IonAvatar, IonContent} from "@ionic/react";
-import { arrowDropdownCircle } from "ionicons/icons";
+import { IonLabel, IonText, IonItem, IonItemDivider, IonImg} from "@ionic/react";
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
-import TableWeight from "../../Weight/configuration/TableWeight";
 import WeightInput from "../../Weight/WeightInput";
-
-/*const accor = (divId) => {
-    const divElt = document.getElementById(divId);
-    if (divElt) {
-        divElt.style.display =  !divElt.style.display || divElt.style.display === "none"? "block": "none";
-    }
-};*/
 
 // Variables in Firebase remains in French for now with a translation in comment
 const Poids = (props) => {
@@ -46,11 +36,9 @@ const Poids = (props) => {
     }
 
     setDailyWeight(parseFloat(tmp).toFixed(1));
-    
   }, [props.poids.dailyPoids]);
 
 
-  
   /*
   ***********************************************************************
   ** get favorite unite weight form database and set it to localstorage 
@@ -60,12 +48,20 @@ const Poids = (props) => {
   */
   useEffect(() => {
 
-    weightService.initPrefWeight();
-    weightService.initSize();
-    setUnitWeight(localStorage.getItem("prefUnitePoids"));
-    setSize(localStorage.getItem("taille"));
-    setBMI(weightService.calculation_BMI(size, weightService.formatToKG(dailyWeight)));
-  },[dailyWeight]);
+    weightService.initPrefWeight().then(() => {
+      setUnitWeight(weightService.getPrefUnitWeight());
+    });
+    
+    
+    weightService.initSize().then(() => {
+      setSize(localStorage.getItem("taille"));
+    });
+
+  },[]);
+
+  useEffect(() => {
+    setBMI(weightService.calculation_BMI(localStorage.getItem("taille"), weightService.formatToKG(dailyWeight)));
+  },[dailyWeight, size]);
 
 
 
@@ -77,10 +73,12 @@ const Poids = (props) => {
   ***********************************************************************
   */
   useEffect(() => {
-    weightService.initWeights()
-    setInitialWeight(localStorage.getItem("poidsInitial"));
-    setTargetWeight(localStorage.getItem("poidsCible"));
-    setTargetWeightDate(localStorage.getItem("dateCible"));
+    weightService.initWeights().then(() => {
+      setInitialWeight(localStorage.getItem("poidsInitial"));
+      setTargetWeight(localStorage.getItem("poidsCible"));
+      setTargetWeightDate(localStorage.getItem("dateCible"));
+    })
+
   }, [])
 
    /*
@@ -91,47 +89,24 @@ const Poids = (props) => {
   ***********************************************************************
   */
   useEffect(() => {
-    weightService.initPrefDate();
-    let format = localStorage.getItem("prefDateFormat");
-    format = format.replace(/y/gi, 'Y');
-    format = format.replace(/L/gi, 'M');
-    format = format.replace(/d/gi, 'D');
-    setDateFormat(format);
+    weightService.initPrefDate().then(() => {
+      let format = weightService.getPrefDate();
+      format = format.replace(/y/gi, 'Y');
+      format = format.replace(/L/gi, 'M');
+      format = format.replace(/d/gi, 'D');
+      setDateFormat(format);
+    });
   }, []);
 
   useEffect(() => {
     let format = weightService.getPrefDate();
-    format = format.replace(/y/gi, 'Y');
-    format = format.replace(/L/gi, 'M');
-    format = format.replace(/d/gi, 'D');
-    setDateFormat(format);
-  }, [props.formatedCurrentDate]);
-
-
-/*
-	// Capture of the vent if the weight preference unit changes
-  const handleUnitWeightChange = (event) => {
-    let newUnitWeight = event.target.value;
-    weightService.setPrefUnitWeight(newUnitWeight);
-    let oldUnitWeight = unitWeight;
-    setUnitWeight(newUnitWeight);
-
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    console.log(dashboard);
-    var weightAdjustdaily = 0;
-    //var  poidsInit = 0;
-    if (oldUnitWeight === "KG" && newUnitWeight === "LBS") {
-      weightAdjustdaily = dashboard.poids.dailyPoids * 2.2;
-     // poidsInit = dashboard.props.poids.poidsInitial * 2.2;
-    } else {
-      weightAdjustdaily = dashboard.poids.dailyPoids;
-     // poidsInit = dashboard.props.poids.poidsInitial;
+    if(format) {
+      format = format.replace(/y/gi, 'Y');
+      format = format.replace(/L/gi, 'M');
+      format = format.replace(/d/gi, 'D');
+      setDateFormat(format);
     }
-		// Then we reduce to one decimal point but using parseFloat to use toFixed
-    setDailyWeight(parseFloat(weightAdjustdaily).toFixed(1));
-    //setInitialWeight(parseFloat(poidsInit).toFixed(1));
-  };
-*/
+  }, [props.formatedCurrentDate]);
 
   /*
   ***********************************************************************
@@ -147,25 +122,6 @@ const Poids = (props) => {
     
     setShowInputWeight(false)
   };
-
-
-/* 
-  // Capture de l'éventement si IMC change
-  const handleBMIChange = (event) => {
-    let BMI_Change = event.target.value;
-    /* Pour éviter d'avoir des alerts pendant le changement du poids. Exemple 90 pourrait être remplacer pour 85,
-       mais pour y arriver, il faut retirer la valeur et saisir 8 et 5 pour 85. Comme c'est plus que 10,
-       il fait appel à la fonction afin de valider si l'IMC a changé de catégorie.
-    
-    if (BMI_Change > 10) {
-      weightService.check_BMI_change(BMI_Change);
-    }
-  }
-
-  const handleRouteToConfigurationPoids = () => {
-        window.location.href = "/configurationPoids";
-  };
-*/
 
   return (
     <div>
@@ -249,14 +205,11 @@ const Poids = (props) => {
             showInputWeight={showInputWeight} 
             setShowInputWeight={setShowInputWeight}
             adjustUnit = {setUnitWeight}
+            unitWeight = {unitWeight}
             dateFormat = {dateFormat}
             currentDate = {props.currentDate}
           ></WeightInput>      
       </IonItem>
-      
-      <div id="accordeonPoids" className="accordeonPoids">
-        <TableWeight></TableWeight>
-      </div>
     </div>
   );
 };

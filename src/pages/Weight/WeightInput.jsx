@@ -10,8 +10,7 @@ import "../weight.css";
 // Variables in Firebase remains in French for now with a translation in comment
 const WeightInput = (props) => {
   // Ajout de cette variable dans le but de vérifier quelle était la préférence d'affichage du poids.
-  var prefWeight = localStorage.getItem("prefUnitePoids");
-  const [unitWeight, setUnitWeight] = useState(prefWeight);
+  const [unitWeight, setUnitWeight] = useState("KG");
   const [popoverDate, setPopoverDate] = useState(weightService.formatDate(props.currentDate.startDate));
   var [newDailyWeight, setNewDailyWeight] = useState(props.dailyWeight);
 
@@ -22,6 +21,10 @@ const WeightInput = (props) => {
   useEffect(() => {
     setPopoverDate(weightService.formatDate(props.currentDate.startDate));
   }, [props.currentDate]);
+
+  useEffect(() => {
+    setUnitWeight(props.unitWeight);
+  }, [props.unitWeight]);
 
 	// Capture of the vent if the weight preference unit changes
   const handleUnitWeightChange = (event) => {
