@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {IonCol, IonDatetime, IonLabel, IonRow, IonSelect, IonSelectOption} from "@ionic/react";
+import {IonButton, IonCol, IonDatetime, IonLabel, IonRow, IonSelect, IonSelectOption} from "@ionic/react";
 import PratiqueUtil from "./Practice";
 import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
@@ -47,8 +47,6 @@ const PracticeForm = (props) => {
             PratiqueUtil.accor(divId)
         }
     }
-
-
 
     return (
         <div id={divId} className='popUpWindow' onClick={() => PratiqueUtil.accor(divId)}>
@@ -106,7 +104,7 @@ const PracticeForm = (props) => {
 
                     </IonRow>
                     <IonRow style={{justifyContent:"center"}}>
-                        <input type="submit" value="Ajouter"/>
+                        <IonButton type="submit">{translate.getText("SUPPL_ADD_SELECT")}</IonButton>
                     </IonRow>
                 </form>
             </div>
