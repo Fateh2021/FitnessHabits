@@ -24,7 +24,7 @@ const PracticeList = (props) =>  {
     if (currentDate.setHours(0, 0, 0, 0) > (new Date()).setHours(0, 0, 0, 0))
       return
 
-    const userUID = localStorage.getItem('userUid');
+    const userUID = localStorage.getItem('userUid')
     const newId = practices.length === 0 ? 1 : Math.max.apply(Math, practices.map((practice) => {return practice.id})) + 1
     let newPractice = {
       id: newId,
@@ -32,10 +32,21 @@ const PracticeList = (props) =>  {
       date: currentDate.toISOString(),
       time: Practice.time,
       intensity: Practice.intensity
-    };
+    }
 
-    setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate));
-    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice), activities: activities});
+    setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate))
+    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice), activities: activities})
+  }
+
+  const modifyPractice = (Practice) => {
+    const userUID = localStorage.getItem('userUid')
+
+    let practicesWithoutOldPractice = practices.filter((item) => {
+      return item.id !== Practice.id
+    }).concat({...Practice})
+
+    setPractices(PratiqueUtil.getPracticesFilter(practicesWithoutOldPractice, currentDate))
+    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practicesWithoutOldPractice, activities: activities})
   }
 
   return (
@@ -53,7 +64,7 @@ const PracticeList = (props) =>  {
           <br/>
           {
             practices.map((practice) => (
-                <PracticeItem key={practice.id} practice={practice} />
+                <PracticeItem key={practice.id} practice={practice} modifyPractice={modifyPractice} />
             ))
           }
           <br/>

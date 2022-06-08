@@ -5,9 +5,9 @@ import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
 
 const PracticeForm = (props) => {
-    const [intensity, setIntensity] = useState("INTENSITY_LOW")
-    const [name, setName] = useState('')
-    const [time, setTime] = useState('00:00')
+    const [intensity, setIntensity] = useState(props.practice ? props.practice.intensity : "INTENSITY_LOW")
+    const [name, setName] = useState(props.practice ? props.practice.name : '')
+    const [time, setTime] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.time) : '00:00')
     const [errors, setErrors] = useState({})
 
     const divId = "PracticeForm" + (props.practice ? props.practice.id : "Add")
@@ -31,17 +31,34 @@ const PracticeForm = (props) => {
         let formValid = handleValidation()
 
         if (Object.keys(formValid).length === 0) {
-            props.onSubmitAction({name, time: (parseInt(hour) * 60 + parseInt(minute)), intensity})
+            if (props.practice) {
+                props.onSubmitAction({
+                    id: props.practice.id,
+                    name,
+                    time: (parseInt(hour) * 60 + parseInt(minute)),
+                    intensity,
+                    date: props.practice.date
+                })
+            }
+            else {
+                props.onSubmitAction({
+                    name,
+                    time: (parseInt(hour) * 60 + parseInt(minute)),
+                    intensity
+                })
+            }
             resetForm()
         }
         setErrors(formValid)
     }
 
     const resetForm = () => {
-        setName('')
-        setTime('00:00')
-        setIntensity("INTENSITY_LOW")
-        setErrors({})
+        if (!props.practice) {
+            setName('')
+            setTime('00:00')
+            setIntensity("INTENSITY_LOW")
+            setErrors({})
+        }
         PratiqueUtil.accor(divId)
     }
 
@@ -99,7 +116,7 @@ const PracticeForm = (props) => {
 
                     </IonRow>
                     <IonRow style={{justifyContent:"center"}}>
-                        <IonButton type="submit">{translate.getText("SUPPL_ADD_SELECT")}</IonButton>
+                        <IonButton type="submit">{(props.practice ? translate.getText("MODIFY") : translate.getText("ADD"))}</IonButton>
                     </IonRow>
                 </form>
             </div>

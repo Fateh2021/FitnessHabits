@@ -936,6 +936,16 @@
     "es":"Añadir actividad",
     "fr":"Ajouter activité"
   },
+  "MODIFY": {
+    "en":"Edit",
+    "es":"Editar",
+    "fr":"Modifier"
+  },
+  "ADD": {
+    "en":"Add",
+    "es":"Añadir",
+    "fr":"Ajouter"
+  },
    "TOILETS_TITLE":{
       "en":"Toilets",
       "es":"Aseos",
