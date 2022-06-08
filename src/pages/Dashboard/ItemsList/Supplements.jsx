@@ -74,6 +74,25 @@ const Supplements = (props) => {
   const [statutActifChoisi, setStatutActifChoisi] = useState(false);
 
 
+    const handleSave = () => {
+        const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+        dashboard.supplement.nomChoisi = nomChoisi;
+        dashboard.supplement.typeChoisi=typeChoisi;
+        dashboard.supplement.quantiteChoisie = quantiteChoisie;
+        dashboard.supplement.formatDoseChoisi = formatDoseChoisi;
+        dashboard.supplement.restrictionsChoisies = restrictionsChoisies;
+        dashboard.supplement.nombreDosesChoisi = nombreDosesChoisi;
+        dashboard.supplement.frequenceDosesChoisie = frequenceDosesChoisie;
+        dashboard.supplement.heuresChoisies = heuresChoisies;
+        dashboard.supplement.joursChoisis = joursChoisis;
+        dashboard.supplement.dateDebutChoisie = dateDebutChoisie;
+        dashboard.supplement.dateFineChoisie = dateFineChoisie;
+        dashboard.supplement.statutActifChoisi = statutActifChoisi;
+
+        localStorage.setItem('dashboard', JSON.stringify(dashboard));
+        const userUID = localStorage.getItem('userUid');
+         firebase.database().ref('dashboard/' + userUID ).update(dashboard);
+    }
 
   const inputChangeHandler = () => {
     setBoxEveryDay(!boxEveryDay);
