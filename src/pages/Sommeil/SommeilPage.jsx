@@ -11,6 +11,7 @@ import {
 } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import React from "react";
+import { useHistory } from "react-router";
 import BoutonAlertes from "./BoutonAlertes";
 import BoutonsBas from "./BoutonsBas";
 import Graphique from "./Graphique";
@@ -19,12 +20,14 @@ import ListeSommeils from "./ListeSommeils";
 import "./Sommeil.css";
 
 const SommeilPage = (props) => {
+  let history = useHistory();
+
   return (
     <IonPage className="page">
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons>
-            <IonButton>
+            <IonButton onClick={() => history.goBack()}>
               <IonIcon color="light" icon={arrowBack} />
             </IonButton>
           </IonButtons>
