@@ -55,9 +55,9 @@ const WeightInput = (props) => {
 
   const beforeModalPresent = () => {
     let newTime = (new Date()).getTime();
-    let time = weightService.toDate(popoverDate);
-    time.setTime(newTime);
-    setPopoverDate(weightService.formatDate(time))
+    let oldTime = weightService.toDate(popoverDate);
+    oldTime.setTime(newTime);
+    setPopoverDate(weightService.formatDate(oldTime))
   }
 
   return (
