@@ -89,7 +89,7 @@ class SommeilModal extends React.Component {
             </ion-col>
             <ion-col class="ion-text-right" size="1">
               <IonAvatar class="float-right">
-                <img src="https://cdn-sharing.adobecc.com/content/storage/id/urn:aaid:sc:US:16ea145b-ccaa-4052-8e60-6130c324c6aa;revision=0?component_id=1cb020d6-9ea7-469b-915b-1d9045b61f46&api_key=CometServer1&access_token=1654668333_urn%3Aaaid%3Asc%3AUS%3A16ea145b-ccaa-4052-8e60-6130c324c6aa%3Bpublic_396eaa7d0ba2a2d8500abf7ed6ee012abab5d2cb" alt="Gear" />
+                <img src="assets\icon\gear.webp" alt="Gear" />
               </IonAvatar>
             </ion-col>
           </ion-row>

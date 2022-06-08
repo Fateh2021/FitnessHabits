@@ -22,6 +22,17 @@
     font-size: 20px;
 }
 
+.point {
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+
 .tab-icon {
     border-radius: 25px 5px 0px 25px;
     z-index: 32;
