@@ -64,6 +64,16 @@
 		"es":"Atención, por favor ingrese la información faltante en los siguientes campos :\n",
 		"fr":"Attention, veuillez saisir les informations manquantes dans les champs suivant :\n"
 	},
+   "WEIGHT_NEW": {
+		"en":"New weight",
+		"es":"Nuevo peso",
+		"fr":"Nouveau poids"
+	},
+   "WEIGHT_ADD":{
+      "en":"Add",
+      "es":"Agregar",
+      "fr":"Ajouter"
+   },
 	"INITIAL_EMPTY_WEIGHT":{
 		"en":"\nThe initial weight must not be empty !",
 		"es":"\n¡El peso inicial no debe estar vacío !",
@@ -1373,5 +1383,15 @@
       "en": "Average fats",
       "es": "Grassa pormedio",
       "fr": "Moyenne gras"
+   },
+   "WEIGHT_INITIAL_NAME" : {
+      "en": "Initial weight",
+      "es": "Peso inicial",
+      "fr": "Poids initial"
+   },
+   "WEIGHT_TARGET_NAME" : {
+      "en": "Target",
+      "es": "Objetivo",
+      "fr": "Cible"
    }
 }

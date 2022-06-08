@@ -1,37 +1,46 @@
 import React, { useState } from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect';
-
-import App from '../../../../../App';
-import { BrowserRouter } from 'react-router-dom';
-
+import {act} from "react-dom/test-utils";
 import Hydratation from '../../Hydratation';
 
 
-const renderWithRouter = (ui, { route = '/' } = {}) => {
-    window.history.pushState({}, 'Test page', route);
-    return render(ui, { wrapper: BrowserRouter });
+const dashboard =
+{ 
+    hydratation: {
+        dailyTarget:{
+            value:0,
+            unit:"",
+            globalConsumption:0,
+        },
+        hydrates:[]
+    }   
 }
-
 //Translation testing Add Beverage Button
 test('Traduction du mot Breuvage en anglais', async() => {
     localStorage.setItem('userLanguage', 'en');
-    renderWithRouter(<App />, { route: '/dashboard' });
-    const mot = screen.getByText('+ Beverage');
-    expect(mot).toBeDefined();
+    act(() => { render(<Hydratation hydrate={dashboard.hydratation} hydrates={dashboard.hydratation.hydrates}
+        globalConsumption={dashboard.hydratation.dailyTarget.globalConsumption}/>);
+        const mot = screen.getByText('+ Beverage');
+        expect(mot).toBeDefined();
+    })
 });
 
 test('Traduction du mot Breuvage en espagnol', async() => {
     localStorage.setItem('userLanguage', 'es');
-    renderWithRouter(<App />, { route: '/dashboard' });
-    const mot = screen.getByText('+ Bebida');
-    expect(mot).toBeDefined();
+    act(() => { render(<Hydratation hydrate={dashboard.hydratation} hydrates={dashboard.hydratation.hydrates}
+        globalConsumption={dashboard.hydratation.dailyTarget.globalConsumption}/>);
+        const mot = screen.getByText('+ Bebida');
+        expect(mot).toBeDefined();
+    })
 });
 
 test('Traduction du mot Breuvage en francais', async() => {
     localStorage.setItem('userLanguage', 'fr');
-    renderWithRouter(<App />, { route: '/dashboard' });
-    const mot = screen.getByText('+ Breuvage');
-    expect(mot).toBeDefined();
+    act(() => { render(<Hydratation hydrate={dashboard.hydratation} hydrates={dashboard.hydratation.hydrates}
+        globalConsumption={dashboard.hydratation.dailyTarget.globalConsumption}/>);
+        const mot = screen.getByText('+ Breuvage');
+        expect(mot).toBeDefined();
+    })
 });
