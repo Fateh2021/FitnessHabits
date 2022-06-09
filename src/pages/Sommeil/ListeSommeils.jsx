@@ -1,54 +1,35 @@
-import { IonList } from "@ionic/react";
-import React from "react";
+import { IonGrid, IonList } from "@ionic/react";
+import firebase from "firebase";
+import React, { useEffect, useState } from "react";
 import ElementSommeil from "./ElementSommeil";
+import "./Sommeil.css";
 
-let sommeils = [
-  {
-    start: "00:00",
-    end: "00:00",
-    mood: "colère",
-    nbAwoken: 0,
-    day: 1,
-    month: 1,
-    year: 2000,
-  },
-  {
-    start: "00:00",
-    end: "00:00",
-    mood: "colère",
-    nbAwoken: 0,
-    day: 1,
-    month: 1,
-    year: 2000,
-  },
-  {
-    start: "00:00",
-    end: "00:00",
-    mood: "colère",
-    nbAwoken: 0,
-    day: 1,
-    month: 1,
-    year: 2000,
-  },
-  {
-    start: "00:00",
-    end: "00:00",
-    mood: "colère",
-    nbAwoken: 0,
-    day: 1,
-    month: 1,
-    year: 2000,
-  },
-];
-
-let elementsSommeil = [];
-
-sommeils.forEach((item) => {
-  elementsSommeil.push(<ElementSommeil info={item}></ElementSommeil>);
-});
+const userUID = localStorage.getItem("userUid");
+const db = firebase.database().ref("users/" + userUID + "/sleep/periods");
 
 function ListeSommeils() {
-  return <IonList>{elementsSommeil}</IonList>;
+  const [elementsSommeil, setElementsSommeil] = useState([]);
+
+  const getSleepPeriods = async () => {
+    let sleepPeriods;
+    await db.once("value").then((snapshot) => {
+      sleepPeriods = snapshot.val();
+    });
+
+    let elementsSommeilTmp = [];
+    for (const [key, value] of Object.entries(sleepPeriods)) {
+      elementsSommeilTmp.push(
+        <ElementSommeil key={key} info={value}></ElementSommeil>
+      );
+    }
+    setElementsSommeil(elementsSommeilTmp);
+  };
+
+  useEffect(() => {
+    getSleepPeriods();
+  }, []);
+
+  return <IonGrid>{elementsSommeil}</IonGrid>;
 }
 
 export default ListeSommeils;
