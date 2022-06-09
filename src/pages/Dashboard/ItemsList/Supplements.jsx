@@ -63,13 +63,13 @@ const Supplements = (props) => {
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
 
   {/* Variable formulaire 2e partie*/}
-  const [heuresChoisies, setHeuresChoisies] = useState([]);
-  const [joursChoisis, setJoursChoisis] = useState([]);
+  const [heuresChoisies, setHeuresChoisies] = useState([{heure:""}]);
+  const [joursChoisis, setJoursChoisis] = useState("");
   const [dateDebutChoisie, setDateDebutChoisie] = useState("");
-  const [dateFineChoisie, setDateFinChoisie] = useState("");
+  const [dateFinChoisie, setDateFinChoisie] = useState("");
   const [statutActifChoisi, setStatutActifChoisi] = useState(false);
 
-
+  
 
   const inputChangeHandler = () => {
     setBoxEveryDay(!boxEveryDay);
@@ -166,6 +166,16 @@ const Supplements = (props) => {
     }
   }
 
+  function ajouterHeure(){
+    setHeuresChoisies([...heuresChoisies, {heure:""}]);
+  }
+
+  function supprimerHeure(heure){
+    setHeuresChoisies(heuresChoisies.filter(heureCourante => heureCourante != heure));
+  }
+
+
+
 
   return (
     <div>
@@ -198,7 +208,7 @@ const Supplements = (props) => {
               onClick={ () => setFormulaireAjoutEstAffiche(!formulaireAjoutEstAffiche)}
             />
           </IonItem>
-          
+
           {/* Première partie nouvelle version du formulaire*/}
           {true && formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
             <IonList>
@@ -368,33 +378,47 @@ const Supplements = (props) => {
           {/* Partie 2 */}
 
           <IonItemGroup>
-            <IonItem>
-              <IonLabel color="light">{/*TODO : à traduire*/}Heures de prise de la dose</IonLabel>
-                <IonDatetime displayFormat="HH:mm" placeholder="00:00">
-                </IonDatetime>
-            </IonItem>
-            <IonButton>
-              Ajouter heure de prise
-            </IonButton>
+            <IonLabel color="light">Heures de prise de la dose</IonLabel>
+              {heuresChoisies.map((heureCourante) => (
+                <IonItem>  
+                  <IonDatetime 
+                  displayFormat="HH:mm" 
+                  placeholder="00:00"
+                  slot="start"
+                  onChange={( e => heureCourante.heure = e.detail.value)}
+                  >
+                    Heure de prise
+                  </IonDatetime> 
+                </IonItem>
+              ))}
+
+              <IonItem>
+                <IonButton 
+                  size="small"
+                  onClick = {ajouterHeure}
+                >
+                  Ajouter heure de prise
+                </IonButton>
+              </IonItem>
           </IonItemGroup>
           
           <IonItemGroup>
             <IonItem>
               <IonLabel color="light">{/*TODO: traduire */}Repetition</IonLabel>
 
-              <IonSelect multiple = "true">
-                <IonSelectOption value="monday">Lundi</IonSelectOption>
-                <IonSelectOption value="tuesday">Mardi</IonSelectOption>
-                <IonSelectOption value="wednesday">Mercredi</IonSelectOption>
-                <IonSelectOption value="thursday">Jeudi</IonSelectOption>
-                <IonSelectOption value="friday">Vendredi</IonSelectOption>
-                <IonSelectOption value="saturday">Samedi</IonSelectOption>
-                <IonSelectOption value="Sunday">Dimanche</IonSelectOption>
+              <IonSelect
+                multiple = "true"
+                value = {frequenceDosesChoisie}
+              >
+                <IonSelectOption value="mon">Lundi</IonSelectOption>
+                <IonSelectOption value="tue">Mardi</IonSelectOption>
+                <IonSelectOption value="wed">Mercredi</IonSelectOption>
+                <IonSelectOption value="thu">Jeudi</IonSelectOption>
+                <IonSelectOption value="fri">Vendredi</IonSelectOption>
+                <IonSelectOption value="sat">Samedi</IonSelectOption>
+                <IonSelectOption value="sun">Dimanche</IonSelectOption>
               </IonSelect>
             </IonItem>
-            <IonButton>
-                    Ajouter Repetition
-            </IonButton>
           </IonItemGroup>
 
           <IonItem>
@@ -402,6 +426,9 @@ const Supplements = (props) => {
               <IonDatetime
                 display-timezone="utc"
                 class="timeBox"
+                value = {dateDebutChoisie}
+                max="2099"
+                onIonChange={e => setDateDebutChoisie(e.detail.value)}
                 ></IonDatetime>
                 <IonIcon name="calendar" color="black" slot="end"></IonIcon>
           </IonItem>
@@ -410,8 +437,25 @@ const Supplements = (props) => {
             <IonDatetime
               display-timezone="utc"
               class="timeBox"
+              value = {dateFinChoisie}
+              max="2099"
+              onIonChange={e => setDateFinChoisie(e.detail.value)}
             ></IonDatetime>
             <IonIcon name="calendar" color="dark" slot="end"></IonIcon>
+          </IonItem>
+          
+          <IonItem>
+            <IonLabel color="light">Actif</IonLabel>
+            <IonCheckbox
+              color="primary"
+              slot="start"
+              value={statutActifChoisi}
+              onIonChange={e => setStatutActifChoisi(e.detail.checked)}
+            ></IonCheckbox>
+          </IonItem>
+
+          <IonItem>
+            <IonButton type="submit">Soumettre</IonButton>
           </IonItem>
 
 
