@@ -324,12 +324,12 @@
   "INTENSITY_LOW": {
     "en":"Low",
     "es":"Abajo",
-    "fr":"Bas"
+    "fr":"Basse"
   },
   "INTENSITY_MEDIUM": {
     "en":"Medium",
     "es":"Medio",
-    "fr":"Moyen"
+    "fr":"Moyenne"
   },
   "INTENSITY_HIGH": {
     "en":"High",
