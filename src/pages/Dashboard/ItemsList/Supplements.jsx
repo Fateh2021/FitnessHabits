@@ -68,7 +68,7 @@ const Supplements = (props) => {
 
   {/* Variable formulaire 2e partie*/}
   const [heuresChoisies, setHeuresChoisies] = useState([{heure:""}]);
-  const [joursChoisis, setJoursChoisis] = useState("");
+  const [joursChoisis, setJoursChoisis] = useState([]);
   const [dateDebutChoisie, setDateDebutChoisie] = useState("");
   const [dateFinChoisie, setDateFinChoisie] = useState("");
   const [statutActifChoisi, setStatutActifChoisi] = useState(false);
@@ -411,7 +411,10 @@ const Supplements = (props) => {
                   displayFormat="HH:mm" 
                   placeholder="00:00"
                   slot="start"
-                  onChange={( e => heureCourante.heure = e.detail.value)}
+                  onIonChange={ e => {
+                    heureCourante.heure = e.detail.value;
+                    console.log(heureCourante.heure);
+                  }}
                   >
                     Heure de prise
                   </IonDatetime> 
@@ -434,7 +437,10 @@ const Supplements = (props) => {
 
               <IonSelect
                 multiple = "true"
-                value = {frequenceDosesChoisie}
+                onIonChange = {e => {
+                  setJoursChoisis(e.detail.value);
+                  console.log(joursChoisis);
+                }}
               >
                 <IonSelectOption value="mon">{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
                 <IonSelectOption value="tue">{translate.getText("SUPPL_TUESDAY")}</IonSelectOption>
@@ -454,7 +460,10 @@ const Supplements = (props) => {
                 class="timeBox"
                 value = {dateDebutChoisie}
                 max="2099"
-                onIonChange={e => setDateDebutChoisie(e.detail.value)}
+                onIonChange={e => {
+                  setDateDebutChoisie(e.detail.value);
+                  console.log(dateDebutChoisie);
+                }}
                 ></IonDatetime>
                 <IonIcon name="calendar" color="black" slot="end"></IonIcon>
           </IonItem>
@@ -465,7 +474,10 @@ const Supplements = (props) => {
               class="timeBox"
               value = {dateFinChoisie}
               max="2099"
-              onIonChange={e => setDateFinChoisie(e.detail.value)}
+              onIonChange={e => {
+                setDateFinChoisie(e.detail.value);
+                console.log(dateFinChoisie);
+              }}
             ></IonDatetime>
             <IonIcon name="calendar" color="dark" slot="end"></IonIcon>
           </IonItem>
@@ -476,7 +488,10 @@ const Supplements = (props) => {
               color="primary"
               slot="start"
               value={statutActifChoisi}
-              onIonChange={e => setStatutActifChoisi(e.detail.checked)}
+              onIonChange={e => {
+                setStatutActifChoisi(e.detail.checked);
+                console.log(statutActifChoisi);
+              }}
             ></IonCheckbox>
           </IonItem>
 
