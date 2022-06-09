@@ -404,7 +404,7 @@ const Supplements = (props) => {
           {/* Partie 2 */}
 
           <IonItemGroup>
-            <IonLabel color="light">Heures de prise de la dose</IonLabel>
+            <IonLabel color="light">{translate.getText("SUPPL_TIME_TAKEN")}</IonLabel>
               {heuresChoisies.map((heureCourante) => (
                 <IonItem>  
                   <IonDatetime 
@@ -423,26 +423,26 @@ const Supplements = (props) => {
                   size="small"
                   onClick = {ajouterHeure}
                 >
-                  Ajouter heure de prise
+                  {translate.getText("SUPPL_ADD_TIME_TAKEN")}
                 </IonButton>
               </IonItem>
           </IonItemGroup>
           
           <IonItemGroup>
             <IonItem>
-              <IonLabel color="light">{/*TODO: traduire */}Repetition</IonLabel>
+              <IonLabel color="light">{translate.getText("SUPPL_REP")}</IonLabel>
 
               <IonSelect
                 multiple = "true"
                 value = {frequenceDosesChoisie}
               >
-                <IonSelectOption value="mon">Lundi</IonSelectOption>
-                <IonSelectOption value="tue">Mardi</IonSelectOption>
-                <IonSelectOption value="wed">Mercredi</IonSelectOption>
-                <IonSelectOption value="thu">Jeudi</IonSelectOption>
-                <IonSelectOption value="fri">Vendredi</IonSelectOption>
-                <IonSelectOption value="sat">Samedi</IonSelectOption>
-                <IonSelectOption value="sun">Dimanche</IonSelectOption>
+                <IonSelectOption value="mon">{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
+                <IonSelectOption value="tue">{translate.getText("SUPPL_TUESDAY")}</IonSelectOption>
+                <IonSelectOption value="wed">{translate.getText("SUPPL_WEDNESDAY")}</IonSelectOption>
+                <IonSelectOption value="thu">{translate.getText("SUPPL_THURSDAY")}</IonSelectOption>
+                <IonSelectOption value="fri">{translate.getText("SUPPL_FRIDAY")}</IonSelectOption>
+                <IonSelectOption value="sat">{translate.getText("SUPPL_SATURDAY")}</IonSelectOption>
+                <IonSelectOption value="sun">{translate.getText("SUPPL_SUNDAY")}</IonSelectOption>
               </IonSelect>
             </IonItem>
           </IonItemGroup>

@@ -442,6 +442,21 @@
       "es":"Fecha de fin",
       "fr":"Date de fin"
    },
+   "SUPPL_TIME_TAKEN":{
+      "en":"Time of intake",
+      "fr":"Heure de la prise",
+      "es":"Hora de tomar"
+   },
+   "SUPPL_ADD_TIME_TAKEN":{
+      "en":"Add a time of intake",
+      "fr":"Ajouter une heure de la prise",
+      "es":"Añadir una hora de tomar"
+   },
+   "SUPPL_REP":{
+      "en":"Repetition",
+      "fr":"Répétition",
+      "es":"Repetición"
+   },
    "SUPPL_ACTIVE":{
       "en":"Active",
       "es":"Activo",
