@@ -46,20 +46,24 @@ const Supplements = (props) => {
   const [afficherAlerteAjoutRestriction, setAfficherAlerteAjoutRestriction] = useState(false);
   const [afficherAlerteAjoutFormatDose, setAfficherAlerteAjoutFormatDose] = useState(false);
   const [formatsDose, setFormatsDose] = useState([
-                                          translate.getText("SUPPL_FORME_CAPSULE"),
                                           translate.getText("SUPPL_FORME_TABLET"),
+                                          translate.getText("SUPPL_FORME_CAPSULE"),
+                                          translate.getText("SUPPL_FORME_SIROP"),
                                           translate.getText("SUPPL_FORME_DROP"),
-                                          translate.getText("SUPPL_FORME_SYROP")
+                                          translate.getText("SUPPL_FORMAT_BOUTEILLE"),
+                                          translate.getText("SUPPL_FORMAT_GEL"),
+                                          translate.getText("SUPPL_FORMAT_INJECTION")
                                             ]);
-  {/*TODO : à traduire*/}
   const [restrictions, setRestrictions] = useState([
-                                          {valeur: "Doit être prise en mangeant", estCoche: false}]);
+                                          {valeur: translate.getText("SUPPL_RESTRICTION_JEUN"), estCoche: false},
+                                          {valeur: translate.getText("SUPPL_RESTRICTION_MANGEANT"), estCoche: false}]);
   const [nomChoisi, setNomChoisi] = useState("");
   const [typeChoisi, setTypeChoisi] = useState("");
   const [quantiteChoisie, setQuantiteChoisie] = useState("");
   const [formatDoseChoisi, setFormatDoseChoisi] = useState("");
   const [restrictionsChoisies, setRestrictionsChoisies] = useState([]);
   const [nombreDosesChoisi, setNombreDosesChoisi] = useState("");
+  const [nombreFrequenceDosesChoisie, setNombreFrequenceDosesChoisi] = useState("");
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
 
   {/* Variable formulaire 2e partie*/}
@@ -69,7 +73,30 @@ const Supplements = (props) => {
   const [dateFinChoisie, setDateFinChoisie] = useState("");
   const [statutActifChoisi, setStatutActifChoisi] = useState(false);
 
+<<<<<<< HEAD
   
+=======
+
+    const handleSave = () => {
+        const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+        dashboard.supplement.nomChoisi = nomChoisi;
+        dashboard.supplement.typeChoisi=typeChoisi;
+        dashboard.supplement.quantiteChoisie = quantiteChoisie;
+        dashboard.supplement.formatDoseChoisi = formatDoseChoisi;
+        dashboard.supplement.restrictionsChoisies = restrictionsChoisies;
+        dashboard.supplement.nombreDosesChoisi = nombreDosesChoisi;
+        dashboard.supplement.frequenceDosesChoisie = frequenceDosesChoisie;
+        dashboard.supplement.heuresChoisies = heuresChoisies;
+        dashboard.supplement.joursChoisis = joursChoisis;
+        dashboard.supplement.dateDebutChoisie = dateDebutChoisie;
+        dashboard.supplement.dateFineChoisie = dateFineChoisie;
+        dashboard.supplement.statutActifChoisi = statutActifChoisi;
+
+        localStorage.setItem('dashboard', JSON.stringify(dashboard));
+        const userUID = localStorage.getItem('userUid');
+         firebase.database().ref('dashboard/' + userUID ).update(dashboard);
+    }
+>>>>>>> cbf161a5c8497a6ea5f9ffdf4ee5a1dad2ebf0f5
 
   const inputChangeHandler = () => {
     setBoxEveryDay(!boxEveryDay);
@@ -109,7 +136,7 @@ const Supplements = (props) => {
                   <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
                   <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
                   <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
-                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SYROP")}</IonSelectOption>
+                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SIROP")}</IonSelectOption>
         </IonSelect>
       )
     }else{
@@ -221,7 +248,7 @@ const Supplements = (props) => {
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Type</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_TYPE")}</IonLabel>
                 </IonItemDivider>
 
                 <IonRadioGroup 
@@ -244,7 +271,7 @@ const Supplements = (props) => {
                 </IonItemDivider>
 
                 <IonItem>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Quantité</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_QUANTITE")}</IonLabel>
                   <IonInput className="inputSuppConsom" 
                     id="inputDose"
                     value={quantiteChoisie} 
@@ -270,12 +297,12 @@ const Supplements = (props) => {
                     expand="block"
                     onClick={() => setAfficherAlerteAjoutFormatDose(true)}
                   >
-                    {/*TODO : à traduire*/}Ajouter Format
+                    {translate.getText("SUPPL_AJOUTER_FORMAT")}
                   </IonButton>
                   <IonAlert
                     isOpen={afficherAlerteAjoutFormatDose}
                     onDidDismiss={() => setAfficherAlerteAjoutFormatDose(false)}
-                    header={/*TODO : à traduire*/"Nouveau format"}
+                    header={translate.getText("SUPPL_NOUVEAU_FORMAT")}
                     inputs={[
                       {
                         name: "nouveauFormat",
@@ -283,11 +310,11 @@ const Supplements = (props) => {
                       }]}
                     buttons={[
                       {
-                        text: /*TODO : à traduire*/"Cancel",
+                        text: translate.getText("SUPPL_CANCEL"),
                         role: "cancel",
                       },
                       {
-                        text: /*TODO : à traduire*/"Ajouter",
+                        text: translate.getText("SUPPL_ADD_SELECT"),
                         handler: (donneesAlerte) => {
                           setFormatsDose(formatsDoseCourants => [...formatsDoseCourants, donneesAlerte.nouveauFormat]);
                         }
@@ -297,7 +324,7 @@ const Supplements = (props) => {
                 </IonItem>
 
                 <IonItemDivider>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Restrictions</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_RESTRICTION")}</IonLabel>
                 </IonItemDivider>
 
                 {restrictions.map(restriction => 
@@ -318,12 +345,12 @@ const Supplements = (props) => {
                     expand="block"
                     onClick={() => setAfficherAlerteAjoutRestriction(true)}
                   >
-                    {/*TODO : à traduire*/}Ajouter restriction
+                    {translate.getText("SUPPL_AJOUTER_RESTRICTION")}
                   </IonButton>
                   <IonAlert
                     isOpen={afficherAlerteAjoutRestriction}
                     onDidDismiss={() => setAfficherAlerteAjoutRestriction(false)}
-                    header={/*TODO : à traduire*/"Nouvelle restriction"}
+                    header={translate.getText("SUPPL_NOUVELLE_RESTRICTION")}
                     inputs={[
                       {
                         name: "nouvelleRestriction",
@@ -331,11 +358,11 @@ const Supplements = (props) => {
                       }]}
                     buttons={[
                       {
-                        text: /*TODO : à traduire*/"Cancel",
+                        text: translate.getText("SUPPL_CANCEL"),
                         role: "cancel"
                       },
                       {
-                        text: /*TODO : à traduire*/"Ajouter",
+                        text: translate.getText("SUPPL_ADD_SELECT"),
                         handler: (donneesAlerte) => {
                           setRestrictions(restrictionsCourantes => [...restrictionsCourantes, {valeur: donneesAlerte.nouvelleRestriction, estCoche: false}]);
                         }
@@ -351,23 +378,26 @@ const Supplements = (props) => {
                 </IonItemDivider>
 
                 <IonItem>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Nombre de doses</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_NOMBRE_DOSES")}</IonLabel>
                   <IonInput className="inputSuppConsom"
-                    value={nombreDosesChoisi} 
+                    value={nombreDosesChoisi}
                     onIonChange={e => setNombreDosesChoisi(e.detail.value)}></IonInput>
                 </IonItem>
                 <IonItem>
-                  <IonLabel color="light">{/*TODO : à traduire*/}Fréquence des doses</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_FREQUENCE_DOSES")}</IonLabel>
+                  <IonInput className="inputSuppConsom"
+                    value={nombreFrequenceDosesChoisie} 
+                    onIonChange={e => setNombreFrequenceDosesChoisi(e.detail.value)}></IonInput>
                   <IonSelect
                     placeholder={translate.getText("SUPPL_FORMAT")}
                     className="inputSuppConsom"
                     value={frequenceDosesChoisie}
                     onIonChange={ v => everydayTrue(v) }
                   >
-                    <IonSelectOption value="hours">{translate.getText("SUPPL_HOURS")}</IonSelectOption>
-                    <IonSelectOption value="day">{translate.getText("SUPPL_DAY")}</IonSelectOption>
-                    <IonSelectOption value="week">{translate.getText("SUPPL_WEEK")}</IonSelectOption>
-                    <IonSelectOption value="month">{translate.getText("SUPPL_MONTH")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_HOURS")}>{translate.getText("SUPPL_HOURS")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_DAY")}>{translate.getText("SUPPL_DAY")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_WEEK")}>{translate.getText("SUPPL_WEEK")}</IonSelectOption>
+                    <IonSelectOption value={translate.getText("SUPPL_MONTH")}>{translate.getText("SUPPL_MONTH")}</IonSelectOption>
                     
                   </IonSelect>
                 </IonItem>

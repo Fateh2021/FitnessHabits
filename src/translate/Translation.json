@@ -347,10 +347,80 @@
       "es":"Gota",
       "fr":"Goutte"
    },
-   "SUPPL_FORME_SYROP":{
-      "en":"Syrup",
-      "es":"Jarabe",
-      "fr":"Sirop"
+   "SUPPL_FORME_SIROP":{
+      "en":"Liquid/Syrup (ml)",
+      "es":"Líquido/Jarabe (ml)",
+      "fr":"Liquide/Sirop (ml)"
+   },
+   "SUPPL_FORMAT_BOUTEILLE":{
+      "en":"Bottles (units)",
+      "es":"Botellas (unidades)",
+      "fr":"Bouteilles (unités)"
+   },
+   "SUPPL_FORMAT_GEL":{
+      "en":"Gel (pre-dosed)",
+      "es":"Gel (predosificado)",
+      "fr":"Gel (pré-dosé)"
+   },
+   "SUPPL_FORMAT_INJECTION":{
+      "en":"Injection (pre-dosed)",
+      "es":"Inyección (predosificada)",
+      "fr":"Injection (pré-dosé)"
+   },
+   "SUPPL_RESTRICTION":{
+      "en":"Restrictions",
+      "es":"Restricciones",
+      "fr":"Restrictions"
+   },
+   "SUPPL_RESTRICTION_JEUN":{
+      "en":"Must be taken on an empty stomach",
+      "es":"Debe tomarse con el estómago vacío",
+      "fr":"Doit être prise à jeun"
+   },
+   "SUPPL_RESTRICTION_MANGEANT":{
+      "en":"Must be taken with food",
+      "es":"Debe tomarse con alimentos",
+      "fr":"Doit être prise en mangeant"
+   },
+   "SUPPL_AJOUTER_RESTRICTION":{
+      "en":"Add restriction",
+      "es":"Añadir restricción",
+      "fr":"Ajouter restriction"
+   },
+   "SUPPL_NOUVELLE_RESTRICTION":{
+      "en":"New restriction",
+      "es":"Nueva restricción",
+      "fr":"Nouvelle restriction"
+   },
+   "SUPPL_TYPE":{
+      "en":"Type",
+      "es":"Tipo",
+      "fr":"Type"
+   },
+   "SUPPL_QUANTITE":{
+      "en":"Amount",
+      "es":"Cantidad",
+      "fr":"Quantité"
+   },
+   "SUPPL_AJOUTER_FORMAT":{
+      "en":"Add Format",
+      "es":"Añadir tamaño",
+      "fr":"Ajouter Format"
+   },
+   "SUPPL_NOUVEAU_FORMAT":{
+      "en":"New format",
+      "es":"Nuevo formato",
+      "fr":"Nouveau format"
+   },
+   "SUPPL_NOMBRE_DOSES":{
+      "en":"Number of doses",
+      "es":"Número de dosis",
+      "fr":"Nombre de doses"
+   },
+   "SUPPL_FREQUENCE_DOSES":{
+      "en":"Frequency of doses",
+      "es":"Frecuencia de dosis",
+      "fr":"Fréquence des doses"
    },
    "SUPPL_SUPPPLEMENT":{
       "en":"Supplement",
@@ -448,23 +518,23 @@
       "fr":"Dimanche"
    },
    "SUPPL_HOURS":{
-      "en":"Hours",
-      "es":"Horas",
-      "fr":"Heures"
+      "en":"Hour(s)",
+      "es":"Hora(s)",
+      "fr":"Heure(s)"
    },
    "SUPPL_DAY":{
-      "en":"Days",
-      "es":"Dias",
-      "fr":"Jours"
+      "en":"Day(s)",
+      "es":"Dia(s)",
+      "fr":"Jour(s)"
    },
    "SUPPL_WEEK":{
-      "en":"Week",
-      "es":"Semana",
-      "fr":"Semaine"
+      "en":"Week(s)",
+      "es":"Semana(s)",
+      "fr":"Semaine(s)"
    },
    "SUPPL_MONTH":{
-      "en":"Month",
-      "es":"Mes",
+      "en":"Month(s)",
+      "es":"Mes(es)",
       "fr":"Mois"
    },
    "SUPPL_MORNING":{
