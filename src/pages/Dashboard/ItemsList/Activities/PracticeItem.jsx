@@ -30,7 +30,7 @@ const PracticeItem = (props) =>  {
               <IonIcon icon={create} onClick={() => PratiqueUtil.accor("PracticeForm" + practice.id)}></IonIcon>
           </IonCol>
           <IonCol>
-              <IonIcon icon={trash} onClick={() => PratiqueUtil.accor("deleteActivity" + practice.id)}></IonIcon>
+              <IonIcon icon={trash} onClick={() => props.onRemovePractice(practice)}></IonIcon>
           </IonCol>
         </IonRow>
 

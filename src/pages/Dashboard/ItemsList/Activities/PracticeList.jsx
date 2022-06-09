@@ -49,6 +49,20 @@ const PracticeList = (props) =>  {
     firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practicesWithoutOldPractice, activities: activities})
   }
 
+  const handleRemovePractice = (practiceToDelete) => {
+    const remainingPractices = practices.filter( (practice) => {
+      if(practice.id === practiceToDelete.id) {
+        return false
+      }
+      return true;
+    });
+
+    setPractices(remainingPractices);
+
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: remainingPractices});
+  };
+
   return (
     <div>
       <IonItem className="divTitre6">
@@ -64,7 +78,7 @@ const PracticeList = (props) =>  {
           <br/>
           {
             practices.map((practice) => (
-                <PracticeItem key={practice.id} practice={practice} modifyPractice={modifyPractice} />
+                <PracticeItem key={practice.id} practice={practice} modifyPractice={modifyPractice} onRemovePractice={handleRemovePractice} />
             ))
           }
           <br/>
