@@ -46,3 +46,25 @@ ion-button[shape="circle"] {
   justify-content: space-around;
   align-items: center;
 }
+
+ion-text {
+  color: #707070;
+  font-family: roboto;
+}
+
+.data-text {
+  font-size: 15px;
+}
+
+.data-time {
+  font-size: 20px;
+}
+
+.data-date {
+  font-size: 13px;
+}
+
+.modal-data {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
