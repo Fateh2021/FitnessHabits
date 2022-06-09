@@ -22,31 +22,35 @@ jest.mock("firebase", () => {
 });
 
 describe('PracticeItem', () => {
+    var currentDate= {startDate: new Date("2022-06-03 10:30")}
     var practice1 = {
         'id' : 1,
         'name' : 'Jogging',
+        'date' : currentDate.startDate.toISOString(),
         'time' :  '02:00',
         'intensity' : 'INTENSITY_LOW'
     }
     var practice2 = {
         'id' : 2,
         'name' : 'Tennis',
+        'date' : currentDate.startDate.toISOString(),
         'time' :  '01:00',
         'intensity' : 'INTENSITY_MEDIUM'
     }
     var practice3 = {
         'id' : 3,
         'name' : 'Karate',
+        'date' : currentDate.startDate.toISOString(),
         'time' :  '01:00',
         'intensity' : 'INTENSITY_HIGH'
     }
     var practice4 = {
         'id' : 4,
         'name' : 'Training',
+        'date' : currentDate.startDate.toISOString(),
         'time' :  '00:30',
         'intensity' : 'INTENSITY_HIIT'
     }
-    var currentDate= {startDate: "2022-06-03 10:30"}
     beforeEach(() => {
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
         var dateFormat = "YYYY-MM-DD";
@@ -69,7 +73,7 @@ describe('PracticeItem', () => {
 
     test(" Test 1 : Traduction du mot Basse en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeItem key={practice1.id} practice={practice1}/>);
+        await act(async () => { render(<PracticeItem practice={practice1}/>);
             const mot = screen.getAllByText(/Low/i);
             expect(mot).toBeDefined();
         })
@@ -77,30 +81,30 @@ describe('PracticeItem', () => {
 
     test(" Test 2 : Traduction du mot Moyenne en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeItem key={practice2.id} practice={practice2}/>)
-            const mot = screen.getByText(/Medium/i);
+        await act(async () => { render(<PracticeItem practice={practice2}/>)
+            const mot = screen.getAllByText(/Medium/i);
             expect(mot).toBeDefined();
         })
     });
     test(" Test 3 : Traduction du mot Haute en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeItem key={practice3.id} practice={practice3}/>)
-            const mot = screen.getByText(/High/i);
+        await act(async () => { render(<PracticeItem practice={practice3}/>)
+            const mot = screen.getAllByText(/High/i);
             expect(mot).toBeDefined();
         })
     });
 
     test(" Test 4 : Traduction du mot Tres intense en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeItem key={practice4.id} practice={practice4}/>)
-            const mot = screen.getByText(/HIIT/i);
+        await act(async () => { render(<PracticeItem practice={practice4}/>)
+            const mot = screen.getAllByText(/HIIT/i);
             expect(mot).toBeDefined();
         })
     });
 
     test(" Test 5 : Traduction du mot Basse en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeItem key={practice1.id} practice={practice1}/>);
+        await act(async () => { render(<PracticeItem practice={practice1}/>);
             const mot= screen.getAllByText(/Abajo/i);
             expect(mot).toBeDefined();
         })
@@ -108,24 +112,24 @@ describe('PracticeItem', () => {
 
     test(" Test 6 : Traduction du mot Moyenne en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeItem key={practice2.id} practice={practice2}/>)
-            const mot = screen.getByText(/Medio/i);
+        await act(async () => { render(<PracticeItem practice={practice2}/>)
+            const mot = screen.getAllByText(/Medio/i);
             expect(mot).toBeDefined();
         })
     });
 
     test(" Test 7 : Traduction du mot Haute en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeItem key={practice3.id} practice={practice3}/>)
-            const mot = screen.getByText(/Alto/i);
+        await act(async () => { render(<PracticeItem practice={practice3}/>)
+            const mot = screen.getAllByText(/Alto/i);
             expect(mot).toBeDefined();
         })
     });
 
     test(" Test 8 : Traduction du mot Tres intense en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeItem key={practice4.id} practice={practice4}/>)
-            const mot = screen.getByText(/Muy intenso/i);
+        await act(async () => { render(<PracticeItem practice={practice4}/>)
+            const mot = screen.getAllByText(/Muy intenso/i);
             expect(mot).toBeDefined();
         })
     });
