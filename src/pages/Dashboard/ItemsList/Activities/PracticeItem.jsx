@@ -21,11 +21,11 @@ const PracticeItem = (props) =>  {
 
     return (
       <div className='activityItem'>
-        <IonLabel><b className='activityName'>{practice.name}</b></IonLabel>
+        <IonLabel data-testid="practiceName"><b className='activityName'>{practice.name}</b></IonLabel>
         <IonRow>
-          <IonCol size='4'>{formatedCurrentDate}</IonCol>
-          <IonCol size='2'>{PratiqueUtil.formatHourMinute(practice.time)}</IonCol>
-          <IonCol size='3'>{translate.getText(practice.intensity)}</IonCol>
+          <IonCol size='4' data-testid="practiceDate">{formatedCurrentDate}</IonCol>
+          <IonCol size='2' data-testid="practiceDuration">{PratiqueUtil.formatHourMinute(practice.time)}</IonCol>
+          <IonCol size='3' data-testid="practiceIntensity">{translate.getText(practice.intensity)}</IonCol>
           <IonCol>
               <IonIcon icon={create} onClick={() => PratiqueUtil.accor("PracticeForm" + practice.id)}></IonIcon>
           </IonCol>

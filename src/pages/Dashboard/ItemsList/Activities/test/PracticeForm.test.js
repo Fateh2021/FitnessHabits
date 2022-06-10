@@ -27,7 +27,7 @@ describe('PracticeForm', () => {
         'id' : 1,
         'name' : 'Jogging',
         'date' : currentDate.startDate.toISOString(),
-        'time' :  '02:00',
+        'time' :  120,
         'intensity' : 'INTENSITY_LOW'
     }
     beforeEach(() => {
@@ -51,83 +51,56 @@ describe('PracticeForm', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Traduction des mots Ajouter activite en anglais", async() => {
+    test(" Test 1 : Traduction des mots pour ajouter une activite en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeForm/>);
-            const mot = screen.getByText(/Add activity/i);
-            expect(mot).toBeDefined();
+            const title = screen.getByTestId('modifyTitle');
+            const submit = screen.getByTestId('modifySubmit');
+            const duration = screen.getByTestId('modifyDuration');
+            const intensity = screen.getByTestId('modifyIntensity');
+
+            expect(title.textContent.toString()).toBe("Add activity");
+            expect(submit.textContent.toString()).toBe("Add");
+            expect(duration.textContent.toString()).toBe("Duration");
+            expect(intensity.textContent.toString()).toBe("Intensity");
         })
     });
 
-    test(" Test 2 : Traduction du mot Ajouter en anglais", async() => {
-        localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeForm/>)
-            const mot = screen.getAllByText(/Add/i);
-            expect(mot).toBeDefined();
-        })
-    });
-
-    test(" Test 3 : Traduction des mots Modifier activite en anglais", async() => {
-        localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeForm practice={practice}/>)
-            const mot = screen.getByText(/Edit activity/i);
-            expect(mot).toBeDefined();
-        })
-    });
-
-    test(" Test 4 : Traduction du mot Modifier en anglais", async() => {
+    test(" Test 2 : Traduction des mots pour modifier une activite en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeForm practice={practice}/>)
-            const mot = screen.getAllByText(/Edit/i);
-            expect(mot).toBeDefined();
+            const title = screen.getByTestId('modifyTitle');
+            const submit = screen.getByTestId('modifySubmit');
+
+            expect(title.textContent.toString()).toBe("Edit activity");
+            expect(submit.textContent.toString()).toBe("Edit");
         })
     });
 
-    test(" Test 5 : Traduction du mot Duree en anglais", async() => {
-        localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeForm practice={practice}/>)
-            const mot = screen.getByText(/Duration/i);
-            expect(mot).toBeDefined();
-        })
-    });
-
-    test(" Test 6 : Traduction des mots Ajouter activite en espagnol", async() => {
+    test(" Test 3 : Traduction des mots pour ajouter une activite en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeForm/>);
-            const mot= screen.getByText(/Añadir actividad/i);
-            expect(mot).toBeDefined();
+            const title = screen.getByTestId('modifyTitle');
+            const submit = screen.getByTestId('modifySubmit');
+            const duration = screen.getByTestId('modifyDuration');
+            const intensity = screen.getByTestId('modifyIntensity');
+
+            expect(title.textContent.toString()).toBe("Añadir actividad");
+            expect(submit.textContent.toString()).toBe("Añadir");
+            expect(duration.textContent.toString()).toBe("Duración");
+            expect(intensity.textContent.toString()).toBe("Intensidad");
         })
     });
 
-    test(" Test 7 : Traduction du mot Ajouter en espagnol", async() => {
-        localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeForm/>)
-            const mot = screen.getAllByText(/Añadir/i);
-            expect(mot).toBeDefined();
-        })
-    });
-
-    test(" Test 8 : Traduction des mots Modifier activite en espagnol", async() => {
-        localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeForm practice={practice}/>)
-            const mot = screen.getByText(/Editar actividad/i);
-            expect(mot).toBeDefined();
-        })
-    });
-
-    test(" Test 9 : Traduction du mot Modifier en espagnol", async() => {
+    test(" Test 4 : Traduction des mots pour modifier une activite en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeForm practice={practice}/>)
-            const mot = screen.getAllByText(/Editar/i);
-            expect(mot).toBeDefined();
-        })
-    });    
+            const title = screen.getByTestId('modifyTitle');
+            const submit = screen.getByTestId('modifySubmit');
 
-    test(" Test 10 : Traduction du mot Duree en espagnol", async() => {
-        localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeForm practice={practice}/>)
-            const mot = screen.getByText(/Duración/i);
-            expect(mot).toBeDefined();
+            expect(title.textContent.toString()).toBe("Editar actividad");
+            expect(submit.textContent.toString()).toBe("Editar");
         })
     });
+
 });

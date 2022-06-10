@@ -67,7 +67,7 @@ const PracticeForm = (props) => {
             <div className='popUpWindow-inner-small' onClick={(e) => {
                 e.stopPropagation()
             }}>
-                <IonLabel><h1 className='activityTitle' >{(props.practice ? translate.getText("MODIFY_ACTIVITY") : translate.getText("ADD_ACTIVITY"))}</h1></IonLabel>
+                <IonLabel data-testid="modifyTitle"><h1 className='activityTitle' >{(props.practice ? translate.getText("MODIFY_ACTIVITY") : translate.getText("ADD_ACTIVITY"))}</h1></IonLabel>
                 <form onSubmit={beforeSubmit}>
                     <br/>
                     <IonRow>
@@ -82,7 +82,7 @@ const PracticeForm = (props) => {
                     <br/>
                     <IonRow>
                         <IonCol size='4'>
-                            <IonLabel>{translate.getText("EXP_REPORT_DURATION")}</IonLabel>
+                            <IonLabel data-testid="modifyDuration">{translate.getText("EXP_REPORT_DURATION")}</IonLabel>
                         </IonCol>
                         <IonCol size='8'>
                             <IonDatetime className="inputFormActivity"
@@ -100,7 +100,7 @@ const PracticeForm = (props) => {
                     <br/>
                     <IonRow>
                         <IonCol size='8'>
-                            <IonLabel>{translate.getText("INTENSITY")}</IonLabel>
+                            <IonLabel data-testid="modifyIntensity">{translate.getText("INTENSITY")}</IonLabel>
                         </IonCol>
                         <IonCol size='4'>
                             <IonSelect value={intensity} onIonChange={e => {
@@ -116,7 +116,7 @@ const PracticeForm = (props) => {
 
                     </IonRow>
                     <IonRow style={{justifyContent:"center"}}>
-                        <IonButton type="submit">{(props.practice ? translate.getText("MODIFY") : translate.getText("ADD"))}</IonButton>
+                        <IonButton type="submit" data-testid="modifySubmit">{(props.practice ? translate.getText("MODIFY") : translate.getText("ADD"))}</IonButton>
                     </IonRow>
                 </form>
             </div>

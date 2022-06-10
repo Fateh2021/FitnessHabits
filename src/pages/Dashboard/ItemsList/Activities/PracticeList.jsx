@@ -69,7 +69,7 @@ const PracticeList = (props) =>  {
         <IonAvatar slot="start">
           <img src="/assets/Running.jpg" alt=""/>
         </IonAvatar>
-        <IonLabel><h2><b>{translate.getText("ACTIVITIES")}</b></h2></IonLabel>
+        <IonLabel data-testid="moduleTitle"><h2><b>{translate.getText("ACTIVITIES")}</b></h2></IonLabel>
         <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => PratiqueUtil.accor("pratiquesList")}/>
       </IonItem>
       <div id="pratiquesList" className='popUpWindow' onClick={() => PratiqueUtil.accor("pratiquesList")}>

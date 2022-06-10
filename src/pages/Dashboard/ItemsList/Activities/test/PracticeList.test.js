@@ -48,16 +48,16 @@ describe('PracticeList', () => {
     test(" Test 1 : Traduction du mot Activites en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
-            const mot = screen.getAllByText(/Activities/i);
-            expect(mot).toBeDefined();
+            const mot = screen.getByTestId('moduleTitle')
+            expect(mot.textContent.toString()).toBe("Activities");
         })
     });
 
     test(" Test 2 : Traduction du mot Activites en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
-            const mot= screen.getAllByText(/Ocupaciones/i);
-            expect(mot).toBeDefined();
+            const mot = screen.getByTestId('moduleTitle')
+            expect(mot.textContent.toString()).toBe("Ocupaciones");
         })
     });
 
