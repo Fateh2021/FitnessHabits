@@ -73,25 +73,25 @@ const Supplements = (props) => {
   const [dateFinChoisie, setDateFinChoisie] = useState("");
   const [statutActifChoisi, setStatutActifChoisi] = useState(false);
 
+  const handleSave = () => {
+      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+      
+      dashboard.supplement.nomChoisi = nomChoisi;
+      dashboard.supplement.typeChoisi=typeChoisi;
+      dashboard.supplement.quantiteChoisie = quantiteChoisie;
+      dashboard.supplement.formatDoseChoisi = formatDoseChoisi;
+      dashboard.supplement.restrictionsChoisies = restrictionsChoisies;
+      dashboard.supplement.nombreDosesChoisi = nombreDosesChoisi;
+      dashboard.supplement.frequenceDosesChoisie = frequenceDosesChoisie;
+      dashboard.supplement.heuresChoisies = heuresChoisies;
+      dashboard.supplement.joursChoisis = joursChoisis;
+      dashboard.supplement.dateDebutChoisie = dateDebutChoisie;
+      dashboard.supplement.dateFinChoisie = dateFinChoisie;
+      dashboard.supplement.statutActifChoisi = statutActifChoisi;
 
-    const handleSave = () => {
-        const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-        dashboard.supplement.nomChoisi = nomChoisi;
-        dashboard.supplement.typeChoisi=typeChoisi;
-        dashboard.supplement.quantiteChoisie = quantiteChoisie;
-        dashboard.supplement.formatDoseChoisi = formatDoseChoisi;
-        dashboard.supplement.restrictionsChoisies = restrictionsChoisies;
-        dashboard.supplement.nombreDosesChoisi = nombreDosesChoisi;
-        dashboard.supplement.frequenceDosesChoisie = frequenceDosesChoisie;
-        dashboard.supplement.heuresChoisies = heuresChoisies;
-        dashboard.supplement.joursChoisis = joursChoisis;
-        dashboard.supplement.dateDebutChoisie = dateDebutChoisie;
-        dashboard.supplement.dateFinChoisie = dateFinChoisie;
-        dashboard.supplement.statutActifChoisi = statutActifChoisi;
-
-        localStorage.setItem('dashboard', JSON.stringify(dashboard));
-        const userUID = localStorage.getItem('userUid');
-         firebase.database().ref('dashboard/' + userUID ).update(dashboard);
+      localStorage.setItem('dashboard', JSON.stringify(dashboard));
+      const userUID = localStorage.getItem('userUid');
+      firebase.database().ref('dashboard/' + userUID ).update(dashboard);
     }
 
   const inputChangeHandler = () => {
@@ -105,11 +105,9 @@ const Supplements = (props) => {
     setFrequenceDosesChoisie(v.detail.value);
   }
 
-
   // block pour avoir l'input pour ajouter des formats
   let [showSelectFormat, setShow] = useState(true);
   
-
   const inputAdd = (v) =>{
     if(v.detail.value === "ajouter"){
       setShow(false);
@@ -118,45 +116,12 @@ const Supplements = (props) => {
     }
   };
 
-  function IonSelectDose(props){
-    if(props.cond){
-      return(
-        <IonSelect
-                  value={""}
-                  placeholder={translate.getText("SUPPL_FORMAT")}
-                  className="inputSuppConsom"
-                  id="suppSelect"
-                  onIonChange={v => inputAdd(v)}
-        >
-                  <IonSelectOption value="ajouter">{translate.getText("SUPPL_ADD_SELECT")}</IonSelectOption>
-                  <IonSelectOption value="gelule">{translate.getText("SUPPL_FORME_CAPSULE")}</IonSelectOption>
-                  <IonSelectOption value="comprime">{translate.getText("SUPPL_FORME_TABLET")}</IonSelectOption>
-                  <IonSelectOption value="goutte">{translate.getText("SUPPL_FORME_DROP")}</IonSelectOption>
-                  <IonSelectOption value="sirop">{translate.getText("SUPPL_FORME_SIROP")}</IonSelectOption>
-        </IonSelect>
-      )
-    }else{
-      return (
-        <>
-
-        <IonInput className="inputSuppConsom"></IonInput>
-        <IonButton onClick={() => addFormatToDb()}> OK </IonButton>
-        <IonButton onClick={() => setShow(true)}>{translate.getText("SUPPL_CANCEL")}</IonButton>
-        
-        </>
-      )
-    }
-  }
-
-
   //Todo
   function addFormatToDb(format){
 
     //a la fin faire
     setShow(true);
   }
-
-
 
   //block pour les période
 
@@ -197,9 +162,6 @@ const Supplements = (props) => {
     setHeuresChoisies(heuresChoisies.filter(heureCourante => heureCourante != heure));
   }
 
-
-
-
   return (
     <div>
       <IonItem className="divTitre3">
@@ -232,8 +194,7 @@ const Supplements = (props) => {
             />
           </IonItem>
 
-          {/* Première partie nouvelle version du formulaire*/}
-          {true && formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
+          {formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
             <IonList>
               <IonItem>
                 <IonLabel color="light">{translate.getText("SUPPL_NOM")}</IonLabel>
@@ -399,9 +360,6 @@ const Supplements = (props) => {
                 </IonItem>
               </IonItemGroup>
             </IonList>
-          
-
-          {/* Partie 2 */}
 
           <IonItemGroup>
             <IonLabel color="light">{translate.getText("SUPPL_TIME_TAKEN")}</IonLabel>
@@ -498,168 +456,8 @@ const Supplements = (props) => {
           <IonItem>
             <IonButton type="submit">Soumettre</IonButton>
           </IonItem>
-
-
-
           </div>}
 
-            
-          {/* Formulaire original */}
-          {false && formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
-            <IonList>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_NOM")}</IonLabel>
-                <IonInput className="inputSuppConsom"></IonInput>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_DOSE")}</IonLabel>
-                <IonInput className="inputSuppConsom" id="inputDose"></IonInput>
-                <IonSelectDose cond={showSelectFormat}></IonSelectDose>
-              </IonItem>
-              <IonList>
-                <IonRadioGroup>
-                  <IonItem>
-                    <IonLabel color="light">{translate.getText("SUPPL_SUPPPLEMENT")}</IonLabel>
-                    <ion-radio slot="start" value="supplement"></ion-radio>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel color="light">{translate.getText("SUPPL_MEDICAMENT")}</IonLabel>
-                    <ion-radio slot="start" value="medicament"></ion-radio>
-                  </IonItem>
-                </IonRadioGroup>
-              </IonList>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_DATE_DEBUT")}</IonLabel>
-                <IonDatetime
-                  display-timezone="utc"
-                  class="timeBox"
-                ></IonDatetime>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_DATE_FIN")}</IonLabel>
-                <IonDatetime
-                  display-timezone="utc"
-                  class="timeBox"
-                ></IonDatetime>
-              </IonItem>
-              <IonItem>
-                <IonLabel slot="start" color="light">
-                {translate.getText("SUPPL_ACTIVE")}
-                </IonLabel>
-                <IonToggle name="actif" color="success" checked></IonToggle>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_POSOLOGY")}</IonLabel>
-                <IonInput className="inputSuppConsom"></IonInput>
-                <IonLabel color="light">{translate.getText("SUPPL_DOSE_BY")}</IonLabel>
-                <IonInput className="inputSuppConsom"></IonInput>
-                <IonSelect
-                  value={posoValue}
-                  placeholder={translate.getText("SUPPL_FORMAT")}
-                  className="inputSuppConsom"
-                  onIonChange={ v => everydayTrue(v) }
-                >
-                  <IonSelectOption value="hours">{translate.getText("SUPPL_HOURS")}</IonSelectOption>
-                  <IonSelectOption value="day">{translate.getText("SUPPL_DAY")}</IonSelectOption>
-                  <IonSelectOption value="week">{translate.getText("SUPPL_WEEK")}</IonSelectOption>
-                  <IonSelectOption value="month">{translate.getText("SUPPL_MONTH")}</IonSelectOption>
-                  
-                </IonSelect>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_EVERY_DAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  slot="start"
-                  checked={boxEveryDay}
-                  onIonChange={inputChangeHandler}
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_MONDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_TUESDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_WEDNESDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_THURSDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_FRIDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_SATURDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonItem>
-                <IonLabel color="light">{translate.getText("SUPPL_SUNDAY")}</IonLabel>
-                <IonCheckbox
-                  color="primary"
-                  checked={checked}
-                  slot="start"
-                ></IonCheckbox>
-              </IonItem>
-              <IonListHeader>
-                <IonLabel color="light">{translate.getText("SUPPL_HOURS")}</IonLabel>
-              </IonListHeader>
-              <IonList>
-                <IonItem>
-                  <PeriodButton name={translate.getText("SUPPL_MORNING")}></PeriodButton>
-                  <PeriodButton name={"8:00"}></PeriodButton>
-                  <PeriodButton name={"10:00"}></PeriodButton>
-                </IonItem>
-                <IonItem>
-                  <PeriodButton name={translate.getText("SUPPL_HALF_DAY")}></PeriodButton>
-                  <PeriodButton name={"14:00"}></PeriodButton>
-                  <PeriodButton name={"16:00"}></PeriodButton>
-                </IonItem>
-                <IonItem>
-                  <PeriodButton name={translate.getText("SUPPL_NIGHT")}></PeriodButton>
-                  <PeriodButton name={"20:00"}></PeriodButton>
-                  <PeriodButton name={"22:00"}></PeriodButton>
-                </IonItem>
-                <IonItem>
-                  <IonButton class="selectPeriod" color="light">{translate.getText("SUPPL_ADD_SELECT")}</IonButton>
-                </IonItem>
-              </IonList>
-              <IonItem>
-                <IonButton color="success">{translate.getText("SUPPL_SAVE")}</IonButton>
-                <IonButton color="danger">{translate.getText("SUPPL_CANCEL")}</IonButton>
-              </IonItem>
-            </IonList>
-          </div>}
           <IonItem className="trashButton" color="danger">
             <IonAvatar slot="start">
               <img src="/assets/suppl/resumen.png" alt="" />
