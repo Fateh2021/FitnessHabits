@@ -29,7 +29,7 @@ function ListeSommeils() {
     getSleepPeriods();
   }, []);
 
-  return <IonGrid>{elementsSommeil}</IonGrid>;
+  return <IonGrid class="list-modal">{elementsSommeil}</IonGrid>;
 }
 
 export default ListeSommeils;

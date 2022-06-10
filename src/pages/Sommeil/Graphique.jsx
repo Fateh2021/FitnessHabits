@@ -7,9 +7,11 @@ import {
   IonText,
 } from "@ionic/react";
 import { arrowDropleft, arrowDropright, calendar } from "ionicons/icons";
-import React from "react";
+import React, { useState } from "react";
 
 function Graphique() {
+  const [cible, setCible] = useState("00:00");
+
   return (
     <IonGrid>
       <IonRow className="graphButtons">
@@ -26,7 +28,7 @@ function Graphique() {
         <IonButton fill="clear">
           <IonIcon icon={calendar}></IonIcon>
         </IonButton>
-        <IonText className="graphCible">Cible | 00:00</IonText>
+        <IonText className="graphCible">Cible | {cible}</IonText>
       </IonRow>
 
       <IonRow className="graph">
