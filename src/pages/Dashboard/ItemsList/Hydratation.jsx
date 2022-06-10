@@ -333,6 +333,22 @@ const Hydratation = (props) => {
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
+  const conversionQuantity = (hydrates) => {
+
+    switch(hydrates.unit){
+      case "gr" :
+        return hydrates.qtte + " ml";
+      case "oz" :
+        return hydrates.qtte * 29.6 + " ml";
+      case "ml" : 
+        return hydrates.qtte + " ml";
+      case "tasse" :
+        return hydrates.qtte * 125 + " ml";
+      case "unite" :
+        return hydrates.qtte * 1 + " ml";
+    } 
+  }
+
   const closeItemContainer = () => {
     setHydrateToEdit(undefined);
     setItemContainerDisplayStatus(false);
@@ -422,7 +438,7 @@ const Hydratation = (props) => {
                         <ion-card >
                           <ion-card-header>
                             <ion-card-title>{hydra.name}</ion-card-title>
-                            <ion-card-subtitle> <p>Quantité bue: <IonInput className='inputTextDashboard' value={hydra.consumption} readonly></IonInput></p> </ion-card-subtitle>
+                            <ion-card-subtitle> <p>Quantité bue: <IonInput className='inputTextDashboard' value={conversionQuantity(hydra)} readonly></IonInput></p> </ion-card-subtitle>
                             Date :
                           </ion-card-header>
                           <ion-card-content>
@@ -464,11 +480,7 @@ const Hydratation = (props) => {
             {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashHydrate) => saveItem(itemDashHydrate)} />}
           </div>
 
-
-
-
         </div>
-
 
       </IonModal>
     </div>
