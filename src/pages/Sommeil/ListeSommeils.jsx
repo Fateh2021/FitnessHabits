@@ -16,13 +16,15 @@ function ListeSommeils() {
       sleepPeriods = snapshot.val();
     });
 
-    let elementsSommeilTmp = [];
-    for (const [key, value] of Object.entries(sleepPeriods)) {
-      elementsSommeilTmp.push(
-        <ElementSommeil key={key} info={value}></ElementSommeil>
-      );
+    if (sleepPeriods != null) {
+      let elementsSommeilTmp = [];
+      for (const [key, value] of Object.entries(sleepPeriods)) {
+        elementsSommeilTmp.push(
+          <ElementSommeil key={key} info={value}></ElementSommeil>
+        );
+      }
+      setElementsSommeil(elementsSommeilTmp);
     }
-    setElementsSommeil(elementsSommeilTmp);
   };
 
   useEffect(() => {
