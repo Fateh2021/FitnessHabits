@@ -402,8 +402,8 @@ const Supplements = (props) => {
 
                 <IonItemGroup>
                   <IonLabel color="light">{translate.getText("SUPPL_TIME_TAKEN")}</IonLabel>
-                    {heuresChoisies.map((heureCourante) => (
-                      <IonItem>  
+                    {heuresChoisies.map((heureCourante, index) => (
+                      <IonItem key={index}>  
                         <IonDatetime 
                         displayFormat="HH:mm" 
                         placeholder="00:00"
