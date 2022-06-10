@@ -4,7 +4,9 @@
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom/extend-expect";
 import "jest-canvas-mock";
+import { mockIonicReact } from '@ionic/react-test-utils';
 
 const Enzyme = require("enzyme");
 const EnzymeAdapter = require("enzyme-adapter-react-16");
 Enzyme.configure({ adapter: new EnzymeAdapter() });
+mockIonicReact();
