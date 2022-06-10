@@ -158,6 +158,9 @@ const Dashboard = (props) => {
             heure: 0,
             minute: 0
         },
+        supplement: {
+            listeMedSup: []
+        }
     });
 
     const checkAllKeysAreUpToDate = (templateNode, realNode) => {
@@ -252,6 +255,11 @@ const Dashboard = (props) => {
             dashboard.activities = {
                 heure: 0,
                 minute: 0
+            }
+        }
+        if (!dashboard.supplement) {
+            dashboard.supplement = {
+                listeMedSup: []
             }
         }
         return dashboard;
@@ -394,7 +402,10 @@ const Dashboard = (props) => {
                             activities : {
                                 heure:0,
                                 minute:0
-                            },     
+                            },
+                            supplement: {
+                                listeMedSup: []
+                            }  
                         }
                     )
                     // .then(dt => {
@@ -489,7 +500,10 @@ const Dashboard = (props) => {
                             activities : {
                                 heure:0,
                                 minute:0
-                            },     
+                            },
+                            supplement: {
+                                listeMedSup: []
+                            }     
                         }
                     )
                     firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
