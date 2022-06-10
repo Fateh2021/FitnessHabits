@@ -72,3 +72,18 @@ ion-text {
 .list-modal {
   overflow: scroll;
 }
+
+.hr-modal-title-back {
+  background-color: #ccc;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: 8px;
+}
+
+.hr-modal-title-front {
+  background-color: #404395;
+  border-radius: 25px;
+  width: 50%;
+  height: 8px;
+}

@@ -35,6 +35,10 @@ function Graphique() {
         <IonText>Graphique</IonText>
       </IonRow>
 
+      <div class="hr-modal-title-back">
+        <div class="hr-modal-title-front"></div>
+      </div>
+
       <IonRow className="graphButtons">
         <IonButton color="medium" shape="round" size="small">
           Semaine
