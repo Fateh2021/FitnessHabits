@@ -327,6 +327,16 @@
       "es":"Añadir suplementos/medicamentos",
       "fr":"Ajouter suppléments/médicaments"
    },
+   "SUPPL_AJOUT_ERREUR":{
+      "en":"Error while adding, required fields are empty",
+      "es":"Error al agregar, los campos obligatorios están vacíos",
+      "fr":"Erreur lors de l'ajout, des champs requis sont vides"
+   },
+   "SUPPL_HEURE_PRISE":{
+      "en":"Time taken",
+      "es":"Tiempo tomado",
+      "fr":"Heure de prise"
+   },
    "SUPPL_NOM":{
       "en":"Name",
       "es":"Nombre",

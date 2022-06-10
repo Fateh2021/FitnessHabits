@@ -73,8 +73,6 @@ const Supplements = (props) => {
   const [nombreDosesChoisi, setNombreDosesChoisi] = useState("");
   const [nombreFrequenceDosesChoisie, setNombreFrequenceDosesChoisi] = useState("");
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
-
-  {/* Variable formulaire 2e partie*/}
   const [heuresChoisies, setHeuresChoisies] = useState([{heure:""}]);
   const [joursChoisis, setJoursChoisis] = useState([]);
   const [dateDebutChoisie, setDateDebutChoisie] = useState("");
@@ -85,8 +83,7 @@ const Supplements = (props) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
 
     if (!donneesAjoutSontValides()) {
-      /*TODO : à traduire */
-      return toast("Erreur, des champs requis sont vides");
+      return toast(translate.getText("SUPPL_AJOUT_ERREUR"));
     }
 
     let nouveauSupp = {};
@@ -415,7 +412,7 @@ const Supplements = (props) => {
                           heureCourante.heure = e.detail.value;
                         }}
                         >
-                          Heure de prise
+                          {translate.getText("SUPPL_HEURE_PRISE")}
                         </IonDatetime> 
                       </IonItem>
                     ))}
@@ -440,13 +437,13 @@ const Supplements = (props) => {
                         setJoursChoisis(e.detail.value);
                       }}
                     >
-                      <IonSelectOption value="mon">{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
-                      <IonSelectOption value="tue">{translate.getText("SUPPL_TUESDAY")}</IonSelectOption>
-                      <IonSelectOption value="wed">{translate.getText("SUPPL_WEDNESDAY")}</IonSelectOption>
-                      <IonSelectOption value="thu">{translate.getText("SUPPL_THURSDAY")}</IonSelectOption>
-                      <IonSelectOption value="fri">{translate.getText("SUPPL_FRIDAY")}</IonSelectOption>
-                      <IonSelectOption value="sat">{translate.getText("SUPPL_SATURDAY")}</IonSelectOption>
-                      <IonSelectOption value="sun">{translate.getText("SUPPL_SUNDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_MONDAY")}>{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_TUESDAY")}>{translate.getText("SUPPL_TUESDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_WEDNESDAY")}>{translate.getText("SUPPL_WEDNESDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_THURSDAY")}>{translate.getText("SUPPL_THURSDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_FRIDAY")}>{translate.getText("SUPPL_FRIDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_SATURDAY")}>{translate.getText("SUPPL_SATURDAY")}</IonSelectOption>
+                      <IonSelectOption value={translate.getText("SUPPL_SUNDAY")}>{translate.getText("SUPPL_SUNDAY")}</IonSelectOption>
                     </IonSelect>
                   </IonItem>
                 </IonItemGroup>
@@ -479,7 +476,7 @@ const Supplements = (props) => {
                 </IonItem>
                 
                 <IonItem>
-                  <IonLabel color="light">Actif</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_ACTIVE")}</IonLabel>
                   <IonCheckbox
                     color="primary"
                     slot="start"
@@ -491,7 +488,7 @@ const Supplements = (props) => {
                 </IonItem>
 
                 <IonItem>
-                  <IonButton type="submit" onClick={handleSave}>Soumettre</IonButton>
+                  <IonButton type="submit" onClick={handleSave}>{translate.getText("SUPPL_SAVE")}</IonButton>
                 </IonItem>
                 </div>}
 
