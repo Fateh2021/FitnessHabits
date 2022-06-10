@@ -12,8 +12,8 @@ import practice from "./Practice.js";
 const PracticeList = (props) =>  {
 
   const [currentDate, setCurrentDate] = useState(props.currentDate.startDate);
-  const [practices, setPractices] = useState ([]);
-  const [activities, setActivities] = useState ([]);
+  const [practices, setPractices] = useState (props.practices);
+  const [activities, setActivities] = useState (props.activities);
 
   useEffect(() => {
     setPractices(PratiqueUtil.getPracticesFilter(props.practices, currentDate));

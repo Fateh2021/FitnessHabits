@@ -20,7 +20,7 @@ const PracticeItem = (props) =>  {
     }
 
     return (
-      <div className='activityItem'>
+      <div className='activityItem' data-testid={'practiceItem' + practice.id} >
         <IonLabel data-testid="practiceName"><b className='activityName'>{practice.name}</b></IonLabel>
         <IonRow>
           <IonCol size='4' data-testid="practiceDate">{formatedCurrentDate}</IonCol>

@@ -22,9 +22,16 @@ jest.mock("firebase", () => {
 });
 
 describe('PracticeList', () => {
-    var activities= []
-    var practices = []
     var currentDate= {startDate: new Date("2022-06-03 10:30")}
+    var practice = {
+        'id' : 1,
+        'name' : 'Jogging',
+        'date' : currentDate.startDate.toISOString(),
+        'time' :  120,
+        'intensity' : 'INTENSITY_LOW'
+    }
+    var activities= []
+    var practices = [practice]
     beforeEach(() => {
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
         var dateFormat = "YYYY-MM-DD";
@@ -58,6 +65,13 @@ describe('PracticeList', () => {
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             const mot = screen.getByTestId('moduleTitle')
             expect(mot.textContent.toString()).toBe("Ocupaciones");
+        })
+    });
+
+    test(" Test 3 : Affichage d'une pratique d'activite", async() => {
+        await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
+            const pratique = screen.getByTestId('practiceItem1')
+            expect(pratique).toBeDefined();
         })
     });
 
