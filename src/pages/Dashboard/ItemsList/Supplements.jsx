@@ -21,6 +21,7 @@ import {
 } from "@ionic/react";
 import { arrowDropdownCircle } from "ionicons/icons";
 import * as translate from '../../../translate/Translator'
+import { toast } from '../../../Toast';
 
 
 import "../../Tab1.css";
@@ -74,25 +75,44 @@ const Supplements = (props) => {
   const [statutActifChoisi, setStatutActifChoisi] = useState(false);
 
   const handleSave = () => {
-      const dashboard = JSON.parse(localStorage.getItem('dashboard'));
-      
-      dashboard.supplement.nomChoisi = nomChoisi;
-      dashboard.supplement.typeChoisi=typeChoisi;
-      dashboard.supplement.quantiteChoisie = quantiteChoisie;
-      dashboard.supplement.formatDoseChoisi = formatDoseChoisi;
-      dashboard.supplement.restrictionsChoisies = restrictionsChoisies;
-      dashboard.supplement.nombreDosesChoisi = nombreDosesChoisi;
-      dashboard.supplement.frequenceDosesChoisie = frequenceDosesChoisie;
-      dashboard.supplement.heuresChoisies = heuresChoisies;
-      dashboard.supplement.joursChoisis = joursChoisis;
-      dashboard.supplement.dateDebutChoisie = dateDebutChoisie;
-      dashboard.supplement.dateFinChoisie = dateFinChoisie;
-      dashboard.supplement.statutActifChoisi = statutActifChoisi;
+    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
 
-      localStorage.setItem('dashboard', JSON.stringify(dashboard));
-      const userUID = localStorage.getItem('userUid');
-      firebase.database().ref('dashboard/' + userUID ).update(dashboard);
+    if (!donneesAjoutSontValides()) {
+      /*TODO : à traduire */
+      return toast("Erreur, des champs requis sont vides");
     }
+
+    let nouveauSupp = {};
+
+    nouveauSupp.nomChoisi = nomChoisi;
+    nouveauSupp.typeChoisi = typeChoisi;
+    nouveauSupp.quantiteChoisie = quantiteChoisie;
+    nouveauSupp.formatDoseChoisi = formatDoseChoisi;
+    nouveauSupp.restrictionsChoisies = restrictionsChoisies;
+    nouveauSupp.nombreDosesChoisi = nombreDosesChoisi;
+    nouveauSupp.nombreFrequenceDosesChoisie = nombreFrequenceDosesChoisie;
+    nouveauSupp.frequenceDosesChoisie = frequenceDosesChoisie;
+    nouveauSupp.heuresChoisies = heuresChoisies;
+    nouveauSupp.joursChoisis = joursChoisis;
+    nouveauSupp.dateDebutChoisie = dateDebutChoisie;
+    nouveauSupp.dateFinChoisie = dateFinChoisie;
+    nouveauSupp.statutActifChoisi = statutActifChoisi;
+
+    dashboard.supplement.listeMedSup = [...dashboard.supplement.listeMedSup, nouveauSupp]
+
+    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    const userUID = localStorage.getItem('userUid');
+    firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
+  
+    setFormulaireAjoutEstAffiche(false);
+    toast(translate.getText("DATA_SAVED"));
+  }
+
+  const donneesAjoutSontValides = () => {
+    return nomChoisi && typeChoisi && quantiteChoisie && formatDoseChoisi && nombreDosesChoisi && 
+          nombreFrequenceDosesChoisie && frequenceDosesChoisie && (heuresChoisies && heuresChoisies.length > 0) &&
+          (joursChoisis && joursChoisis.length > 0) && dateDebutChoisie && dateFinChoisie;
+  }
 
   const inputChangeHandler = () => {
     setBoxEveryDay(!boxEveryDay);
@@ -371,7 +391,6 @@ const Supplements = (props) => {
                   slot="start"
                   onIonChange={ e => {
                     heureCourante.heure = e.detail.value;
-                    console.log(heureCourante.heure);
                   }}
                   >
                     Heure de prise
@@ -397,7 +416,6 @@ const Supplements = (props) => {
                 multiple = "true"
                 onIonChange = {e => {
                   setJoursChoisis(e.detail.value);
-                  console.log(joursChoisis);
                 }}
               >
                 <IonSelectOption value="mon">{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
@@ -420,7 +438,6 @@ const Supplements = (props) => {
                 max="2099"
                 onIonChange={e => {
                   setDateDebutChoisie(e.detail.value);
-                  console.log(dateDebutChoisie);
                 }}
                 ></IonDatetime>
                 <IonIcon name="calendar" color="black" slot="end"></IonIcon>
@@ -434,7 +451,6 @@ const Supplements = (props) => {
               max="2099"
               onIonChange={e => {
                 setDateFinChoisie(e.detail.value);
-                console.log(dateFinChoisie);
               }}
             ></IonDatetime>
             <IonIcon name="calendar" color="dark" slot="end"></IonIcon>
@@ -448,13 +464,12 @@ const Supplements = (props) => {
               value={statutActifChoisi}
               onIonChange={e => {
                 setStatutActifChoisi(e.detail.checked);
-                console.log(statutActifChoisi);
               }}
             ></IonCheckbox>
           </IonItem>
 
           <IonItem>
-            <IonButton type="submit">Soumettre</IonButton>
+            <IonButton type="submit" onClick={handleSave}>Soumettre</IonButton>
           </IonItem>
           </div>}
 
