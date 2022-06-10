@@ -346,6 +346,11 @@
       "es":"Suplementos",
       "fr":"Suppléments"
    },
+  "CONFIRM_DELETE": {
+    "en":"Confirm deletion",
+    "es":"Confirm deletion",
+    "fr":"Confirmer la suppression"
+  },
    "SUPPL_ADD":{
       "en":"Add supplements/medications",
       "es":"Añadir suplementos/medicamentos",
@@ -935,6 +940,16 @@
     "en":"Add activity",
     "es":"Añadir actividad",
     "fr":"Ajouter activité"
+  },
+  "DELETE_ACTIVITY": {
+    "en":"Delete Activity",
+    "es":"Eliminar actividad",
+    "fr":"Supprimer Activité"
+  },
+  "DELETE_ACTIVITY_DESCRIPTIION": {
+    "en":"Are you sure you want to delete this activity?",
+    "es":"¿Está seguro de que desea eliminar esta actividad?",
+    "fr":"Voulez-vous vraiment supprimer cette activité ?"
   },
   "MODIFY": {
     "en":"Edit",

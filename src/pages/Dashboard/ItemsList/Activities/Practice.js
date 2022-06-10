@@ -20,15 +20,6 @@ const getPracticesFilter = (practices, currentDate) => {
     return practices.filter((practice) => {
         let dateToFilter = new Date(practice.date)
         return dateToFilter > date3MontsPrior
-    }).sort(function (a, b) {
-        let d1 = new Date(a.date)
-        let d2 = new Date(b.date)
-        if (d1.getUTCDate() === d2.getUTCDate()) {
-            return a.id - b.id
-        }
-        else {
-            return d2 - d1
-        }
     })
 }
 
