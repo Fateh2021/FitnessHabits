@@ -58,7 +58,22 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 2 : Traduction de l'intensite en espagnol", async() => {
+    test(" Test 2 : Traduction des mots pour supprimer en anglais", async() => {
+        localStorage.setItem("userLanguage", "en")
+        await act(async () => { render(<PracticeItem practice={practice}/>);
+            const title = screen.getByTestId('deleteTitle');
+            const description = screen.getByTestId('deleteDescription');
+            const confirm = screen.getByTestId('deleteConfirm');
+            const cancel = screen.getByTestId('deleteCancel');
+
+            expect(title.textContent.toString()).toBe("Delete Activity");
+            expect(description.textContent.toString()).toBe("Are you sure you want to delete this activity?");
+            expect(confirm.textContent.toString()).toBe("Confirm deletion");
+            expect(cancel.textContent.toString()).toBe("Cancel");
+        })
+    });
+
+    test(" Test 3 : Traduction de l'intensite en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const mot = screen.getByTestId('practiceIntensity');
@@ -66,7 +81,22 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 3 : Affichage des valeurs d'une pratique d'activite", async() => {
+    test(" Test 4 : Traduction des mots pour supprimer en espagnol", async() => {
+        localStorage.setItem("userLanguage", "es")
+        await act(async () => { render(<PracticeItem practice={practice}/>);
+            const title = screen.getByTestId('deleteTitle');
+            const description = screen.getByTestId('deleteDescription');
+            const confirm = screen.getByTestId('deleteConfirm');
+            const cancel = screen.getByTestId('deleteCancel');
+
+            expect(title.textContent.toString()).toBe("Eliminar actividad");
+            expect(description.textContent.toString()).toBe("¿Está seguro de que desea eliminar esta actividad?");
+            expect(confirm.textContent.toString()).toBe("Confirmar la eliminación");
+            expect(cancel.textContent.toString()).toBe("Anular");
+        })
+    });
+
+    test(" Test 5 : Affichage des valeurs d'une pratique d'activite", async() => {
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const name = screen.getByTestId("practiceName");
             const date = screen.getByTestId("practiceDate");
