@@ -490,17 +490,19 @@ const Hydratation = (props) => {
                         <ion-card >
                           <ion-card-content class="ion-text-center">
 
-                          <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
-                              <IonIcon icon={trash} />
+                            <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
+                              <IonIcon icon={addCircle} />
                             </IonButton>
+
+
 
                             <IonButton size="small" onClick={() => editNameBeverage(index)}>
                               <IonIcon icon={create} />
                             </IonButton>
 
-                            {/* <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
-                              <IonIcon icon={addCircle} />
-                            </IonButton> */}
+                          <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
+                              <IonIcon icon={trash} />
+                            </IonButton>
 
                           </ion-card-content>
                         </ion-card>
