@@ -1,0 +1,360 @@
+.input {
+  height: 60%;
+  background-color: #e7dcdc;
+  border-radius: 5px;
+}
+
+.poids-text-md {
+  font-size: 16px;
+  line-height: 100%;
+}
+
+.poids-text-sm {
+  font-size: 14px;
+  float: right;
+}
+
+.rowPoids {
+  border-color: rgb(236, 236, 236);
+  border-width: 1px;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+}
+
+.accordeonPoids {
+  width: auto;
+  height: auto;
+  display: none;
+}
+
+.ionTableau {
+  --ion-background-color: #113d37;
+  color: white;
+}
+
+.poidsGraph {
+  padding-right: 30px !important;
+  background-color: #113d37;
+}
+
+.test11 {
+  align-content: right;
+}
+
+.icone {
+  cursor: pointer;
+  width: 40px !important;
+  height: 40px !important;
+  margin: auto;
+
+}
+
+.divIcone {
+  width: 120px;
+  height: 120px;
+  float: left;
+  --padding-start: 0px;
+  border-bottom: 0px;
+  border-radius: 8px;
+  background-color: #3E7D65;
+}
+
+.divInfos {
+  background-color: #FFFFFF;
+  height: 120px;
+  width: 80%;
+  float: right;
+  border-bottom: 0px;
+  --padding-start: 10px;
+
+}
+
+
+.titrePoidsIni {
+  color: #707070;
+  margin-top: 15px;
+
+}
+
+.poidsIni {
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+}
+
+.divPoidsCib {
+  background-color: #24A78817;
+  color: #707070;
+  margin-top: 15px;
+}
+
+.PoidsCib {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 10px;
+  color: #707070;
+  margin: auto;
+}
+
+.dateCible {
+  font-family: 'Roboto', sans-serif;
+  font-size: 10px;
+  color: #707070;
+
+}
+
+
+.titrePoids {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  color: #707070
+}
+
+.dailyPoids {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: #707070;
+}
+
+.IMC {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  color: #707070;
+}
+
+.divImc {
+  margin-top: 5px;
+}
+
+.rightContentInfos {
+  text-align: right;
+  padding-top: 15px;
+  height: 100%;
+
+}
+
+.leftContentInfos {
+  --padding-top: 10px;
+}
+
+#input-weight-modal {
+  --height: 200px;
+  --width: 90%;
+  --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.input-weight {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  width: 60px !important;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #707070 !important;
+}
+
+.sc-ion-popover-md-h {
+  --width: 100px;
+}
+
+.new-weight {
+  font-size: 15px !important;
+  width: auto;
+  font-family: 'Roboto', sans-serif;
+  padding-left: 16px;
+  padding-top: 16px;
+  color: #707070 !important;
+}
+
+ion-select-popover ion-list ion-item ion-radio {
+  --color: transparent;
+  --color-checked: transparent;
+}
+
+ion-select-popover ion-list ion-item ion-label {
+  --color: #707070 !important;
+  font-weight: bold;
+  font-size: 20px !important;
+}
+
+.weight-type {
+  width: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-right: 16px;
+  --padding-start: 5px;
+  font-weight: bold;
+  background: #D5D5D530;
+  color: #707070;
+}
+
+#input-weight-button {
+  margin-inline: 60px;
+  margin-top: 20px;
+  --background: #3E7D65;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+ion-content>ion-item-group>ion-item {
+  --border-width: 0 0 0 0;
+}
+
+.date-format {
+  font-size: 15px;
+  margin-right: 5px;
+  padding: 0;
+  width: auto;
+  font-family: 'Roboto', sans-serif;
+  color: #707070 !important;
+}
+
+.time-format {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  padding: 0;
+  margin-right: 5px;
+  width: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #707070 !important;
+}
+
+.date-icon {
+  font-size: 37px;
+  color: #707070 !important;
+}
+
+.weight-date {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  --border-width: 0 0 0 0;
+}
+
+.input-weight-item {
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
+  --highlight-color-focused: none;
+}
+
+.select-icon-inner {
+  opacity: 1 !important;
+}
+
+
+
+/* -------------------------------------------------- */
+
+/*center the button className HydButton*/
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+
+
+
+.hydButton {
+
+
+  justify-content: center;
+  align-items: center;
+  /*button has to beas long as screen */
+  width: 100%;
+  height: auto;
+
+
+}
+
+.hydImg {
+  position: relative;
+  width: 130px;
+  height: 145px;
+  bottom: 59px;
+  border-radius: 15%;
+  display: flex;
+  right: 6.5px;
+
+
+}
+
+
+.divHydra {
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 96%;
+  height: 120px;
+  --ion-background-color: #FFFFFFFF;
+  border-radius: 25px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
+
+}
+
+.titreHydra {
+  position: relative;
+  margin: auto;
+  display: flex;
+  left: 34%;
+  top: 15px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 21px;
+  color: #707070;
+
+}
+
+
+.titreLitre {
+  position: relative;
+  margin: auto;
+  display: flex;
+  left: 78%;
+  bottom: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: #707070;
+
+}
+
+
+.hydraCible {
+  position: absolute;
+  background-color: #24A78817;
+  font-size: 9px;
+  font-weight: bold;
+  color: #707070;
+  top: 60px;
+  left: 38%;
+}
+
+
+.hydraLimite {
+  position: absolute;
+  background-color: #e7d25817;
+  font-size: 9px;
+  font-weight: bold;
+  color: #707070;
+  top: 60px;
+  left: 60%;
+}
+
+.hydraAutre {
+  position: absolute;
+  background-color: #e7d25817;
+  font-size: 12px;
+  color: #707070;
+  top: 95px;
+  left: 38%;
+}
