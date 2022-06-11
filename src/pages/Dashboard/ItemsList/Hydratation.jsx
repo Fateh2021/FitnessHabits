@@ -7,8 +7,8 @@ import firebase from 'firebase'
 //Added to translator
 import * as translate from '../../../translate/Translator';
 
-//import '../../../pages/Tab1.css';
-
+import '../../../pages/Tab1.css';
+import '../../../pages/hydratation.css';
 
 var test=0;
 
@@ -366,17 +366,46 @@ const Hydratation = (props) => {
   }
   
   return (
-    <div>
-      <IonItem className="divTitre1">
-        <IonAvatar slot="start"><img src="/assets/Hydratation.jpeg" alt="" /></IonAvatar>
-        <IonLabel id="hydrationTitle">
-          <h2>
-            <b>{translate.getText("HYDR_TITLE")}</b>
-          </h2>
-        </IonLabel>
-        <IonInput className='inputTextGly' value={globalConsumption} readonly></IonInput>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => setShowModal(true)} />
-      </IonItem>
+    <div onClick={() => setShowModal(true)}>
+
+      <div className="hydButton divHydra" >
+
+        <div className="titreHydra">
+          <span>
+            {translate.getText("HYDR_TITLE")}
+          </span>
+        </div>
+
+
+        <div className="titreLitre">
+          <span>
+            <text> 0.000 L </text>
+          </span>
+        </div>
+
+
+        <div className="hydraCible">
+          <span > <text> Cible : 0.000 L</text>  </span>
+        </div>
+
+
+        <div className="hydraLimite">
+          <span > <text> Limite : 0.000 L</text>  </span>
+        </div>
+
+        <div className="hydraAutre">
+          <span > <text> Autres informations</text>  </span>
+        </div>
+
+
+
+        <div> <img className="hydImg" src="/assets/cup_water.png" alt="" />
+
+
+        </div>
+
+      </div>
+     
       <IonModal isOpen={showModal} style="background: rgba(0, 0, 0, 0.5) !important; padding: 20% 10%  !important;" id="input-hydra-modal" onDismiss={() => props.setShowModal(false)}  >
         <div>
           <ion-header>
