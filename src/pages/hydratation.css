@@ -1,0 +1,99 @@
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+
+
+
+.hydButton {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+
+.hydImg {
+  position: relative;
+  width: 130px;
+  height: 145px;
+  bottom: 59px;
+  border-radius: 15%;
+  display: flex;
+  right: 6.5px;
+}
+
+
+.divHydra {
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 96%;
+  height: 120px;
+  --ion-background-color: #FFFFFFFF;
+  border-radius: 25px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
+
+}
+
+.titreHydra {
+  position: relative;
+  margin: auto;
+  display: flex;
+  left: 34%;
+  top: 15px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 21px;
+  color: #707070;
+
+}
+
+
+.titreLitre {
+  position: relative;
+  margin: auto;
+  display: flex;
+  left: 78%;
+  bottom: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: #707070;
+
+}
+
+
+.hydraCible {
+  position: absolute;
+  background-color: #24A78817;
+  font-size: 9px;
+  font-weight: bold;
+  color: #707070;
+  top: 60px;
+  left: 38%;
+}
+
+
+.hydraLimite {
+  position: absolute;
+  background-color: #e7d25817;
+  font-size: 9px;
+  font-weight: bold;
+  color: #707070;
+  top: 60px;
+  left: 60%;
+}
+
+.hydraAutre {
+  position: absolute;
+  background-color: #e7d25817;
+  font-size: 12px;
+  color: #707070;
+  top: 95px;
+  left: 38%;
+}
