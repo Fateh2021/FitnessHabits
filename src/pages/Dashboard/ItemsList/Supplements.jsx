@@ -198,11 +198,11 @@ const Supplements = (props) => {
           </h2>
         </IonLabel>
         <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonButton onClick={() => setAfficherMenu(!afficherMenu)}>
+        <IonButton data-testid="boutonAfficherMenu" onClick={() => setAfficherMenu(!afficherMenu)}>
           <IonIcon icon={menu}></IonIcon>
         </IonButton>
       </IonItem>
-      <IonModal isOpen={afficherMenu}>
+      <IonModal data-testid="menu" isOpen={afficherMenu}>
           <IonHeader>
             <IonToolbar id="banniereHeader">
               <IonItem color="transparent" lines="none">
@@ -227,13 +227,14 @@ const Supplements = (props) => {
                     </h2>
                   </IonLabel>
                   <IonIcon
+                    data-testid="boutonAjouterSupplement"
                     className="arrowDashItem"
                     icon={arrowDropdownCircle}
                     onClick={ () => setFormulaireAjoutEstAffiche(!formulaireAjoutEstAffiche)}
                   />
                 </IonItem>
 
-                {formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1">
+                {formulaireAjoutEstAffiche && <div id="myDIVAjoutSupp1" data-testid="formulaireAjouterSupplement">
                   <IonList>
                     <IonItem>
                       <IonLabel color="light">{translate.getText("SUPPL_NOM")}</IonLabel>
