@@ -36,6 +36,7 @@ import AlcoolService from "../../services/AlcoolService";
 const Dashboard = (props) => {
     const [showAlert6, setShowAlert6] = useState(false);
     const [toDay, setToDaye] = useState({startDate: new Date()});
+    const [sidebarCloseDetecter, setSidebarCloseDetecter] = useState("true");
     const [currentDate, setCurrentDate] = useState({startDate: new Date()});
     const [formatedCurrentDate, setFormatedCurrentDate] = useState("");
     const [localday, setLocalday] = useState({startDate: new Date().toLocaleDateString("fr-FR", {
@@ -57,6 +58,7 @@ const Dashboard = (props) => {
         FormatDate(currentDate.startDate).then(dt => {
             setFormatedCurrentDate(dt);
         });
+        setSidebarCloseDetecter(!sidebarCloseDetecter);
     }
 
     const initFoodDashboardTemplate = () => {
@@ -633,7 +635,7 @@ const Dashboard = (props) => {
                         globalConsumption={dashboard.alcool.dailyTarget.globalConsumption}
                         currentDate={currentDate} 
                     />
-                    <Poids poids={dashboard.poids} currentDate={currentDate} formatedCurrentDate={formatedCurrentDate}/>
+                    <Poids poids={dashboard.poids} currentDate={currentDate} sidebarCloseDetecter={sidebarCloseDetecter}/>
                 </IonList>
             </IonContent>
 
