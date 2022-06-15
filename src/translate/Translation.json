@@ -74,6 +74,31 @@
       "es":"Agregar",
       "fr":"Ajouter"
    },
+   "WEIGHT_WEEK":{
+      "en":"Week",
+      "es":"Semana",
+      "fr":"Semaine"
+   },
+   "WEIGHT_MONTH":{
+      "en":"Month",
+      "es":"Mes",
+      "fr":"Mois"
+   },
+   "WEIGHT_QUARTER":{
+      "en":"Quarter",
+      "es":"Trimestre",
+      "fr":"Trimestre"
+   },
+   "WEIGHT_SEMESTER":{
+      "en":"Semester",
+      "es":"Semestre",
+      "fr":"Semestre"
+   },
+   "WEIGHT_YEAR":{
+      "en":"Year",
+      "es":"Año",
+      "fr":"Année"
+   },
 	"INITIAL_EMPTY_WEIGHT":{
 		"en":"\nThe initial weight must not be empty !",
 		"es":"\n¡El peso inicial no debe estar vacío !",

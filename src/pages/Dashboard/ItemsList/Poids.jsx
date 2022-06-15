@@ -5,12 +5,12 @@ import { IonLabel, IonText, IonItem, IonItemDivider, IonImg} from "@ionic/react"
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
 import WeightInput from "../../Weight/WeightInput";
+import TableWeight from "../../Weight/configuration/TableWeight";
 
 // Variables in Firebase remains in French for now with a translation in comment
 const Poids = (props) => {
   // Ajout de cette variable dans le but de vérifier quel était la préférence d'affichage du poids.
-  var prefWeight = localStorage.getItem("prefUnitePoids");
-  const [unitWeight, setUnitWeight] = useState(prefWeight);
+  const [unitWeight, setUnitWeight] = useState("");
   const [currentDate, ] = useState({ startDate: new Date() });
   var [dailyWeight, setDailyWeight] = useState(props.poids.dailyPoids);
   var [initialWeight, setInitialWeight] = useState("");
@@ -29,7 +29,7 @@ const Poids = (props) => {
   */
   useEffect(() => {
     var tmp= 0;
-    if (prefWeight == "LBS") {
+    if (weightService.getPrefUnitWeight() == "LBS") {
       tmp = props.poids.dailyPoids * 2.2;
     } else {
       tmp = props.poids.dailyPoids;
@@ -47,20 +47,24 @@ const Poids = (props) => {
   ***********************************************************************
   */
   useEffect(() => {
-
-    weightService.initPrefWeight().then(() => {
+    weightService.initProfile().then(() => {
       setUnitWeight(weightService.getPrefUnitWeight());
-    });
+      setSize(weightService.getSize());
     
-    
-    weightService.initSize().then(() => {
-      setSize(localStorage.getItem("taille"));
-    });
+      setInitialWeight(weightService.getInitialWeight);
+      setTargetWeight(weightService.getTargetWeight);
+      setTargetWeightDate(weightService.getTargetWeightDate);
 
+      let format = weightService.getPrefDate();
+      format = format.replace(/y/gi, 'Y');
+      format = format.replace(/L/gi, 'M');
+      format = format.replace(/d/gi, 'D');
+      setDateFormat(format);
+    });
   },[]);
 
   useEffect(() => {
-    setBMI(weightService.calculation_BMI(localStorage.getItem("taille"), weightService.formatToKG(dailyWeight)));
+    setBMI(weightService.calculation_BMI(weightService.getSize(), weightService.formatToKG(dailyWeight)));
   },[dailyWeight, size]);
 
 
@@ -72,14 +76,7 @@ const Poids = (props) => {
   ** get target weight date form database and set it to localstorage
   ***********************************************************************
   */
-  useEffect(() => {
-    weightService.initWeights().then(() => {
-      setInitialWeight(localStorage.getItem("poidsInitial"));
-      setTargetWeight(localStorage.getItem("poidsCible"));
-      setTargetWeightDate(localStorage.getItem("dateCible"));
-    })
 
-  }, [])
 
    /*
   ***********************************************************************
@@ -88,25 +85,23 @@ const Poids = (props) => {
   ** update the date format 
   ***********************************************************************
   */
-  useEffect(() => {
-    weightService.initPrefDate().then(() => {
+
+  useEffect(() => { 
+    if(weightService.getProfile()) {
+      setUnitWeight(weightService.getPrefUnitWeight());
+      setSize(weightService.getSize());
+    
+      setInitialWeight(weightService.getInitialWeight);
+      setTargetWeight(weightService.getTargetWeight);
+      setTargetWeightDate(weightService.getTargetWeightDate);
+
       let format = weightService.getPrefDate();
       format = format.replace(/y/gi, 'Y');
       format = format.replace(/L/gi, 'M');
       format = format.replace(/d/gi, 'D');
       setDateFormat(format);
-    });
-  }, []);
-
-  useEffect(() => {
-    let format = weightService.getPrefDate();
-    if(format) {
-      format = format.replace(/y/gi, 'Y');
-      format = format.replace(/L/gi, 'M');
-      format = format.replace(/d/gi, 'D');
-      setDateFormat(format);
     }
-  }, [props.formatedCurrentDate]);
+  }, [props.sidebarCloseDetecter]);
 
   /*
   ***********************************************************************
@@ -118,7 +113,9 @@ const Poids = (props) => {
     
 		setDailyWeight(parseFloat(newWeight).toFixed(1));
 		// On utilise directement la valeur qu'on a sauvé dans le localstorage du dashboard
-		setBMI(weightService.calculation_BMI(size, weightService.formatToKG(newWeight)));
+    const newBMI = weightService.calculation_BMI(size, weightService.formatToKG(newWeight))
+		setBMI(newBMI);
+    weightService.check_BMI_change(newBMI);
     
     setShowInputWeight(false)
   };
@@ -210,7 +207,26 @@ const Poids = (props) => {
             currentDate = {props.currentDate}
           ></WeightInput>      
       </IonItem>
+      {/*<TableWeight 
+        graphData={[
+          {x: "2022-05-30", y:210},
+          {x: "2022-05-31", y:205},
+          {x: "2022-06-01", y:200},
+          {x: "2022-06-02", y:195},
+          {x: "2022-06-03", y:190},
+          {x: "2022-06-04", y:185},
+          {x: "2022-06-05", y:180},
+          {x: "2022-06-06", y:175},
+          {x: "2022-06-07", y:170},
+          {x: "2022-06-08", y:165},
+          {x: "2022-06-09", y:160},
+          {x: "2022-06-10", y:155}
+        ]} 
+        initialWeight={initialWeight} 
+        targetWeight={targetWeight}>
+      </TableWeight>*/}
     </div>
+
   );
 };
 export default Poids;
