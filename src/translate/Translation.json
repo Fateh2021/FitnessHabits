@@ -656,15 +656,10 @@
       "es":"Error de autentificación. ¡El nombre de usuario y/o contraseña no son válidos!",
       "fr":"Erreur d'authentification. L'identifiant et/ou le mot passe sont invalides !"
    },
-  "NAME_ERROR":{
-    "en":"An activity name is required!",
-    "es":"\n¡Se requiere un nombre de actividad!",
-    "fr":"Un nom d'activité est nécessaire!"
-  },
-  "TIME_ERROR":{
-    "en":"Activity duration cannot be 0 minutes!",
-    "es":"¡La duración de la actividad no puede ser de 0 minutos!",
-    "fr":"La durée de l'activité ne peut pas être de 0 minutes!"
+  "NAME_ACTIVITY":{
+    "en":"Activity name",
+    "es":"Nombre de la actividad",
+    "fr":"Nom de l'activité"
   },
    "OR":{
       "en":"OR",

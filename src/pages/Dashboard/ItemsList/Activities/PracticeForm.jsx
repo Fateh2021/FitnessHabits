@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {IonButton, IonCol, IonDatetime, IonLabel, IonRow, IonSelect, IonSelectOption} from "@ionic/react";
+import {
+    IonButton,
+    IonCol,
+    IonDatetime,
+    IonLabel,
+    IonRow,
+    IonSelect,
+    IonSelectOption,
+    IonContent,
+    IonModal,
+    IonInput
+} from "@ionic/react";
 import PratiqueUtil from "./Practice";
 import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
@@ -8,48 +19,28 @@ const PracticeForm = (props) => {
     const [intensity, setIntensity] = useState(props.practice ? props.practice.intensity : "INTENSITY_LOW")
     const [name, setName] = useState(props.practice ? props.practice.name : '')
     const [time, setTime] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.time) : '00:00')
-    const [errors, setErrors] = useState({})
-
-    const divId = "PracticeForm" + (props.practice ? props.practice.id : "Add")
-
-    const handleValidation = () => {
-        let errorsFound = {}
-        let [hour, minute] = time.split(":")
-
-        if ((parseInt(hour) * 60 + parseInt(minute)) === 0) {
-            errorsFound["time"] = translate.getText("TIME_ERROR")
-        }
-        if (name.length === 0) {
-            errorsFound["name"] = translate.getText("NAME_ERROR")
-        }
-        return errorsFound
-    }
 
     const beforeSubmit = (e) => {
         e.preventDefault()
         let [hour, minute] = time.split(":")
-        let formValid = handleValidation()
 
-        if (Object.keys(formValid).length === 0) {
-            if (props.practice) {
-                props.onSubmitAction({
-                    id: props.practice.id,
-                    name,
-                    time: (parseInt(hour) * 60 + parseInt(minute)),
-                    intensity,
-                    date: props.practice.date
-                })
-            }
-            else {
-                props.onSubmitAction({
-                    name,
-                    time: (parseInt(hour) * 60 + parseInt(minute)),
-                    intensity
-                })
-            }
-            resetForm()
+        if (props.practice) {
+            props.onSubmitAction({
+                id: props.practice.id,
+                name,
+                time: (parseInt(hour) * 60 + parseInt(minute)),
+                intensity,
+                date: props.practice.date
+            })
         }
-        setErrors(formValid)
+        else {
+            props.onSubmitAction({
+                name,
+                time: (parseInt(hour) * 60 + parseInt(minute)),
+                intensity
+            })
+        }
+        resetForm()
     }
 
     const resetForm = () => {
@@ -57,27 +48,21 @@ const PracticeForm = (props) => {
             setName('')
             setTime('00:00')
             setIntensity("INTENSITY_LOW")
-            setErrors({})
         }
-        PratiqueUtil.accor(divId)
+        props.onDidDismiss(false)
     }
 
     return (
-        <div id={divId} className='popUpWindow' onClick={resetForm}>
-            <div className='popUpWindow-inner-small' onClick={(e) => {
-                e.stopPropagation()
-            }}>
+        <IonModal className='activity-modal-small'
+                  isOpen={props.isOpen} onDidDismiss={resetForm}>
+            <IonContent className='activity-content'>
                 <IonLabel data-testid="modifyTitle"><h1 className='activityTitle' >{(props.practice ? translate.getText("MODIFY_ACTIVITY") : translate.getText("ADD_ACTIVITY"))}</h1></IonLabel>
                 <form onSubmit={beforeSubmit}>
                     <br/>
                     <IonRow>
-                        <input style={{textAlign: "left"}} className="inputFormActivity" type='text' placeholder="Nom de l'activité"
-                               value={name}
-                               onChange={(e) => {
-                                   setName(e.target.value)
-                                   handleValidation()
-                                }}/>
-                        <span style={{ color: "red" }}>{errors["name"]}</span>
+                        <IonInput style={{textAlign: "left"}} className="inputFormActivity" type='text' placeholder={translate.getText("NAME_ACTIVITY")}
+                               value={name} required={true} onIonChange={(e) => { setName(e.detail.value)}}
+                        />
                     </IonRow>
                     <br/>
                     <IonRow>
@@ -85,17 +70,14 @@ const PracticeForm = (props) => {
                             <IonLabel data-testid="modifyDuration">{translate.getText("EXP_REPORT_DURATION")}</IonLabel>
                         </IonCol>
                         <IonCol size='8'>
-                            <IonDatetime className="inputFormActivity"
-                                         cancelText={translate.getText("CANCEL")}
-                                         doneText="OK"
-                                         displayFormat="HH:mm"
+                            <IonInput className="inputFormActivity"
+                                         type="time"
                                          value={time}
-                                         onIonChange={e =>  {
-                                             setTime(e.detail.value)
-                                             handleValidation()
-                                         }}/>
+                                         onIonChange={e =>  {setTime(e.detail.value) }}
+                                         required={true}
+                                         min={"00:01"}
+                                         max={"24:00"}/>
                         </IonCol>
-                        <span style={{ color: "red" }}>{errors["time"]}</span>
                     </IonRow>
                     <br/>
                     <IonRow>
@@ -103,10 +85,7 @@ const PracticeForm = (props) => {
                             <IonLabel data-testid="modifyIntensity">{translate.getText("INTENSITY")}</IonLabel>
                         </IonCol>
                         <IonCol size='4'>
-                            <IonSelect value={intensity} onIonChange={e => {
-                                setIntensity(e.detail.value)
-                                handleValidation()
-                            }}>
+                            <IonSelect value={intensity} onIonChange={e => {setIntensity(e.detail.value)}}>
                                 <IonSelectOption value="INTENSITY_LOW">{translate.getText("INTENSITY_LOW")}</IonSelectOption>
                                 <IonSelectOption value="INTENSITY_MEDIUM">{translate.getText("INTENSITY_MEDIUM")}</IonSelectOption>
                                 <IonSelectOption value="INTENSITY_HIGH">{translate.getText("INTENSITY_HIGH")}</IonSelectOption>
@@ -119,8 +98,8 @@ const PracticeForm = (props) => {
                         <IonButton type="submit" data-testid="modifySubmit">{(props.practice ? translate.getText("MODIFY") : translate.getText("ADD"))}</IonButton>
                     </IonRow>
                 </form>
-            </div>
-        </div>
+            </IonContent>
+        </IonModal>
     )
 }
 

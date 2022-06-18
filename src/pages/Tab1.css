@@ -2188,6 +2188,25 @@ h2{
 
 /*Module activities*/
 
+.activity-modal-big {
+    --height: 80%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.activity-modal-small {
+    --height: 40%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.activity-content {
+    --padding-bottom: 10px;
+    --padding-end: 10px;
+    --padding-start: 20px;
+    --padding-top: 20px;
+}
+
 .popUpWindow {
     display: none;
     position: fixed;

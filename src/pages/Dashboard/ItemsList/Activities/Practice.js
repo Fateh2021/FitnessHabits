@@ -1,10 +1,3 @@
-const accor = (divId) => {
-    const divElt=document.getElementById(divId);
-    if (divElt) {
-        (!divElt.style.display || divElt.style.display === "none") ? divElt.style.display = "block":divElt.style.display = "none";
-    }
-}
-
 const formatHourMinute = (time) => {
     return ((time - (time % 60)) / 60).toLocaleString("en-US", {
         minimumIntegerDigits: 2,
@@ -23,4 +16,4 @@ const getPracticesFilter = (practices, currentDate) => {
     })
 }
 
-export default {accor, formatHourMinute, getPracticesFilter}
+export default {formatHourMinute, getPracticesFilter}
