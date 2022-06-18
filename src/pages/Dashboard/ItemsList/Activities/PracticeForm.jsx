@@ -61,7 +61,7 @@ const PracticeForm = (props) => {
                     <br/>
                     <IonRow>
                         <IonInput style={{textAlign: "left"}} className="inputFormActivity" type='text' placeholder={translate.getText("NAME_ACTIVITY")}
-                               value={name} required={true} onIonChange={(e) => { setName(e.detail.value)}}
+                                  value={name} required={true} onIonChange={(e) => { setName(e.detail.value)}}
                         />
                     </IonRow>
                     <br/>
@@ -71,12 +71,12 @@ const PracticeForm = (props) => {
                         </IonCol>
                         <IonCol size='8'>
                             <IonInput className="inputFormActivity"
-                                         type="time"
-                                         value={time}
-                                         onIonChange={e =>  {setTime(e.detail.value) }}
-                                         required={true}
-                                         min={"00:01"}
-                                         max={"24:00"}/>
+                                      type="time"
+                                      value={time}
+                                      onIonChange={e =>  {setTime(e.detail.value) }}
+                                      required={true}
+                                      min={"00:01"}
+                                      max={"24:00"}/>
                         </IonCol>
                     </IonRow>
                     <br/>

@@ -47,7 +47,7 @@ const PracticeItem = (props) =>  {
               }></IonIcon>
           </IonCol>
           <IonCol>
-              <IonIcon icon={trash} onClick={() => {
+              <IonIcon data-testid="deleteOpen" icon={trash} onClick={() => {
                   if (isMounted.current) {
                       setShowDelete(true)
                   }

@@ -1,6 +1,6 @@
 import React from "react";
 import {cleanup, render, screen} from "@testing-library/react";
-import {ionFireEvent as fireEvent} from "@ionic/react-test-utils";
+import {ionFireEvent as fireEvent, waitForIonicReact} from "@ionic/react-test-utils";
 import "@testing-library/jest-dom"
 import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
@@ -61,6 +61,8 @@ describe('PracticeItem', () => {
     test(" Test 2 : Traduction des mots pour supprimer en anglais", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeItem practice={practice}/>);
+            await waitForIonicReact();
+            screen.getByTestId("deleteOpen").click()
             const title = screen.getByTestId('deleteTitle');
             const description = screen.getByTestId('deleteDescription');
             const confirm = screen.getByTestId('deleteConfirm');
@@ -84,6 +86,8 @@ describe('PracticeItem', () => {
     test(" Test 4 : Traduction des mots pour supprimer en espagnol", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
+            await waitForIonicReact();
+            screen.getByTestId("deleteOpen").click()
             const title = screen.getByTestId('deleteTitle');
             const description = screen.getByTestId('deleteDescription');
             const confirm = screen.getByTestId('deleteConfirm');

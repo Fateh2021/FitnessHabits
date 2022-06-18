@@ -69,9 +69,9 @@ const PracticeList = (props) =>  {
           <img src="/assets/Running.jpg" alt=""/>
         </IonAvatar>
         <IonLabel data-testid="moduleTitle"><h2><b>{translate.getText("ACTIVITIES")}</b></h2></IonLabel>
-        <IonIcon className="arrowDashItem" icon={arrowDropdownCircle} onClick={() => setShowPratiqueList(true)}/>
+        <IonIcon className="arrowDashItem" data-testid={"openPracticeList"} icon={arrowDropdownCircle} onClick={() => setShowPratiqueList(true)}/>
       </IonItem>
-      <IonModal id="pratiquesList" className="activity-modal-big"
+      <IonModal data-testid="pratiquesList" className="activity-modal-big"
                 isOpen={showPratiqueList} onDidDismiss={() => setShowPratiqueList(false)}>
         <IonContent className="activity-content">
           <IonLabel><h1 className='activityTitle' >{translate.getText("ACTIVITIES")}</h1></IonLabel>

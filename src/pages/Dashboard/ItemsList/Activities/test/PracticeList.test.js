@@ -1,6 +1,6 @@
 import React from "react";
 import {cleanup, render, screen} from "@testing-library/react";
-import {ionFireEvent as fireEvent} from "@ionic/react-test-utils";
+import {ionFireEvent as fireEvent, waitForIonicReact} from "@ionic/react-test-utils";
 import "@testing-library/jest-dom"
 import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
@@ -69,7 +69,10 @@ describe('PracticeList', () => {
     });
 
     test(" Test 3 : Affichage d'une pratique d'activite", async() => {
-        await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
+        await act(async () => {
+            const modal = render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
+            await waitForIonicReact();
+            modal.getByTestId("openPracticeList").click()
             const pratique = screen.getByTestId('practiceItem1')
             expect(pratique).toBeDefined();
         })
