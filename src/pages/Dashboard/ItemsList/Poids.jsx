@@ -209,24 +209,6 @@ const Poids = (props) => {
             currentDate = {props.currentDate}
           ></WeightInput>      
       </IonItem>
-      {/*<TableWeight 
-        graphData={[
-          {x: "2022-05-30", y:210},
-          {x: "2022-05-31", y:205},
-          {x: "2022-06-01", y:200},
-          {x: "2022-06-02", y:195},
-          {x: "2022-06-03", y:190},
-          {x: "2022-06-04", y:185},
-          {x: "2022-06-05", y:180},
-          {x: "2022-06-06", y:175},
-          {x: "2022-06-07", y:170},
-          {x: "2022-06-08", y:165},
-          {x: "2022-06-09", y:160},
-          {x: "2022-06-10", y:155}
-        ]} 
-        initialWeight={initialWeight} 
-        targetWeight={targetWeight}>
-      </TableWeight>*/}
     </div>
 
   );
