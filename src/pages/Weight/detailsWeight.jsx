@@ -65,7 +65,7 @@ const DetailsWeight = (props) => {
       <IonItemDivider className='alerts'>
         <IonLabel>Paramètrer les alertes</IonLabel> 
         <IonAvatar className='alertsAvtr'>
-            <img className='alertsIcon' src="/assets/alerts.png" alt=""/>
+            <img class='alertsIcon' src="/assets/alerts.png" alt=""/>
         </IonAvatar>
       </IonItemDivider>
       <IonItemDivider className='cibleInfos'>
@@ -135,8 +135,8 @@ const DetailsWeight = (props) => {
       <IonList className="listHisto">
        { dailyWeightList.map(item => {
          return(
-         <IonItem className="weightItem" key={item.x}>
-           <IonLabel className="historique">
+         <IonItem>
+           <IonLabel id="historique">
              <span><b>{item.y} {unitWeight === "KG" ? "Kg" : "Lbs"} </b></span>  &nbsp;
              <span> | {weightService.formatDateShape(item.x,dateFormat)} à {weightService.getTime(item.x)}</span>
              <span>
