@@ -218,14 +218,12 @@ export function initDailyPoidsList() {
     dailyWeightList.sort(function(a,b){
       return new Date(a.x) - new Date(b.x)
     })
-   // console.log(dailyWeightList[0]);
     localStorage.setItem("listeDailyPoids", JSON.stringify(dailyWeightList));
     resolve();
   })
   })
 }
 export function getDailyWeightList() {
-  console.log( JSON.parse(localStorage.getItem("listeDailyPoids")))
   return JSON.parse(localStorage.getItem("listeDailyPoids"));
 }
 
