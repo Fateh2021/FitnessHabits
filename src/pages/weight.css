@@ -13,6 +13,14 @@
   font-size: 14px;
   float: right;
 }
+.headerPoids{
+  --background: var(--ion-color-fav);
+    color: white;
+
+}
+:root {
+  --ion-color-fav: #3E7D65;
+}
 
 .rowPoids {
   border-color: rgb(236, 236, 236);
@@ -22,7 +30,12 @@
   border-right: 0px;
   border-style: solid;
 }
-
+.listHisto{
+  overflow-y: scroll;
+ 
+  height: 200px;
+  
+}
 .accordeonPoids {
   width: auto;
   height: auto;
@@ -49,7 +62,9 @@
   margin: auto;
   
 }
-
+.detailsPoids{
+  background-color: white;
+}
 .divIcone {
   width: 120px;
   height: 120px;
@@ -58,18 +73,106 @@
   border-bottom: 0px;
   border-radius: 8px;
   background-color: #3E7D65;
+  --inner-padding-end:0px;
 }
 
 .divInfos {
   background-color: #FFFFFF;
   height: 120px;
-  width: 80%;
   float: right;
   border-bottom: 0px;
   --padding-start: 10px;
 
 }
+.alerts {
+  border-bottom:0px ;
+  --padding-start: 35px ;
+  --color : #707070
+}
+.cibleInfos{
+  border-bottom:0px ;
+  --padding-start: 25px ;
+  --color : #707070
 
+}
+#dernierPoidsValue{
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 0px;
+
+}
+#dernierPoidsDate{
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  margin-top: 0px;
+
+}
+#initialPoidsInfos{
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+
+}
+ion-item{
+  --padding-start:0px;
+}
+
+#historique
+{
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+ 
+}
+
+.PoidsCibInfos{
+  background-color: #24A78817;
+  color: #707070;
+  --border-width:0px;
+  --border-style: auto;
+
+
+}
+#cible{
+  background-color: #24A78817;
+  color: #707070;
+  margin-left: 100px;
+
+}
+ion-item-divider{
+  border-bottom: 0px;
+  --padding-start: 35px;
+
+}
+.calendar{
+  --border-width:0px;
+  --padding-start:0px;
+
+}
+
+.alertsIcon{
+  width: 27px;
+  height: 27px;
+  margin-top: 5px;
+  margin-left: 7px;
+}
+.alertsAvtr{
+  background-color: #D5D5D530;
+  margin: 20px;
+}
+.test{
+  width:20px;
+  height:15px;
+}
+.pencilAvtr{
+
+  background-color: #D5D5D530;
+  margin-left: 100px;
+  display: inline;
+}
 
 .titrePoidsIni{
   color: #707070;
@@ -125,10 +228,16 @@
   margin-top: 5px;
 }
 
+#link {
+  width: 80%;
+}
+
 .rightContentInfos {
-    text-align: right;
-    padding-top: 15px;
-    height: 100%;
+  text-align: right;
+  padding-top: 15px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: 15px;
 
 }
 .leftContentInfos{

@@ -128,73 +128,75 @@ const Poids = (props) => {
               <IonImg  src="/assets/Poids.jpg"/>
             </div>
           </IonItemDivider>
-          <IonItemDivider  className="divInfos">
-            <div className="leftContentInfos">
-              <div  className="titrePoids">
-                <IonText>
-                    {translate.getText("WEIGHT_NAME_SECTION")}
-                </IonText>
-              </div>
-              <div className="divPoidsCib">
-                <IonLabel>
-                <b className="PoidsCib">
-                  <span>
-                    {translate.getText("WEIGHT_TARGET_NAME")} :
-                  </span>
-                  &nbsp;
-                  <span data-testid = "targWeight">
-                     {weightService.formatWeight(targetWeight)}
-                  </span>
-                  &nbsp;
-                  <span>
-                    {unitWeight === "KG" ? "Kg" : "Lbs"}, 
-                  </span>
-                </b>
-                &nbsp;
-                <span data-testid = "targWeightDate" className="dateCible" >
-                  {weightService.formatDateShape(targetWeightDate, dateFormat)} 
-                </span>
-                </IonLabel>
-              </div>
-              <div className="titrePoidsIni">
-                <IonLabel>
-                  <div className="poidsIni">
-                    <b>
-                      <span> 
-                      {translate.getText("WEIGHT_INITIAL_NAME")} : </span>
-                    </b>
-
-                    <span  data-testid = "initWeight">
-                      { weightService.formatWeight(initialWeight)}
+          <ion-anchor href="/detailsWeight" routerDirection="forward" id="link">
+            <IonItemDivider  className="divInfos">
+              <div className="leftContentInfos">
+                <div  className="titrePoids">
+                  <IonText>
+                      {translate.getText("WEIGHT_NAME_SECTION")}
+                  </IonText>
+                </div>
+                <div className="divPoidsCib">
+                  <IonLabel>
+                  <b className="PoidsCib">
+                    <span>
+                      {translate.getText("WEIGHT_TARGET_NAME")} :
                     </span>
                     &nbsp;
-                    <span data-test-id = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}
+                    <span data-testid = "targWeight">
+                      {weightService.formatWeight(targetWeight)}
                     </span>
-                    </div>
-                </IonLabel>
-              </div>
-            </div>
-            <div className="rightContentInfos">
-              <div className="dailyPoids">
-                <IonLabel>
-                  <span data-testid = "dlyPoids">{dailyWeight}</span>
+                    &nbsp;
+                    <span>
+                      {unitWeight === "KG" ? "Kg" : "Lbs"}, 
+                    </span>
+                  </b>
                   &nbsp;
-                  <span data-testid = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
-                </IonLabel>
-              </div>
-              <div className="divImc">
-                <IonLabel>
-                  <span  className="IMC">
-                    {translate.getText("WEIGHT_BMI_ACRONYM")} :
+                  <span data-testid = "targWeightDate" className="dateCible" >
+                    {weightService.formatDateShape(targetWeightDate, dateFormat)} 
                   </span>
-                  &nbsp;
-                  <span  className="IMC" data-testid = "imc">
-                     {BMI == "Infinity" ? "" : BMI}
-                  </span>
-                </IonLabel>
+                  </IonLabel>
+                </div>
+                <div className="titrePoidsIni">
+                  <IonLabel>
+                    <div className="poidsIni">
+                      <b>
+                        <span> 
+                        {translate.getText("WEIGHT_INITIAL_NAME")} : </span>
+                      </b>
+
+                      <span  data-testid = "initWeight">
+                        { weightService.formatWeight(initialWeight)}
+                      </span>
+                      &nbsp;
+                      <span data-test-id = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}
+                      </span>
+                      </div>
+                  </IonLabel>
+                </div>
               </div>
-            </div>
-          </IonItemDivider> 
+              <div className="rightContentInfos">
+                <div className="dailyPoids">
+                  <IonLabel>
+                    <span data-testid = "dlyPoids">{dailyWeight}</span>
+                    &nbsp;
+                    <span data-testid = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}</span>
+                  </IonLabel>
+                </div>
+                <div className="divImc">
+                  <IonLabel>
+                    <span  className="IMC">
+                      {translate.getText("WEIGHT_BMI_ACRONYM")} :
+                    </span>
+                    &nbsp;
+                    <span  className="IMC" data-testid = "imc">
+                      {BMI == "Infinity" ? "" : BMI}
+                    </span>
+                  </IonLabel>
+                </div>
+              </div>
+            </IonItemDivider>
+          </ion-anchor> 
           <WeightInput
             dailyWeight={dailyWeight} 
             onSubmit={handleChange} 
