@@ -5,6 +5,8 @@ import 'moment/locale/es'
 import * as translate from "../../../translate/Translator";
 const DIFF_UNITY_WEIGHT = 2.2;
 
+
+
 export function initProfile() {
   return new Promise((resolve) => {
     const userUID = localStorage.getItem('userUid');
@@ -199,3 +201,48 @@ export function updateWeightDashboard(newWeight, currentDate) {
   )
   .update(dashboard);
 }
+
+export function initDailyPoidsList() {
+  return new Promise((resolve) => {
+  const userUID = localStorage.getItem('userUid');
+  let weightRef = firebase.database().ref('dashboard/' + userUID)
+  weightRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
+    var dailyWeightList = []
+    for (const [,value] of Object.entries(snapshot.val())) {
+        if (value.poids.datePoids !== undefined) {
+            let dateWeight = formatDate(value.poids.datePoids)
+            let weight = formatWeight(value.poids.dailyPoids)
+            dailyWeightList.push ({x: dateWeight, y: weight})
+        }
+    }
+    dailyWeightList.sort(function(a,b){
+      return new Date(a.x) - new Date(b.x)
+    })
+   // console.log(dailyWeightList[0]);
+    localStorage.setItem("listeDailyPoids", JSON.stringify(dailyWeightList));
+    resolve();
+  })
+  })
+}
+export function getDailyWeightList() {
+  console.log( JSON.parse(localStorage.getItem("listeDailyPoids")))
+  return JSON.parse(localStorage.getItem("listeDailyPoids"));
+}
+
+export function getLastWeightInfos(array){
+  var dernier=[]
+  array.map((item, i)=>{
+    if(i === array.length -1){
+     dernier[0]= item.x;
+     dernier[1]=item.y;
+    }
+  })
+  return dernier
+
+}
+export function getTime(date) {
+  return moment(date).format('HH:MM');
+
+}
+
+
