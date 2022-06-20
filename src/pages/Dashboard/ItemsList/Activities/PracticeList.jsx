@@ -23,7 +23,7 @@ const PracticeList = (props) =>  {
     let newPractice = {
       id: newId,
       name: practiceToAdd.name,
-      date: currentDate.toISOString(),
+      date: (new Date(practiceToAdd.date)).toISOString(),
       time: practiceToAdd.time,
       intensity: practiceToAdd.intensity
     }

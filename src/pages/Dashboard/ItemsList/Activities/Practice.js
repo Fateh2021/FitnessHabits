@@ -13,6 +13,8 @@ const getPracticesFilter = (practices, currentDate) => {
     return practices.filter((practice) => {
         let dateToFilter = new Date(practice.date)
         return dateToFilter > date3MontsPrior
+    }).sort((a, b) => {
+        return (new Date(b.date)) - (new Date(a.date))
     })
 }
 
