@@ -16,6 +16,12 @@ import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
 
 const PracticeForm = (props) => {
+    var currentDate = new Date()
+    var offset = currentDate.getTimezoneOffset()
+    currentDate = new Date(currentDate.getTime() - (offset * 60 * 1000))
+    currentDate = currentDate.toISOString().split('T')[0]
+
+    const [date, setDate] = useState(props.practice ? props.practice.date : currentDate)
     const [intensity, setIntensity] = useState(props.practice ? props.practice.intensity : "INTENSITY_LOW")
     const [name, setName] = useState(props.practice ? props.practice.name : '')
     const [time, setTime] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.time) : '00:00')
@@ -30,14 +36,15 @@ const PracticeForm = (props) => {
                 name,
                 time: (parseInt(hour) * 60 + parseInt(minute)),
                 intensity,
-                date: props.practice.date
+                date
             })
         }
         else {
             props.onSubmitAction({
                 name,
                 time: (parseInt(hour) * 60 + parseInt(minute)),
-                intensity
+                intensity,
+                date
             })
         }
         resetForm()
@@ -46,6 +53,7 @@ const PracticeForm = (props) => {
     const resetForm = () => {
         if (!props.practice) {
             setName('')
+            setDate(currentDate)
             setTime('00:00')
             setIntensity("INTENSITY_LOW")
         }
@@ -60,9 +68,31 @@ const PracticeForm = (props) => {
                 <form onSubmit={beforeSubmit}>
                     <br/>
                     <IonRow>
-                        <IonInput style={{textAlign: "left"}} className="inputFormActivity" type='text' placeholder={translate.getText("NAME_ACTIVITY")}
-                                  value={name} required={true} onIonChange={(e) => { setName(e.detail.value)}}
-                        />
+                        <IonCol>
+                            <IonInput style={{textAlign: "left"}}
+                                className="inputFormActivity"
+                                type='text'
+                                placeholder={translate.getText("NAME_ACTIVITY")}
+                                value={name}
+                                onIonChange={(e) => { setName(e.detail.value)}}
+                                required={true}/>
+                        </IonCol>
+                    </IonRow>
+                    <br/>
+                    <IonRow>
+                        <IonCol size='4'>
+                            <IonLabel data-testid="modifyDate">{translate.getText("DATE_TITLE")}</IonLabel>
+                        </IonCol>
+                        <IonCol size='8'>
+                            <IonDatetime className="inputFormActivity"
+                                displayFormat="YYYY-MM-DD"
+                                min="1970-01-01"
+                                max={currentDate}
+                                value={date}
+                                onIonChange={(e) => { setDate(e.detail.value)}}
+                                required={true}
+                            />
+                        </IonCol>
                     </IonRow>
                     <br/>
                     <IonRow>

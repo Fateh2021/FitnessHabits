@@ -57,11 +57,13 @@ describe('PracticeForm', () => {
             await waitForIonicReact();
             const title = screen.getByTestId('modifyTitle');
             const submit = screen.getByTestId('modifySubmit');
+            const date = screen.getByTestId('modifyDate');
             const duration = screen.getByTestId('modifyDuration');
             const intensity = screen.getByTestId('modifyIntensity');
 
             expect(title.textContent.toString()).toBe("Add activity");
             expect(submit.textContent.toString()).toBe("Add");
+            expect(date.textContent.toString()).toBe("Date");
             expect(duration.textContent.toString()).toBe("Duration");
             expect(intensity.textContent.toString()).toBe("Intensity");
         })
@@ -85,11 +87,13 @@ describe('PracticeForm', () => {
             await waitForIonicReact();
             const title = screen.getByTestId('modifyTitle');
             const submit = screen.getByTestId('modifySubmit');
+            const date = screen.getByTestId('modifyDate');
             const duration = screen.getByTestId('modifyDuration');
             const intensity = screen.getByTestId('modifyIntensity');
 
             expect(title.textContent.toString()).toBe("Añadir actividad");
             expect(submit.textContent.toString()).toBe("Añadir");
+            expect(date.textContent.toString()).toBe("Fecha");
             expect(duration.textContent.toString()).toBe("Duración");
             expect(intensity.textContent.toString()).toBe("Intensidad");
         })
