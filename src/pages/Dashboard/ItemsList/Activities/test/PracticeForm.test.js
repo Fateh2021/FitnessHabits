@@ -69,7 +69,7 @@ describe('PracticeForm', () => {
         })
     });
 
-    test(" Test 2 : Traduction des mots pour modifier une activite en anglais", async() => {
+    test(" Test 2 : Translation of words to modify an activity in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
             await waitForIonicReact();
@@ -81,7 +81,7 @@ describe('PracticeForm', () => {
         })
     });
 
-    test(" Test 3 : Traduction des mots pour ajouter une activite en espagnol", async() => {
+    test(" Test 3 : Translation of words to add an activity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeForm isOpen={true}/>);
             await waitForIonicReact();
@@ -99,7 +99,7 @@ describe('PracticeForm', () => {
         })
     });
 
-    test(" Test 4 : Traduction des mots pour modifier une activite en espagnol", async() => {
+    test(" Test 4 : Translation of words to modify an activity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
             await waitForIonicReact();

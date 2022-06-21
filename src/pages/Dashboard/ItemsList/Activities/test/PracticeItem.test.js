@@ -50,7 +50,7 @@ describe('PracticeItem', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Traduction de l'intensite en anglais", async() => {
+    test(" Test 1 : Translation of intensity in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const mot = screen.getByTestId('practiceIntensity');
@@ -58,7 +58,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 2 : Traduction des mots pour supprimer en anglais", async() => {
+    test(" Test 2 : Translation of the words to delete in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             await waitForIonicReact();
@@ -75,7 +75,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 3 : Traduction de l'intensite en espagnol", async() => {
+    test(" Test 3 : Translation of intensity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const mot = screen.getByTestId('practiceIntensity');
@@ -83,7 +83,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 4 : Traduction des mots pour supprimer en espagnol", async() => {
+    test(" Test 4 : Translation of the words to delete in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             await waitForIonicReact();
@@ -100,7 +100,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 5 : Affichage des valeurs d'une pratique d'activite", async() => {
+    test(" Test 5 : Displaying the values ​​of an activity practice", async() => {
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const name = screen.getByTestId("practiceName");
             const date = screen.getByTestId("practiceDate");
@@ -111,6 +111,17 @@ describe('PracticeItem', () => {
             // expect(date.textContent).toBe("06-03-2022")
             expect(duration.textContent).toBe("02:00");
             expect(intensity.textContent.toString()).toBe("Basse");
+        })
+    });
+
+    test(" Test 6 : Delete an activity practice", async() => {
+        await act(async () => {
+            let deleteTrigger = false
+            const modal = render(<PracticeItem practice={practice} onRemovePractice={() => deleteTrigger = true}/>)
+            await waitForIonicReact()
+            modal.getByTestId("deleteOpen").click()
+            modal.getByTestId("deleteConfirm").click()
+            expect(deleteTrigger).toBe(true)
         })
     });
 

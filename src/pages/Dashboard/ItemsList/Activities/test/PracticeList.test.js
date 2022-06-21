@@ -52,7 +52,7 @@ describe('PracticeList', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Traduction du mot Activites en anglais", async() => {
+    test(" Test 1 : Translation of the word Activities in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             const mot = screen.getByTestId('moduleTitle')
@@ -60,7 +60,7 @@ describe('PracticeList', () => {
         })
     });
 
-    test(" Test 2 : Traduction du mot Activites en espagnol", async() => {
+    test(" Test 2 : Translation of the word Activities in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             const mot = screen.getByTestId('moduleTitle')
@@ -68,7 +68,7 @@ describe('PracticeList', () => {
         })
     });
 
-    test(" Test 3 : Affichage d'une pratique d'activite", async() => {
+    test(" Test 3 : Viewing an activity practice", async() => {
         await act(async () => {
             const modal = render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             await waitForIonicReact();
@@ -77,5 +77,4 @@ describe('PracticeList', () => {
             expect(pratique).toBeDefined();
         })
     });
-
 });
