@@ -230,7 +230,7 @@ const Supplements = (props) => {
               <IonList>
                 <IonItem className="trashButton" color="danger">
                   <IonAvatar slot="start">
-                    <ion img src="/assets/suppl/plus.png" alt="" />
+                    <img src="/assets/suppl/plus.png" alt="" />
                   </IonAvatar>
                   <IonLabel>
                     <h2>
