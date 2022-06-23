@@ -806,6 +806,11 @@
       "es":"Debe seleccionarse al menos un estado de activación.",
       "fr":"Il faut sélectionner au moins un état de réveil."
    },
+  "AT": {
+    "en": "at",
+    "es": "a",
+    "fr": "à"
+  },
    "STATE_OF_MIND":{
       "en":"Awakening state of mind",
       "es":"Despertar estado mental",
@@ -1056,6 +1061,11 @@
       "es": "Duración",
       "fr": "Durée"
    },
+  "EXP_REPORT_TIME": {
+    "en": "Time",
+    "es": "Tiempo",
+    "fr": "Temps"
+  },
    "EXP_REF_GLY": {
       "en" : "Reference",
       "es" : "Referencia",

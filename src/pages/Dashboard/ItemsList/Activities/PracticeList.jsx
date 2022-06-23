@@ -25,9 +25,9 @@ const PracticeList = (props) =>  {
       name: practiceToAdd.name,
       date: (new Date(practiceToAdd.date)).toISOString(),
       time: practiceToAdd.time,
+      duration: practiceToAdd.duration,
       intensity: practiceToAdd.intensity
     }
-
 
     firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practices.concat(newPractice)}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate))
@@ -40,7 +40,6 @@ const PracticeList = (props) =>  {
     let practicesWithoutOldPractice = practices.filter((item) => {
       return item.id !== practiceToModify.id
     }).concat({...practiceToModify})
-
 
     firebase.database().ref('dashboard/'+userUID+ "/moduleActivity").update({practices: practicesWithoutOldPractice}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(practicesWithoutOldPractice, currentDate))

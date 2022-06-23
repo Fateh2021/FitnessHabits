@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
     IonButton,
     IonCol,
@@ -24,17 +24,20 @@ const PracticeForm = (props) => {
     const [date, setDate] = useState(props.practice ? props.practice.date : currentDate)
     const [intensity, setIntensity] = useState(props.practice ? props.practice.intensity : "INTENSITY_LOW")
     const [name, setName] = useState(props.practice ? props.practice.name : '')
+    const [duration, setDuration] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.duration) : '00:00')
     const [time, setTime] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.time) : '00:00')
 
     const beforeSubmit = (e) => {
         e.preventDefault()
-        let [hour, minute] = time.split(":")
+        let [durationHour, duratioMinute] = duration.split(":")
+        let [timeHour, timeMinute] = time.split(":")
 
         if (props.practice) {
             props.onSubmitAction({
                 id: props.practice.id,
                 name,
-                time: (parseInt(hour) * 60 + parseInt(minute)),
+                time: (parseInt(timeHour) * 60 + parseInt(timeMinute)),
+                duration: (parseInt(durationHour) * 60 + parseInt(duratioMinute)),
                 intensity,
                 date
             })
@@ -42,7 +45,8 @@ const PracticeForm = (props) => {
         else {
             props.onSubmitAction({
                 name,
-                time: (parseInt(hour) * 60 + parseInt(minute)),
+                time: (parseInt(timeHour) * 60 + parseInt(timeMinute)),
+                duration: (parseInt(durationHour) * 60 + parseInt(duratioMinute)),
                 intensity,
                 date
             })
@@ -54,6 +58,7 @@ const PracticeForm = (props) => {
         if (!props.practice) {
             setName('')
             setDate(currentDate)
+            setDuration('00:00')
             setTime('00:00')
             setIntensity("INTENSITY_LOW")
         }
@@ -97,13 +102,28 @@ const PracticeForm = (props) => {
                     <br/>
                     <IonRow>
                         <IonCol size='4'>
-                            <IonLabel data-testid="modifyDuration">{translate.getText("EXP_REPORT_DURATION")}</IonLabel>
+                            <IonLabel data-testid="modifyTime">{translate.getText("EXP_REPORT_TIME")}</IonLabel>
                         </IonCol>
                         <IonCol size='8'>
                             <IonInput className="inputFormActivity"
                                       type="time"
                                       value={time}
                                       onIonChange={e =>  {setTime(e.detail.value) }}
+                                      required={true}
+                                      min={"00:00"}
+                                      max={"24:00"}/>
+                        </IonCol>
+                    </IonRow>
+                    <br/>
+                    <IonRow>
+                        <IonCol size='4'>
+                            <IonLabel data-testid="modifyDuration">{translate.getText("EXP_REPORT_DURATION")}</IonLabel>
+                        </IonCol>
+                        <IonCol size='8'>
+                            <IonInput className="inputFormActivity"
+                                      type="time"
+                                      value={duration}
+                                      onIonChange={e =>  {setDuration(e.detail.value) }}
                                       required={true}
                                       min={"00:01"}
                                       max={"24:00"}/>

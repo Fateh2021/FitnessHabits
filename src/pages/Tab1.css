@@ -2195,7 +2195,7 @@ h2{
 }
 
 .activity-modal-small {
-    --height: 45%;
+    --height: 50%;
     --width: 90%;
     --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
 }
@@ -2204,6 +2204,10 @@ h2{
     --height: 35%;
     --width: 90%;
     --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.fontPractice {
+    font-size: 12px;
 }
 
 .activity-content {

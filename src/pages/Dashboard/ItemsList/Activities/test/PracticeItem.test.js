@@ -27,6 +27,7 @@ describe('PracticeItem', () => {
         'id' : 1,
         'name' : 'Jogging',
         'date' : currentDate.startDate.toISOString(),
+        'duration' :  120,
         'time' :  120,
         'intensity' : 'INTENSITY_LOW'
     }
@@ -109,7 +110,7 @@ describe('PracticeItem', () => {
             
             expect(name.textContent.toString()).toBe("Jogging");
             // expect(date.textContent).toBe("06-03-2022")
-            expect(duration.textContent).toBe("02:00");
+            expect(duration.textContent).toBe("02:00,");
             expect(intensity.textContent.toString()).toBe("Basse");
         })
     });
