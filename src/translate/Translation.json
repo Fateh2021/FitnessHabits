@@ -332,6 +332,11 @@
       "es":"Suplementos",
       "fr":"Suppléments"
    },
+   "SUPPL_SECOND_TITLE":{
+      "en":"and Medicines",
+      "es":"y Medicamentos",
+      "fr":"et Médicaments"
+   },
    "SUPPL_ADD":{
       "en":"Add supplements/medications",
       "es":"Añadir suplementos/medicamentos",

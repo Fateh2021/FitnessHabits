@@ -22,7 +22,8 @@ import {
   IonContent,
   IonHeader,
   IonToolbar,
-  IonTitle
+  IonTitle,
+  IonImg
 } from "@ionic/react";
 import { menu, arrowDropdownCircle, arrowBack } from "ionicons/icons";
 import * as translate from '../../../translate/Translator'
@@ -189,18 +190,28 @@ const Supplements = (props) => {
   return (
     <div>
       <IonItem className="divTitre3">
-        <IonAvatar slot="start">
-          <img src="/assets/Supp.jpeg" alt="" />
-        </IonAvatar>
-        <IonLabel>
-          <h2>
-            <b>{translate.getText("SUPPL_TITLE")}</b>
-          </h2>
-        </IonLabel>
-        <IonInput className='inputTextGly' readonly color="danger" value={""}></IonInput>
-        <IonButton data-testid="boutonAfficherMenu" onClick={() => setAfficherMenu(!afficherMenu)}>
-          <IonIcon icon={menu}></IonIcon>
-        </IonButton>
+        <IonItemDivider className="divIconeSupp">
+          <div className="iconeSize" onClick={() => setAfficherMenu(!afficherMenu)}>
+            <IonImg src="/assets/pills_blanc_fr.png" />
+          </div>
+        </IonItemDivider>
+        <IonItemDivider class="divInfos">
+          <div className="leftInfos">
+            <div className="titreSupp">
+              {translate.getText("SUPPL_TITLE")}
+            </div>
+            <div className="supp-text-sm">
+              {translate.getText("SUPPL_SECOND_TITLE")}
+            </div>
+          </div>
+          
+          <div className="rightInfos">
+            <div className="titreSupp">00%</div>
+            <div className="supp-text-sm">100%</div>
+
+          </div>
+        </IonItemDivider>
+
       </IonItem>
       <IonModal data-testid="menu" isOpen={afficherMenu}>
           <IonHeader>
@@ -219,7 +230,7 @@ const Supplements = (props) => {
               <IonList>
                 <IonItem className="trashButton" color="danger">
                   <IonAvatar slot="start">
-                    <img src="/assets/suppl/plus.png" alt="" />
+                    <ion img src="/assets/suppl/plus.png" alt="" />
                   </IonAvatar>
                   <IonLabel>
                     <h2>
