@@ -22,11 +22,10 @@ jest.mock("firebase", () => {
 });
 
 describe('PracticeItem', () => {
-    var currentDate= {startDate: new Date("2022-06-03 10:30")}
     var practice = {
         'id' : 1,
         'name' : 'Jogging',
-        'date' : currentDate.startDate.toISOString(),
+        'date' : "2022-06-03",
         'duration' :  120,
         'time' :  120,
         'intensity' : 'INTENSITY_LOW'
@@ -51,7 +50,7 @@ describe('PracticeItem', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Translation of intensity in English", async() => {
+    test(" Test 1 : Translating intensity in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const mot = screen.getByTestId('practiceIntensity');
@@ -59,7 +58,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 2 : Translation of the words to delete in English", async() => {
+    test(" Test 2 : Translating the words to delete in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             await waitForIonicReact();
@@ -76,7 +75,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 3 : Translation of intensity in Spanish", async() => {
+    test(" Test 3 : Translating intensity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const mot = screen.getByTestId('practiceIntensity');
@@ -84,7 +83,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 4 : Translation of the words to delete in Spanish", async() => {
+    test(" Test 4 : Translating the words to delete in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             await waitForIonicReact();
@@ -115,7 +114,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 6 : Delete an activity practice", async() => {
+    test(" Test 6 : Deleting an activity practice", async() => {
         await act(async () => {
             let deleteTrigger = false
             const modal = render(<PracticeItem practice={practice} onRemovePractice={() => deleteTrigger = true}/>)

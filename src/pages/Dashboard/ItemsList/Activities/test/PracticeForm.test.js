@@ -22,13 +22,13 @@ jest.mock("firebase", () => {
 });
 
 describe('PracticeForm', () => {
-    var currentDate= {startDate: new Date("2022-06-03 10:30")}
     var practice = {
         'id' : 1,
         'name' : 'Jogging',
-        'date' : currentDate.startDate.toISOString(),
-        'time' :  120,
-        'intensity' : 'INTENSITY_LOW'
+        'date' : "2022-06-03",
+        'time' :  480,
+        'duration' : 120,
+        'intensity' : 'INTENSITY_MEDIUM'
     }
     beforeEach(() => {
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
@@ -51,7 +51,7 @@ describe('PracticeForm', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Traduction des mots pour ajouter une activite en anglais", async() => {
+    test(" Test 1 : Translation of words to add an activity in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeForm isOpen={true}/>);
             await waitForIonicReact();
@@ -69,7 +69,7 @@ describe('PracticeForm', () => {
         })
     });
 
-    test(" Test 2 : Translation of words to modify an activity in English", async() => {
+    test(" Test 2 : Translating words to modify an activity in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
             await waitForIonicReact();
@@ -81,7 +81,7 @@ describe('PracticeForm', () => {
         })
     });
 
-    test(" Test 3 : Translation of words to add an activity in Spanish", async() => {
+    test(" Test 3 : Translating words to add an activity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeForm isOpen={true}/>);
             await waitForIonicReact();
@@ -99,7 +99,7 @@ describe('PracticeForm', () => {
         })
     });
 
-    test(" Test 4 : Translation of words to modify an activity in Spanish", async() => {
+    test(" Test 4 : Translating words to modify an activity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
             await waitForIonicReact();
@@ -111,4 +111,20 @@ describe('PracticeForm', () => {
         })
     });
 
+    test(" Test 5 : Displaying practice values in the form", async() => {
+        await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
+            await waitForIonicReact();
+            const name = screen.getByTestId('nameValue');
+            const date = screen.getByTestId('dateValue');
+            const time = screen.getByTestId('timeValue');
+            const duration = screen.getByTestId('durationValue');
+            const intensity = screen.getByTestId('intensityValue');
+
+            expect(name.value).toBe("Jogging");
+            expect(date.value).toBe("2022-06-03");
+            expect(time.value).toBe("08:00");
+            expect(duration.value).toBe("02:00");
+            expect(intensity.value).toBe("INTENSITY_MEDIUM");
+        })
+    });
 });

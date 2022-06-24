@@ -81,7 +81,7 @@ const PracticeList = (props) =>  {
                 ))
             }
             <br/>
-            <IonIcon className='addButtonActivity' icon={addCircle} onClick={() => setShowAddForm(true)} />
+            <IonIcon className='addButtonActivity' data-testid="addPractice" icon={addCircle} onClick={() => setShowAddForm(true)} />
             <PracticeForm onSubmitAction={addPractice} isOpen={showAddForm} onDidDismiss={setShowAddForm} />
         </IonContent>
       </IonModal>

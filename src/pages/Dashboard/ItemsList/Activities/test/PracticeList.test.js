@@ -22,7 +22,7 @@ jest.mock("firebase", () => {
 });
 
 describe('PracticeList', () => {
-    var currentDate= {startDate: new Date("2022-06-03 10:30")}
+    var currentDate= {startDate: new Date("2022-06-03")}
     var practice = {
         'id' : 1,
         'name' : 'Jogging',
@@ -52,7 +52,7 @@ describe('PracticeList', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Translation of the word Activities in English", async() => {
+    test(" Test 1 : Translating the word Activities in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             const mot = screen.getByTestId('moduleTitle')
@@ -60,7 +60,7 @@ describe('PracticeList', () => {
         })
     });
 
-    test(" Test 2 : Translation of the word Activities in Spanish", async() => {
+    test(" Test 2 : Translating the word Activities in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             const mot = screen.getByTestId('moduleTitle')
@@ -75,6 +75,17 @@ describe('PracticeList', () => {
             modal.getByTestId("openPracticeList").click()
             const pratique = screen.getByTestId('practiceItem1')
             expect(pratique).toBeDefined();
+        })
+    });
+
+    test(" Test 4 : Adding a new practice", async() => {
+        await act(async () => {
+            const modal = render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
+            await waitForIonicReact();
+            modal.getByTestId("openPracticeList").click()
+            modal.getByTestId("addPractice").click()
+            const add = screen.getByTestId('addForm')
+            expect(add).toBeDefined();
         })
     });
 });

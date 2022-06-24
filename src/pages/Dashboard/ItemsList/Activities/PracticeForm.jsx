@@ -66,7 +66,7 @@ const PracticeForm = (props) => {
     }
 
     return (
-        <IonModal className='activity-modal-small'
+        <IonModal className='activity-modal-small' data-testid={(props.practice ? "modifyForm" + props.practice.id : "addForm")}
                   isOpen={props.isOpen} onDidDismiss={resetForm}>
             <IonContent className='activity-content'>
                 <IonLabel data-testid="modifyTitle"><h1 className='activityTitle' >{(props.practice ? translate.getText("MODIFY_ACTIVITY") : translate.getText("ADD_ACTIVITY"))}</h1></IonLabel>
@@ -76,6 +76,7 @@ const PracticeForm = (props) => {
                         <IonCol>
                             <IonInput style={{textAlign: "left"}}
                                 className="inputFormActivity"
+                                data-testid="nameValue"
                                 type='text'
                                 placeholder={translate.getText("NAME_ACTIVITY")}
                                 value={name}
@@ -90,6 +91,7 @@ const PracticeForm = (props) => {
                         </IonCol>
                         <IonCol size='8'>
                             <IonDatetime className="inputFormActivity"
+                                data-testid="dateValue"
                                 displayFormat="YYYY-MM-DD"
                                 min="1970-01-01"
                                 max={currentDate}
@@ -106,6 +108,7 @@ const PracticeForm = (props) => {
                         </IonCol>
                         <IonCol size='8'>
                             <IonInput className="inputFormActivity"
+                                      data-testid="timeValue"
                                       type="time"
                                       value={time}
                                       onIonChange={e =>  {setTime(e.detail.value) }}
@@ -121,11 +124,12 @@ const PracticeForm = (props) => {
                         </IonCol>
                         <IonCol size='8'>
                             <IonInput className="inputFormActivity"
+                                      data-testid="durationValue"
                                       type="time"
                                       value={duration}
                                       onIonChange={e =>  {setDuration(e.detail.value) }}
                                       required={true}
-                                      min={"00:01"}
+                                      min={"00:00"}
                                       max={"24:00"}/>
                         </IonCol>
                     </IonRow>
@@ -135,7 +139,7 @@ const PracticeForm = (props) => {
                             <IonLabel data-testid="modifyIntensity">{translate.getText("INTENSITY")}</IonLabel>
                         </IonCol>
                         <IonCol size='4'>
-                            <IonSelect value={intensity} onIonChange={e => {setIntensity(e.detail.value)}}>
+                            <IonSelect data-testid="intensityValue" value={intensity} onIonChange={e => {setIntensity(e.detail.value)}}>
                                 <IonSelectOption value="INTENSITY_LOW">{translate.getText("INTENSITY_LOW")}</IonSelectOption>
                                 <IonSelectOption value="INTENSITY_MEDIUM">{translate.getText("INTENSITY_MEDIUM")}</IonSelectOption>
                                 <IonSelectOption value="INTENSITY_HIGH">{translate.getText("INTENSITY_HIGH")}</IonSelectOption>
