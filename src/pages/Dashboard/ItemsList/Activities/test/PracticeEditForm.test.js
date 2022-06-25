@@ -4,7 +4,7 @@ import {ionFireEvent as fireEvent, waitForIonicReact} from "@ionic/react-test-ut
 import "@testing-library/jest-dom"
 import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
-import PracticeForm from "../PracticeForm";
+import PracticeEditForm from "../PracticeEditForm";
 
 jest.mock("firebase", () => {
     return {
@@ -21,7 +21,7 @@ jest.mock("firebase", () => {
     };
 });
 
-describe('PracticeForm', () => {
+describe('PracticeEditForm', () => {
     var practice = {
         'id' : 1,
         'name' : 'Jogging',
@@ -51,9 +51,9 @@ describe('PracticeForm', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Translation of words to add an activity in English", async() => {
+    test(" Test 1 : Translation of words to modify an activity in English", async() => {
         localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeForm isOpen={true}/>);
+        await act(async () => { render(<PracticeEditForm isOpen={true} practice={practice}/>);
             await waitForIonicReact();
             const title = screen.getByTestId('modifyTitle');
             const submit = screen.getByTestId('modifySubmit');
@@ -61,29 +61,17 @@ describe('PracticeForm', () => {
             const duration = screen.getByTestId('modifyDuration');
             const intensity = screen.getByTestId('modifyIntensity');
 
-            expect(title.textContent.toString()).toBe("Add activity");
-            expect(submit.textContent.toString()).toBe("Add");
+            expect(title.textContent.toString()).toBe("Edit activity");
+            expect(submit.textContent.toString()).toBe("Edit");
             expect(date.textContent.toString()).toBe("Date");
             expect(duration.textContent.toString()).toBe("Duration");
             expect(intensity.textContent.toString()).toBe("Intensity");
         })
     });
 
-    test(" Test 2 : Translating words to modify an activity in English", async() => {
-        localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
-            await waitForIonicReact();
-            const title = screen.getByTestId('modifyTitle');
-            const submit = screen.getByTestId('modifySubmit');
-
-            expect(title.textContent.toString()).toBe("Edit activity");
-            expect(submit.textContent.toString()).toBe("Edit");
-        })
-    });
-
-    test(" Test 3 : Translating words to add an activity in Spanish", async() => {
+    test(" Test 2 : Translating words to modify an activity in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeForm isOpen={true}/>);
+        await act(async () => { render(<PracticeEditForm isOpen={true} practice={practice}/>);
             await waitForIonicReact();
             const title = screen.getByTestId('modifyTitle');
             const submit = screen.getByTestId('modifySubmit');
@@ -91,28 +79,16 @@ describe('PracticeForm', () => {
             const duration = screen.getByTestId('modifyDuration');
             const intensity = screen.getByTestId('modifyIntensity');
 
-            expect(title.textContent.toString()).toBe("Añadir actividad");
-            expect(submit.textContent.toString()).toBe("Añadir");
+            expect(title.textContent.toString()).toBe("Editar actividad");
+            expect(submit.textContent.toString()).toBe("Editar");
             expect(date.textContent.toString()).toBe("Fecha");
             expect(duration.textContent.toString()).toBe("Duración");
             expect(intensity.textContent.toString()).toBe("Intensidad");
         })
     });
 
-    test(" Test 4 : Translating words to modify an activity in Spanish", async() => {
-        localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
-            await waitForIonicReact();
-            const title = screen.getByTestId('modifyTitle');
-            const submit = screen.getByTestId('modifySubmit');
-
-            expect(title.textContent.toString()).toBe("Editar actividad");
-            expect(submit.textContent.toString()).toBe("Editar");
-        })
-    });
-
-    test(" Test 5 : Displaying practice values in the form", async() => {
-        await act(async () => { render(<PracticeForm isOpen={true} practice={practice}/>)
+    test(" Test 3 : Displaying practice values in the form", async() => {
+        await act(async () => { render(<PracticeEditForm isOpen={true} practice={practice}/>)
             await waitForIonicReact();
             const name = screen.getByTestId('nameValue');
             const date = screen.getByTestId('dateValue');

@@ -4,7 +4,7 @@ import {create, trash} from 'ionicons/icons';
 import FormatDate from "../../../../DateUtils";
 import PratiqueUtil from "./Practice.js"
 import * as translate from "../../../../translate/Translator";
-import PracticeForm from "./PracticeForm";
+import PracticeEditForm from "./PracticeEditForm";
 
 const PracticeItem = (props) =>  {
     const [practice, setPractice] = useState(props.practice)
@@ -56,30 +56,34 @@ const PracticeItem = (props) =>  {
           </IonCol>
         </IonRow>
 
-        <PracticeForm onSubmitAction={updatePractice} isOpen={showModify} onDidDismiss={setShowModify} practice={practice}/>
+        <PracticeEditForm onSubmitAction={updatePractice} isOpen={showModify} onDidDismiss={setShowModify} practice={practice}/>
 
-          <IonModal className='activity-modal-xsmall' isOpen={showDelete} onDidDismiss={() => {
+        <IonModal className='activity-modal-xsmall' isOpen={showDelete} onDidDismiss={() => {
+            if (isMounted.current) {
+                setShowDelete(false)
+            }
+        }}>
+          <IonContent className='activity-content'>
+            <IonLabel data-testid="deleteTitle"><h1 className='activityTitle' >{translate.getText("DELETE_ACTIVITY")}</h1></IonLabel>
+            <p data-testid="deleteDescription">
+              {translate.getText("DELETE_ACTIVITY_DESCRIPTIION")}
+            </p>
+            <IonButton color="tertiary" data-testid="deleteCancel" onClick={() => {
               if (isMounted.current) {
-                  setShowDelete(false)
+                setShowDelete(false)
               }
-          }}>
-              <IonContent className='activity-content'>
-                  <IonLabel data-testid="deleteTitle"><h1 className='activityTitle' >{translate.getText("DELETE_ACTIVITY")}</h1></IonLabel>
-                  <p data-testid="deleteDescription">
-                      {translate.getText("DELETE_ACTIVITY_DESCRIPTIION")}
-                  </p>
-                  <IonButton color="tertiary" data-testid="deleteCancel" onClick={() => {
-                      if (isMounted.current) {
-                          setShowDelete(false)
-                      }
-                  }}>{translate.getText("WEIGHT_PREF_CANCEL")}</IonButton>
-                  <IonButton color="primary" data-testid="deleteConfirm" onClick={() => {
-                      if (isMounted.current) {
-                          props.onRemovePractice(practice)
-                      }
-                  }}>{translate.getText("CONFIRM_DELETE")}</IonButton>
-              </IonContent>
-          </IonModal>
+            }}>
+              {translate.getText("WEIGHT_PREF_CANCEL")}
+            </IonButton>
+            <IonButton color="primary" data-testid="deleteConfirm" onClick={() => {
+              if (isMounted.current) {
+                props.onRemovePractice(practice)
+              }
+            }}>
+              {translate.getText("CONFIRM_DELETE")}
+            </IonButton>
+          </IonContent>
+        </IonModal>
       </div>
     )
 }

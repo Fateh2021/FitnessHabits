@@ -15,61 +15,43 @@ import PratiqueUtil from "./Practice";
 import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
 
-const PracticeForm = (props) => {
+const PracticeEditForm = (props) => {
     var currentDate = new Date()
     var offset = currentDate.getTimezoneOffset()
     currentDate = new Date(currentDate.getTime() - (offset * 60 * 1000))
     currentDate = currentDate.toISOString().split('T')[0]
 
-    const [date, setDate] = useState(props.practice ? props.practice.date : currentDate)
-    const [intensity, setIntensity] = useState(props.practice ? props.practice.intensity : "INTENSITY_LOW")
-    const [name, setName] = useState(props.practice ? props.practice.name : '')
-    const [duration, setDuration] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.duration) : '00:00')
-    const [time, setTime] = useState(props.practice ? PratiqueUtil.formatHourMinute(props.practice.time) : '00:00')
+    const [date, setDate] = useState(props.practice.date)
+    const [intensity, setIntensity] = useState(props.practice.intensity)
+    const [name, setName] = useState(props.practice.name)
+    const [duration, setDuration] = useState(PratiqueUtil.formatHourMinute(props.practice.duration))
+    const [time, setTime] = useState(PratiqueUtil.formatHourMinute(props.practice.time))
 
     const beforeSubmit = (e) => {
         e.preventDefault()
         let [durationHour, duratioMinute] = duration.split(":")
         let [timeHour, timeMinute] = time.split(":")
 
-        if (props.practice) {
-            props.onSubmitAction({
-                id: props.practice.id,
-                name,
-                time: (parseInt(timeHour) * 60 + parseInt(timeMinute)),
-                duration: (parseInt(durationHour) * 60 + parseInt(duratioMinute)),
-                intensity,
-                date
-            })
-        }
-        else {
-            props.onSubmitAction({
-                name,
-                time: (parseInt(timeHour) * 60 + parseInt(timeMinute)),
-                duration: (parseInt(durationHour) * 60 + parseInt(duratioMinute)),
-                intensity,
-                date
-            })
-        }
+        props.onSubmitAction({
+            id: props.practice.id,
+            name,
+            time: (parseInt(timeHour) * 60 + parseInt(timeMinute)),
+            duration: (parseInt(durationHour) * 60 + parseInt(duratioMinute)),
+            intensity,
+            date
+        })
         resetForm()
     }
 
     const resetForm = () => {
-        if (!props.practice) {
-            setName('')
-            setDate(currentDate)
-            setDuration('00:00')
-            setTime('00:00')
-            setIntensity("INTENSITY_LOW")
-        }
         props.onDidDismiss(false)
     }
 
     return (
-        <IonModal className='activity-modal-small' data-testid={(props.practice ? "modifyForm" + props.practice.id : "addForm")}
+        <IonModal className='activity-modal-small' data-testid={"modifyForm" + props.practice.id}
                   isOpen={props.isOpen} onDidDismiss={resetForm}>
             <IonContent className='activity-content'>
-                <IonLabel data-testid="modifyTitle"><h1 className='activityTitle' >{(props.practice ? translate.getText("MODIFY_ACTIVITY") : translate.getText("ADD_ACTIVITY"))}</h1></IonLabel>
+                <IonLabel data-testid="modifyTitle"><h1 className='activityTitle' >{translate.getText("MODIFY_ACTIVITY")}</h1></IonLabel>
                 <form onSubmit={beforeSubmit}>
                     <br/>
                     <IonRow>
@@ -111,7 +93,7 @@ const PracticeForm = (props) => {
                                       data-testid="timeValue"
                                       type="time"
                                       value={time}
-                                      onIonChange={e =>  {setTime(e.detail.value) }}
+                                      onIonChange={e => {setTime(e.detail.value) }}
                                       required={true}
                                       min={"00:00"}
                                       max={"24:00"}/>
@@ -127,7 +109,7 @@ const PracticeForm = (props) => {
                                       data-testid="durationValue"
                                       type="time"
                                       value={duration}
-                                      onIonChange={e =>  {setDuration(e.detail.value) }}
+                                      onIonChange={e => {setDuration(e.detail.value) }}
                                       required={true}
                                       min={"00:00"}
                                       max={"24:00"}/>
@@ -149,7 +131,7 @@ const PracticeForm = (props) => {
 
                     </IonRow>
                     <IonRow style={{justifyContent:"center"}}>
-                        <IonButton type="submit" data-testid="modifySubmit">{(props.practice ? translate.getText("MODIFY") : translate.getText("ADD"))}</IonButton>
+                        <IonButton type="submit" data-testid="modifySubmit">{translate.getText("MODIFY")}</IonButton>
                     </IonRow>
                 </form>
             </IonContent>
@@ -157,4 +139,4 @@ const PracticeForm = (props) => {
     )
 }
 
-export default PracticeForm
+export default PracticeEditForm

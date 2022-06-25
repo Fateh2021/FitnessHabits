@@ -5,7 +5,7 @@ import {arrowDropdownCircle, addCircle} from 'ionicons/icons';
 import * as translate from "../../../../translate/Translator";
 import PracticeItem from "./PracticeItem";
 import PratiqueUtil from "./Practice.js"
-import PracticeForm from "./PracticeForm";
+import PracticeAddForm from "./PracticeAddForm";
 import '../../../Tab1.css';
 
 const PracticeList = (props) =>  {
@@ -82,7 +82,7 @@ const PracticeList = (props) =>  {
             }
             <br/>
             <IonIcon className='addButtonActivity' data-testid="addPractice" icon={addCircle} onClick={() => setShowAddForm(true)} />
-            <PracticeForm onSubmitAction={addPractice} isOpen={showAddForm} onDidDismiss={setShowAddForm} />
+            <PracticeAddForm onSubmitAction={addPractice} isOpen={showAddForm} onDidDismiss={setShowAddForm} />
         </IonContent>
       </IonModal>
     </div>
