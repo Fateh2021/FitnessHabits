@@ -78,7 +78,7 @@ const Supplements = (props) => {
   const [joursChoisis, setJoursChoisis] = useState([]);
   const [dateDebutChoisie, setDateDebutChoisie] = useState("");
   const [dateFinChoisie, setDateFinChoisie] = useState("");
-  const [statutActifChoisi, setStatutActifChoisi] = useState(false);
+  const [statutActifChoisi, setStatutActifChoisi] = useState(true);
 
   const handleSave = () => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
@@ -489,14 +489,12 @@ const Supplements = (props) => {
                 
                 <IonItem>
                   <IonLabel color="light">{translate.getText("SUPPL_ACTIVE")}</IonLabel>
-                  <IonCheckbox
-                    color="primary"
-                    slot="start"
-                    value={statutActifChoisi}
-                    onIonChange={e => {
-                      setStatutActifChoisi(e.detail.checked);
-                    }}
-                  ></IonCheckbox>
+                  <IonToggle 
+                  color="primary" 
+                  checked={statutActifChoisi}
+                  onIonChange={e => {
+                    setStatutActifChoisi(e.detail.checked);
+                  }}/>
                 </IonItem>
 
                 <IonItem>
