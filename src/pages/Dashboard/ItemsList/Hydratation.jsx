@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol, IonFooter, IonModal } from '@ionic/react';
+import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol, IonFooter, IonModal,IonToolbar,IonTitle } from '@ionic/react';
 import { arrowDropdownCircle, star, trash, addCircle, removeCircle, create } from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
@@ -474,38 +474,32 @@ const Hydratation = (props) => {
                 <IonItem className="" key={hydra.id}>
                   <ion-grid fixed>
                     <ion-row justify-content-center align-items-center>
-                      <ion-col size="8">
-                        <ion-card >
-                          <ion-card-header>
-                            <ion-card-title>{hydra.name}</ion-card-title>
-                            <ion-card-subtitle> <p>Quantité bue: <IonInput className='inputTextDashboard' value={conversionQuantity(hydra)} readonly></IonInput></p> </ion-card-subtitle>
-                            Date :
-                          </ion-card-header>
-                          <ion-card-content>
-                            i don't know yet
-                          </ion-card-content>
-                        </ion-card>
+                      <ion-col size="7">
+                        <IonToolbar>
+                            <IonTitle size="small">{hydra.name}</IonTitle>
+                            <ion-card-subtitle> <p>Quantité bue: {conversionQuantity(hydra)}</p> </ion-card-subtitle>
+                            <ion-card-subtitle> <p>Date : i don't know yet</p> </ion-card-subtitle>
+
+                        </IonToolbar>
                       </ion-col>
-                      <ion-col size="4" >
-                        <ion-card >
-                          <ion-card-content class="ion-text-center">
+                      <ion-col size="5" >
+                      <IonToolbar>
+                          <ion-grid fixed>
+                             <ion-col size="6">
+                                  <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
+                                        <IonIcon icon={addCircle} />
+                                  </IonButton>
+                             </ion-col>
 
-                            <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
-                              <IonIcon icon={addCircle} />
-                            </IonButton>
+                             <ion-col size="6">
+                                  <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
+                                        <IonIcon icon={trash} />
+                                  </IonButton>
+                             </ion-col>
+                          </ion-grid>
 
+                       </IonToolbar>
 
-
-                            <IonButton size="small" onClick={() => editNameBeverage(index)}>
-                              <IonIcon icon={create} />
-                            </IonButton>
-
-                          <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
-                              <IonIcon icon={trash} />
-                            </IonButton>
-
-                          </ion-card-content>
-                        </ion-card>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
