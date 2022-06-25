@@ -1,3 +1,6 @@
+/*
+  Change the format of an integer to hours and minutes (HH:MM).
+*/
 const formatHourMinute = (time) => {
     return ((time - (time % 60)) / 60).toLocaleString("en-US", {
         minimumIntegerDigits: 2,
@@ -8,6 +11,9 @@ const formatHourMinute = (time) => {
     })
 }
 
+/*
+  Return a list of practices created within the last three months.
+*/
 const getPracticesFilter = (practices, currentDate) => {
     let date3MontsPrior = new Date(currentDate.getYear(), currentDate.getMonth() - 3, currentDate.getDate())
     return practices.filter((practice) => {

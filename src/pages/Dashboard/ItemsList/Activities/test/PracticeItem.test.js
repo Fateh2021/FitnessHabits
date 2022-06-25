@@ -50,24 +50,18 @@ describe('PracticeItem', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Translating intensity in English", async() => {
-        localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeItem practice={practice}/>);
-            const mot = screen.getByTestId('practiceIntensity');
-            expect(mot.textContent.toString()).toBe("Low");
-        })
-    });
-
-    test(" Test 2 : Translating the words to delete in English", async() => {
+    test(" Test 1 : Translating the words in English", async() => {
         localStorage.setItem("userLanguage", "en")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             await waitForIonicReact();
+            const mot = screen.getByTestId('practiceIntensity');
             screen.getByTestId("deleteOpen").click()
             const title = screen.getByTestId('deleteTitle');
             const description = screen.getByTestId('deleteDescription');
             const confirm = screen.getByTestId('deleteConfirm');
             const cancel = screen.getByTestId('deleteCancel');
 
+            expect(mot.textContent.toString()).toBe("Low");
             expect(title.textContent.toString()).toBe("Delete Activity");
             expect(description.textContent.toString()).toBe("Are you sure you want to delete this activity?");
             expect(confirm.textContent.toString()).toBe("Confirm deletion");
@@ -75,24 +69,18 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 3 : Translating intensity in Spanish", async() => {
-        localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeItem practice={practice}/>);
-            const mot = screen.getByTestId('practiceIntensity');
-            expect(mot.textContent.toString()).toBe("Abajo");
-        })
-    });
-
-    test(" Test 4 : Translating the words to delete in Spanish", async() => {
+    test(" Test 2 : Translating the words in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeItem practice={practice}/>);
             await waitForIonicReact();
+            const mot = screen.getByTestId('practiceIntensity');
             screen.getByTestId("deleteOpen").click()
             const title = screen.getByTestId('deleteTitle');
             const description = screen.getByTestId('deleteDescription');
             const confirm = screen.getByTestId('deleteConfirm');
             const cancel = screen.getByTestId('deleteCancel');
 
+            expect(mot.textContent.toString()).toBe("Abajo");
             expect(title.textContent.toString()).toBe("Eliminar actividad");
             expect(description.textContent.toString()).toBe("¿Está seguro de que desea eliminar esta actividad?");
             expect(confirm.textContent.toString()).toBe("Confirmar la eliminación");
@@ -100,7 +88,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 5 : Displaying the values ​​of an activity practice", async() => {
+    test(" Test 3 : Displaying the values ​​of an activity practice", async() => {
         await act(async () => { render(<PracticeItem practice={practice}/>);
             const name = screen.getByTestId("practiceName");
             const date = screen.getByTestId("practiceDate");
@@ -114,7 +102,7 @@ describe('PracticeItem', () => {
         })
     });
 
-    test(" Test 6 : Deleting an activity practice", async() => {
+    test(" Test 4 : Deleting an activity practice", async() => {
         await act(async () => {
             let deleteTrigger = false
             const modal = render(<PracticeItem practice={practice} onRemovePractice={() => deleteTrigger = true}/>)

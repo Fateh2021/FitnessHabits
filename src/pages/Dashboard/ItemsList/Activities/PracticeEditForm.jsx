@@ -16,8 +16,8 @@ import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
 
 const PracticeEditForm = (props) => {
-    var currentDate = new Date()
-    var offset = currentDate.getTimezoneOffset()
+    let currentDate = new Date()
+    let offset = currentDate.getTimezoneOffset()
     currentDate = new Date(currentDate.getTime() - (offset * 60 * 1000))
     currentDate = currentDate.toISOString().split('T')[0]
 
@@ -27,6 +27,11 @@ const PracticeEditForm = (props) => {
     const [duration, setDuration] = useState(PratiqueUtil.formatHourMinute(props.practice.duration))
     const [time, setTime] = useState(PratiqueUtil.formatHourMinute(props.practice.time))
 
+    /*
+      Prepare values before submission. 
+      Convert the time and duration into integers.
+      Reset form after submission.
+    */
     const beforeSubmit = (e) => {
         e.preventDefault()
         let [durationHour, duratioMinute] = duration.split(":")
@@ -43,6 +48,9 @@ const PracticeEditForm = (props) => {
         resetForm()
     }
 
+    /*
+      Reset the form to its original values.
+    */
     const resetForm = () => {
         props.onDidDismiss(false)
     }

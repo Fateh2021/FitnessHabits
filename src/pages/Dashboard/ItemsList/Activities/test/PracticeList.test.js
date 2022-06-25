@@ -78,7 +78,7 @@ describe('PracticeList', () => {
         })
     });
 
-    test(" Test 4 : Adding a new practice", async() => {
+    test(" Test 4 : Viewing the new practice form", async() => {
         await act(async () => {
             const modal = render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             await waitForIonicReact();

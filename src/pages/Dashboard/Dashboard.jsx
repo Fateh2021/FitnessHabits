@@ -286,22 +286,22 @@ const Dashboard = (props) => {
                 });
         }
 
-        firebase.database().ref("dashboard/" + userUID + "/moduleActivity")
+        firebase.database().ref("dashboard/" + userUID + "/activity")
             .once("value", (snapshot) => {
-                let moduleActivity = snapshot.val();
-                if (moduleActivity) {
-                    if (!(moduleActivity.practices)) {
-                        moduleActivity.practices = [];
+                let activity = snapshot.val();
+                if (activity) {
+                    if (!(activity.practices)) {
+                        activity.practices = [];
                     }
-                    if (!(moduleActivity.activities)) {
-                        moduleActivity.activities = [];
+                    if (!(activity.activities)) {
+                        activity.activities = [];
                     }
                 }
                 else {
-                    moduleActivity = {practices: [], activities: []};
+                    activity = {practices: [], activities: []};
                 }
-                setActivities(moduleActivity.activities);
-                setPracticies(moduleActivity.practices);
+                setActivities(activity.activities);
+                setPracticies(activity.practices);
             });
     }, []);
 
