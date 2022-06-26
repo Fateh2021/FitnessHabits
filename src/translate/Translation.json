@@ -49,10 +49,10 @@
 		"es":"Anular",
 		"fr":"Annuler"
 	},
-	"WEIGHT_TABL_EVO_3_MONTH": {
-		"en":"Last 3 months weight evolution",
-		"es":"Evolución del peso de los últimos 3 meses",
-		"fr":"Évolution du poids des 3 derniers mois"
+	"WEIGHT_TABL_EVO": {
+		"en":"Weight evolution",
+		"es":"Evolución del peso",
+		"fr":"Évolution du poids"
 	},
 	"WEIGHT_BMI_ACRONYM": {
 		"en":"BMI",
