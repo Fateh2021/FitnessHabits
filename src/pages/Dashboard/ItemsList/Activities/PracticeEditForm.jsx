@@ -119,7 +119,7 @@ const PracticeEditForm = (props) => {
                                       value={duration}
                                       onIonChange={e => {setDuration(e.detail.value) }}
                                       required={true}
-                                      min={"00:00"}
+                                      min={"00:01"}
                                       max={"24:00"}/>
                         </IonCol>
                     </IonRow>

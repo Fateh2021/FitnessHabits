@@ -781,6 +781,12 @@
       "es":"Ocupaciones",
       "fr":"Activités"
    },
+
+  "PRACTICES": {
+    "en":"Practices",
+    "es":"Práctica",
+    "fr":"Pratiques"
+  },
    "WEIGHT": {
       "en":"Weight",
       "es":"Peso",
@@ -941,6 +947,11 @@
       "es":"Actividades físicas",
       "fr":"Activités physiques"
    },
+  "USUAL_ACTIVITES":{
+    "en":"Actividades habituales",
+    "es":"Usual activities",
+    "fr":"Activités usuelles"
+  },
   "MODIFY_ACTIVITY": {
     "en":"Edit activity",
     "es":"Editar actividad",
@@ -951,15 +962,35 @@
     "es":"Añadir actividad",
     "fr":"Ajouter activité"
   },
+  "MODIFY_USUAL_ACTIVITY": {
+    "en":"Edit activity",
+    "es":"Editar actividad",
+    "fr":"Modifier activité"
+  },
+  "ADD_USUAL_ACTIVITY": {
+    "en":"Add usual activity",
+    "es":"Añadir actividad habitual",
+    "fr":"Ajouter activité usuel"
+  },
   "DELETE_ACTIVITY": {
-    "en":"Delete Activity",
-    "es":"Eliminar actividad",
-    "fr":"Supprimer Activité"
+    "en":"Delete usual activity",
+    "es":"Eliminar actividad habitual",
+    "fr":"Supprimer activité usuel"
   },
   "DELETE_ACTIVITY_DESCRIPTIION": {
     "en":"Are you sure you want to delete this activity?",
     "es":"¿Está seguro de que desea eliminar esta actividad?",
     "fr":"Voulez-vous vraiment supprimer cette activité ?"
+  },
+  "DELETE_USUAL_ACTIVITY": {
+    "en":"Delete usual Activity",
+    "es":"Eliminar actividad habitual",
+    "fr":"Supprimer activité usuel"
+  },
+  "DELETE_USUAL_ACTIVITY_DESCRIPTIION": {
+    "en":"Are you sure you want to delete this usual activity?",
+    "es":"¿Está seguro de que desea eliminar esta actividad habitual?",
+    "fr":"\nVoulez-vous vraiment supprimer cette activité usuel ?"
   },
   "MODIFY": {
     "en":"Edit",

@@ -1,17 +1,19 @@
 import React, {useState} from "react"
 import firebase from 'firebase'
 import { IonModal, IonContent, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
-import {arrowDropdownCircle, addCircle} from 'ionicons/icons';
+import {arrowDropdownCircle, addCircle, settings} from 'ionicons/icons';
 import * as translate from "../../../../translate/Translator";
 import PracticeItem from "./PracticeItem";
 import PratiqueUtil from "./Practice.js"
 import PracticeAddForm from "./PracticeAddForm";
 import '../../../Tab1.css';
+import ActivityList from "./ActivityList";
 
 const PracticeList = (props) =>  {
   const [currentDate, setCurrentDate] = useState(props.currentDate.startDate);
   const [practices, setPractices] = useState (PratiqueUtil.getPracticesFilter(props.practices, currentDate));
   const [showPratiqueList, setShowPratiqueList] = useState(false)
+  const [showActivityList, setShowActivityList] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
 
   /*
@@ -36,10 +38,10 @@ const PracticeList = (props) =>  {
       duration: practiceToAdd.duration,
       intensity: practiceToAdd.intensity
     }
-
-    firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practices.concat(newPractice)}).then(() => {
+    setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate))
+    /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practices.concat(newPractice)}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate))
-    })
+    })*/
   }
 
   /*
@@ -54,9 +56,10 @@ const PracticeList = (props) =>  {
       return item.id !== practiceToModify.id
     }).concat({...practiceToModify})
 
-    firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practicesWithoutOld}).then(() => {
+    setPractices(PratiqueUtil.getPracticesFilter(practicesWithoutOld, currentDate))
+    /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practicesWithoutOld}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(practicesWithoutOld, currentDate))
-    })
+    })*/
 
   }
 
@@ -73,9 +76,10 @@ const PracticeList = (props) =>  {
     })
 
     const userUID = localStorage.getItem('userUid')
-    firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: remainingPractices}).then(() => {
+    setPractices(PratiqueUtil.getPracticesFilter(remainingPractices, currentDate))
+    /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: remainingPractices}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(remainingPractices, currentDate))
-    })
+    })*/
   };
 
    return (
@@ -99,6 +103,8 @@ const PracticeList = (props) =>  {
             }
             <br/>
             <IonIcon className='addButtonActivity' data-testid="addPractice" icon={addCircle} onClick={() => setShowAddForm(true)} />
+            <IonIcon className='addButtonActivity' data-testid="openActivityList" icon={settings} onClick={() => setShowActivityList(true)}/>
+            <ActivityList activities={props.activities} showActivityList={showActivityList} setShowActivityList={setShowActivityList}/>
             <PracticeAddForm onSubmitAction={addPractice} isOpen={showAddForm} onDidDismiss={setShowAddForm} />
         </IonContent>
       </IonModal>
