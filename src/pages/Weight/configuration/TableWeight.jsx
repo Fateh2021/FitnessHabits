@@ -7,24 +7,42 @@ import * as translate from "../../../translate/Translator";
 
 // Variables in Firebase remains in French for now with a translation in comment
 const TableWeight = (props) => {
-  //props.graphData
-  //props.initialWeight
-  //props.targetWeight
-
-  const [end, setEnd] = useState(new Date());
-  const [start, setStart] = useState(7);
+  const [dateInterval, setDateInterval] = useState({start:7, end:new Date()})
   const [data, setData] = useState({datasets: []});
   const [options, setOptions] = useState();
 
+  const plugins = [{
+    afterDraw: chart => {
+        var ctx = chart.chart.ctx;
+        var xAxis = chart.scales['x-axis-0'];
+        var yAxis = chart.scales['y-axis-0'];
+        var x = xAxis.getPixelForValue(props.targetWeightDate)
+        ctx.save();
+        ctx.strokeStyle = '#37F52E';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x, yAxis.bottom);
+        ctx.lineTo(x, yAxis.top);
+        ctx.stroke();
+        ctx.restore();
+    }
+  }]
+
   useEffect(() => {
-    let startDate = new Date(end);
-    startDate.setDate(startDate.getDate() - start);
+    let startDate = new Date(dateInterval.end);
+    let endDate = dateInterval.end
+    if(dateInterval.start < 0) {
+      startDate.setDate(startDate.getDate() - -dateInterval.start);
+    } else {
+      startDate.setDate(startDate.getDate() - dateInterval.start);
+    }
     startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
 
     let weightIni = weightService.formatWeight(props.initialWeight)
     let weightCib = weightService.formatWeight(props.targetWeight)
-    let dataWeightInitial = [{x: startDate, y: weightIni},{x: end, y: weightIni}]
-    let dataWeightTarget = [{x: startDate, y: weightCib},{x: end, y: weightCib}]
+    let dataWeightInitial = [{x: startDate, y: weightIni},{x: endDate, y: weightIni}]
+    let dataWeightTarget = [{x: startDate, y: weightCib},{x: endDate, y: weightCib}]
 
     const dataInit = {
       datasets: [
@@ -41,7 +59,8 @@ const TableWeight = (props) => {
           data: props.graphData,
           fill: false,
           borderColor: "#3B81C4",
-          backgroundColor: "#3B81C4"
+          backgroundColor: "#3B81C4",
+          lineTension: 0
       },
       {
           label: translate.getText("WEIGHT_PREF_WEIGHT_TARGET"),
@@ -57,7 +76,7 @@ const TableWeight = (props) => {
     setData(dataInit)
 
     var optionsInit = {
-      title: {text: translate.getText("WEIGHT_TABL_EVO_3_MONTH"), display: true},
+      title: {text: translate.getText("WEIGHT_TABL_EVO"), display: true},
       legend: {
         position: "bottom",
         align: "middle"
@@ -67,7 +86,7 @@ const TableWeight = (props) => {
           type: "time",
           ticks: {
             min: startDate,
-            max: end,
+            max: endDate,
             unit: "day",
             minRotation: 50
           }
@@ -82,18 +101,27 @@ const TableWeight = (props) => {
     }
 
     setOptions(optionsInit);
-  }, [props.initialWeight, props.targetWeight, props.graphData, end, start])
+  }, [props.initialWeight, props.targetWeight, props.graphData, props.targetWeightDate, dateInterval])
 
-  //graphData.push ({x: dateWeight, y: weight})
+  const handleDateFilter = (event) => {
+    const value = event.detail.value;
+    if(value < 0) {
+      const targetDate = weightService.toDate(props.targetWeightDate)
+      targetDate.setMonth(targetDate.getMonth()+1)
+      setDateInterval({start: value, end: targetDate});
+    } else {
+      setDateInterval({start: value, end: new Date()});
+    }
+  };
 
   return (
     <div className="tableWeight">
-      <Line className="ionTableau poidsGraph" height={250} data={data} options={options} />
+      <Line data-testid = "chart" className="ionTableau poidsGraph" height={250} data={data} options={options} plugins={plugins}/>
 
       <hr className="lineSeparator"/>
 
-      <IonSegment className="dateFilter" value={start} onIonChange={e => setStart(e.detail.value)}>
-        <IonSegmentButton checked value="7">
+      <IonSegment data-testid = "dateFilter" className="dateFilter" value={dateInterval.start} onIonChange={handleDateFilter}>
+        <IonSegmentButton value="7">
           <IonLabel>{translate.getText("WEIGHT_WEEK")}</IonLabel>
         </IonSegmentButton>
         <IonSegmentButton value="30">
@@ -108,134 +136,12 @@ const TableWeight = (props) => {
         <IonSegmentButton value="365">
           <IonLabel>{translate.getText("WEIGHT_YEAR")}</IonLabel>
         </IonSegmentButton>
+        <IonSegmentButton value="-90">
+          <IonLabel>{translate.getText("WEIGHT_TARGET_NAME")}</IonLabel>
+        </IonSegmentButton>
       </IonSegment>
     </div>
-
-  
-  
-  
-  
   );
 }
 
 export default TableWeight;
-
-
-
-
-/*const TableWeight = (props) => {
-  const [refData, setRefData] = useState()
-  const [initialWeight, setInitialWeight] = useState("");
-  const [targetWeight, setTargetWeight] = useState("");
-
-  function formatDate (date) {
-     return moment(date).format('YYYY-MM-DD');
-  }
-
-  useEffect(() => {
-      const userUID = localStorage.getItem('userUid');
-      let preferencesWeightRef = firebase.database().ref('profiles/' + userUID + "/preferencesPoids")
-      preferencesWeightRef.once("value").then(function(snapshot) {
-          if (snapshot.val() != null) {
-            // Firebase : poidsInitial = initialWeight
-            // Firebase : poidsCible = targetWeight
-            setInitialWeight(parseFloat(snapshot.val().poidsInitial));
-            setTargetWeight(parseFloat(snapshot.val().poidsCible));
-          }
-        })
-  }, [])
-
-  useEffect(() => {
-      const userUID = localStorage.getItem('userUid');
-      let weightRef = firebase.database().ref('dashboard/' + userUID)
-        weightRef.orderByChild("poids/dailyPoids").once("value").then(function(snapshot){
-        setRefData(snapshot.val())
-      });
-  }, [])
-
-	// Preparing to build the graph
-  var graphData = []
-  if (refData != null) {
-    const dashboard = JSON.parse(localStorage.getItem("dashboard"));
-    for (const [,value] of Object.entries(refData)) {
-
-      if (value.poids.datePoids !== undefined) {
-        let dateWeight = formatDate(value.poids.datePoids)
-        let weight = weightService.formatWeight(value.poids.dailyPoids)
-
-				// To do the live update of the value of the day without reloading the page
-        if (dateWeight == formatDate(new Date())){
-          weight = weightService.formatWeight(dashboard.poids.dailyPoids)
-        }
-
-        graphData.push ({x: dateWeight, y: weight})
-      }
-    }
-
-    graphData.sort((a, b) => (a.x > b.x) ? 1 : -1);
-  }
-  let start = new Date(),
-  end = new Date();
-
-  start.setDate(start.getDate() - 90); // set to 'now' minus 7 days.
-  start.setHours(0, 0, 0, 0); // set to midnight.
-  let weightIni = weightService.formatWeight(initialWeight)
-  let weightCib = weightService.formatWeight(targetWeight)
-  let dataWeightInitial = [{x: start, y: weightIni},{x: end, y: weightIni}]
-  let dataWeightTarget = [{x: start, y: weightCib},{x: end, y: weightCib}]
-
-  const data = {
-    datasets: [
-    {
-        label: translate.getText("WEIGHT_PREF_WEIGHT_INITIAL"),
-        data: dataWeightInitial,
-        fill: false,
-        borderColor: "#F45650",
-        backgroundColor: "#F45650",
-        pointRadius: 0
-    },
-    {
-        label: translate.getText("WEIGHT_NAME_SECTION"),
-        data: graphData,
-        fill: false,
-        borderColor: "#3B81C4",
-        backgroundColor: "#3B81C4"
-    },
-    {
-        label: translate.getText("WEIGHT_PREF_WEIGHT_TARGET"),
-        data: dataWeightTarget,
-        fill: false,
-        borderColor: "#37F52E",
-        backgroundColor: "#37F52E",
-        pointRadius: 0
-    }
-    ]
-  };
-  var options = {
-    title: {text: translate.getText("WEIGHT_TABL_EVO_3_MONTH"), display: true},
-    legend: {
-      position: "bottom",
-      align: "middle"
-    },
-    scales: {
-      xAxes: [{
-        type: "time",
-        ticks: {
-          min: start,
-          max: end,
-          unit: "day"
-        }
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: translate.getText("WEIGHT_NAME_SECTION") + ' (' + weightService.getPrefUnitWeight() + ")" 
-        }
-      }]
-    }
-  }
-
-  return (<Line className="ionTableau poidsGraph" data={data} options={options} />)
-}
-
-export default TableWeight;*/
