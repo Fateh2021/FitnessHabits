@@ -23,7 +23,9 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
-  IonImg
+  IonImg,
+  IonRow,
+  IonCol
 } from "@ionic/react";
 import { menu, arrowDropdownCircle, arrowBack } from "ionicons/icons";
 import * as translate from '../../../translate/Translator'
@@ -183,15 +185,37 @@ const Supplements = (props) => {
     setHeuresChoisies([...heuresChoisies, {heure:""}]);
   }
 
-  function supprimerHeure(heure){
-    setHeuresChoisies(heuresChoisies.filter(heureCourante => heureCourante != heure));
+  function supprimerHeure(indexHeure){
+    setHeuresChoisies(heuresChoisies.filter((_heureCourante, indexCourant) => indexCourant !== indexHeure));
+  }
+
+  function gererChangementValeurHeureChoisie(indexHeure, nouvelleHeure, cibleOrigineEvenement) {
+    //Le ionChangeEvent est lancé lorsque l'on supprime l'une des heures choisies, la mise à jour
+    //des heures choisies ne doit pas être faite une deuxième fois après une suppression.
+    if(dateTimeIonChangeEventEstCauseParUtilisateur(cibleOrigineEvenement)) {
+      mettreAJourHeuresChoisies(indexHeure, nouvelleHeure)
+    }
+  }
+
+  function mettreAJourHeuresChoisies(indexHeure, nouvelleHeure) {
+    setHeuresChoisies(heuresChoisies.map((heureCourante, indexCourant) => 
+    {
+      if(indexCourant === indexHeure) {
+        heureCourante.heure = nouvelleHeure;
+      }
+      return heureCourante;
+    }));
+  }
+
+  function dateTimeIonChangeEventEstCauseParUtilisateur(cibleOrigineEvenement) {
+    return cibleOrigineEvenement.firstChild.data === "Done";
   }
 
   return (
     <div>
       <IonItem className="divTitre3">
         <IonItemDivider className="divIconeSupp">
-          <div className="iconeSize" onClick={() => setAfficherMenu(!afficherMenu)}>
+          <div className="iconeSize" onClick={() => setAfficherMenu(!afficherMenu)} data-testid="boutonAfficherMenu">
             <IonImg src="/assets/pills_blanc_fr.png" />
           </div>
         </IonItemDivider>
@@ -415,18 +439,36 @@ const Supplements = (props) => {
                 <IonItemGroup>
                   <IonLabel color="light">{translate.getText("SUPPL_TIME_TAKEN")}</IonLabel>
                     {heuresChoisies.map((heureCourante, index) => (
-                      <IonItem key={index}>  
-                        <IonDatetime 
-                        displayFormat="HH:mm" 
-                        placeholder="00:00"
-                        slot="start"
-                        onIonChange={ e => {
-                          heureCourante.heure = e.detail.value;
-                        }}
-                        >
-                          {translate.getText("SUPPL_HEURE_PRISE")}
-                        </IonDatetime> 
-                      </IonItem>
+                      <IonItemGroup key={index}>
+                        <IonRow>
+                          <IonCol>
+                            <IonItem>  
+                              <IonDatetime 
+                              displayFormat="HH:mm" 
+                              placeholder="00:00"
+                              value={heureCourante.heure}
+                              slot="start"
+                              onIonChange={ e => 
+                                gererChangementValeurHeureChoisie(index, e.detail.value, e.explicitOriginalTarget)
+                              }
+                              >
+                                {translate.getText("SUPPL_HEURE_PRISE")}
+                              </IonDatetime>
+                            </IonItem>
+                          </IonCol>
+                          <IonCol>
+                            <IonItem>
+                              <IonButton 
+                                size="small"
+                                color="danger"
+                                onClick={() => supprimerHeure(index)}
+                              >
+                                {translate.getText("SUPPL_REMOVE_TIME_TAKEN")}
+                              </IonButton>
+                            </IonItem>
+                          </IonCol>
+                        </IonRow>
+                      </IonItemGroup>
                     ))}
 
                     <IonItem>

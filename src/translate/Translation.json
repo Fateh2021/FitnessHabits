@@ -477,6 +477,11 @@
       "fr":"Ajouter une heure de la prise",
       "es":"Añadir una hora de tomar"
    },
+   "SUPPL_REMOVE_TIME_TAKEN":{
+      "en":"Remove the time of intake",
+      "fr":"Enlever l'heure de la prise",
+      "es":"Retirar una hora de tomar"
+   },
    "SUPPL_REP":{
       "en":"Repetition",
       "fr":"Répétition",
