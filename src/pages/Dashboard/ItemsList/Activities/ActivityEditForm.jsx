@@ -46,7 +46,7 @@ const ActivityEditForm = (props) => {
     }
 
     return (
-        <IonModal className='activity-modal-small' data-testid={"modifyForm" + props.activity.id}
+        <IonModal className='activity-modal-xsmall' data-testid={"modifyForm" + props.activity.id}
                   isOpen={props.isOpen} onDidDismiss={resetForm}>
             <IonContent className='activity-content'>
                 <IonLabel data-testid="modifyTitle"><h1 className='activityTitle' >{translate.getText("MODIFY_USUAL_ACTIVITY")}</h1></IonLabel>

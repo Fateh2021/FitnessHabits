@@ -47,7 +47,7 @@ const ActivityAddForm = (props) => {
     }
 
     return (
-        <IonModal className='activity-modal-small' data-testid="addForm"
+        <IonModal className='activity-modal-xsmall' data-testid="addForm"
                   isOpen={props.isOpen} onDidDismiss={resetForm}>
             <IonContent className='activity-content'>
                 <IonLabel data-testid="addTitle"><h1 className='activityTitle' >{translate.getText("ADD_USUAL_ACTIVITY")}</h1></IonLabel>

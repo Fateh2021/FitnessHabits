@@ -2206,6 +2206,12 @@ h2{
     --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
 }
 
+.activity-modal-xxsmall {
+    --height: 30%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
 .fontPractice {
     font-size: 12px;
 }

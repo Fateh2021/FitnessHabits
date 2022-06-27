@@ -48,7 +48,7 @@ const ActivityItem = (props) =>  {
 
         <ActivityEditForm onSubmitAction={updatePractice} isOpen={showModify} onDidDismiss={setShowModify} activity={activity}/>
 
-        <IonModal className='activity-modal-xsmall' isOpen={showDelete} onDidDismiss={() => {
+        <IonModal className='activity-modal-xxsmall' isOpen={showDelete} onDidDismiss={() => {
             if (isMounted.current) {
                 setShowDelete(false)
             }

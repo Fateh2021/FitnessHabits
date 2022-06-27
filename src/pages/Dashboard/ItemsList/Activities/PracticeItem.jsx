@@ -58,7 +58,7 @@ const PracticeItem = (props) =>  {
 
         <PracticeEditForm onSubmitAction={updatePractice} isOpen={showModify} onDidDismiss={setShowModify} practice={practice}/>
 
-        <IonModal className='activity-modal-xsmall' isOpen={showDelete} onDidDismiss={() => {
+        <IonModal className='activity-modal-xxsmall' isOpen={showDelete} onDidDismiss={() => {
             if (isMounted.current) {
                 setShowDelete(false)
             }
