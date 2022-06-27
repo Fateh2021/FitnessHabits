@@ -407,7 +407,7 @@ const Hydratation = (props) => {
       </div>
      
       <IonModal isOpen={showModal} style="background: rgba(0, 0, 0, 0.5) !important; padding: 20% 10%  !important;" id="input-hydra-modal" onDismiss={() => props.setShowModal(false)}  >
-        <div>
+        <div >
           <ion-header>
             <div style={{ clear: 'both' }}>
               <h3 style={{ color: '#70ACE8', float: 'left' }}>&emsp;Hydratation </h3>
@@ -469,7 +469,7 @@ const Hydratation = (props) => {
           <p style={{ color: '#707070' }}>&ensp; &ensp; &ensp;Afficher le graphique</p>
 
           <div className="divHyd" style={{ height: 'auto' }}>
-            <div className="sett" >
+            <div  >
               {hydrates.map((hydra, index) => (
                 <IonItem className="" key={hydra.id}>
                   <ion-grid fixed>
@@ -477,8 +477,8 @@ const Hydratation = (props) => {
                       <ion-col size="7">
                         <IonToolbar>
                             <IonTitle size="small">{hydra.name}</IonTitle>
-                            <ion-card-subtitle> <p>Quantité bue: {conversionQuantity(hydra)}</p> </ion-card-subtitle>
-                            <ion-card-subtitle> <p>Date : i don't know yet</p> </ion-card-subtitle>
+                            <ion-card-subtitle> Quantité bue: {conversionQuantity(hydra)} </ion-card-subtitle>
+                            <ion-card-subtitle> Date : i don't know yet </ion-card-subtitle>
 
                         </IonToolbar>
                       </ion-col>
@@ -509,7 +509,7 @@ const Hydratation = (props) => {
             </div>
           </div>
 
-          <div className="ajoutBotton" style={{ display: 'flex', flexDirection: 'column', height: '100px', backgroundColor: '#ffff', position: 'fixed', bottom:'2px' }} >
+          <div className="ajoutBotton" style={{ display: 'flex', flexDirection: 'column', height: '50px', backgroundColor: '#ffff', position: 'fixed', bottom:'2px' }} >
             <IonButton className="ajoutbreuvage1" color="primary" size="large" onClick={() => openAddItemContainer()}>
               <IonIcon icon={addCircle} />
               <label id="addDrink" className="labelAddItem">{translate.getText('HYD_BUTTON_ADD_DRINK')}
