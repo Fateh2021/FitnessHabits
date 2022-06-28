@@ -24,7 +24,6 @@ const DetailsWeight = (props) => {
   const [showInputWeight, setShowInputWeight] = useState(false);
   const [isShown, setIsShown] = useState(false);
 
-
   useEffect(() => {
     weightService.initProfile().then(() => {
       //unit pref
@@ -49,10 +48,14 @@ const DetailsWeight = (props) => {
   useEffect(()=> {
     weightService.initDailyPoidsList().then(()=>{
       setDailyWeightList(weightService.getDailyWeightList());
+     
     })
 
 
   },[])
+  var test = [{x:"2022-10-04",y:51.9}];
+
+
 
   useEffect(() => {
     setBMI(weightService.calculation_BMI(weightService.getSize(), weightService.formatToKG(weightService.getLastWeightInfos(dailyWeightList)[1])));
@@ -63,7 +66,7 @@ const DetailsWeight = (props) => {
       <HeaderWeight url="/dashboard" id="headerPoids"/>
       <IonContent>
       <IonItemDivider className='alerts'>
-        <IonLabel>Paramètrer les alertes</IonLabel> 
+        <IonLabel>{translate.getText("ALERTS_SETUP")}</IonLabel> 
         <IonAvatar className='alertsAvtr'>
             <img class='alertsIcon' src="/assets/alerts.png" alt=""/>
         </IonAvatar>
@@ -97,10 +100,10 @@ const DetailsWeight = (props) => {
       </IonItemDivider>
       <IonItemDivider>
         {!isShown &&
-        <IonLabel onClick={() => setIsShown(!isShown)}>Afficher le graphique </IonLabel>
+        <IonLabel onClick={() => setIsShown(!isShown)}>{translate.getText("SHOW_GRAPH")} </IonLabel>
         }
          {isShown && 
-         <IonLabel onClick={() => setIsShown(!isShown)}>Fermer le graphique </IonLabel>}
+         <IonLabel onClick={() => setIsShown(!isShown)}>{translate.getText("CLOSE_GRAPH")}</IonLabel>}
 
       </IonItemDivider>
       {isShown &&
@@ -112,10 +115,10 @@ const DetailsWeight = (props) => {
         </TableWeight>
       
       }
-      <IonItemDivider >
+      <IonItemDivider className="lastWeight">
         <IonLabel id="dernierPoidsValue">
           <span>
-            Dernier poids entré : {weightService.getLastWeightInfos(dailyWeightList)[1]} {unitWeight === "KG" ? "Kg" : "Lbs"}
+            {translate.getText("LAST_WEIGHT")} : {weightService.getLastWeightInfos(dailyWeightList)[1]} {unitWeight === "KG" ? "Kg" : "Lbs"}
           </span> 
         </IonLabel>
       </IonItemDivider>
@@ -123,17 +126,18 @@ const DetailsWeight = (props) => {
         <IonLabel id="dernierPoidsDate">
           <span>{weightService.formatDateShape(weightService.getLastWeightInfos(dailyWeightList)[0],dateFormat)}
           </span>&nbsp;
-          <span> IMC : {BMI}</span>
+          <span> {translate.getText("WEIGHT_BMI_ACRONYM")} : {BMI}</span>
         </IonLabel>
       </IonItemDivider>
       <IonItemDivider>
         <IonLabel id="initialPoidsInfos">
-          <span><b>Poids initial : {weightService.formatWeight(initialWeight)}  {unitWeight === "KG" ? "Kg" : "Lbs"}</b></span> 
+          <span><b> {translate.getText("WEIGHT_INITIAL_NAME")}  : {weightService.formatWeight(initialWeight)}  {unitWeight === "KG" ? "Kg" : "Lbs"}</b></span> 
         </IonLabel>
       </IonItemDivider>
       <IonItemDivider>
       <IonList className="listHisto">
-       { dailyWeightList.map(item => {
+        
+       { test.map(item => {
          return(
          <IonItem>
            <IonLabel id="historique">
