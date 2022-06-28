@@ -1418,5 +1418,27 @@
       "en": "Target",
       "es": "Objetivo",
       "fr": "Cible"
+   },
+   "LAST_WEIGHT" : { 
+
+      "en": "Last weight entered",
+      "es": "Último peso ingresado",
+      "fr": "Dernier poids entré"
+   },
+   "ALERTS_SETUP":{
+      "en": "Set up alerts",
+      "es": "Configurar alertas",
+      "fr": "Paramètrer les alertes"
+   },
+   "SHOW_GRAPH":{
+      "en":"Show graph",
+      "es":"Mostrar gráfico",
+      "fr": "Afficher le graphique"
+   },
+   "CLOSE_GRAPH":{
+      "en": "Close graph",
+      "es": "Cerrar gráfico",
+      "fr": "Fermer le graphique"
    }
+   
 }

@@ -209,6 +209,7 @@ const Poids = (props) => {
             currentDate = {props.currentDate}
           ></WeightInput>      
       </IonItem>
+  
     </div>
 
   );

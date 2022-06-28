@@ -75,7 +75,12 @@
   background-color: #3E7D65;
   --inner-padding-end:0px;
 }
-
+.item-divider-wrapper{
+  justify-content: space-between;
+}
+.lastWeight{
+  width: 100%;
+}
 .divInfos {
   background-color: #FFFFFF;
   height: 120px;
@@ -87,7 +92,8 @@
 .alerts {
   border-bottom:0px ;
   --padding-start: 35px ;
-  --color : #707070
+  --color : #707070;
+  width:100%
 }
 .cibleInfos{
   border-bottom:0px ;
