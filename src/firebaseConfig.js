@@ -4,13 +4,13 @@ import "firebase/storage";
 
 // la nouvelle base de donnée !
 const config={
-    apiKey: "AIzaSyDft1mFPDNZylWS2h1vXbP9kUFcl3tDZts",
-    authDomain: "fitnesshabits-be415.firebaseapp.com",
-    projectId: "fitnesshabits-be415",
-    storageBucket: "fitnesshabits-be415.appspot.com",
-    messagingSenderId: "1038172341754",
-    appId: "1:1038172341754:web:5c6b20a4b55fcc00425043",
-    measurementId: "G-N92LW0WCK4"
+  apiKey: "AIzaSyAJrExNTypmQvQXZhsJobZ4jfxBKJeL5vM",
+  authDomain: "fithabits-cc64a.firebaseapp.com",
+  projectId: "fithabits-cc64a",
+  storageBucket: "fithabits-cc64a.appspot.com",
+  messagingSenderId: "914952051814",
+  appId: "1:914952051814:web:3af440e0cdee006927a1a7",
+  measurementId: "G-JYH5F13KKW"
 }
 
 export default firebase.initializeApp(config).database().ref();
