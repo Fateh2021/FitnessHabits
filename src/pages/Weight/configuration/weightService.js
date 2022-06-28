@@ -147,7 +147,7 @@ export function find_new_category(BMI_value){
     } else if (BMI_value >= 35.01 && BMI_value <= 40) {
       BMI_group = 'CATEGORY_OB_CLASS_2';
 
-    } else if (BMI_value > 40) {
+    } else {
       BMI_group = 'CATEGORY_OB_CLASS_3';
     }
 
@@ -170,12 +170,12 @@ export function formatDateShape (date,shape) {
       moment.locale('en')
       return moment(date).format(shape);
     }
-    else if(lang === 'fr'){
-      moment.locale('fr')
-      return moment(date).format(shape);
-    }
     else if(lang === 'es'){
       moment.locale('es')
+      return moment(date).format(shape);
+    }
+    else {
+      moment.locale('fr')
       return moment(date).format(shape);
     }
 }
@@ -223,6 +223,7 @@ export function initDailyPoidsList() {
   })
   })
 }
+
 export function getDailyWeightList() {
   return JSON.parse(localStorage.getItem("listeDailyPoids"));
 }
@@ -236,11 +237,8 @@ export function getLastWeightInfos(array){
     }
   })
   return dernier
-
 }
+
 export function getTime(date) {
-  return moment(date).format('HH:MM');
-
+  return moment(date).format('HH:mm');
 }
-
-

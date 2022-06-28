@@ -122,11 +122,11 @@
   font-size: 15px;
 
 }
-ion-item{
+.weightItem{
   --padding-start:0px;
 }
 
-#historique
+.historique
 {
   color: #707070;
   font-family: 'Roboto', sans-serif;
@@ -400,7 +400,7 @@ ion-content>ion-item-group>ion-item {
 }
 
 .tableWeight {
-  margin: 20px
+  padding: 0px 35px 0px 35px;
 }
 
 .lineSeparator {

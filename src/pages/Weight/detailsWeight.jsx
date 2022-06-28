@@ -68,7 +68,7 @@ const DetailsWeight = (props) => {
       <IonItemDivider className='alerts'>
         <IonLabel>{translate.getText("ALERTS_SETUP")}</IonLabel> 
         <IonAvatar className='alertsAvtr'>
-            <img class='alertsIcon' src="/assets/alerts.png" alt=""/>
+            <img className='alertsIcon' src="/assets/alerts.png" alt=""/>
         </IonAvatar>
       </IonItemDivider>
       <IonItemDivider className='cibleInfos'>
@@ -110,7 +110,8 @@ const DetailsWeight = (props) => {
         <TableWeight 
         graphData={dailyWeightList}
         initialWeight={initialWeight} 
-        targetWeight={targetWeight}>
+        targetWeight={targetWeight}
+        targetWeightDate={targetWeightDate}>
         </TableWeight>
       
       }
@@ -138,8 +139,8 @@ const DetailsWeight = (props) => {
         
        { test.map(item => {
          return(
-         <IonItem>
-           <IonLabel id="historique">
+         <IonItem className="weightItem" key={item.x}>
+           <IonLabel className="historique">
              <span><b>{item.y} {unitWeight === "KG" ? "Kg" : "Lbs"} </b></span>  &nbsp;
              <span> | {weightService.formatDateShape(item.x,dateFormat)} à {weightService.getTime(item.x)}</span>
              <span>

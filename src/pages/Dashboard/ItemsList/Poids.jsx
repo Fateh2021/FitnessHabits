@@ -5,7 +5,6 @@ import { IonLabel, IonText, IonItem, IonItemDivider, IonImg} from "@ionic/react"
 import "../../../pages/Tab1.css";
 import "../../../pages/weight.css";
 import WeightInput from "../../Weight/WeightInput";
-import TableWeight from "../../Weight/configuration/TableWeight";
 
 // Variables in Firebase remains in French for now with a translation in comment
 const Poids = (props) => {
