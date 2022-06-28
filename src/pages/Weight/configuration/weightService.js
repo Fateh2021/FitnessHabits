@@ -13,47 +13,51 @@ export function initProfile() {
     let profileRef = firebase.database().ref('profiles/'+ userUID)
     profileRef.once("value").then(function(snapshot) {
       const dbProfile = snapshot.val();
-      let dataProfile = {
-        dateFormat:"dd-LL-yyyy",
-        preferencesPoids:{
-          dateCible:"1999-9-9",
-          poidsCible:0,
-          poidsInitial:0,
-          unitePoids:"KG"
-        },
-        pseudo:"Scott",
-        size:0
-      };
-      if (dbProfile !== null) {
-        if(dbProfile.dateFormat !== null) {
-          dataProfile.dateFormat = dbProfile.dateFormat;
-        }
-        if(dbProfile.preferencesPoids !== null) {
-          if(dbProfile.preferencesPoids.dateCible !== null) {
-            dataProfile.preferencesPoids.dateCible = dbProfile.preferencesPoids.dateCible;
-          }
-          if(dbProfile.preferencesPoids.poidsCible !== null) {
-            dataProfile.preferencesPoids.poidsCible = dbProfile.preferencesPoids.poidsCible;
-          }
-          if(dbProfile.preferencesPoids.poidsInitial !== null) {
-            dataProfile.preferencesPoids.poidsInitial = dbProfile.preferencesPoids.poidsInitial;
-          }
-          if(dbProfile.preferencesPoids.unitePoids !== null) {
-            dataProfile.preferencesPoids.unitePoids = dbProfile.preferencesPoids.unitePoids;
-          }
-        }
-        if(dbProfile.pseudo !== null) {
-          dataProfile.pseudo = dbProfile.pseudo;
-        }
-        if(dbProfile.size !== null) {
-          dataProfile.size = dbProfile.size;
-        }
-      }
-
+      const dataProfile = checkDataProfile(dbProfile)
       localStorage.setItem("profile", JSON.stringify(dataProfile));
       resolve();
     })
   });
+}
+
+function checkDataProfile(dbProfile) {
+  let dataProfile = {
+    dateFormat:"dd-LL-yyyy",
+    preferencesPoids:{
+      dateCible:"1999-9-9",
+      poidsCible:0,
+      poidsInitial:0,
+      unitePoids:"KG"
+    },
+    pseudo:"Scott",
+    size:0
+  };
+  if (dbProfile !== null) {
+    if(dbProfile.dateFormat !== null) {
+      dataProfile.dateFormat = dbProfile.dateFormat;
+    }
+    if(dbProfile.preferencesPoids !== null) {
+      if(dbProfile.preferencesPoids.dateCible !== null) {
+        dataProfile.preferencesPoids.dateCible = dbProfile.preferencesPoids.dateCible;
+      }
+      if(dbProfile.preferencesPoids.poidsCible !== null) {
+        dataProfile.preferencesPoids.poidsCible = dbProfile.preferencesPoids.poidsCible;
+      }
+      if(dbProfile.preferencesPoids.poidsInitial !== null) {
+        dataProfile.preferencesPoids.poidsInitial = dbProfile.preferencesPoids.poidsInitial;
+      }
+      if(dbProfile.preferencesPoids.unitePoids !== null) {
+        dataProfile.preferencesPoids.unitePoids = dbProfile.preferencesPoids.unitePoids;
+      }
+    }
+    if(dbProfile.pseudo !== null) {
+      dataProfile.pseudo = dbProfile.pseudo;
+    }
+    if(dbProfile.size !== null) {
+      dataProfile.size = dbProfile.size;
+    }
+  }
+  return dataProfile;
 }
 
 export function getProfile() {
