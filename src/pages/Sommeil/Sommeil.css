@@ -87,3 +87,16 @@ ion-text {
   width: 50%;
   height: 8px;
 }
+
+.ajout-item {
+  margin: 10px;
+}
+
+.ajout-label-nbrFois {
+  margin-right: 35px;
+  padding-right: 20px;
+}
+
+.ajout-input-nbrFois {
+  border-bottom: 1px solid black;
+}
