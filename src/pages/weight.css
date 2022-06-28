@@ -107,6 +107,7 @@
   font-weight: bold;
   font-size: 25px;
   margin-bottom: 0px;
+  width: 100%;
 
 }
 #dernierPoidsDate{
@@ -208,6 +209,31 @@ ion-item-divider{
 .dateCible{
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
+  color:#707070;
+
+}
+.targetWeight{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color:#707070;
+  margin: auto;
+
+}
+.targetDate{
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color:#707070;
+
+}
+#alertsconfg{
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color:#707070;
+}
+#graphshowen{
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
   color:#707070;
 
 }
