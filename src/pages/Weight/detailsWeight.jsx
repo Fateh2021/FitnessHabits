@@ -3,8 +3,7 @@ import * as translate from "../../translate/Translator";
 import * as weightService from "./configuration/weightService"
 import HeaderWeight from "./configuration/header";
 import { IonLabel, IonItem, IonItemDivider, IonContent, IonAvatar, IonIcon, IonDatetime, IonList, IonItemGroup} from "@ionic/react";
-import { calendar} from "ionicons/icons";
-import {create}  from "ionicons/icons"
+import { calendar, create} from "ionicons/icons";
 import TableWeight from "./configuration/TableWeight";
 
 const DetailsWeight = () => {

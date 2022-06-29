@@ -35,25 +35,30 @@ function checkDataProfile(dbProfile) {
     if(dbProfile.dateFormat !== null) {
       dataProfile.dateFormat = dbProfile.dateFormat;
     }
-    if(dbProfile.preferencesPoids !== null) {
-      if(dbProfile.preferencesPoids.dateCible !== null) {
-        dataProfile.preferencesPoids.dateCible = dbProfile.preferencesPoids.dateCible;
-      }
-      if(dbProfile.preferencesPoids.poidsCible !== null) {
-        dataProfile.preferencesPoids.poidsCible = dbProfile.preferencesPoids.poidsCible;
-      }
-      if(dbProfile.preferencesPoids.poidsInitial !== null) {
-        dataProfile.preferencesPoids.poidsInitial = dbProfile.preferencesPoids.poidsInitial;
-      }
-      if(dbProfile.preferencesPoids.unitePoids !== null) {
-        dataProfile.preferencesPoids.unitePoids = dbProfile.preferencesPoids.unitePoids;
-      }
-    }
     if(dbProfile.pseudo !== null) {
       dataProfile.pseudo = dbProfile.pseudo;
     }
     if(dbProfile.size !== null) {
       dataProfile.size = dbProfile.size;
+    }
+    dataProfile = checkPreference(dataProfile, dbProfile.preferencesPoids)
+  }
+  return dataProfile;
+}
+
+function checkPreference(dataProfile, preferencesPoids) {
+  if(preferencesPoids !== null) {
+    if(preferencesPoids.dateCible !== null) {
+      dataProfile.preferencesPoids.dateCible = preferencesPoids.dateCible;
+    }
+    if(preferencesPoids.poidsCible !== null) {
+      dataProfile.preferencesPoids.poidsCible = preferencesPoids.poidsCible;
+    }
+    if(preferencesPoids.poidsInitial !== null) {
+      dataProfile.preferencesPoids.poidsInitial = preferencesPoids.poidsInitial;
+    }
+    if(preferencesPoids.unitePoids !== null) {
+      dataProfile.preferencesPoids.unitePoids = preferencesPoids.unitePoids;
     }
   }
   return dataProfile;
