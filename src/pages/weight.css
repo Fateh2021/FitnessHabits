@@ -99,8 +99,9 @@
 .cibleInfos{
   border-bottom:0px ;
   --padding-start: 25px ;
-  --color : #707070
-
+  --color : #707070;
+  display: flex !important;
+  justify-content: space-between !important;
 }
 #dernierPoidsValue{
   color: #707070;
@@ -150,13 +151,13 @@
   color: #707070;
   --border-width:0px;
   --border-style: auto;
-
+  margin-right: 25px;
+  --padding-start: 0px;
 
 }
 #cible{
   background-color: #24A78817;
   color: #707070;
-  margin-left: 100px;
 
 }
 ion-item-divider{
@@ -166,8 +167,6 @@ ion-item-divider{
 }
 .calendar{
   --border-width:0px;
-  --padding-start:0px;
-
 }
 
 .alertsIcon{

@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import * as translate from "../../translate/Translator";
 import * as weightService from "./configuration/weightService"
 import HeaderWeight from "./configuration/header";
-import { arrowDropdownCircle } from 'ionicons/icons';
-import { IonLabel, IonItem, IonItemDivider, IonImg, IonContent, IonAvatar, IonIcon, IonDatetime, IonList} from "@ionic/react";
+import { IonLabel, IonItem, IonItemDivider, IonImg, IonContent, IonAvatar, IonIcon, IonDatetime, IonList, IonItemGroup} from "@ionic/react";
 import { calendar} from "ionicons/icons";
 import {create}  from "ionicons/icons"
 import TableWeight from "./configuration/TableWeight";
-
-import InitializationWeight from "./configuration/Initialisation";
 
 const DetailsWeight = (props) => {
   const [unitWeight, setUnitWeight] = useState("");
@@ -64,7 +61,7 @@ const DetailsWeight = (props) => {
             <img className='alertsIcon' src="/assets/alerts.png" alt=""/>
         </IonAvatar>
       </IonItemDivider>
-      <IonItemDivider className='cibleInfos'>
+      <IonItemGroup className='cibleInfos'>
         <IonItem className='calendar'>
           <IonDatetime />
           <IonIcon className="date-icon" icon={calendar} />
@@ -90,7 +87,7 @@ const DetailsWeight = (props) => {
             </span>
           </IonLabel>
         </IonItem>
-      </IonItemDivider>
+      </IonItemGroup>
       <IonItemDivider>
         {!isShown &&
         <IonLabel id="graphshowen"  data-testid="showgraph" onClick={() => setIsShown(!isShown)}>{translate.getText("SHOW_GRAPH")} </IonLabel>
