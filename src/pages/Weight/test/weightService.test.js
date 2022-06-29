@@ -344,7 +344,7 @@ describe("weightService", () => {
 
     test("Test fonction toDate", async() => {
         let result = weightService.toDate("2022-03-17 15:24")
-        expect(result).toStrictEqual(new Date("2022-03-17T19:24:00.000Z"));
+        expect(result).toStrictEqual(new Date("2022-03-17T15:24"));
     });
 
     test("Test fonction formatDateShape", async() => {
