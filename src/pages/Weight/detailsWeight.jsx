@@ -141,9 +141,9 @@ const DetailsWeight = (props) => {
        { dailyWeightList.map(item => {
          return(
          <IonItem className="weightItem" key={item.x}>
-           <IonLabel className="historique">
-             <span><b>{item.y} {unitWeight === "KG" ? "Kg" : "Lbs"} </b></span>  &nbsp;
-             <span> | {weightService.formatDateShape(item.x,dateFormat)} à {weightService.getTime(item.x)}</span>
+           <IonLabel>
+             <span id="historiquePoids"><b>{item.y} {unitWeight === "KG" ? "Kg" : "Lbs"}</b></span>&nbsp;
+             <span id="historiqueDate">| {weightService.formatDateShape(item.x,dateFormat)} à {weightService.getTime(item.x)}</span>
              <span>
                <IonAvatar className='pencilAvtr'><IonIcon className="test" icon={create} /></IonAvatar>
               </span>

@@ -6,7 +6,7 @@ import * as translate from "../../../translate/Translator";
 const DIFF_UNITY_WEIGHT = 2.2;
 
 
-
+/*
 export function initProfile() {
   return new Promise((resolve) => {
     const userUID = localStorage.getItem('userUid');
@@ -18,8 +18,8 @@ export function initProfile() {
       resolve();
     })
   });
-}
-/*
+}*/
+
 // temp no firebase
 export function initProfile() {
   return new Promise((resolve) => {
@@ -37,7 +37,7 @@ export function initProfile() {
     localStorage.setItem("profile", JSON.stringify(dataProfile));
     resolve();
   });
-}*/
+}
 
 function checkDataProfile(dbProfile) {
   let dataProfile = {
@@ -224,7 +224,7 @@ export function updateWeightDashboard(newWeight, currentDate) {
   )
   .update(dashboard);
 }
-
+/*
 export function initDailyPoidsList() {
   return new Promise((resolve) => {
   const userUID = localStorage.getItem('userUid');
@@ -245,8 +245,8 @@ export function initDailyPoidsList() {
     resolve();
   })
   })
-}
-/*
+}*/
+
 // temp no firebase
 export function initDailyPoidsList() {
   return new Promise((resolve) => {
@@ -268,7 +268,7 @@ export function initDailyPoidsList() {
     localStorage.setItem("listeDailyPoids", JSON.stringify(dailyWeightList));
     resolve();
   })
-}*/
+}
 
 export function getDailyWeightList() {
   return JSON.parse(localStorage.getItem("listeDailyPoids"));
