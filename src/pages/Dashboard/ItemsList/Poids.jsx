@@ -168,11 +168,7 @@ const Poids = (props) => {
                         { weightService.formatWeight(initialWeight)}
                       </span>
                       &nbsp;
-<<<<<<< HEAD
-                      <span data-test-id = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}
-=======
                       <span data-testid = "prefUnit">{unitWeight === "KG" ? "Kg" : "Lbs"}
->>>>>>> 02420d7f354191b8e08e2b993bac473ebb32e5a8
                       </span>
                       </div>
                   </IonLabel>

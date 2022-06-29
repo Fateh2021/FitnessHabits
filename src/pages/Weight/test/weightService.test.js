@@ -1,15 +1,6 @@
-<<<<<<< HEAD
 import {cleanup} from "@testing-library/react";
 import "@testing-library/jest-dom"
 import "@testing-library/jest-dom/extend-expect";
-=======
-import React from "react";
-import {cleanup, render, screen} from "@testing-library/react";
-import {ionFireEvent as fireEvent} from "@ionic/react-test-utils";
-import "@testing-library/jest-dom"
-import "@testing-library/jest-dom/extend-expect";
-import {act} from "react-dom/test-utils";
->>>>>>> 02420d7f354191b8e08e2b993bac473ebb32e5a8
 import * as weightService  from "../configuration/weightService"
 
 jest.mock("firebase", () => {
@@ -87,17 +78,6 @@ jest.mock("firebase", () => {
     };
 });
 
-<<<<<<< HEAD
-=======
-/*jest.mock("./configuration/weightService", () => { 
-    const originalModule = jest.requireActual('./configuration/weightService');
-    return {
-        ...originalModule,
-        initProfile: jest.fn().mockResolvedValue()
-    };
-})*/
-
->>>>>>> 02420d7f354191b8e08e2b993bac473ebb32e5a8
 describe("weightService", () => {
     const dailyWeight = "77";
     const dateFormat = "YYYY/MM/DD"
@@ -380,12 +360,8 @@ describe("weightService", () => {
         expect(result).toStrictEqual("2022-mayo-17");
     });
 
-<<<<<<< HEAD
     // problem with new date, does not work 100% and will change in Sprint3
     /*test("Test fonction updateWeightDashboard", async() => {
-=======
-    test("Test fonction updateWeightDashboard", async() => {
->>>>>>> 02420d7f354191b8e08e2b993bac473ebb32e5a8
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
         var poids={
             dailyPoids: 90,
@@ -400,11 +376,7 @@ describe("weightService", () => {
         
         weightService.updateWeightDashboard(90, currentDate);
         expect(localStorage.getItem("dashboard")).toStrictEqual(JSON.stringify(pseudo_dashboard));
-<<<<<<< HEAD
     });*/
-=======
-    });
->>>>>>> 02420d7f354191b8e08e2b993bac473ebb32e5a8
 
     test("Test fonction initDailyPoidsList", async() => {
         const dataList = [
