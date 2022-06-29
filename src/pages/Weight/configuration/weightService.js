@@ -6,7 +6,6 @@ import * as translate from "../../../translate/Translator";
 const DIFF_UNITY_WEIGHT = 2.2;
 
 
-/*
 export function initProfile() {
   return new Promise((resolve) => {
     const userUID = localStorage.getItem('userUid');
@@ -17,25 +16,6 @@ export function initProfile() {
       localStorage.setItem("profile", JSON.stringify(dataProfile));
       resolve();
     })
-  });
-}*/
-
-// temp no firebase
-export function initProfile() {
-  return new Promise((resolve) => {
-    let dataProfile = {
-      dateFormat:"yyyy-LL-dd",
-      preferencesPoids:{
-        dateCible:"2022-07-30",
-        poidsCible:"69",
-        poidsInitial:"90",
-        unitePoids:"KG"
-      },
-      pseudo:"Scott",
-      size:"170"
-    };
-    localStorage.setItem("profile", JSON.stringify(dataProfile));
-    resolve();
   });
 }
 
@@ -229,7 +209,7 @@ export function updateWeightDashboard(newWeight, currentDate) {
   )
   .update(dashboard);
 }
-/*
+
 export function initDailyPoidsList() {
   return new Promise((resolve) => {
   const userUID = localStorage.getItem('userUid');
@@ -249,29 +229,6 @@ export function initDailyPoidsList() {
     localStorage.setItem("listeDailyPoids", JSON.stringify(dailyWeightList));
     resolve();
   })
-  })
-}*/
-
-// temp no firebase
-export function initDailyPoidsList() {
-  return new Promise((resolve) => {
-
-    let dailyWeightList = [
-      {x: "2022-06-25", y: 79},
-      {x: "2022-06-21", y: 82},
-      {x: "2022-06-18", y: 96},
-      {x: "2022-06-15", y: 85},
-      {x: "2022-06-11", y: 80},
-      {x: "2022-06-09", y: 82},
-      {x: "2022-06-07", y: 84},
-      {x: "2022-06-04", y: 86},
-      {x: "2022-06-01", y: 88}
-    ]
-    dailyWeightList.sort(function(a,b){
-      return new Date(a.x) - new Date(b.x)
-    })
-    localStorage.setItem("listeDailyPoids", JSON.stringify(dailyWeightList));
-    resolve();
   })
 }
 
