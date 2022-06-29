@@ -235,11 +235,6 @@ export function getDailyWeightList() {
   return JSON.parse(localStorage.getItem("listeDailyPoids"));
 }
 
-export function getShowenGraph() {
-  return JSON.parse(localStorage.getItem("showenGraph"));
-}
-
-
 export function getLastWeightInfos(array){
   var dernier=[]
   array.map((item, i)=>{

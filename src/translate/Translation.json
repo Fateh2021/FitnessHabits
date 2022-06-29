@@ -1488,6 +1488,11 @@
       "es": "Peso inicial",
       "fr": "Poids initial"
    },
+   "WEIGHT_INITIAL_DATE" : {
+      "en": "entered on",
+      "es": "ingresado el",
+      "fr": "entré le"
+   },
    "WEIGHT_TARGET_NAME" : {
       "en": "Target",
       "es": "Objetivo",

@@ -15,6 +15,7 @@ const DetailsWeight = () => {
   const [dateFormat, setDateFormat] = useState("YYYY/MM/DD");
   var [size, setSize] = useState("");
   var [BMI, setBMI] = useState("0.00");
+  var [initialweightDate, setInitialWeightDate] = useState(1999-9-9)
   const [isShown, setIsShown] = useState(false);
 
   useEffect(() => {
@@ -65,27 +66,29 @@ const DetailsWeight = () => {
           <IonDatetime />
           <IonIcon className="date-icon" icon={calendar} />
         </IonItem>
-        <IonItem className="PoidsCibInfos">
-          <IonLabel id="cible" >
-            <b className="targetWeight">
-              <span>
-                {translate.getText("WEIGHT_TARGET_NAME")} :
-              </span>
+        <ion-anchor href="/configurationPoids" routerDirection="forward">
+          <IonItem className="PoidsCibInfos">
+            <IonLabel id="cible" >
+              <b className="targetWeight">
+                <span>
+                  {translate.getText("WEIGHT_TARGET_NAME")} :
+                </span>
+                &nbsp;
+                <span data-testid = "targWeight">
+                  {weightService.formatWeight(targetWeight)}
+                </span>
+                &nbsp;
+                <span>
+                  {unitWeight === "KG" ? "Kg" : "Lbs"}, 
+                </span>
+              </b>
               &nbsp;
-              <span data-testid = "targWeight">
-                {weightService.formatWeight(targetWeight)}
+              <span data-testid = "targWeightDate" className="targetDate" >
+                {weightService.formatDateShape(targetWeightDate, dateFormat)} 
               </span>
-              &nbsp;
-              <span>
-                {unitWeight === "KG" ? "Kg" : "Lbs"}, 
-              </span>
-            </b>
-             &nbsp;
-            <span data-testid = "targWeightDate" className="targetDate" >
-              {weightService.formatDateShape(targetWeightDate, dateFormat)} 
-            </span>
-          </IonLabel>
-        </IonItem>
+            </IonLabel>
+          </IonItem>
+        </ion-anchor>
       </IonItemGroup>
       <IonItemDivider>
         {!isShown &&
@@ -128,7 +131,8 @@ const DetailsWeight = () => {
       <IonItemDivider>
         <IonLabel id="initialPoidsInfos">
           <span><b> {translate.getText("WEIGHT_INITIAL_NAME")}  : {weightService.formatWeight(initialWeight)} </b></span> 
-          <span data-testid = "prefUnit1" ><b> {unitWeight === "KG" ? "Kg" : "Lbs"}</b></span>
+          <span data-testid = "prefUnit1" ><b> {unitWeight === "KG" ? "Kg" : "Lbs"},</b></span>&nbsp;
+          <span>{translate.getText("WEIGHT_INITIAL_DATE")} {weightService.formatDateShape(initialweightDate,dateFormat)} </span>
         </IonLabel>
       </IonItemDivider>
       <IonItemDivider>
