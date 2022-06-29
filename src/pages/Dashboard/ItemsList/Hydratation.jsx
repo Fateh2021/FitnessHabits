@@ -385,25 +385,25 @@ const Hydratation = (props) => {
 
   return (
     <React.Fragment>
-      <div onClick={() => setShowModal(true)}>
+      <div>
 
         <div className="hydButton divHydra" >
 
-          <div className="titreHydra">
+          <div className="titreHydra" onClick={() => setShowModal(true)}>
             <span>
               {translate.getText("HYDR_TITLE")}
             </span>
           </div>
 
 
-          <div className="titreLitre">
+          <div className="titreLitre" onClick={() => setShowModal(true)}>
             <span>
               <text> 0.000 L </text>
             </span>
           </div>
 
 
-          <div className="hydraCible">
+          <div className="hydraCible" onClick={() => setShowModal(true)}>
             <span>
               {translate.getText("HYD_TITLE_TARGET")}
             </span>
@@ -411,14 +411,14 @@ const Hydratation = (props) => {
           </div>
 
 
-          <div className="hydraLimite">
+          <div className="hydraLimite" onClick={() => setShowModal(true)}>
             <span>
               {translate.getText("HYD_TITLE_LIMITE")}
             </span>
             <span > <text> 0.000 L</text>  </span>
           </div>
 
-          <div className="hydraAutre">
+          <div className="hydraAutre" onClick={() => setShowModal(true)}>
             <span>
               {translate.getText("HYD_TITLE_AUTRE")}
             </span>
@@ -465,7 +465,7 @@ const Hydratation = (props) => {
             <p style={{ color: '#707070' }}>{translate.getText("HYD_TEXT_GRAPH")}</p>
 
             <div className="divHyd" style={{ height: 'auto' }}>
-              <div className="sett" >
+              <div  >
                 {hydrates.map((hydra, index) => (
                   <IonItem className="" key={hydra.id}>
                     <ion-grid fixed>
