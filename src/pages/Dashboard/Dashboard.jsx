@@ -19,7 +19,7 @@ import Hydratation from "./ItemsList/Hydratation";
 import Glycemie from "./ItemsList/Glycemie"
 import Supplements from "./ItemsList/Supplements";
 import Toilettes from "./ItemsList/Toilettes";
-import Activities from "./ItemsList/Activities";
+import PracticeList from "./ItemsList/Activities/PracticeList";
 import Sommeil from "./ItemsList/Sommeil";
 import AlcoolList from "./ItemsList/Alcool/AlcoolList";
 import Poids from "./ItemsList/Poids"
@@ -163,6 +163,9 @@ const Dashboard = (props) => {
         }
     });
 
+    const [activities, setActivities] = useState([]);
+    const [practices, setPracticies] = useState([]);
+
     const checkAllKeysAreUpToDate = (templateNode, realNode) => {
         Object.keys(templateNode).forEach(key => {
             if (!realNode[key]) {
@@ -271,12 +274,13 @@ const Dashboard = (props) => {
             setFormatedCurrentDate(dt);
         });
 
+        const userUID = localStorage.getItem("userUid");
+
         if (localDashboard) {
             const updatedSets = addMissingDashboard(JSON.parse(localDashboard));
             localStorage.setItem("dashboard", JSON.stringify(updatedSets));
             setDashboard(updatedSets);
         } else {
-            const userUID = localStorage.getItem("userUid");
             //console.log("Loading Dashboard From DB...");
             firebase.database().ref("dashboard/"+userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth()+1) + currentDate.startDate.getFullYear())
                 .once("value", (snapshot) => {
@@ -299,6 +303,24 @@ const Dashboard = (props) => {
                     }              
                 });
         }
+
+        firebase.database().ref("dashboard/" + userUID + "/moduleActivity")
+            .once("value", (snapshot) => {
+                let moduleActivity = snapshot.val();
+                if (moduleActivity) {
+                    if (!(moduleActivity.practices)) {
+                        moduleActivity.practices = [];
+                    }
+                    if (!(moduleActivity.activities)) {
+                        moduleActivity.activities = [];
+                    }
+                }
+                else {
+                    moduleActivity = {practices: [], activities: []};
+                }
+                setActivities(moduleActivity.activities);
+                setPracticies(moduleActivity.practices);
+            });
     }, []);
 
     const updateGlobalMacroNutrientConsumption = (sets) => {
@@ -634,7 +656,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <Activities heures={dashboard.activities.heure} minutes={dashboard.activities.minute} currentDate={currentDate} sommeil={dashboard.activities} />
+                    <PracticeList key={practices.length} activities={activities} practices={practices} currentDate={currentDate} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 
