@@ -1,95 +1,125 @@
 import React from "react";
-import {cleanup, render, screen} from "@testing-library/react";
-import {ionFireEvent} from "@ionic/react-test-utils";
-import {act} from "react-dom/test-utils";
-import "@testing-library/jest-dom"
-import "@testing-library/jest-dom/extend-expect";
-import Supplements from "../Supplements"
+import { render } from "@testing-library/react";
+import firebase from "firebase";
+import "firebase/auth";
+import Supplements from "../Supplements.jsx";
+import { ionFireEvent } from "@ionic/react-test-utils";
+
+const testProfile = {
+    pseudo: "testUser",
+    email: "testUser@fitnesshabit.com",
+    size: "999",
+    gender: "N",
+    dateFormat: "dd-LLL-yyyy",
+};
 
 jest.mock("firebase", () => {
     return {
         auth: jest.fn(),
-        database: jest.fn().mockReturnValue({
-            ref: jest.fn().mockReturnValue({
-                update: jest.fn()
-            })
-        }),
-        storage: jest.fn(),
+        database: jest.fn(),
     };
 });
 
-describe("Supplements", () => {
-    var currentDate= {startDate: "2022-06-13 20:00"}
-
-    beforeEach(() => {
-        var mockUserUID = "testsupplement";
-        var supplement = {
-            listeMedSup: []
-        };
-        const mockDashboard = {
-            mockUserUID,
-            supplement
-        };
-
-        localStorage.setItem("userUid", mockUserUID);
-        localStorage.setItem("dashboard", JSON.stringify(mockDashboard));
-        localStorage.setItem("userLanguage", "fr");
+describe("How <Supplements> is rendered", () => {
+    beforeAll(() => {
+        localStorage.setItem("profile", JSON.stringify(testProfile));
     });
 
-    test("Test 1 : Affichage du menu", () => {
-        act(() => { 
-            render(<Supplements currentDate={currentDate}/>);
-        })
-        const boutonAfficherMenu = screen.getByTestId("boutonAfficherMenu");
+    afterAll(() => { localStorage.removeItem("profile") });
 
-        act(() => { 
-            ionFireEvent.click(boutonAfficherMenu);
-        })
-
-        const menu = screen.getByTestId("menu");
-        
-        expect(menu).toBeDefined();
+    it("should not crash", () => {
+        const { baseElement } = render(<Supplements />);
+        expect(baseElement).toBeDefined();
     });
 
-    test("Test 2 : Affichage du formulaire d'ajout", () => {
-        act(() => { 
-            render(<Supplements currentDate={currentDate}/>);
-        })
-        const boutonAfficherMenu = screen.getByTestId("boutonAfficherMenu");
+    it("should be closed by default", () => {
+        const { getByTestId } = render(<Supplements />);
+        const menuModal = getByTestId("menu");
 
-        act(() => { 
-            ionFireEvent.click(boutonAfficherMenu);
-        })
-
-        const boutonAjouterSupplement = screen.getByTestId("boutonAjouterSupplement");
-        
-        act(() => { 
-            ionFireEvent.click(boutonAjouterSupplement);
-        })
-
-        const formulaireAjouterSupplement = screen.getByTestId("formulaireAjouterSupplement");
-
-        expect(formulaireAjouterSupplement).toBeDefined();
+        expect(menuModal).toBeFalsy();
     });
 
-    afterEach(() => {
-        cleanup();
+    it("should open as expected", () => {
+        const { getByTestId } = render(<Supplements />);
 
-        jest.clearAllMocks();
+        const btnOpen = getByTestId("btn-open");
+        btnOpen.click();
+        const menuModal = getByTestId("menu");
 
-        localStorage.clear();
+        expect(menuModal).toBeDefined();
     });
 
+    it("should close as expected", () => {
+        const { getByTestId } = render(<Supplements />);
+
+        const btnClose = getByTestId("btn-close");
+        btnClose.click();
+        const menuModal = getByTestId("menu");
+
+        expect(menuModal).toBeDefined();
+    });
+
+    /*
+
+    it("should display profile information", () => {
+        const { getByTestId } = render(<Sidebar pictureDisabled={true} />);
+        const usernameElement = getByTestId("username");
+        const heightElement = getByTestId("height");
+        const genderElement = getByTestId("gender");
+        const emailElement = getByTestId("email");
+        const dateFormatElement = getByTestId("dateFormat");
+
+        expect(usernameElement.textContent).toEqual(testProfile.pseudo);
+        expect((heightElement.value*100).toString()).toEqual(testProfile.size);
+        expect(genderElement.value).toEqual(testProfile.gender);
+        expect(emailElement.value).toEqual(testProfile.email);
+        expect(dateFormatElement.value).toEqual(testProfile.dateFormat);
+    });
+    */
 });
 
+describe("How <Sidebar> behaves", () => {
+
+    beforeEach(() => {
+        localStorage.setItem("profile", JSON.stringify(testProfile));
+    });
+
+    afterAll(() => { localStorage.removeItem("profile") });
+
+    it("should save a new supplement on pressing save button with valid values", () => {
+        const mockSaveHandler = jest.mock().fn();
+        const mockDonneesAjoutSontValides = jest.mock().fn();
+
+        const { getByTestId } = render(
+            <Supplements
+                testFunctions={{
+                    handleSave: mockSaveHandler,
+                    donneesAjoutSontValides: mockDonneesAjoutSontValides,
+                }}
+            />
+        );
+        const btnSave = getByTestId("btn-save");
 
 
 
+        btnSave.click();
 
+        // Check que le toast de data saved existe et qu'il est defined
+        // Check que les données ont été sauvegardé dans Firebase
 
+        expect(mockSaveHandler).toBeCalledTimes(1);
+        expect(mockDonneesAjoutSontValides).toBeCalledTimes(1);
+    });
 
+    it("should display an error when trying to save with invalid values", () => {
+        const { getByTestId } = render(<Supplements />);
 
+        const btnSave = getByTestId("btn-save");
+        btnSave.click();
 
+        // Check que le toast d'erreur existe et qu'il est defined
+        // Check que rien n'a été sauvegardé dans Firebase
+    });
+});
 
-
-
+jest.clearAllMocks();
