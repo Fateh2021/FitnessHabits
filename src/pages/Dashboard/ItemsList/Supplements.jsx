@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import firebase from "firebase";
 import {
   IonInput,
@@ -81,6 +81,8 @@ const Supplements = (props) => {
   const [dateDebutChoisie, setDateDebutChoisie] = useState("");
   const [dateFinChoisie, setDateFinChoisie] = useState("");
   const [statutActifChoisi, setStatutActifChoisi] = useState(true);
+
+  const heurePriseEstCliqueParUtilisateur = useRef(false);
 
   const handleSave = () => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
@@ -192,8 +194,9 @@ const Supplements = (props) => {
   function gererChangementValeurHeureChoisie(indexHeure, nouvelleHeure, cibleOrigineEvenement) {
     //Le ionChangeEvent est lancé lorsque l'on supprime l'une des heures choisies, la mise à jour
     //des heures choisies ne doit pas être faite une deuxième fois après une suppression.
-    if(dateTimeIonChangeEventEstCauseParUtilisateur(cibleOrigineEvenement)) {
+    if(heurePriseEstCliqueParUtilisateur.current) {
       mettreAJourHeuresChoisies(indexHeure, nouvelleHeure)
+      heurePriseEstCliqueParUtilisateur.current = false;
     }
   }
 
@@ -207,8 +210,8 @@ const Supplements = (props) => {
     }));
   }
 
-  function dateTimeIonChangeEventEstCauseParUtilisateur(cibleOrigineEvenement) {
-    return cibleOrigineEvenement.firstChild.data === "Done";
+  function gererClicHeurePrise() {
+    heurePriseEstCliqueParUtilisateur.current = true;
   }
 
   return (
@@ -448,6 +451,7 @@ const Supplements = (props) => {
                               placeholder="00:00"
                               value={heureCourante.heure}
                               slot="start"
+                              onClick={() => gererClicHeurePrise()}
                               onIonChange={ e => 
                                 gererChangementValeurHeureChoisie(index, e.detail.value, e.explicitOriginalTarget)
                               }
