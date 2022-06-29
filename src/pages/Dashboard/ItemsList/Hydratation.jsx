@@ -426,7 +426,7 @@ const Hydratation = (props) => {
 
 
 
-          <div> <img className="hydImg" src="/assets/cup_water.png" alt="" />
+          <div> <img className="hydImg" src="/assets/cup_water.png" alt="" onClick={() => setShowModal2(true)} />
 
 
           </div>
@@ -522,51 +522,7 @@ const Hydratation = (props) => {
       {/*Modale2*/}
       <div >
 
-        <div className="hydButton divHydra" >
 
-          <div className="titreHydra" >
-            <span>
-              {translate.getText("HYDR_TITLE")}
-            </span>
-          </div>
-
-
-          <div className="titreLitre">
-            <span>
-              <text> 0.000 L </text>
-            </span>
-          </div>
-
-
-          <div className="hydraCible">
-            <span>
-              {translate.getText("HYD_TITLE_TARGET")}
-            </span>
-            <span > <text> 0.000 L</text>  </span>
-          </div>
-
-
-          <div className="hydraLimite">
-            <span>
-              {translate.getText("HYD_TITLE_LIMITE")}
-            </span>
-            <span > <text> 0.000 L</text>  </span>
-          </div>
-
-          <div className="hydraAutre">
-            <span>
-              {translate.getText("HYD_TITLE_AUTRE")}
-            </span>
-          </div>
-
-
-
-          <div > <img className="hydImg" src="/assets/cup_water.png" alt="" onClick={() => setShowModal2(true)} />
-
-
-          </div>
-
-        </div>
 
         <IonModal isOpen={showModal2} style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 10%  !important;" id="input-hydra-modal" onDidDismiss={handleCloseModal2}  >
           <div className='fenetreModale'>
@@ -604,22 +560,22 @@ const Hydratation = (props) => {
                     <ion-col  >
                       <ion-item lines="none" >
 
-                        <div style={{ color: '#707070' }}>Prot:</div>
-                        <IonInput className='divAddTextNut nourTextInput' disabled type='number' name="" value={proteinConsumptionTot} onIonChange={totalProt} />
+                        <div style={{ color: '#707070' }}> Prot : </div>
+                        <IonInput  placeholder='0.000'className='divAddTextNut nourTextInput' disabled type='number' name="" value={proteinConsumptionTot} onIonChange={totalProt} />
                       </ion-item>
                     </ion-col>
                     <ion-col >
                       <ion-item lines="none" >
 
-                        <div style={{ color: '#707070' }}>F :</div>
-                        <IonInput className='divAddTextNut nourTextInput' disabled type='number' name="" value={fibreConsumptionTot} onIonChange={totalFib} />
+                        <div style={{ color: '#707070' }}> F : </div>
+                        <IonInput  placeholder='0.000'className='divAddTextNut nourTextInput' disabled type='number' name="" value={fibreConsumptionTot} onIonChange={totalFib} />
                       </ion-item>
                     </ion-col>
                     <ion-col >
                       <ion-item lines="none">
 
-                        <div style={{ color: '#707070' }}>Gl :</div>
-                        <IonInput className='divAddTextNut nourTextInput' disabled type='number' name="" value={glucideConsumptionTot} onIonChange={totalGlu} />
+                        <div style={{ color: '#707070' }}> Gl : </div>
+                        <IonInput  placeholder='0.000'className='divAddTextNut nourTextInput' disabled type='number' name="" value={glucideConsumptionTot} onIonChange={totalGlu} />
                       </ion-item>
                     </ion-col>
                   </ion-row>
@@ -631,7 +587,7 @@ const Hydratation = (props) => {
 
 
             <ion-body>
-              <p style={{ color: '#707070' }}>&ensp;Nom &ensp; &ensp;Quantité</p>
+              <p style={{ color: '#707070' }}>&ensp;&ensp;Nom &ensp; &ensp;Quantité</p>
 
 
 
@@ -646,30 +602,30 @@ const Hydratation = (props) => {
                     <ion-grid class="ion-no-padding">
 
 
-                      <ion-row>
-                        <ion-col size='6' >
-                          <ion-item lines="none">
-                            <IonLabel>{hydra.name}</IonLabel>
+                      <ion-row >
 
-                            <IonSelect interface="popover" placeholder="Verre">
-                              <IonSelectOption value="apples"></IonSelectOption>
-                              <IonSelectOption value="oranges"><IonIcon icon={cafe} /></IonSelectOption>
-                              <IonSelectOption value="bananas">Bananas</IonSelectOption>
-                            </IonSelect>
+                        <ion-col size='4' >
 
-                          </ion-item>
-                       
-                            <ion-accordion value="first">
-                              <IonItem slot="header" color="light">
-                                <IonLabel>Test1</IonLabel>
-                              </IonItem>
-                              <div className="ion-padding" slot="content">
-                                First Content
-                              </div>
-                            </ion-accordion>
-                            
+                          <IonTitle size="small">{hydra.name}</IonTitle>
 
                         </ion-col>
+                        <ion-col size='2' >
+                          <ion-item lines="none">
+                            <IonSelect interface="popover" placeholder="_____">
+                              <IonSelectOption value="apples">Verre</IonSelectOption>
+                              <IonSelectOption value="oranges">Tasse</IonSelectOption>
+                              <IonSelectOption value="bananas">Bouteille</IonSelectOption>
+                            </IonSelect>
+
+
+                          </ion-item>
+                        </ion-col>
+
+
+
+
+
+
                         <ion-col size='2' >
                           <IonButton className="trashButton" color="danger" size="small" onClick={() => DailyConsumptionDecrementHydrate(index)}>
                             <IonIcon icon={removeCircle} />

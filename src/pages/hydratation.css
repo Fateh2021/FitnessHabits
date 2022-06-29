@@ -100,25 +100,56 @@
 .macro{
   padding-right: 0px;
   
-    font-size: 1.25rem;
   
   padding-left: 0px;
 
 }
+ion-col{
 
-.fenetreModale{
+  padding-right: 0px;
+  
+  padding-left: 0px;
+  padding: 0 !important;
+  --padding-end: 0px;
+  --inner-padding-end: 0px;
+  --padding-start: 0px;
+  --inner-padding-start: 0px;
+
+ 
+}
+ion-row{
+
+  padding-right: 0px;
+  
+  padding-left: 0px;
+  padding: 0 !important;
+  --padding-end: 0px;
+  --inner-padding-end: 0px;
+  --padding-start: 0px;
+  --inner-padding-start: 0px;
+
+ 
+}
+.fenetreModale {
   
   padding-right: 10px;
   
   padding-left: 10px;
 
 }
-.divHyd{
-
-  padding-right: 2px;
-  
-  padding-left: 2px;
-  font-size:5px !important;
+.quantite {
+  font-size: 10px!important;
 }
 
+ion-item {
+  padding: 0 !important;
+  --padding-end: 0px;
+  --inner-padding-end: 0px;
+  --padding-start: 0px;
+  --inner-padding-start: 0px;
+}
+ion-item .item-inner {
+  border-right: 0px!important;
+  border-left: 0px!important;
+}
 
