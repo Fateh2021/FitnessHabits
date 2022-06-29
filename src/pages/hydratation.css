@@ -97,12 +97,28 @@
   top: 95px;
   left: 38%;
 }
+.macro{
+  padding-right: 0px;
+  
+    font-size: 1.25rem;
+  
+  padding-left: 0px;
+
+}
 
 .fenetreModale{
   
-  padding-right: 15px;
+  padding-right: 10px;
   
-  padding-left: 15px;
+  padding-left: 10px;
 
 }
+.divHyd{
+
+  padding-right: 2px;
+  
+  padding-left: 2px;
+  font-size:5px !important;
+}
+
 
