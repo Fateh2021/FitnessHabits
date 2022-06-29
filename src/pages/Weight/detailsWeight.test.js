@@ -28,7 +28,8 @@ jest.mock("./configuration/weightService", () => {
     const originalModule = jest.requireActual('./configuration/weightService');
     return {
         ...originalModule,
-        initProfile: jest.fn().mockResolvedValue()
+        initProfile: jest.fn().mockResolvedValue(),
+        initDailyPoidsList: jest.fn().mockResolvedValue()
     };
 });
 
