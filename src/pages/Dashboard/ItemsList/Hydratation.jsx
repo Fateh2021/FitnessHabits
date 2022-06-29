@@ -364,6 +364,10 @@ const Hydratation = (props) => {
     setHydrateToEdit(hydrates[undefined]);
     setItemContainerDisplayStatus(true);
   }
+
+  const handleCloseModal = () => {
+      setShowModal(false);
+    }
   
   return (
     <div onClick={() => setShowModal(true)}>
@@ -406,7 +410,7 @@ const Hydratation = (props) => {
 
       </div>
      
-      <IonModal isOpen={showModal} style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 10%  !important;" id="input-hydra-modal" onDismiss={() => props.setShowModal(false)}  >
+      <IonModal isOpen={showModal} style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 10%  !important;" id="input-hydra-modal" onDidDismiss={handleCloseModal}  >
         <div >
           <ion-header>
             <div style={{ clear: 'both' }}>
