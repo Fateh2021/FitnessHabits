@@ -209,7 +209,6 @@ export function updateWeightDashboard(newWeight, currentDate) {
   )
   .update(dashboard);
 }
-
 export function initDailyPoidsList() {
   return new Promise((resolve) => {
   const userUID = localStorage.getItem('userUid');
@@ -255,7 +254,3 @@ export function getLastWeightInfos(array){
 export function getTime(date) {
   return moment(date).format('HH:mm');
 }
-
-
-
-
