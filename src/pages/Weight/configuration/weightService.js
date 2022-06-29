@@ -6,7 +6,6 @@ import * as translate from "../../../translate/Translator";
 const DIFF_UNITY_WEIGHT = 2.2;
 
 
-
 export function initProfile() {
   return new Promise((resolve) => {
     const userUID = localStorage.getItem('userUid');
@@ -205,7 +204,6 @@ export function updateWeightDashboard(newWeight, currentDate) {
   )
   .update(dashboard);
 }
-
 export function initDailyPoidsList() {
   return new Promise((resolve) => {
   const userUID = localStorage.getItem('userUid');
@@ -231,6 +229,11 @@ export function initDailyPoidsList() {
 export function getDailyWeightList() {
   return JSON.parse(localStorage.getItem("listeDailyPoids"));
 }
+
+export function getShowenGraph() {
+  return JSON.parse(localStorage.getItem("showenGraph"));
+}
+
 
 export function getLastWeightInfos(array){
   var dernier=[]

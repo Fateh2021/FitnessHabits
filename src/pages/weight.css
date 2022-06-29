@@ -32,10 +32,11 @@
 }
 .listHisto{
   overflow-y: scroll;
- 
   height: 200px;
-  
+  width: 100%;
+  padding-right: 35px;  
 }
+
 .accordeonPoids {
   width: auto;
   height: auto;
@@ -75,7 +76,12 @@
   background-color: #3E7D65;
   --inner-padding-end:0px;
 }
-
+.item-divider-wrapper{
+  justify-content: space-between;
+}
+.lastWeight{
+  width: 100%;
+}
 .divInfos {
   background-color: #FFFFFF;
   height: 120px;
@@ -87,7 +93,8 @@
 .alerts {
   border-bottom:0px ;
   --padding-start: 35px ;
-  --color : #707070
+  --color : #707070;
+  width:100%
 }
 .cibleInfos{
   border-bottom:0px ;
@@ -101,8 +108,12 @@
   font-weight: bold;
   font-size: 25px;
   margin-bottom: 0px;
+  width: 100%;
+  text-align: justify;
 
 }
+
+
 #dernierPoidsDate{
   color: #707070;
   font-family: 'Roboto', sans-serif;
@@ -120,12 +131,18 @@
   --padding-start:0px;
 }
 
-.historique
+#historiquePoids
 {
   color: #707070;
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
  
+}
+#historiqueDate{
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+
 }
 
 .PoidsCibInfos{
@@ -164,14 +181,17 @@ ion-item-divider{
   margin: 20px;
 }
 .test{
-  width:20px;
-  height:15px;
+  margin-top: 5px;
+  color: #707070;
 }
 .pencilAvtr{
 
   background-color: #D5D5D530;
-  margin-left: 100px;
   display: inline;
+  float: right;
+  height: 30px;
+  width: 30px;
+  text-align: center;
 }
 
 .titrePoidsIni{
@@ -202,6 +222,31 @@ ion-item-divider{
 .dateCible{
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
+  color:#707070;
+
+}
+.targetWeight{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color:#707070;
+  margin: auto;
+
+}
+.targetDate{
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color:#707070;
+
+}
+#alertsconfg{
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color:#707070;
+}
+#graphshowen{
+  font-family: 'Roboto', sans-serif;
+  font-size: 17px;
   color:#707070;
 
 }
