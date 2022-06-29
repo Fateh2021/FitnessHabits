@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol, IonFooter, IonModal,IonToolbar,IonTitle } from '@ionic/react';
+import { IonList, IonSelect, IonSelectOption, IonContent, IonItem, IonIcon, IonLabel, IonInput, IonAvatar, IonButton, IonCol, IonFooter, IonModal, IonToolbar, IonTitle, IonProgressBar } from '@ionic/react';
 import { arrowDropdownCircle, star, trash, addCircle, removeCircle, create } from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
@@ -10,7 +10,7 @@ import * as translate from '../../../translate/Translator';
 import '../../../pages/Tab1.css';
 import '../../../pages/hydratation.css';
 
-var test=0;
+var test = 0;
 
 
 //TODO : Execute SonarQube to check the code quality
@@ -96,12 +96,12 @@ const Hydratation = (props) => {
   const [currentDate, setCurrentDate] = useState({ startDate: props.currentDate });
   const [hydrateToEdit, setHydrateToEdit] = useState(undefined);
   const [itemContainerDisplayStatus, setItemContainerDisplayStatus] = useState(false);
-  
-  const [proteinConsumptionTot, setGlobalProt] = useState(props.proteinConsumptionTot);  
+
+  const [proteinConsumptionTot, setGlobalProt] = useState(props.proteinConsumptionTot);
   const [glucideConsumptionTot, setGlobalGlu] = useState(props.glucideConsumptionTot);
   const [fibreConsumptionTot, setGlobalFib] = useState(props.fibreConsumptionTot);
   const [grasConsumptionTot, setGlobalGr] = useState(props.grasConsumptionTot);
-  
+
 
   const [showModal, setShowModal] = useState(false);
   const accor = (divId) => {
@@ -169,10 +169,10 @@ const Hydratation = (props) => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
     dashboard.hydratation.dailyTarget.globalConsumption = totalConsumption();
     dashboard.hydratation.dailyTarget.globalQuant = totalQuant();
-    dashboard.hydratation.dailyTarget.proteinConsumptionTot=totalProt();
-    dashboard.hydratation.dailyTarget.glucideConsumptionTot=totalGlu();
-    dashboard.hydratation.dailyTarget.fibreConsumptionTot=totalFib();
-    dashboard.hydratation.dailyTarget.grasConsumptionTot=totalGr();
+    dashboard.hydratation.dailyTarget.proteinConsumptionTot = totalProt();
+    dashboard.hydratation.dailyTarget.glucideConsumptionTot = totalGlu();
+    dashboard.hydratation.dailyTarget.fibreConsumptionTot = totalFib();
+    dashboard.hydratation.dailyTarget.grasConsumptionTot = totalGr();
 
 
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
@@ -180,7 +180,7 @@ const Hydratation = (props) => {
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
   }
 
-  
+
   const DailyConsumptionDecrementHydrate = (item) => {
     var array = [...hydrates];
     const index = array.findIndex((event) => event.id === item.id);
@@ -215,13 +215,13 @@ const Hydratation = (props) => {
   const totalQuant = () => {
     var array = [...hydrates];
     var sumQuant = 0;
-    var quantite=0;
+    var quantite = 0;
     var consumption = 0;
 
     for (let value of array) {
       consumption = value.consumption;
       quantite = value.qtte;
-      sumQuant += (quantite*consumption);
+      sumQuant += (quantite * consumption);
     }
     setGlobalQuant(sumQuant);
     return sumQuant
@@ -229,14 +229,14 @@ const Hydratation = (props) => {
   const totalProt = () => {
     var array = [...hydrates];
     var sumProt = 0;
-    var prot=0;
+    var prot = 0;
     var consumption = 0;
-   
 
-      for (let value of array) {
-        consumption = value.consumption;  
+
+    for (let value of array) {
+      consumption = value.consumption;
       prot = value.glucide;
-      sumProt +=(prot*consumption);
+      sumProt += (prot * consumption);
     }
     setGlobalProt(sumProt);
     return sumProt
@@ -244,14 +244,14 @@ const Hydratation = (props) => {
   const totalGlu = () => {
     var array = [...hydrates];
     var sumGlu = 0;
-    var glu=0;
+    var glu = 0;
     var consumption = 0;
-   
 
-      for (let value of array) {
-        consumption = value.consumption;  
+
+    for (let value of array) {
+      consumption = value.consumption;
       glu = value.glucide;
-      sumGlu +=(glu*consumption);
+      sumGlu += (glu * consumption);
     }
     setGlobalGlu(sumGlu);
     return sumGlu
@@ -259,14 +259,14 @@ const Hydratation = (props) => {
   const totalFib = () => {
     var array = [...hydrates];
     var sumFib = 0;
-    var fib=0;
+    var fib = 0;
     var consumption = 0;
-   
 
-      for (let value of array) {
-        consumption = value.consumption;  
+
+    for (let value of array) {
+      consumption = value.consumption;
       fib = value.fibre;
-      sumFib +=(fib*consumption);
+      sumFib += (fib * consumption);
     }
     setGlobalFib(sumFib);
     return sumFib
@@ -274,14 +274,14 @@ const Hydratation = (props) => {
   const totalGr = () => {
     var array = [...hydrates];
     var sumGr = 0;
-    var gr=0;
+    var gr = 0;
     var consumption = 0;
-   
 
-      for (let value of array) {
-        consumption = value.consumption;  
+
+    for (let value of array) {
+      consumption = value.consumption;
       gr = value.gras;
-      sumGr +=(gr*consumption);
+      sumGr += (gr * consumption);
     }
     setGlobalGr(sumGr);
     return sumGr
@@ -335,18 +335,18 @@ const Hydratation = (props) => {
 
   const conversionQuantity = (hydrates) => {
 
-    switch(hydrates.unit){
-      case "gr" :
+    switch (hydrates.unit) {
+      case "gr":
         return hydrates.qtte + " ml";
-      case "oz" :
+      case "oz":
         return hydrates.qtte * 29.6 + " ml";
-      case "ml" : 
+      case "ml":
         return hydrates.qtte + " ml";
-      case "tasse" :
+      case "tasse":
         return hydrates.qtte * 125 + " ml";
-      case "unite" :
+      case "unite":
         return hydrates.qtte * 1 + " ml";
-    } 
+    }
   }
 
   const closeItemContainer = () => {
@@ -366,9 +366,9 @@ const Hydratation = (props) => {
   }
 
   const handleCloseModal = () => {
-      setShowModal(false);
-    }
-  
+    setShowModal(false);
+  }
+
   return (
     <div onClick={() => setShowModal(true)}>
 
@@ -389,16 +389,24 @@ const Hydratation = (props) => {
 
 
         <div className="hydraCible">
-          <span > <text> Cible : 0.000 L</text>  </span>
+          <span>
+            {translate.getText("HYD_TITLE_TARGET")}
+          </span>
+          <span > <text> 0.000 L</text>  </span>
         </div>
 
 
         <div className="hydraLimite">
-          <span > <text> Limite : 0.000 L</text>  </span>
+          <span>
+            {translate.getText("HYD_TITLE_LIMITE")}
+          </span>
+          <span > <text> 0.000 L</text>  </span>
         </div>
 
         <div className="hydraAutre">
-          <span > <text> Autres informations</text>  </span>
+          <span>
+            {translate.getText("HYD_TITLE_AUTRE")}
+          </span>
         </div>
 
 
@@ -409,69 +417,75 @@ const Hydratation = (props) => {
         </div>
 
       </div>
-     
+
       <IonModal isOpen={showModal} style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 10%  !important;" id="input-hydra-modal" onDidDismiss={handleCloseModal}  >
-        <div >
+        <div className='fenetreModale'>
           <ion-header>
             <div style={{ clear: 'both' }}>
-              <h3 style={{ color: '#70ACE8', float: 'left' }}>&emsp;Hydratation </h3>
-              <h3 style={{ backgroundColor: '#ebf7f4', color: '#707070', float: 'right' }} >Cible: 1.000 L &emsp;</h3>
+              <h3 style={{ color: '#70ACE8', float: 'left' }}>{translate.getText("HYDR_TITLE")} </h3>
+              <h3 style={{ backgroundColor: '#ebf7f4', color: '#707070', float: 'right' }} >{translate.getText("HYD_TITLE_TARGET")} 1.000 L</h3>
             </div>
 
           </ion-header>
           <ion-body>
             <br />
             <IonCol>
-              <h4 style={{ color: '#707070', float: 'left' }}>&emsp;Quantité totale bue :</h4>
+              <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}</h4>
             </IonCol>
-            
+
             <IonCol>
               <ion-item lines="none" size="large">
-                <IonInput className='divAddTextNut nourTextInput' type='number' name="" value={globalConsumption} onIonChange={totalConsumption} />
-              verre <hr />
-              <IonInput className='divAddTextNut nourTextInput' type='number' name="" value={globalQuant} onIonChange={totalQuant} />
-               mL
+
+                <IonInput className='divAddTextNut nourTextInput' type='number' name="" value={globalQuant} onIonChange={totalQuant} />
+                mL<br />
               </ion-item>
-            </IonCol>           
+            </IonCol>
 
-            <ion-row>
 
-            <ion-col size="3.3" >
-                  <ion-item>
 
-                    <div item-left style={{ color: '#707070', float: 'left' }}>Prot :</div>
-                    <IonInput style={{ float: 'right' }} class="ion-padding" className='divAddTextNut nourTextInput' type='number' name="" value={proteinConsumptionTot} onIonChange={totalProt} />
-                  </ion-item>
-                </ion-col>
-
-                <ion-col  >
-                  <ion-item>
-
-                    <div item-left style={{ color: '#707070', float: 'left' }}>Gr :</div>
-                    <IonInput style={{ float: 'right' }} class="ion-padding" className='divAddTextNut nourTextInput' type='number' name="" value={grasConsumptionTot} onIonChange={totalGr} />
-                  </ion-item>
-                </ion-col>
-
-                <ion-col>
-                  <ion-item>
-
-                    <div item-left style={{ color: '#707070', float: 'left' }}>F :</div>
-                    <IonInput style={{ float: 'right' }} class="ion-padding" className='divAddTextNut nourTextInput' type='number' name="" value={fibreConsumptionTot} onIonChange={totalFib} />
-                  </ion-item>
-                </ion-col>
-                <ion-col>
-                  <ion-item>
-
-                    <div item-left style={{ color: '#707070', float: 'left' }}>Gl :</div>
-                    <IonInput style={{ float: 'right' }} class="ion-padding" className='divAddTextNut nourTextInput' type='number' name="" value={glucideConsumptionTot} onIonChange={totalGlu} />
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            
 
           </ion-body>
-          <p style={{ color: '#707070' }}>&ensp; &ensp; &ensp;Afficher le graphique</p>
+          <div className='modaleBar' style={{ borderBottom: '0.5px solid silver'}}>
+            
+          <IonProgressBar value={0.5}></IonProgressBar><br />
+          </div>
+          <p style={{ color: '#707070'}}>{translate.getText("HYD_TEXT_GRAPH")}</p>
+          <IonContent>
 
+    {/*-- Ceci est éventuellement pour la partie bleue SVP copier/coller (mettre en remarque) si utilisé pour la partie blanche --*/}
+
+    <IonList>
+
+      <IonItem>
+ 
+        <IonLabel>Nom du breuvage</IonLabel>
+        
+        <IonSelect interface="popover" placeholder="Verre">
+          <IonSelectOption value="apples">Verre</IonSelectOption>
+          <IonSelectOption value="oranges">Oranges</IonSelectOption>
+          <IonSelectOption value="bananas">Bananas</IonSelectOption>
+        </IonSelect>
+
+      </IonItem>
+
+      <IonItem>
+      <IonLabel>Select</IonLabel>
+          <IonSelect>
+            <IonSelectOption value="brown">Brown</IonSelectOption>
+            <IonSelectOption value="blonde">Blonde</IonSelectOption>
+            <IonSelectOption value="black">Black</IonSelectOption>
+            <IonSelectOption value="red">Red</IonSelectOption>
+          </IonSelect>
+      </IonItem>
+
+      <IonItem>
+        <IonLabel>Nom du breuvage<br />Quantité bue:<br />Date : i don't know yet</IonLabel>
+      </IonItem>
+      
+    </IonList>
+
+
+    </IonContent>
           <div className="divHyd" style={{ height: 'auto' }}>
             <div  >
               {hydrates.map((hydra, index) => (
@@ -480,29 +494,29 @@ const Hydratation = (props) => {
                     <ion-row justify-content-center align-items-center>
                       <ion-col size="7">
                         <IonToolbar>
-                            <IonTitle size="small">{hydra.name}</IonTitle>
-                            <ion-card-subtitle> Quantité bue: {conversionQuantity(hydra)} </ion-card-subtitle>
-                            <ion-card-subtitle> Date : i don't know yet </ion-card-subtitle>
+                          <IonTitle size="small">{hydra.name}</IonTitle>
+                          <ion-card-subtitle> Quantité bue: {conversionQuantity(hydra)} </ion-card-subtitle>
+                          <ion-card-subtitle> Date : i don't know yet </ion-card-subtitle>
 
                         </IonToolbar>
                       </ion-col>
                       <ion-col size="5" >
-                      <IonToolbar>
+                        <IonToolbar>
                           <ion-grid fixed>
-                             <ion-col size="6">
-                                  <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
-                                        <IonIcon icon={addCircle} />
-                                  </IonButton>
-                             </ion-col>
+                            <ion-col size="6">
+                              <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
+                                <IonIcon icon={addCircle} />
+                              </IonButton>
+                            </ion-col>
 
-                             <ion-col size="6">
-                                  <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
-                                        <IonIcon icon={trash} />
-                                  </IonButton>
-                             </ion-col>
+                            <ion-col size="6">
+                              <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
+                                <IonIcon icon={trash} />
+                              </IonButton>
+                            </ion-col>
                           </ion-grid>
 
-                       </IonToolbar>
+                        </IonToolbar>
 
                       </ion-col>
                     </ion-row>
@@ -513,7 +527,7 @@ const Hydratation = (props) => {
             </div>
           </div>
 
-          <div className="ajoutBotton" style={{ display: 'flex', flexDirection: 'column', height: '50px', backgroundColor: '#ffff', position: 'fixed', bottom:'2px' }} >
+          <div className="ajoutBotton" style={{ display: 'flex', flexDirection: 'column', height: '50px', backgroundColor: '#ffff', position: 'fixed', bottom: '2px' }} >
             <IonButton className="ajoutbreuvage1" color="primary" size="large" onClick={() => openAddItemContainer()}>
               <IonIcon icon={addCircle} />
               <label id="addDrink" className="labelAddItem">{translate.getText('HYD_BUTTON_ADD_DRINK')}

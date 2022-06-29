@@ -145,9 +145,29 @@
       "fr":"Langue"
    },
    "HYD_TITLE_TARGET":{
-      "en":"Daily target",
-      "es":"Objetivo diario",
-      "fr":"Cible quotidienne"
+      "en":"Target:",
+      "es":"Objetivo:",
+      "fr":"Cible:"
+   },
+   "HYD_TITLE_LIMITE":{
+      "en":"Limit:",
+      "es":"Límite:",
+      "fr":"Limite:"
+   },
+   "HYD_TITLE_AUTRE":{
+      "en":"Other information",
+      "es":"Otras informaciones",
+      "fr":"Autres informations"
+   },
+   "HYD_TEXT_GRAPH":{
+      "en":"Show graph",
+      "es":"Mostrar gráfico",
+      "fr":"Afficher le graphique"
+   },
+   "HYD_TEXT_QUANT":{
+      "en":"Total amount drunk :",
+      "es":"Cantidad total bebido :",
+      "fr":"Quantité totale bue :"
    },
    "HYD_ALERT_GT_3000_P1": {
       "en": "Be careful, it is advisable not to exceed",
