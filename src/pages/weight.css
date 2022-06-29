@@ -32,10 +32,11 @@
 }
 .listHisto{
   overflow-y: scroll;
- 
   height: 200px;
-  
+  width: 100%;
+  padding-right: 35px;  
 }
+
 .accordeonPoids {
   width: auto;
   height: auto;
@@ -108,8 +109,11 @@
   font-size: 25px;
   margin-bottom: 0px;
   width: 100%;
+  text-align: justify;
 
 }
+
+
 #dernierPoidsDate{
   color: #707070;
   font-family: 'Roboto', sans-serif;
@@ -127,12 +131,18 @@
   --padding-start:0px;
 }
 
-.historique
+#historiquePoids
 {
   color: #707070;
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
  
+}
+#historiqueDate{
+  color: #707070;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+
 }
 
 .PoidsCibInfos{
@@ -171,14 +181,17 @@ ion-item-divider{
   margin: 20px;
 }
 .test{
-  width:20px;
-  height:15px;
+  margin-top: 5px;
+  color: #707070;
 }
 .pencilAvtr{
 
   background-color: #D5D5D530;
-  margin-left: 100px;
   display: inline;
+  float: right;
+  height: 30px;
+  width: 30px;
+  text-align: center;
 }
 
 .titrePoidsIni{
@@ -233,7 +246,7 @@ ion-item-divider{
 }
 #graphshowen{
   font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   color:#707070;
 
 }
