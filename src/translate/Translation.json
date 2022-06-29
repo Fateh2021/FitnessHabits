@@ -326,7 +326,31 @@
          }
       }
    },
-
+   "INTENSITY": {
+     "en":"Intensity",
+     "es":"Intensidad",
+     "fr":"Intensité"
+   },
+  "INTENSITY_LOW": {
+    "en":"Low",
+    "es":"Abajo",
+    "fr":"Basse"
+  },
+  "INTENSITY_MEDIUM": {
+    "en":"Medium",
+    "es":"Medio",
+    "fr":"Moyenne"
+  },
+  "INTENSITY_HIGH": {
+    "en":"High",
+    "es":"Alto",
+    "fr":"Haute"
+  },
+  "INTENSITY_HIIT": {
+    "en":"HIIT",
+    "es":"Muy intenso",
+    "fr":"Très intense"
+  },
    "SUPPL_TITLE":{
       "en":"Supplements",
       "es":"Suplementos",
@@ -337,6 +361,11 @@
       "es":"y Medicamentos",
       "fr":"et Médicaments"
    },
+  "CONFIRM_DELETE": {
+    "en":"Confirm deletion",
+    "es":"Confirmar la eliminación",
+    "fr":"Confirmer la suppression"
+  },
    "SUPPL_ADD":{
       "en":"Add supplements/medications",
       "es":"Añadir suplementos/medicamentos",
@@ -732,6 +761,11 @@
       "es":"Error de autentificación. ¡El nombre de usuario y/o contraseña no son válidos!",
       "fr":"Erreur d'authentification. L'identifiant et/ou le mot passe sont invalides !"
    },
+  "NAME_ACTIVITY":{
+    "en":"Activity name",
+    "es":"Nombre de la actividad",
+    "fr":"Nom de l'activité"
+  },
    "OR":{
       "en":"OR",
       "es":"O",
@@ -877,6 +911,11 @@
       "es":"Debe seleccionarse al menos un estado de activación.",
       "fr":"Il faut sélectionner au moins un état de réveil."
    },
+  "AT": {
+    "en": "at",
+    "es": "a",
+    "fr": "à"
+  },
    "STATE_OF_MIND":{
       "en":"Awakening state of mind",
       "es":"Despertar estado mental",
@@ -1007,6 +1046,36 @@
       "es":"Actividades físicas",
       "fr":"Activités physiques"
    },
+  "MODIFY_ACTIVITY": {
+    "en":"Edit activity",
+    "es":"Editar actividad",
+    "fr":"Modifier activité"
+  },
+  "ADD_ACTIVITY": {
+    "en":"Add activity",
+    "es":"Añadir actividad",
+    "fr":"Ajouter activité"
+  },
+  "DELETE_ACTIVITY": {
+    "en":"Delete Activity",
+    "es":"Eliminar actividad",
+    "fr":"Supprimer Activité"
+  },
+  "DELETE_ACTIVITY_DESCRIPTIION": {
+    "en":"Are you sure you want to delete this activity?",
+    "es":"¿Está seguro de que desea eliminar esta actividad?",
+    "fr":"Voulez-vous vraiment supprimer cette activité ?"
+  },
+  "MODIFY": {
+    "en":"Edit",
+    "es":"Editar",
+    "fr":"Modifier"
+  },
+  "ADD": {
+    "en":"Add",
+    "es":"Añadir",
+    "fr":"Ajouter"
+  },
    "TOILETS_TITLE":{
       "en":"Toilets",
       "es":"Aseos",
@@ -1097,6 +1166,11 @@
       "es": "Duración",
       "fr": "Durée"
    },
+  "EXP_REPORT_TIME": {
+    "en": "Time",
+    "es": "Tiempo",
+    "fr": "Temps"
+  },
    "EXP_REF_GLY": {
       "en" : "Reference",
       "es" : "Referencia",
