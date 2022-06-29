@@ -62,7 +62,7 @@ describe('PracticeItem', () => {
             const cancel = screen.getByTestId('deleteCancel');
 
             expect(mot.textContent.toString()).toBe("Low");
-            expect(title.textContent.toString()).toBe("Delete Activity");
+            expect(title.textContent.toString()).toBe("Delete activity");
             expect(description.textContent.toString()).toBe("Are you sure you want to delete this activity?");
             expect(confirm.textContent.toString()).toBe("Confirm deletion");
             expect(cancel.textContent.toString()).toBe("Cancel");
@@ -97,7 +97,7 @@ describe('PracticeItem', () => {
             
             expect(name.textContent.toString()).toBe("Jogging");
             // expect(date.textContent).toBe("06-03-2022")
-            expect(duration.textContent).toBe("02:00,");
+            expect(duration.textContent).toBe("02:00");
             expect(intensity.textContent.toString()).toBe("Basse");
         })
     });

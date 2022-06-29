@@ -36,9 +36,8 @@ const PracticeItem = (props) =>  {
       <div className='activityItem' data-testid={'practiceItem' + practice.id} >
         <IonLabel data-testid="practiceName"><b className='activityName'>{practice.name}</b></IonLabel>
         <IonRow>
-          <IonCol size='4' className="fontPractice" data-testid="practiceDate">{formattedDate} {translate.getText("AT")} {PratiqueUtil.formatHourMinute(practice.time)}</IonCol>
-          <IonCol size="1" className="fontPractice">|</IonCol>
-          <IonCol size='2' className="fontPractice" data-testid="practiceDuration">{PratiqueUtil.formatHourMinute(practice.duration)},</IonCol>
+          <IonCol size='5' className="fontPractice" data-testid="practiceDate">{formattedDate} {translate.getText("AT")} {PratiqueUtil.formatHourMinute(practice.time)}</IonCol>
+          <IonCol size='2' className="fontPractice" data-testid="practiceDuration">{PratiqueUtil.formatHourMinute(practice.duration)}</IonCol>
           <IonCol size='3' className="fontPractice" data-testid="practiceIntensity">{translate.getText(practice.intensity)}</IonCol>
           <IonCol>
               <IonIcon icon={create} onClick={() =>  {

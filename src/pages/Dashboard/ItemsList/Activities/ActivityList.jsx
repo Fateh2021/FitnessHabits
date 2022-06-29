@@ -28,10 +28,9 @@ const ActivityList = (props) =>  {
             duration: activityToAdd.duration,
             intensity: activityToAdd.intensity
         }
-        setActivities(activities.concat(newActivity))
-        /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: activities.concat(newActivity)}).then(() => {
-          setActivities(activities.concat(newActivity))
-        })*/
+        firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: activities.concat(newActivity)}).then(() => {
+            setActivities(activities.concat(newActivity))
+        })
     }
 
     /*
@@ -46,10 +45,9 @@ const ActivityList = (props) =>  {
             return activity.id !== activityToModify.id
         }).concat({...activityToModify})
 
-        setActivities(activityWithoutOld)
-        /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: activityWithoutOld}).then(() => {
+        firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: activityWithoutOld}).then(() => {
           setActivities(activityWithoutOld)
-        })*/
+        })
 
     }
 
@@ -66,10 +64,9 @@ const ActivityList = (props) =>  {
         })
 
         const userUID = localStorage.getItem('userUid')
-        setActivities(remainingActivities)
-        /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: remainingActivities}).then(() => {
+        firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: remainingActivities}).then(() => {
           setActivities(remainingActivities)
-        })*/
+        })
     };
 
     return (

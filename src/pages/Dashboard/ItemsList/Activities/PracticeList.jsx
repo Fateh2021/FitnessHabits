@@ -38,10 +38,9 @@ const PracticeList = (props) =>  {
       duration: practiceToAdd.duration,
       intensity: practiceToAdd.intensity
     }
-    setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate))
-    /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practices.concat(newPractice)}).then(() => {
+    firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practices.concat(newPractice)}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(practices.concat(newPractice), currentDate))
-    })*/
+    })
   }
 
   /*
@@ -56,10 +55,9 @@ const PracticeList = (props) =>  {
       return item.id !== practiceToModify.id
     }).concat({...practiceToModify})
 
-    setPractices(PratiqueUtil.getPracticesFilter(practicesWithoutOld, currentDate))
-    /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practicesWithoutOld}).then(() => {
+    firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: practicesWithoutOld}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(practicesWithoutOld, currentDate))
-    })*/
+    })
 
   }
 
@@ -76,10 +74,9 @@ const PracticeList = (props) =>  {
     })
 
     const userUID = localStorage.getItem('userUid')
-    setPractices(PratiqueUtil.getPracticesFilter(remainingPractices, currentDate))
-    /*firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: remainingPractices}).then(() => {
+    firebase.database().ref('dashboard/'+userUID+ "/activity").update({practices: remainingPractices}).then(() => {
       setPractices(PratiqueUtil.getPracticesFilter(remainingPractices, currentDate))
-    })*/
+    })
   };
 
    return (

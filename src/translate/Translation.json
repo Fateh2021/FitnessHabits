@@ -973,9 +973,9 @@
     "fr":"Ajouter activité usuel"
   },
   "DELETE_ACTIVITY": {
-    "en":"Delete usual activity",
-    "es":"Eliminar actividad habitual",
-    "fr":"Supprimer activité usuel"
+    "en":"Delete activity",
+    "es":"Eliminar actividad",
+    "fr":"Supprimer activité"
   },
   "DELETE_ACTIVITY_DESCRIPTIION": {
     "en":"Are you sure you want to delete this activity?",
