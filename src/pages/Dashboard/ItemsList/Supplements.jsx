@@ -77,12 +77,15 @@ const Supplements = (props) => {
   const [nombreFrequenceDosesChoisie, setNombreFrequenceDosesChoisi] = useState("");
   const [frequenceDosesChoisie, setFrequenceDosesChoisie] = useState("");
   const [heuresChoisies, setHeuresChoisies] = useState([{heure:""}]);
-  const [joursChoisis, setJoursChoisis] = useState([]);
-  const [dateDebutChoisie, setDateDebutChoisie] = useState("");
-  const [dateFinChoisie, setDateFinChoisie] = useState("");
+  const [moisToggle, setMoisToggle] = useState(false);
+  const [joursSemaineChoisis, setjoursSemaineChoisis] = useState([]);
+  const [joursMoisChoisis, setJoursMoisChoisis] = useState([{ jour: "" }]);
+  const [dateDebutChoisie, setDateDebutChoisie] = useState("2000-01-01T00:00");
+  const [dateFinChoisie, setDateFinChoisie] = useState("2099-01-01T00:00");
   const [statutActifChoisi, setStatutActifChoisi] = useState(true);
 
   const heurePriseEstCliqueParUtilisateur = useRef(false);
+  const jourPrisEstCliqueParUtilisateur = useRef(false);
 
   const handleSave = () => {
     const dashboard = JSON.parse(localStorage.getItem('dashboard'));
@@ -99,10 +102,15 @@ const Supplements = (props) => {
     nouveauSupp.formatDoseChoisi = formatDoseChoisi;
     nouveauSupp.restrictionsChoisies = restrictionsChoisies;
     nouveauSupp.nombreDosesChoisi = nombreDosesChoisi;
-    nouveauSupp.nombreFrequenceDosesChoisie = nombreFrequenceDosesChoisie;
-    nouveauSupp.frequenceDosesChoisie = frequenceDosesChoisie;
+    //nouveauSupp.nombreFrequenceDosesChoisie = nombreFrequenceDosesChoisie;
+    //nouveauSupp.frequenceDosesChoisie = frequenceDosesChoisie;
     nouveauSupp.heuresChoisies = heuresChoisies;
-    nouveauSupp.joursChoisis = joursChoisis;
+    if(joursSemaineChoisis){
+      nouveauSupp.joursSemaineChoisis = joursSemaineChoisis;
+     }
+     else{
+      nouveauSupp.joursMoisChoisis = joursMoisChoisis;
+    }
     nouveauSupp.dateDebutChoisie = dateDebutChoisie;
     nouveauSupp.dateFinChoisie = dateFinChoisie;
     nouveauSupp.statutActifChoisi = statutActifChoisi;
@@ -119,8 +127,8 @@ const Supplements = (props) => {
 
   const donneesAjoutSontValides = () => {
     return nomChoisi && typeChoisi && quantiteChoisie && formatDoseChoisi && nombreDosesChoisi && 
-          nombreFrequenceDosesChoisie && frequenceDosesChoisie && (heuresChoisies && heuresChoisies.length > 0) &&
-          (joursChoisis && joursChoisis.length > 0) && dateDebutChoisie && dateFinChoisie;
+          {/*nombreFrequenceDosesChoisie && frequenceDosesChoisie */}&& (heuresChoisies && heuresChoisies.length > 0) &&
+          ((joursSemaineChoisis && joursSemaineChoisis.length > 0) || (joursMoisChoisis && joursMoisChoisis.length > 0))&& dateDebutChoisie && dateFinChoisie;
   }
 
   const inputChangeHandler = () => {
@@ -212,6 +220,35 @@ const Supplements = (props) => {
 
   function gererClicHeurePrise() {
     heurePriseEstCliqueParUtilisateur.current = true;
+  }
+
+  function ajouterJour() {
+    setJoursMoisChoisis([...joursMoisChoisis, { jour: "" }]);
+  }
+  function supprimerJour(indexJour) {
+    setJoursMoisChoisis(joursMoisChoisis.filter((_jourCourant, indexCourant) => indexCourant !== indexJour));
+  }
+
+
+  function gererChangementValeurJourChoisi(indexJour, nouveauJour, cibleOrigineEvenement) {
+    if(jourPrisEstCliqueParUtilisateur.current) {
+      mettreAJourjoursChoisis(indexJour, nouveauJour)
+      jourPrisEstCliqueParUtilisateur.current = false;
+    }
+  }
+
+
+  function mettreAJourjoursChoisis(indexJour, nouveauJour) {
+    setJoursMoisChoisis(joursMoisChoisis.map((jourCourant, indexCourant) => {
+      if (indexCourant === indexJour) {
+        jourCourant.jour = nouveauJour;
+      }
+      return jourCourant;
+    }));
+  }
+
+  function gererClicJourPris() {
+    jourPrisEstCliqueParUtilisateur.current = true;
   }
 
   return (
@@ -309,6 +346,7 @@ const Supplements = (props) => {
                         <IonLabel color="light">{translate.getText("SUPPL_QUANTITE")}</IonLabel>
                         <IonInput className="inputSuppConsom" 
                           id="inputDose"
+                          type="number"
                           value={quantiteChoisie} 
                           onIonChange={e => setQuantiteChoisie(e.detail.value)}></IonInput>
                       </IonItem>
@@ -416,8 +454,10 @@ const Supplements = (props) => {
                         <IonLabel color="light">{translate.getText("SUPPL_NOMBRE_DOSES")}</IonLabel>
                         <IonInput className="inputSuppConsom"
                           value={nombreDosesChoisi}
+                          type="number"
                           onIonChange={e => setNombreDosesChoisi(e.detail.value)}></IonInput>
                       </IonItem>
+                      {/*
                       <IonItem>
                         <IonLabel color="light">{translate.getText("SUPPL_FREQUENCE_DOSES")}</IonLabel>
                         <IonInput className="inputSuppConsom"
@@ -435,7 +475,7 @@ const Supplements = (props) => {
                           <IonSelectOption value={translate.getText("SUPPL_MONTH")}>{translate.getText("SUPPL_MONTH")}</IonSelectOption>
                           
                         </IonSelect>
-                      </IonItem>
+                        </IonItem>*/}
                     </IonItemGroup>
                   </IonList>
 
@@ -484,35 +524,100 @@ const Supplements = (props) => {
                       </IonButton>
                     </IonItem>
                 </IonItemGroup>
-                
-                <IonItemGroup>
-                  <IonItem>
-                    <IonLabel color="light">{translate.getText("SUPPL_REP")}</IonLabel>
 
-                    <IonSelect
-                      multiple = "true"
-                      onIonChange = {e => {
-                        setJoursChoisis(e.detail.value);
-                      }}
+                <IonItem>
+                  <IonLabel color="light">Moins d'une fois par semaine</IonLabel>
+                  <IonToggle
+                    color="primary"
+                    checked={moisToggle}
+                    onIonChange={e => {
+                      setMoisToggle(e.detail.checked);
+                    }} />
+                </IonItem>
+
+
+                { !moisToggle && <div>
+                  <IonItemGroup>
+                    <IonItem>
+                      <IonLabel color="light">{translate.getText("SUPPL_REP")}</IonLabel>
+
+                      <IonSelect
+                        multiple="true"
+                        onIonChange={e => {
+                          setjoursSemaineChoisis(e.detail.value);
+                        }}
+                      >
+                        <IonSelectOption value={translate.getText("SUPPL_MONDAY")}>{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
+                        <IonSelectOption value={translate.getText("SUPPL_TUESDAY")}>{translate.getText("SUPPL_TUESDAY")}</IonSelectOption>
+                        <IonSelectOption value={translate.getText("SUPPL_WEDNESDAY")}>{translate.getText("SUPPL_WEDNESDAY")}</IonSelectOption>
+                        <IonSelectOption value={translate.getText("SUPPL_THURSDAY")}>{translate.getText("SUPPL_THURSDAY")}</IonSelectOption>
+                        <IonSelectOption value={translate.getText("SUPPL_FRIDAY")}>{translate.getText("SUPPL_FRIDAY")}</IonSelectOption>
+                        <IonSelectOption value={translate.getText("SUPPL_SATURDAY")}>{translate.getText("SUPPL_SATURDAY")}</IonSelectOption>
+                        <IonSelectOption value={translate.getText("SUPPL_SUNDAY")}>{translate.getText("SUPPL_SUNDAY")}</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                  </IonItemGroup>
+                  </div>}
+
+                { moisToggle && <div>
+                  <IonItemGroup>
+                  <IonLabel color="light">Jour de la prise</IonLabel>
+                  {joursMoisChoisis.map((jourCourant, index) => (
+                    <IonItemGroup key={index}>
+                      <IonRow>
+                        <IonCol>
+                          <IonItem>
+                            <IonDatetime
+                              displayFormat="DD"
+                              placeholder="01"
+                              value={jourCourant.jour}
+                              slot="start"
+                              onClick={() => gererClicJourPris()}
+                              onIonChange={ e => 
+                                gererChangementValeurJourChoisi(index, e.detail.value, e.explicitOriginalTarget)
+                              }
+
+                            >
+                              Jour du mois
+                            </IonDatetime>
+                          </IonItem>
+                        </IonCol>
+                        <IonCol>
+                          <IonItem>
+                            <IonButton
+                              size="small"
+                              color="danger"
+                              onClick={() => supprimerJour(index)}
+                            >
+                              Supprimer jour
+                            </IonButton>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                    </IonItemGroup>
+                  ))}
+
+                  <IonItem>
+                    <IonButton
+                      size="small"
+                      onClick={ajouterJour}
                     >
-                      <IonSelectOption value={translate.getText("SUPPL_MONDAY")}>{translate.getText("SUPPL_MONDAY")}</IonSelectOption>
-                      <IonSelectOption value={translate.getText("SUPPL_TUESDAY")}>{translate.getText("SUPPL_TUESDAY")}</IonSelectOption>
-                      <IonSelectOption value={translate.getText("SUPPL_WEDNESDAY")}>{translate.getText("SUPPL_WEDNESDAY")}</IonSelectOption>
-                      <IonSelectOption value={translate.getText("SUPPL_THURSDAY")}>{translate.getText("SUPPL_THURSDAY")}</IonSelectOption>
-                      <IonSelectOption value={translate.getText("SUPPL_FRIDAY")}>{translate.getText("SUPPL_FRIDAY")}</IonSelectOption>
-                      <IonSelectOption value={translate.getText("SUPPL_SATURDAY")}>{translate.getText("SUPPL_SATURDAY")}</IonSelectOption>
-                      <IonSelectOption value={translate.getText("SUPPL_SUNDAY")}>{translate.getText("SUPPL_SUNDAY")}</IonSelectOption>
-                    </IonSelect>
+                      Ajouter Jour
+                    </IonButton>
                   </IonItem>
                 </IonItemGroup>
 
+                </div>}
+
+                
+                
                 <IonItem>
                   <IonLabel color="light">{translate.getText("SUPPL_DATE_DEBUT")}</IonLabel>
                     <IonDatetime
                       display-timezone="utc"
                       class="timeBox"
                       value = {dateDebutChoisie}
-                      max="2099"
+                      max={dateFinChoisie}
                       onIonChange={e => {
                         setDateDebutChoisie(e.detail.value);
                       }}
@@ -525,6 +630,7 @@ const Supplements = (props) => {
                     display-timezone="utc"
                     class="timeBox"
                     value = {dateFinChoisie}
+                    min={dateDebutChoisie}
                     max="2099"
                     onIonChange={e => {
                       setDateFinChoisie(e.detail.value);
@@ -532,6 +638,7 @@ const Supplements = (props) => {
                   ></IonDatetime>
                   <IonIcon name="calendar" color="dark" slot="end"></IonIcon>
                 </IonItem>
+
                 
                 <IonItem>
                   <IonLabel color="light">{translate.getText("SUPPL_ACTIVE")}</IonLabel>
