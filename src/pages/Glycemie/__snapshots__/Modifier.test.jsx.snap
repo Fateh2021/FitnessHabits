@@ -50,7 +50,7 @@ exports[`Modifier 1`] = `
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-datetime />
+        <ion-input />
       </ion-card-content>
     </ion-card>
     <ion-card
@@ -62,7 +62,7 @@ exports[`Modifier 1`] = `
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-datetime />
+        <ion-input />
       </ion-card-content>
     </ion-card>
     <ion-button

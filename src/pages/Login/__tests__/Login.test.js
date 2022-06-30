@@ -22,14 +22,23 @@ const flags = {
 const mProps = { history: { push: jest.fn() } };
 const setBusy = jest.fn();
 
+jest.mock('../HandleLogin', () => {
+    const originalModule = jest.requireActual('../HandleLogin');
+
+    return {
+        __esModule: true,
+    ...originalModule,
+    default: jest.fn().mockResolvedValue(false)
+    };
+});
+
 it("Invalid user", async () => {
     let result = await HandleLogin(mockFormFields.username, mockFormFields.password, mProps, setBusy, flags);
     expect(result).toBe(false);
 });
 
 it("Mock button press", async  () => {
-    const mockCallBack = jest.fn();
-    const wrapper = shallow(<LogIn handleSumbit={mockCallBack} />);
+    const wrapper = shallow(<LogIn/>);
     wrapper.find(".input-login-name").first().simulate("change", {
         target: { value: mockFormFields.username }
     });
