@@ -477,7 +477,7 @@ const Hydratation = (props) => {
             <ion-body>
               <br />
               <IonCol>
-                <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}</h4>
+                <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")} : </h4>
               </IonCol>
 
               <IonCol>
@@ -506,9 +506,8 @@ const Hydratation = (props) => {
                         <ion-col size="7">
                           <IonToolbar>
                             <IonTitle size="small">{hydra.name}</IonTitle>
-                            <ion-card-subtitle> Quantité
-                              bue: {conversionQuantity(hydra)} </ion-card-subtitle>
-                            <ion-card-subtitle> Date : i don't know yet</ion-card-subtitle>
+                            <ion-card-subtitle> {translate.getText("HYD_QUANT_BUE")} : {conversionQuantity(hydra)} </ion-card-subtitle>
+                            <ion-card-subtitle> {translate.getText("HYD_DATE")} : JJ/mm/AAAA à 00h00</ion-card-subtitle>
 
                           </IonToolbar>
                         </ion-col>
@@ -586,7 +585,7 @@ const Hydratation = (props) => {
 
               <ion-row>
                 <IonCol size='8'>
-                  <h4 style={{ color: '#707070', float: 'left' }}>Quantité totale bue :</h4>
+                  <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}: </h4>
                 </IonCol>
                 <IonCol size='4'>
                   <ion-item lines="none">
@@ -646,7 +645,7 @@ const Hydratation = (props) => {
 
 
             <ion-body>
-              <p style={{ color: '#707070' }}>&ensp;&ensp;Nom &ensp; &ensp;Quantité</p>
+              <p style={{ color: '#707070' }}>&ensp;&ensp;{translate.getText("HYD_NOM")} &ensp; &ensp;{translate.getText("HYD_QUANT")}</p>
 
 
             </ion-body>

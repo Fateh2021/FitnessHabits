@@ -149,6 +149,11 @@
       "es":"Objetivo:",
       "fr":"Cible:"
    },
+   "HYD_DATE":{
+      "en":"Date",
+      "es":"Fecha",
+      "fr":"Date"
+   },
    "HYD_TITLE_LIMITE":{
       "en":"Limit:",
       "es":"Límite:",
@@ -165,9 +170,24 @@
       "fr":"Afficher le graphique"
    },
    "HYD_TEXT_QUANT":{
-      "en":"Total amount drunk :",
-      "es":"Cantidad total bebido :",
-      "fr":"Quantité totale bue :"
+      "en":"Total amount drunk",
+      "es":"Cantidad total bebido",
+      "fr":"Quantité totale bue"
+   },
+   "HYD_QUANT":{
+      "en":"Quantity",
+      "es":"Cantidad",
+      "fr":"Quantité"
+   },
+   "HYD_QUANT_BUE":{
+      "en":"Quantity drunk",
+      "es":"Cantidad borracha",
+      "fr":"Quantité bue"
+   },
+   "HYD_NOM":{
+      "en":"Name",
+      "es":"Apellido",
+      "fr":"Nom"
    },
    "HYD_ALERT_GT_3000_P1": {
       "en": "Be careful, it is advisable not to exceed",
