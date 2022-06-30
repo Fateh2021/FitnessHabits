@@ -27,10 +27,7 @@ jest.mock("./configuration/weightService", () => {
     const originalModule = jest.requireActual('./configuration/weightService');
     return {
         ...originalModule,
-        initPrefWeight: jest.fn().mockResolvedValue(),
-        initWeights: jest.fn().mockResolvedValue(),
-        initSize: jest.fn().mockResolvedValue(),
-        initPrefDate: jest.fn().mockResolvedValue()
+        initProfile: jest.fn().mockResolvedValue()
     };
 })
 
@@ -40,6 +37,9 @@ describe("WeightInput", () => {
     const dateFormat = "YYYY/MM/DD"
     const currentDate = {startDate: "2022-06-03 10:30"}
     const unitWeight = "KG"
+    const poidsInitial = "85";
+    const poidsCible = "56";
+    const dateCible = "2022-10-25";
 
     beforeEach(() => {
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
@@ -54,11 +54,22 @@ describe("WeightInput", () => {
             size
         };
 
+        let pseudoProfile = {
+            dateFormat: dateFormat,
+            preferencesPoids:{
+              dateCible: dateCible,
+              poidsCible: poidsCible,
+              poidsInitial: poidsInitial,
+              unitePoids: unitWeight
+            },
+            pseudo:"John Doe",
+            size: size
+          };
+
         localStorage.setItem("userUid", userUID);
         localStorage.setItem("dashboard", JSON.stringify(pseudo_dashboard));
-        localStorage.setItem("prefUnitePoids", "KG");
         localStorage.setItem("userLanguage", "fr");
-        localStorage.setItem("prefDateFormat", dateFormat);
+        localStorage.setItem("profile", JSON.stringify(pseudoProfile));
     });
 
     afterEach(() => {
@@ -153,7 +164,9 @@ describe("WeightInput", () => {
     });
 
     test("Changement de LBS a KG", async() => {
-        localStorage.setItem("prefUnitePoids", "LBS");
+        let localProfile = JSON.parse(localStorage.getItem("profile"));
+        localProfile.preferencesPoids.unitePoids = "LBS"
+        localStorage.setItem("profile", JSON.stringify(localProfile));
         act(() => { render(<WeightInput dailyWeight={dailyWeight * 2.2}
                                 showInputWeight={showInputWeight}
                                 currentDate={currentDate}  
