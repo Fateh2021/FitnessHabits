@@ -24,9 +24,9 @@ function AjoutPeriodeForm() {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const [startDate, setStartDate] = useState(yesterday);
+  const [startDate, setStartDate] = useState(yesterday.toDateString());
   const [startTime, setStartTime] = useState("");
-  const [endDate, setEndDate] = useState(today);
+  const [endDate, setEndDate] = useState(today.toDateString());
   const [endTime, setEndTime] = useState("");
   const [nbAwoken, setNbAwoken] = useState(0);
   const [mood, setMood] = useState("");
@@ -51,7 +51,7 @@ function AjoutPeriodeForm() {
           <IonCol>
             <IonLabel className="ajout-label-nbrFois">Endormi le</IonLabel>
             <IonDatetime
-              value={startDate.toDateString()}
+              value={startDate}
               onIonChange={(e) => setStartDate(e.target.value)}
             ></IonDatetime>
           </IonCol>
@@ -69,7 +69,7 @@ function AjoutPeriodeForm() {
           <IonCol>
             <IonLabel className="ajout-label-nbrFois">Réveillé le</IonLabel>
             <IonDatetime
-              value={endDate.toDateString()}
+              value={endDate}
               onIonChange={(e) => setEndDate(e.target.value)}
             ></IonDatetime>
           </IonCol>
