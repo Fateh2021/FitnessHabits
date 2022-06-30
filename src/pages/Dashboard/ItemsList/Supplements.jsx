@@ -87,12 +87,41 @@ const Supplements = (props) => {
   const heurePriseEstCliqueParUtilisateur = useRef(false);
   const jourPrisEstCliqueParUtilisateur = useRef(false);
 
-  const handleSave = () => {
-    const dashboard = JSON.parse(localStorage.getItem('dashboard'));
+  useEffect(() => {
+    initSupplements();
+  });
 
+  const initSupplements = () => {
+    const supplements = JSON.parse(localStorage.getItem('supplements'));
+
+    if (!supplements) {
+      localStorage.setItem('supplements', JSON.stringify({listeMedSup: []}));
+    }
+  }
+
+  const mettreAJourListeMedSup = () => {
+    const userUID = localStorage.getItem('userUid');
+    const supplements = JSON.parse(localStorage.getItem('supplements'));
+
+    firebase.database().ref('supplements/' + userUID).once('value').then((dataSnapshot) => {
+      if (dataSnapshot.exists()) {
+        let supplementsBd = dataSnapshot.val();
+        if(supplementsBd.listeMedSup) {
+          supplements.listeMedSup = supplementsBd.listeMedSup;
+          localStorage.setItem('supplements', JSON.stringify(supplements));
+        }
+      }
+    });
+  }
+
+  const handleSave = () => {
     if (!donneesAjoutSontValides()) {
       return toast(translate.getText("SUPPL_AJOUT_ERREUR"));
     }
+
+    mettreAJourListeMedSup();
+
+    const supplements = JSON.parse(localStorage.getItem('supplements'));
 
     let nouveauSupp = {};
 
@@ -107,19 +136,23 @@ const Supplements = (props) => {
     nouveauSupp.heuresChoisies = heuresChoisies;
     if(joursSemaineChoisis){
       nouveauSupp.joursSemaineChoisis = joursSemaineChoisis;
-     }
-     else{
+    } else {
       nouveauSupp.joursMoisChoisis = joursMoisChoisis;
     }
     nouveauSupp.dateDebutChoisie = dateDebutChoisie;
     nouveauSupp.dateFinChoisie = dateFinChoisie;
     nouveauSupp.statutActifChoisi = statutActifChoisi;
 
-    dashboard.supplement.listeMedSup = [...dashboard.supplement.listeMedSup, nouveauSupp]
+    supplements.listeMedSup = [...supplements.listeMedSup, nouveauSupp];
 
-    localStorage.setItem('dashboard', JSON.stringify(dashboard));
+    localStorage.setItem('supplements', JSON.stringify(supplements));
     const userUID = localStorage.getItem('userUid');
-    firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
+
+    if(!userUID) {
+      return toast(translate.getText("SUPPL_ERREUR_CONNEXION"));
+    }
+
+    firebase.database().ref('supplements/' + userUID).update(supplements);
   
     setFormulaireAjoutEstAffiche(false);
     toast(translate.getText("DATA_SAVED"));
