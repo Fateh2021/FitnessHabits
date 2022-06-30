@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IonList, IonSelect, IonSelectOption, IonContent, IonItem, IonIcon, IonLabel, IonInput, IonButton, IonCol, IonRow, IonFooter, IonModal, IonToolbar, IonTitle, IonProgressBar } from '@ionic/react';
-import { arrowDropdownCircle, star, trash, addCircle, removeCircle, create, cafe } from 'ionicons/icons';
+import { arrowDropdownCircle, star, trash, addCircle, removeCircle, settings, create, cafe } from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
 
@@ -481,17 +481,19 @@ const Hydratation = (props) => {
                         <ion-col size="5" >
                           <IonToolbar>
                             <ion-grid fixed>
-                              <ion-col size="6">
-                                <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
-                                  <IonIcon icon={addCircle} />
-                                </IonButton>
-                              </ion-col>
+                        <ion-col size="6">
+                                                            <IonButton size="small"
+                                                                       onClick={() => deleteItemHydrate(index)}>
+                                                                <IonIcon icon={trash}/>
+                                                            </IonButton>
+                                                        </ion-col>
 
-                              <ion-col size="6">
-                                <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
-                                  <IonIcon icon={trash} />
-                                </IonButton>
-                              </ion-col>
+                                                        <ion-col size="6">
+                                                            <IonButton size="small"
+                                                                       onClick={() => DailyConsumptionIncrement(index)}>
+                                                                <IonIcon icon={create}/>
+                                                            </IonButton>
+                                                        </ion-col>
                             </ion-grid>
 
                           </IonToolbar>
@@ -512,6 +514,9 @@ const Hydratation = (props) => {
                 <label id="addDrink" className="labelAddItem">{translate.getText('HYD_BUTTON_ADD_DRINK')}
                 </label></IonButton>
               {itemContainerDisplayStatus && <HydrateItem close={closeItemContainer} item={hydrateToEdit} save={(itemDashHydrate) => saveItem(itemDashHydrate)} />}
+            
+            <IonIcon icon={settings} size="large" style={{"margin-left": "85%"}}
+                                 onClick={() => openAddItemContainer()}/>
             </div>
 
           </div>
