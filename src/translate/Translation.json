@@ -501,6 +501,11 @@
       "es":"Frecuencia de dosis",
       "fr":"Fréquence des doses"
    },
+   "SUPPL_ERREUR_CONNEXION":{
+      "en":"Error with login, please log out and log back in to the app",
+      "es":"Error con el inicio de sesión, cierre sesión y vuelva a iniciar sesión en la aplicación",
+      "fr":"Erreur avec la connexion, veuillez vous déconnecter et vous reconnecter à l'application"
+   },
    "SUPPL_SUPPPLEMENT":{
       "en":"Supplement",
       "es":"Suplemento",
