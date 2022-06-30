@@ -526,7 +526,7 @@ const Supplements = (props) => {
                 </IonItemGroup>
 
                 <IonItem>
-                  <IonLabel color="light">Moins d'une fois par semaine</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_LESS_THAN_ONCE_PER_WEEK")}</IonLabel>
                   <IonToggle
                     color="primary"
                     checked={moisToggle}
@@ -561,7 +561,7 @@ const Supplements = (props) => {
 
                 { moisToggle && <div>
                   <IonItemGroup>
-                  <IonLabel color="light">Jour de la prise</IonLabel>
+                  <IonLabel color="light">{translate.getText("SUPPL_DAY_OF_INTAKE")}</IonLabel>
                   {joursMoisChoisis.map((jourCourant, index) => (
                     <IonItemGroup key={index}>
                       <IonRow>
@@ -578,7 +578,7 @@ const Supplements = (props) => {
                               }
 
                             >
-                              Jour du mois
+                              {translate.getText("SUPPL_DAY_OF_THE_MONTH")}
                             </IonDatetime>
                           </IonItem>
                         </IonCol>
@@ -589,7 +589,7 @@ const Supplements = (props) => {
                               color="danger"
                               onClick={() => supprimerJour(index)}
                             >
-                              Supprimer jour
+                              {translate.getText("SUPPL_REMOVE_DAY")}
                             </IonButton>
                           </IonItem>
                         </IonCol>
@@ -602,7 +602,7 @@ const Supplements = (props) => {
                       size="small"
                       onClick={ajouterJour}
                     >
-                      Ajouter Jour
+                      {translate.getText("SUPPL_ADD_DAY")}
                     </IonButton>
                   </IonItem>
                 </IonItemGroup>

@@ -511,6 +511,31 @@
       "fr":"Enlever l'heure de la prise",
       "es":"Retirar una hora de tomar"
    },
+   "SUPPL_LESS_THAN_ONCE_PER_WEEK":{
+      "en": "Less than once per week",
+      "fr": "Moins d'une fois par semaine",
+      "es": "Menos que una vez a la semana"
+   },
+   "SUPPL_DAY_OF_INTAKE":{
+      "en":"Day of intake",
+      "fr":"Jour de la prise",
+      "es":"Día de ingesta"
+   },
+   "SUPPL_DAY_OF_THE_MONTH":{
+      "en":"Day of the month",
+      "fr":"Jour du mois",
+      "es":"Día del mes"
+   },
+   "SUPPL_ADD_DAY":{
+      "en":"Add day",
+      "fr":"Ajouter un jour",
+      "es":"Añadir un día"
+   },
+   "SUPPL_REMOVE_DAY":{
+      "en":"Remove Day",
+      "fr":"Supprimer un jour",
+      "es":"Eliminar un día"
+   },
    "SUPPL_REP":{
       "en":"Repetition",
       "fr":"Répétition",
