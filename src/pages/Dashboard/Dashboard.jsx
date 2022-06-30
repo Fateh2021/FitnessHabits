@@ -286,7 +286,7 @@ const Dashboard = (props) => {
                 });
         }
 
-        firebase.database().ref("dashboard/" + userUID + "/activity")
+        firebase.database().ref("activity/" + userUID )
             .once("value", (snapshot) => {
                 let activity = snapshot.val();
                 if (activity) {
@@ -624,7 +624,7 @@ const Dashboard = (props) => {
                     <Supplements currentDate={currentDate} />
                     <Glycemie glycemie={dashboard.glycemie} currentDate={currentDate} />
                     <Toilettes toilettes={dashboard.toilettes} currentDate={currentDate} />
-                    <PracticeList key={practices.length} activities={activities} practices={practices} currentDate={currentDate} />
+                    <PracticeList key={practices.length} activities={activities} practices={practices} />
                     <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
                     <AlcoolList 
                         alcoolService={AlcoolService} 

@@ -28,7 +28,7 @@ const ActivityList = (props) =>  {
             duration: activityToAdd.duration,
             intensity: activityToAdd.intensity
         }
-        firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: activities.concat(newActivity)}).then(() => {
+        firebase.database().ref('activity/'+userUID).update({activities: activities.concat(newActivity)}).then(() => {
             setActivities(activities.concat(newActivity))
         })
     }
@@ -45,7 +45,7 @@ const ActivityList = (props) =>  {
             return activity.id !== activityToModify.id
         }).concat({...activityToModify})
 
-        firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: activityWithoutOld}).then(() => {
+        firebase.database().ref('activity/'+userUID).update({activities: activityWithoutOld}).then(() => {
           setActivities(activityWithoutOld)
         })
 
@@ -64,7 +64,7 @@ const ActivityList = (props) =>  {
         })
 
         const userUID = localStorage.getItem('userUid')
-        firebase.database().ref('dashboard/'+userUID+ "/activity").update({activities: remainingActivities}).then(() => {
+        firebase.database().ref('activity/'+userUID).update({activities: remainingActivities}).then(() => {
           setActivities(remainingActivities)
         })
     };
