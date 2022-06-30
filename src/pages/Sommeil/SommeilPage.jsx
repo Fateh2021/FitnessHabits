@@ -29,20 +29,19 @@ const SommeilPage = (props) => {
 
   const history = useHistory();
 
+  window.addEventListener("ionModalDidDismiss", (event) => {
+    setShowAddModal(false);
+    setShowListModal(false);
+  });
+
   return (
     <IonPage className="page">
       <IonModal isOpen={showListModal} class="modal-sommeil">
         <ListeSommeils></ListeSommeils>
-        <IonButton color="success" onClick={() => setShowListModal(false)}>
-          Fermer
-        </IonButton>
       </IonModal>
 
       <IonModal isOpen={showAddModal} class="modal-sommeil">
         <AjoutPeriodeForm></AjoutPeriodeForm>
-        <IonButton color="success" onClick={() => setShowAddModal(false)}>
-          Fermer
-        </IonButton>
       </IonModal>
 
       <IonHeader>
