@@ -16,10 +16,7 @@ import * as translate from "../../../../translate/Translator";
 import "../../../Tab1.css"
 
 const PracticeEditForm = (props) => {
-    let currentDate = new Date()
-    let offset = currentDate.getTimezoneOffset()
-    currentDate = new Date(currentDate.getTime() - (offset * 60 * 1000))
-    currentDate = currentDate.toISOString().split('T')[0]
+    const [currentDate, minDate] = PratiqueUtil.getCurrentMinDate()
 
     const [date, setDate] = useState(props.practice.date)
     const [intensity, setIntensity] = useState(props.practice.intensity)
@@ -83,7 +80,7 @@ const PracticeEditForm = (props) => {
                             <IonDatetime className="inputFormActivity"
                                 data-testid="dateValue"
                                 displayFormat="YYYY-MM-DD"
-                                min="1970-01-01"
+                                min={minDate}
                                 max={currentDate}
                                 value={date}
                                 onIonChange={(e) => { setDate(e.detail.value)}}

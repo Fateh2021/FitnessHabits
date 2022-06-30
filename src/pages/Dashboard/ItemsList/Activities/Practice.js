@@ -24,4 +24,18 @@ const getPracticesFilter = (practices, currentDate) => {
     })
 }
 
-export default {formatHourMinute, getPracticesFilter}
+const getCurrentMinDate = () => {
+    let currentDate = new Date()
+    let offset = currentDate.getTimezoneOffset()
+    currentDate = new Date(currentDate.getTime() - (offset * 60 * 1000))
+    currentDate = currentDate.toISOString().split('T')[0]
+
+    let minDate = new Date()
+    minDate.setMonth(minDate.getMonth() - 3)
+    let offsetMinDate = minDate.getTimezoneOffset()
+    minDate = new Date(minDate.getTime() - (offset * 60 * 1000))
+    minDate = minDate.toISOString().split('T')[0]
+    return [currentDate, minDate]
+}
+
+export default {formatHourMinute, getPracticesFilter, getCurrentMinDate}
