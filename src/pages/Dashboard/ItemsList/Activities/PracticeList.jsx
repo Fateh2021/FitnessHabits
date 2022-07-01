@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import firebase from 'firebase'
-import { IonModal, IonContent, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonButton} from '@ionic/react';
+import { IonModal, IonContent, IonIcon, IonLabel, IonItem, IonAvatar, IonCol, IonRow} from '@ionic/react';
 import {arrowDropdownCircle, addCircle, settings} from 'ionicons/icons';
 import * as translate from "../../../../translate/Translator";
 import PracticeItem from "./PracticeItem";
@@ -88,7 +88,8 @@ const PracticeList = (props) =>  {
                 isOpen={showPratiqueList} onDidDismiss={() => setShowPratiqueList(false)}>
         <IonContent className="activity-content">
           <IonLabel><h1 className='activityTitle' >{translate.getText("ACTIVITIES")}</h1></IonLabel>
-            <br/>
+          <hr className="lineSeparatorActivity"/>
+
             {
                 practices.map(practice => (
                     <PracticeItem key={practice.id} practice={practice} modifyPractice={modifyPractice} onRemovePractice={removePractice} />

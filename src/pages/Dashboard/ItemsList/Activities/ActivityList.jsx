@@ -77,7 +77,7 @@ const ActivityList = (props) =>  {
                       isOpen={props.showActivityList} onDidDismiss={() => props.setShowActivityList(false)}>
                 <IonContent className="activity-content">
                     <IonLabel data-testid="activityTitle"><h1 className='activityTitle' >{translate.getText("USUAL_ACTIVITES")}</h1></IonLabel>
-                    <br/>
+                    <hr className="lineSeparatorActivity"/>
                     {
                         activities.map(activity => (
                             <ActivityItem key={activity.id} activity={activity} modifyActivity={modifyActivity} onRemoveActivity={removeActivity} />

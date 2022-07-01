@@ -2227,7 +2227,7 @@ h2{
     font-family: "Calibri";
     font-weight: bold;
     font-size: 34px;
-    color: mediumpurple;
+    color: #AA55D9;
 }
 
 .activityItem {
@@ -2263,6 +2263,33 @@ h2{
     border-right: 0px;
     background-color: transparent;
 
+}
+
+hr.lineSeparatorActivity {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: lightgray;
+    height: 7px;
+    display: block;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+}
+
+.lineSeparatorActivity::before  {
+    background-color: #AA55D9;
+    width: 40%;
+    content: "";
+    display: block;
+    top: -10px;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 7px;
 }
 
 /*Module activities - END*/
