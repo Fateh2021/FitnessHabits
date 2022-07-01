@@ -26,7 +26,7 @@ const ActivityItem = (props) =>  {
 
     return  (
       <div className='activityItem' data-testid={'activityItem' + activity.id} >
-        <IonLabel data-testid="practiceName"><b className='activityName'>{activity.name}</b></IonLabel>
+        <IonLabel data-testid="activityName"><b className='activityName'>{activity.name}</b></IonLabel>
         <IonRow>
           <IonCol size='4' className="fontPractice" data-testid="activityDuration">{PratiqueUtil.formatHourMinute(activity.duration)}</IonCol>
           <IonCol size='5' className="fontPractice" data-testid="activityIntensity">{translate.getText(activity.intensity)}</IonCol>

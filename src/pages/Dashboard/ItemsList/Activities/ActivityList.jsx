@@ -75,7 +75,7 @@ const ActivityList = (props) =>  {
             <IonModal data-testid="activityList" className="activity-modal-big"
                       isOpen={props.showActivityList} onDidDismiss={() => props.setShowActivityList(false)}>
                 <IonContent className="activity-content">
-                    <IonLabel><h1 className='activityTitle' >{translate.getText("USUAL_ACTIVITES")}</h1></IonLabel>
+                    <IonLabel data-testid="activityTitle"><h1 className='activityTitle' >{translate.getText("USUAL_ACTIVITES")}</h1></IonLabel>
                     <br/>
                     {
                         activities.map(activity => (

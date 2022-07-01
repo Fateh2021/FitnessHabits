@@ -948,8 +948,8 @@
       "fr":"Activités physiques"
    },
   "USUAL_ACTIVITES":{
-    "en":"Actividades habituales",
-    "es":"Usual activities",
+    "en":"Usual activities",
+    "es":"Actividades habituales",
     "fr":"Activités usuelles"
   },
   "MODIFY_ACTIVITY": {
@@ -970,7 +970,7 @@
   "ADD_USUAL_ACTIVITY": {
     "en":"Add usual activity",
     "es":"Añadir actividad habitual",
-    "fr":"Ajouter activité usuel"
+    "fr":"Ajouter activité usuelle"
   },
   "DELETE_ACTIVITY": {
     "en":"Delete activity",
@@ -985,12 +985,12 @@
   "DELETE_USUAL_ACTIVITY": {
     "en":"Delete usual Activity",
     "es":"Eliminar actividad habitual",
-    "fr":"Supprimer activité usuel"
+    "fr":"Supprimer activité usuelle"
   },
   "DELETE_USUAL_ACTIVITY_DESCRIPTIION": {
     "en":"Are you sure you want to delete this usual activity?",
     "es":"¿Está seguro de que desea eliminar esta actividad habitual?",
-    "fr":"\nVoulez-vous vraiment supprimer cette activité usuel ?"
+    "fr":"\nVoulez-vous vraiment supprimer cette activité usuelle ?"
   },
   "MODIFY": {
     "en":"Edit",

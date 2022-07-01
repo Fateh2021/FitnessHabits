@@ -4,7 +4,7 @@ import {ionFireEvent as fireEvent, waitForIonicReact} from "@ionic/react-test-ut
 import "@testing-library/jest-dom"
 import "@testing-library/jest-dom/extend-expect";
 import {act} from "react-dom/test-utils";
-import PracticeList from "../PracticeList";
+import ActivityList from "../ActivityList";
 
 jest.mock("firebase", () => {
     return {
@@ -21,18 +21,14 @@ jest.mock("firebase", () => {
     };
 });
 
-describe('PracticeList', () => {
-    var currentDate= {startDate: new Date("2022-06-03")}
-    var practice = {
+describe('ActivityList', () => {
+    var activity = {
         'id' : 1,
         'name' : 'Jogging',
-        'date' : currentDate.startDate.toISOString(),
-        'time' :  480,
         'duration' :  120,
         'intensity' : 'INTENSITY_LOW'
     }
-    var activities= []
-    var practices = [practice]
+    var activities= [activity]
     beforeEach(() => {
         var userUID = "TVy9qbYQkaSNH1sdBuBLeW4m1Qh2";
         var dateFormat = "YYYY-MM-DD";
@@ -53,38 +49,27 @@ describe('PracticeList', () => {
         jest.clearAllMocks()
     });
 
-    test(" Test 1 : Translating the word Activities in English", async() => {
+    test(" Test 1 : Translating the word Usual Activities in English", async() => {
         localStorage.setItem("userLanguage", "en")
-        await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
-            const mot = screen.getByTestId('moduleTitle')
-            expect(mot.textContent.toString()).toBe("Activities");
+        await act(async () => { render(<ActivityList activities={activities} showActivityList={true}/>);
+            const mot = screen.getByTestId('activityTitle')
+            expect(mot.textContent.toString()).toBe("Usual activities");
         })
     });
 
-    test(" Test 2 : Translating the word Activities in Spanish", async() => {
+    test(" Test 2 : Translating the word Usual Activities in Spanish", async() => {
         localStorage.setItem("userLanguage", "es")
-        await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
-            const mot = screen.getByTestId('moduleTitle')
-            expect(mot.textContent.toString()).toBe("Ocupaciones");
+        await act(async () => { render(<ActivityList activities={activities} showActivityList={true}/>);
+            const mot = screen.getByTestId('activityTitle')
+            expect(mot.textContent.toString()).toBe("Actividades habituales");
         })
     });
 
-    test(" Test 3 : Viewing an activity practice", async() => {
+    test(" Test 3 : Viewing the new activity form", async() => {
         await act(async () => {
-            const modal = render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
+            const modal = render(<ActivityList activities={activities} showActivityList={true}/>);
             await waitForIonicReact();
-            modal.getByTestId("openPracticeList").click()
-            const pratique = screen.getByTestId('practiceItem1')
-            expect(pratique).toBeDefined();
-        })
-    });
-
-    test(" Test 4 : Viewing the new practice form", async() => {
-        await act(async () => {
-            const modal = render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
-            await waitForIonicReact();
-            modal.getByTestId("openPracticeList").click()
-            modal.getByTestId("addPractice").click()
+            modal.getByTestId("addActivity").click()
             const add = screen.getByTestId('addForm')
             expect(add).toBeDefined();
         })
