@@ -21,27 +21,28 @@ const db = firebase.database().ref("users/" + userUID + "/sleep/periods");
 
 function AjoutPeriodeForm() {
   const today = new Date();
-  const yesterday = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const [startDate, setStartDate] = useState(yesterday.toDateString());
+  const [startDate, setStartDate] = useState(yesterday);
   const [startTime, setStartTime] = useState("");
-  const [endDate, setEndDate] = useState(today.toDateString());
+  const [endDate, setEndDate] = useState(today);
   const [endTime, setEndTime] = useState("");
   const [nbAwoken, setNbAwoken] = useState(0);
   const [mood, setMood] = useState("");
 
   let addPeriod = () => {
     let doc = {
-      startDate: startDate,
+      startDate: startDate.toISOString(),
       startTime: startTime,
-      endDate: endDate,
+      endDate: endDate.toISOString(),
       endTime: endTime,
       mood: mood,
       nbAwoken: nbAwoken,
     };
     console.log(doc);
-    //db.push(doc);
+    db.push(doc);
   };
 
   return (
@@ -51,8 +52,9 @@ function AjoutPeriodeForm() {
           <IonCol>
             <IonLabel className="ajout-label-nbrFois">Endormi le</IonLabel>
             <IonDatetime
-              value={startDate}
-              onIonChange={(e) => setStartDate(e.target.value)}
+              presentation="date"
+              value={startDate.toDateString()}
+              onIonChange={(e) => setStartDate(new Date(e.target.value))}
             ></IonDatetime>
           </IonCol>
           <IonCol></IonCol>
@@ -69,8 +71,9 @@ function AjoutPeriodeForm() {
           <IonCol>
             <IonLabel className="ajout-label-nbrFois">Réveillé le</IonLabel>
             <IonDatetime
-              value={endDate}
-              onIonChange={(e) => setEndDate(e.target.value)}
+              presentation="date"
+              value={endDate.toDateString()}
+              onIonChange={(e) => setEndDate(new Date(e.target.value))}
             ></IonDatetime>
           </IonCol>
           <IonCol></IonCol>

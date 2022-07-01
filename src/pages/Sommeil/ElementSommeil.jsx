@@ -3,13 +3,16 @@ import React from "react";
 import "./Sommeil.css";
 
 function ElementSommeil(props) {
+  let d = new Date(props.info.startDate);
+  console.log(props.info);
+
   return (
     <ion-row class="modal-data">
       <ion-col>
         <IonText color="dark" class="data-time">
-          De <b>{props.info.start}</b> à{" "}
+          De <b>{props.info.startTime}</b> à{" "}
           <b>
-            {props.info.end} - réveillé {props.info.mood}
+            {props.info.endTime} - réveillé {props.info.mood}
           </b>
         </IonText>
         <br />
@@ -18,7 +21,7 @@ function ElementSommeil(props) {
         </IonText>
         <br />
         <IonText color="dark" class="data-date">
-          {props.info.day} / {props.info.month} / {props.info.year}
+          {d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear()}
         </IonText>
         <div class="hr"></div>
       </ion-col>
