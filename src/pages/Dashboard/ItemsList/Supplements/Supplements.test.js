@@ -35,7 +35,7 @@ describe("How <Supplements> is rendered", () => {
     it("should be closed by default", () => {
         const { getByTestId } = render(<Supplements />);
         const menuModal = getByTestId("menu");
-
+        btnClose.click();
         expect(menuModal).toBeFalsy();
     });
 

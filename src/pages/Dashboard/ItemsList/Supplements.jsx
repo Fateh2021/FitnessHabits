@@ -288,7 +288,7 @@ const Supplements = (props) => {
     <div>
       <IonItem className="divTitre3">
         <IonItemDivider className="divIconeSupp">
-          <div className="iconeSize" onClick={() => setAfficherMenu(!afficherMenu)} data-testid="boutonAfficherMenu">
+          <div className="iconeSize" data-testid="btn-open" onClick={() => setAfficherMenu(!afficherMenu)}>
             <IonImg src="/assets/pills_blanc_fr.png" />
           </div>
         </IonItemDivider>
@@ -684,7 +684,7 @@ const Supplements = (props) => {
                 </IonItem>
 
                 <IonItem>
-                  <IonButton type="submit" onClick={handleSave}>{translate.getText("SUPPL_SAVE")}</IonButton>
+                  <IonButton type="submit" onClick={handleSave}data-testid="btn-save">{translate.getText("SUPPL_SAVE")}</IonButton>
                 </IonItem>
                 </div>}
 
