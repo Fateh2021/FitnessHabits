@@ -27,18 +27,19 @@ describe("How <Supplements> is rendered", () => {
 
     afterAll(() => { localStorage.removeItem("profile") });
 
-    it("should not crash", () => {
+    it("Main menu should not crash", () => {
         const { baseElement } = render(<Supplements />);
         expect(baseElement).toBeDefined();
     });
 
-    it("should be closed by default", () => {
+    it("Main menu should be closed by default", () => {
         const { queryByTestId } = render(<Supplements />);
         const menuModal = queryByTestId("menu");
         expect(menuModal).toBeNull();
     });
 
-    it("should open as expected", () => {
+    
+    it("Main menu should open as expected", () => {
         const { getByTestId } = render(<Supplements />);
 
         const btnOpen = getByTestId("btn-open");
@@ -48,7 +49,7 @@ describe("How <Supplements> is rendered", () => {
         expect(menuModal).toBeDefined();
     });
 
-    it("should close as expected", () => {
+    it("Main menu should close as expected", () => {
         const { getByTestId , queryByTestId} = render(<Supplements />);
 
         const btnOpen = getByTestId("btn-open");
@@ -58,6 +59,35 @@ describe("How <Supplements> is rendered", () => {
         
         const menuModal = queryByTestId("menu");
         expect(menuModal).toBeNull();
+    });
+
+    it("add supplement form should open as expected", () => {
+        const { getByTestId } = render(<Supplements />);
+
+        const boutonAfficherMenu = getByTestId("btn-open");
+        boutonAfficherMenu.click();
+
+        const boutonAjouterSupplement = getByTestId("boutonAjouterSupplement");
+        boutonAjouterSupplement.click();
+
+        const formulaireAjouterSupplement = getByTestId("formulaireAjouterSupplement");
+
+        expect(formulaireAjouterSupplement).toBeDefined();
+    });
+
+    it("add supplement form should close as expected", () => {
+        const { getByTestId, queryByTestId } = render(<Supplements />);
+
+        const boutonAfficherMenu = getByTestId("btn-open");
+        boutonAfficherMenu.click();
+
+        const boutonAjouterSupplement = getByTestId("boutonAjouterSupplement");
+        boutonAjouterSupplement.click();
+        boutonAjouterSupplement.click();
+
+        const formulaireAjouterSupplement = queryByTestId("formulaireAjouterSupplement");
+
+        expect(formulaireAjouterSupplement).toBeNull();
     });
 
     /*
@@ -79,7 +109,7 @@ describe("How <Supplements> is rendered", () => {
     */
 });
 
-describe("How <Sidebar> behaves", () => {
+/*describe("How <Sidebar> behaves", () => {
 
     beforeEach(() => {
         localStorage.setItem("profile", JSON.stringify(testProfile));
@@ -118,6 +148,6 @@ describe("How <Sidebar> behaves", () => {
         // Check que le toast d'erreur existe et qu'il est defined
         // Check que rien n'a été sauvegardé dans Firebase
     });
-});
+}); */
 
 jest.clearAllMocks();
