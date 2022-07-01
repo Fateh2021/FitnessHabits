@@ -315,7 +315,7 @@ const Supplements = (props) => {
             <IonToolbar id="banniereHeader">
               <IonItem color="transparent" lines="none">
                 <IonButton fill="clear" onClick={() => setAfficherMenu(!afficherMenu)}>
-                  <IonIcon id="iconeRetourMenu" icon={arrowBack}></IonIcon>
+                  <IonIcon id="iconeRetourMenu" data-testid="iconeRetourMenu" icon={arrowBack}></IonIcon>
                 </IonButton>
                 <IonTitle id="titreMenu">{translate.getText("SUPPL_TITLE")}</IonTitle>
               </IonItem>

@@ -33,10 +33,9 @@ describe("How <Supplements> is rendered", () => {
     });
 
     it("should be closed by default", () => {
-        const { getByTestId } = render(<Supplements />);
-        const menuModal = getByTestId("menu");
-        btnClose.click();
-        expect(menuModal).toBeFalsy();
+        const { queryByTestId } = render(<Supplements />);
+        const menuModal = queryByTestId("menu");
+        expect(menuModal).toBeNull();
     });
 
     it("should open as expected", () => {
@@ -50,13 +49,15 @@ describe("How <Supplements> is rendered", () => {
     });
 
     it("should close as expected", () => {
-        const { getByTestId } = render(<Supplements />);
+        const { getByTestId , queryByTestId} = render(<Supplements />);
 
-        const btnClose = getByTestId("btn-close");
+        const btnOpen = getByTestId("btn-open");
+        btnOpen.click();
+        const btnClose = getByTestId("iconeRetourMenu");
         btnClose.click();
-        const menuModal = getByTestId("menu");
-
-        expect(menuModal).toBeDefined();
+        
+        const menuModal = queryByTestId("menu");
+        expect(menuModal).toBeNull();
     });
 
     /*
@@ -99,9 +100,6 @@ describe("How <Sidebar> behaves", () => {
             />
         );
         const btnSave = getByTestId("btn-save");
-
-
-
         btnSave.click();
 
         // Check que le toast de data saved existe et qu'il est defined
