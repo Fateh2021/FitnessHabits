@@ -19,6 +19,7 @@ const ActivityEditForm = (props) => {
     const [intensity, setIntensity] = useState(props.activity.intensity)
     const [name, setName] = useState(props.activity.name)
     const [duration, setDuration] = useState(PratiqueUtil.formatHourMinute(props.activity.duration))
+    const [time, setTime] = useState(PratiqueUtil.formatHourMinute(props.activity.time))
 
     /*
       Prepare values before submission. 
@@ -27,12 +28,14 @@ const ActivityEditForm = (props) => {
     */
     const beforeSubmit = (e) => {
         e.preventDefault()
-        let [durationHour, duratioMinute] = duration.split(":")
+        let [durationHour, durationMinute] = duration.split(":")
+        let [timeHour, timeMinute] = time.split(":")
 
         props.onSubmitAction({
             id: props.activity.id,
             name,
-            duration: (parseInt(durationHour) * 60 + parseInt(duratioMinute)),
+            time: (parseInt(timeHour) * 60 + parseInt(timeMinute)),
+            duration: (parseInt(durationHour) * 60 + parseInt(durationMinute)),
             intensity,
         })
         resetForm()
@@ -62,6 +65,22 @@ const ActivityEditForm = (props) => {
                                 value={name}
                                 onIonChange={(e) => { setName(e.detail.value)}}
                                 required={true}/>
+                        </IonCol>
+                    </IonRow>
+                    <br/>
+                    <IonRow>
+                        <IonCol size='4'>
+                            <IonLabel data-testid="addTime">{translate.getText("START_TIME")}</IonLabel>
+                        </IonCol>
+                        <IonCol size='8'>
+                            <IonInput className="inputFormActivity"
+                                      data-testid="timeValue"
+                                      type="time"
+                                      value={time}
+                                      onIonChange={e => {setTime(e.detail.value) }}
+                                      required={true}
+                                      min={"00:00"}
+                                      max={"24:00"}/>
                         </IonCol>
                     </IonRow>
                     <br/>

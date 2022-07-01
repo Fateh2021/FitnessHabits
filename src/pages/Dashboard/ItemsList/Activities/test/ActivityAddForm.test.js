@@ -79,10 +79,12 @@ describe('ActivityAddForm', () => {
         await act(async () => { render(<ActivityAddForm isOpen={true}/>)
             await waitForIonicReact();
             const name = screen.getByTestId('nameValue');
+            const time = screen.getByTestId('timeValue');
             const duration = screen.getByTestId('durationValue');
             const intensity = screen.getByTestId('intensityValue');
 
             expect(name.value).toBe("");
+            expect(time.value).toBe("00:00");
             expect(duration.value).toBe("00:00");
             expect(intensity.value).toBe("INTENSITY_LOW");
         })

@@ -95,7 +95,7 @@ const PracticeAddForm = (props) => {
                     <br/>
                     <IonRow>
                         <IonCol size='4'>
-                            <IonLabel data-testid="addTime">{translate.getText("EXP_REPORT_TIME")}</IonLabel>
+                            <IonLabel data-testid="addTime">{translate.getText("START_TIME")}</IonLabel>
                         </IonCol>
                         <IonCol size='8'>
                             <IonInput className="inputFormActivity"

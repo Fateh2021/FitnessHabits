@@ -25,6 +25,7 @@ const ActivityList = (props) =>  {
         let newActivity = {
             id: newId,
             name: activityToAdd.name,
+            time: activityToAdd.time,
             duration: activityToAdd.duration,
             intensity: activityToAdd.intensity
         }

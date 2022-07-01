@@ -58,12 +58,14 @@ describe('PracticeEditForm', () => {
             const title = screen.getByTestId('modifyTitle');
             const submit = screen.getByTestId('modifySubmit');
             const date = screen.getByTestId('modifyDate');
+            const time = screen.getByTestId('modifyTime');
             const duration = screen.getByTestId('modifyDuration');
             const intensity = screen.getByTestId('modifyIntensity');
 
             expect(title.textContent.toString()).toBe("Edit activity");
             expect(submit.textContent.toString()).toBe("Edit");
             expect(date.textContent.toString()).toBe("Date");
+            expect(time.textContent.toString()).toBe("Start time");
             expect(duration.textContent.toString()).toBe("Duration");
             expect(intensity.textContent.toString()).toBe("Intensity");
         })
@@ -76,12 +78,14 @@ describe('PracticeEditForm', () => {
             const title = screen.getByTestId('modifyTitle');
             const submit = screen.getByTestId('modifySubmit');
             const date = screen.getByTestId('modifyDate');
+            const time = screen.getByTestId('modifyTime');
             const duration = screen.getByTestId('modifyDuration');
             const intensity = screen.getByTestId('modifyIntensity');
 
             expect(title.textContent.toString()).toBe("Editar actividad");
             expect(submit.textContent.toString()).toBe("Editar");
             expect(date.textContent.toString()).toBe("Fecha");
+            expect(time.textContent.toString()).toBe("Hora de inicio");
             expect(duration.textContent.toString()).toBe("Duración");
             expect(intensity.textContent.toString()).toBe("Intensidad");
         })

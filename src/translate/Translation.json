@@ -326,6 +326,11 @@
          }
       }
    },
+   "START_TIME": {
+      "en":"Start time",
+      "es":"Hora de inicio",
+      "fr":"Heure de début"
+   },
    "INTENSITY": {
      "en":"Intensity",
      "es":"Intensidad",
@@ -778,7 +783,7 @@
    },
    "ACTIVITIES": {
       "en":"Activities",
-      "es":"Ocupaciones",
+      "es":"Actividades",
       "fr":"Activités"
    },
 

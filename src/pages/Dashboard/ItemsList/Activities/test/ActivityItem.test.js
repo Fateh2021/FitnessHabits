@@ -25,6 +25,7 @@ describe('ActivityItem', () => {
     var activity = {
         'id' : 1,
         'name' : 'Jogging',
+        'time' :  480,
         'duration' :  120,
         'intensity' : 'INTENSITY_LOW'
     }
@@ -89,10 +90,12 @@ describe('ActivityItem', () => {
     test(" Test 3 : Displaying the values ​​of an usual activity", async() => {
         await act(async () => { render(<ActivityItem activity={activity}/>);
             const name = screen.getByTestId("activityName");
+            const time = screen.getByTestId("activityTime");
             const duration = screen.getByTestId("activityDuration");
             const intensity = screen.getByTestId("activityIntensity");
             
             expect(name.textContent.toString()).toBe("Jogging");
+            expect(time.textContent).toBe("08:00");
             expect(duration.textContent).toBe("02:00");
             expect(intensity.textContent.toString()).toBe("Basse");
         })

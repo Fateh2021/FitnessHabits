@@ -65,7 +65,7 @@ describe('PracticeList', () => {
         localStorage.setItem("userLanguage", "es")
         await act(async () => { render(<PracticeList activities={activities} practices={practices} currentDate={currentDate}/>);
             const mot = screen.getByTestId('moduleTitle')
-            expect(mot.textContent.toString()).toBe("Ocupaciones");
+            expect(mot.textContent.toString()).toBe("Actividades");
         })
     });
 

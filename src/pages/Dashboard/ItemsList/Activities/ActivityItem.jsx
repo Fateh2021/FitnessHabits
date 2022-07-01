@@ -28,8 +28,9 @@ const ActivityItem = (props) =>  {
       <div className='activityItem' data-testid={'activityItem' + activity.id} >
         <IonLabel data-testid="activityName"><b className='activityName'>{activity.name}</b></IonLabel>
         <IonRow>
-          <IonCol size='4' className="fontPractice" data-testid="activityDuration">{PratiqueUtil.formatHourMinute(activity.duration)}</IonCol>
-          <IonCol size='5' className="fontPractice" data-testid="activityIntensity">{translate.getText(activity.intensity)}</IonCol>
+          <IonCol size='3' className="fontPractice" data-testid="activityTime">{PratiqueUtil.formatHourMinute(activity.time)}</IonCol>
+          <IonCol size='3' className="fontPractice" data-testid="activityDuration">{PratiqueUtil.formatHourMinute(activity.duration)}</IonCol>
+          <IonCol size='4' className="fontPractice" data-testid="activityIntensity">{translate.getText(activity.intensity)}</IonCol>
           <IonCol>
               <IonIcon icon={create} onClick={() =>  {
                   if (isMounted.current) {

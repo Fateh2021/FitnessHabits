@@ -25,6 +25,7 @@ describe('ActivityEditForm', () => {
     var activity = {
         'id' : 1,
         'name' : 'Jogging',
+        'time' :  480,
         'duration' : 120,
         'intensity' : 'INTENSITY_MEDIUM'
     }
@@ -85,10 +86,12 @@ describe('ActivityEditForm', () => {
         await act(async () => { render(<ActivityEditForm isOpen={true} activity={activity}/>)
             await waitForIonicReact();
             const name = screen.getByTestId('nameValue');
+            const time = screen.getByTestId('timeValue');
             const duration = screen.getByTestId('durationValue');
             const intensity = screen.getByTestId('intensityValue');
 
             expect(name.value).toBe("Jogging");
+            expect(time.value).toBe("08:00");
             expect(duration.value).toBe("02:00");
             expect(intensity.value).toBe("INTENSITY_MEDIUM");
         })
