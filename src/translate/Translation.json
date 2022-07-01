@@ -49,10 +49,10 @@
 		"es":"Anular",
 		"fr":"Annuler"
 	},
-	"WEIGHT_TABL_EVO_3_MONTH": {
-		"en":"Last 3 months weight evolution",
-		"es":"Evolución del peso de los últimos 3 meses",
-		"fr":"Évolution du poids des 3 derniers mois"
+	"WEIGHT_TABL_EVO": {
+		"en":"Weight evolution",
+		"es":"Evolución del peso",
+		"fr":"Évolution du poids"
 	},
 	"WEIGHT_BMI_ACRONYM": {
 		"en":"BMI",
@@ -73,6 +73,31 @@
       "en":"Add",
       "es":"Agregar",
       "fr":"Ajouter"
+   },
+   "WEIGHT_WEEK":{
+      "en":"Week",
+      "es":"Semana",
+      "fr":"Semaine"
+   },
+   "WEIGHT_MONTH":{
+      "en":"Month",
+      "es":"Mes",
+      "fr":"Mois"
+   },
+   "WEIGHT_QUARTER":{
+      "en":"Quarter",
+      "es":"Trimestre",
+      "fr":"Trimestre"
+   },
+   "WEIGHT_SEMESTER":{
+      "en":"Semester",
+      "es":"Semestre",
+      "fr":"Semestre"
+   },
+   "WEIGHT_YEAR":{
+      "en":"Year",
+      "es":"Año",
+      "fr":"Année"
    },
 	"INITIAL_EMPTY_WEIGHT":{
 		"en":"\nThe initial weight must not be empty !",
@@ -1499,9 +1524,35 @@
       "es": "Peso inicial",
       "fr": "Poids initial"
    },
+   "WEIGHT_INITIAL_DATE" : {
+      "en": "entered on",
+      "es": "ingresado el",
+      "fr": "entré le"
+   },
    "WEIGHT_TARGET_NAME" : {
       "en": "Target",
       "es": "Objetivo",
       "fr": "Cible"
+   },
+   "LAST_WEIGHT" : { 
+      "en": "Last weight entered",
+      "es": "Último peso ingresado",
+      "fr": "Dernier poids entré"
+   },
+   "ALERTS_SETUP":{
+      "en": "Set up alerts",
+      "es": "Configurar alertas",
+      "fr": "Paramètrer les alertes"
+   },
+   "SHOW_GRAPH":{
+      "en":"Show graph",
+      "es":"Mostrar gráfico",
+      "fr": "Afficher le graphique"
+   },
+   "CLOSE_GRAPH":{
+      "en": "Close graph",
+      "es": "Cerrar gráfico",
+      "fr": "Fermer le graphique"
    }
+   
 }

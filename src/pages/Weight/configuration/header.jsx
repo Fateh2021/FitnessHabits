@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle } from '@ionic/react';
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle} from '@ionic/react';
 
 import * as translate from "../../../translate/Translator";
 
@@ -7,7 +7,7 @@ import * as translate from "../../../translate/Translator";
 const Header = ({ url }) => {
     return (
         <IonHeader>
-            <IonToolbar>
+            <IonToolbar className='headerPoids'>
                 <IonButtons slot="start">
                     <IonBackButton defaultHref={url} />
                 </IonButtons>

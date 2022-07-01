@@ -7,7 +7,7 @@ import moment from "moment";
 import {act} from "react-dom/test-utils";
 import Poids from "../ItemsList/Poids";
 
-import { formatWeight, formatDateShape, calculation_BMI} from '../../Weight/configuration/weightService';
+import { formatWeight, formatDateShape, calculation_BMI, getPrefDate} from '../../Weight/configuration/weightService';
 
 jest.mock("firebase", () => {
     return {
@@ -28,10 +28,7 @@ jest.mock("../../Weight/configuration/weightService", () => {
     const originalModule = jest.requireActual('../../Weight/configuration/weightService');
     return {
         ...originalModule,
-        initPrefWeight: jest.fn().mockResolvedValue(),
-        initWeights: jest.fn().mockResolvedValue(),
-        initSize: jest.fn().mockResolvedValue(),
-        initPrefDate: jest.fn().mockResolvedValue()
+        initProfile: jest.fn().mockResolvedValue()
     };
 });
 
@@ -63,15 +60,22 @@ describe('Poids', () => {
             dateFormat,
 
         };
+
+        let pseudoProfile = {
+            dateFormat: dateFormat,
+            preferencesPoids:{
+              dateCible: dateCible,
+              poidsCible: poidsCible,
+              poidsInitial: poidsInitial,
+              unitePoids: prefUnite
+            },
+            pseudo:"John Doe",
+            size: size
+          };
         localStorage.setItem("userUid", userUID);
         localStorage.setItem("dashboard", JSON.stringify(pseudo_dashboard));
-        localStorage.setItem("prefUnitePoids", "KG");
         localStorage.setItem("userLanguage", "fr");
-        localStorage.setItem("prefDateFormat", dateFormat);
-        localStorage.setItem("poidsInitial", 85);
-        localStorage.setItem("poidsCible", 56);
-        localStorage.setItem("dateCible", "2022-10-25");
-        localStorage.setItem("taille", 165);
+        localStorage.setItem("profile", JSON.stringify(pseudoProfile));
     });
 
     afterEach(() => {
@@ -164,7 +168,9 @@ describe('Poids', () => {
     });
 
     test(" Test 10 : Affichage du poids actuel et l'unité si l'unité préférée change", async() => {
-        localStorage.setItem("prefUnitePoids", "LBS");
+        let localProfile = JSON.parse(localStorage.getItem("profile"));
+        localProfile.preferencesPoids.unitePoids = "LBS"
+        localStorage.setItem("profile", JSON.stringify(localProfile));
         await act(async () => { render(<Poids poids={poids} currentDate={currentDate}/>);
         })
         const dailyWeight = screen.getByTestId("dlyPoids");
@@ -175,12 +181,14 @@ describe('Poids', () => {
     });
 
     test(" Test 11 : Changement du format de date préférée", async() => {
-        localStorage.setItem("prefDateFormat", "DD/MM/YYYY");
+        let localProfile = JSON.parse(localStorage.getItem("profile"));
+        localProfile.dateFormat = "DD/MM/YYYY"
+        localStorage.setItem("profile", JSON.stringify(localProfile));
         await act(async () => { render(<Poids poids={poids} currentDate={currentDate}/>);
         })
         const targetDate = await screen.getByTestId("targWeightDate");
         const targetDateString= targetDate.textContent.toString();
-        var targetDateReceived = moment(targetDateString, ["YYYY-MM-DD", localStorage.getItem("prefDateFormat")], true);
+        var targetDateReceived = moment(targetDateString, ["YYYY-MM-DD", getPrefDate()], true);
         expect(targetDateReceived.creationData().format).toBe("DD/MM/YYYY");
     })
 
@@ -240,7 +248,9 @@ describe('Poids', () => {
     })
 
     test(" Test 15 : Valeur de l'IMC si la taille change", async() => {
-        localStorage.setItem("taille", 163);
+        let localProfile = JSON.parse(localStorage.getItem("profile"));
+        localProfile.size = 163
+        localStorage.setItem("profile", JSON.stringify(localProfile));
         size = 163;
         await act(async () => { render(<Poids poids={poids}  currentDate={currentDate} />);
         })
