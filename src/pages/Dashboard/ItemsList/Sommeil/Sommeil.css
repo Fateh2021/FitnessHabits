@@ -52,5 +52,8 @@
 
 .white-bg {
   background-color: white;
+}
+
+.clickable {
   cursor: pointer;
 }

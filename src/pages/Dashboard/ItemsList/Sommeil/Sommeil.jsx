@@ -24,11 +24,13 @@ import "./Sommeil.css";
 import "./SommeilModal";
 import SommeilModal from "./SommeilModal";
 import { useHistory } from "react-router";
+import AjoutPeriodeForm from "../../../Sommeil/AjoutPeriodeForm";
 
 const Sommeil = (props) => {
   let history = useHistory();
 
   const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState({
@@ -129,6 +131,10 @@ const Sommeil = (props) => {
     toast(translate.getText("DATA_SAVED"));
   };
 
+  window.addEventListener("ionModalDidDismiss", (event) => {
+    setShowAddModal(false);
+  });
+
   return (
     <div>
       <IonModal isOpen={showModal} class="modal-sommeil">
@@ -137,13 +143,25 @@ const Sommeil = (props) => {
           Fermer
         </IonButton>
       </IonModal>
+      <IonModal isOpen={showAddModal} class="modal-sommeil">
+        <AjoutPeriodeForm
+          closeFunction={() => setShowAddModal(false)}
+        ></AjoutPeriodeForm>
+      </IonModal>
       <ion-grid class="tab-sommeil">
         <ion-row>
-          <ion-col class="tab-icon" size="auto">
+          <ion-col
+            onClick={() => setShowAddModal(true)}
+            class="tab-icon clickable"
+            size="auto"
+          >
             <div class="point"></div>
             <img width="50" class="moon" src="assets\moon.webp" alt="Moon" />
           </ion-col>
-          <ion-col class=" white-bg" onClick={() => history.push("/sleep")}>
+          <ion-col
+            class="white-bg clickable"
+            onClick={() => history.push("/sleep")}
+          >
             <ion-grid>
               <ion-row>
                 <ion-col>
