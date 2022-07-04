@@ -18,7 +18,8 @@ function ListeSommeils() {
 
     if (sleepPeriods != null) {
       let elementsSommeilTmp = [];
-      for (const [key, value] of Object.entries(sleepPeriods)) {
+      let sleepPeriodsList = Object.entries(sleepPeriods).reverse();
+      for (const [key, value] of sleepPeriodsList) {
         elementsSommeilTmp.push(
           <ElementSommeil key={key} info={value}></ElementSommeil>
         );
