@@ -17,7 +17,7 @@ import {
   IonTitle,
   IonProgressBar
 } from '@ionic/react';
-import { arrowDropdownCircle, star, trash, addCircle, removeCircle, settings, create, cafe } from 'ionicons/icons';
+import { arrowDropdownCircle, star, trash, addCircle, removeCircle, settings, create, cafe, arrowBack } from 'ionicons/icons';
 import uuid from 'react-uuid';
 import firebase from 'firebase'
 
@@ -460,9 +460,13 @@ const Hydratation = (props) => {
         </div>
 
         <IonModal isOpen={showModal}
-          style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 10%  !important;"
-          id="input-hydra-modal" onDidDismiss={handleCloseModal}>
+          style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 0%  !important;"
+          id="input-hydra-modal">
           <div className='fenetreModale'>
+            <IonButton size="small"
+              onClick={() => handleCloseModal()}>
+              <IonIcon icon={arrowBack} />
+            </IonButton>
             <ion-header>
               <div style={{ clear: 'both' }}>
                 <h3 style={{ color: '#70ACE8', float: 'left' }}>{translate.getText("HYDR_TITLE")} </h3>
@@ -572,9 +576,13 @@ const Hydratation = (props) => {
 
 
         <IonModal isOpen={showModal2}
-          style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 10%  !important;"
-          id="input-hydra-modal" onDidDismiss={handleCloseModal2}>
+          style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 0%  !important;"
+          id="input-hydra-modal" >
           <div className='fenetreModale'>
+           <IonButton size="small"
+                        onClick={() => handleCloseModal2()}>
+                        <IonIcon icon={arrowBack} />
+           </IonButton>
             <ion-header>
               <ion-row>
                 <div style={{ clear: 'both' }}>
