@@ -811,6 +811,11 @@
       "es":"Ver toda la lista",
       "fr":"Voir toute la liste"
    },
+   "TARGET":{
+      "en":"Target",
+      "es":"Objetivo",
+      "fr":"Cible"
+   },
    "HYDRATION":{
       "en":"Hydration",
       "es":"Hidratación",
