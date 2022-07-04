@@ -44,7 +44,6 @@ function AjoutPeriodeForm(props) {
         nbAwoken: nbAwoken,
       };
       props.closeFunction();
-      console.log(doc);
       db.push(doc);
     }
   };

@@ -1,13 +1,19 @@
 import { IonGrid, IonList } from "@ionic/react";
 import firebase from "firebase";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 import ElementSommeil from "./ElementSommeil";
 import "./Sommeil.css";
 
 const userUID = localStorage.getItem("userUid");
 const db = firebase.database().ref("users/" + userUID + "/sleep/periods");
 
-function ListeSommeils() {
+const ListeSommeils = React.forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      getSleepPeriods();
+    },
+  }));
+
   const [elementsSommeil, setElementsSommeil] = useState([]);
 
   const getSleepPeriods = async () => {
@@ -33,6 +39,6 @@ function ListeSommeils() {
   }, []);
 
   return <IonGrid class="list-modal">{elementsSommeil}</IonGrid>;
-}
+});
 
 export default ListeSommeils;

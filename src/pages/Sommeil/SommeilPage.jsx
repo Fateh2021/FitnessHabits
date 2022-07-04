@@ -12,7 +12,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { arrowBack, add } from "ionicons/icons";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import firebase from "firebase";
 
@@ -28,12 +28,18 @@ const SommeilPage = (props) => {
   const [showListModal, setShowListModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 
+  const listRef = useRef();
   const history = useHistory();
 
   window.addEventListener("ionModalDidDismiss", (event) => {
     setShowAddModal(false);
     setShowListModal(false);
   });
+
+  const addPeriodEvent = () => {
+    setShowAddModal(false);
+    listRef.current.refresh();
+  };
 
   return (
     <IonPage className="page">
@@ -42,9 +48,7 @@ const SommeilPage = (props) => {
       </IonModal>
 
       <IonModal isOpen={showAddModal} class="modal-sommeil">
-        <AjoutPeriodeForm
-          closeFunction={() => setShowAddModal(false)}
-        ></AjoutPeriodeForm>
+        <AjoutPeriodeForm closeFunction={addPeriodEvent}></AjoutPeriodeForm>
       </IonModal>
 
       <IonHeader>
@@ -62,7 +66,7 @@ const SommeilPage = (props) => {
         <BoutonAlertes></BoutonAlertes>
         <Graphique></Graphique>
         <HeuresTotales></HeuresTotales>
-        <ListeSommeils></ListeSommeils>
+        <ListeSommeils ref={listRef}></ListeSommeils>
       </IonContent>
 
       <IonFooter>

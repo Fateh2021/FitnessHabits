@@ -5,7 +5,6 @@ import * as translate from "../../translate/Translator";
 
 function ElementSommeil(props) {
   let d = new Date(props.info.startDate);
-  console.log(props.info);
 
   return (
     <ion-row class="modal-data">
