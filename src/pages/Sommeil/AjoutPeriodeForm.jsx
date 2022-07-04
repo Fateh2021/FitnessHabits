@@ -34,16 +34,18 @@ function AjoutPeriodeForm() {
   const [mood, setMood] = useState("");
 
   let addPeriod = () => {
-    let doc = {
-      startDate: startDate.toISOString(),
-      startTime: startTime,
-      endDate: endDate.toISOString(),
-      endTime: endTime,
-      mood: mood,
-      nbAwoken: nbAwoken,
-    };
-    console.log(doc);
-    db.push(doc);
+    if (endTime && mood && startTime) {
+      let doc = {
+        startDate: startDate.toISOString(),
+        startTime: startTime,
+        endDate: endDate.toISOString(),
+        endTime: endTime,
+        mood: mood,
+        nbAwoken: nbAwoken,
+      };
+      console.log(doc);
+      db.push(doc);
+    }
   };
 
   return (
