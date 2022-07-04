@@ -1,6 +1,7 @@
 import { IonRow, IonText } from "@ionic/react";
 import React, { useState } from "react";
 import "./Sommeil.css";
+import * as translate from "../../translate/Translator";
 
 function HeuresTotales() {
   const [heuresTotales, setHeuresTotales] = useState(0);
@@ -8,7 +9,7 @@ function HeuresTotales() {
   return (
     <IonRow>
       <IonText className="heuresTotales">
-        Heures totales de sommeil : {heuresTotales} H
+        {translate.getText("TOTAL_SLEEP")} : {heuresTotales}
       </IonText>
     </IonRow>
   );

@@ -1,6 +1,7 @@
 import { IonItem, IonText } from "@ionic/react";
 import React from "react";
 import "./Sommeil.css";
+import * as translate from "../../translate/Translator";
 
 function ElementSommeil(props) {
   let d = new Date(props.info.startDate);
@@ -10,14 +11,17 @@ function ElementSommeil(props) {
     <ion-row class="modal-data">
       <ion-col>
         <IonText color="dark" class="data-time">
-          De <b>{props.info.startTime}</b> à{" "}
+          {translate.getText("DE")} <b>{props.info.startTime}</b>{" "}
+          {translate.getText("A")}{" "}
           <b>
-            {props.info.endTime} - réveillé {props.info.mood}
+            {props.info.endTime} - {translate.getText("STATE_OF_MIND")} :{" "}
+            {translate.getText(props.info.mood)}
           </b>
         </IonText>
         <br />
         <IonText color="dark" class="data-text">
-          Durant cette période, je me suis réveillé {props.info.nbAwoken} fois.
+          {translate.getText("I_WOKE_UP")} {props.info.nbAwoken}{" "}
+          {translate.getText("TIMES")}
         </IonText>
         <br />
         <IonText color="dark" class="data-date">

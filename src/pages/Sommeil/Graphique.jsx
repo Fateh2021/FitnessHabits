@@ -8,6 +8,7 @@ import {
 } from "@ionic/react";
 import { arrowDropleft, arrowDropright, calendar } from "ionicons/icons";
 import React, { useState } from "react";
+import * as translate from "../../translate/Translator";
 
 function Graphique() {
   const [cible, setCible] = useState("00:00");
@@ -28,11 +29,13 @@ function Graphique() {
         <IonButton fill="clear">
           <IonIcon icon={calendar}></IonIcon>
         </IonButton>
-        <IonText className="graphCible">Cible | {cible}</IonText>
+        <IonText className="graphCible">
+          {translate.getText("TARGET")} | {cible}
+        </IonText>
       </IonRow>
 
       <IonRow className="graph">
-        <IonText>Graphique</IonText>
+        <IonText></IonText>
       </IonRow>
 
       <div class="hr-modal-title-back">
@@ -41,19 +44,19 @@ function Graphique() {
 
       <IonRow className="graphButtons">
         <IonButton color="medium" shape="round" size="small">
-          Semaine
+          {translate.getText("WEIGHT_WEEK")}
         </IonButton>
         <IonButton color="medium" shape="round" size="small">
-          Mois
+          {translate.getText("WEIGHT_MONTH")}
         </IonButton>
         <IonButton color="medium" shape="round" size="small">
-          Trimestre
+          {translate.getText("WEIGHT_QUARTER")}
         </IonButton>
         <IonButton color="medium" shape="round" size="small">
-          Semestre
+          {translate.getText("WEIGHT_SEMESTER")}
         </IonButton>
         <IonButton color="medium" shape="round" size="small">
-          Année
+          {translate.getText("WEIGHT_YEAR")}
         </IonButton>
       </IonRow>
     </IonGrid>

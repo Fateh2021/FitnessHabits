@@ -731,10 +731,25 @@
       "es":"En cólera",
       "fr":"En Colère"
    },
+   "BED_DATE": {
+      "en": "Fell asleep on",
+      "es": "Dormido el",
+      "fr": "Réveillé le"
+   },
    "BED_TIME":{
       "en":"Bed Time",
       "es":"Dormido en",
       "fr":"Endormi à"
+   },
+   "BED_DATE_END": {
+      "en": "Woke up on",
+      "es": "Me desperté el",
+      "fr": "Réveillé le"
+   },
+   "BED_TIME_END": {
+      "en": "Woke up at",
+      "es": "Me desperté a",
+      "fr": "Réveillé à"
    },
    "CANCEL":{
       "en":"Cancel",
@@ -785,6 +800,16 @@
       "en":"Sleep",
       "es":"Dormir",
       "fr":"Sommeil"
+   },
+   "TOTAL_SLEEP":{
+      "en":"Total hours of sleep",
+      "es":"Horas totales de sueño",
+      "fr":"Heures totales de sommeil"
+   },
+   "SEE_LIST":{
+      "en":"See full list",
+      "es":"Ver toda la lista",
+      "fr":"Voir toute la liste"
    },
    "HYDRATION":{
       "en":"Hydration",

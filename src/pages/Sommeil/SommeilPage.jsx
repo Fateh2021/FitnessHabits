@@ -22,6 +22,7 @@ import HeuresTotales from "./HeuresTotales";
 import ListeSommeils from "./ListeSommeils";
 import "./Sommeil.css";
 import AjoutPeriodeForm from "./AjoutPeriodeForm";
+import * as translate from "../../translate/Translator";
 
 const SommeilPage = (props) => {
   const [showListModal, setShowListModal] = useState(false);
@@ -51,7 +52,7 @@ const SommeilPage = (props) => {
               <IonIcon color="light" icon={arrowBack} />
             </IonButton>
           </IonButtons>
-          <IonTitle>Sommeil</IonTitle>
+          <IonTitle>{translate.getText("SLEEP")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -69,7 +70,7 @@ const SommeilPage = (props) => {
             shape="round"
             onClick={() => setShowAddModal(true)}
           >
-            Ajouter
+            {translate.getText("ADD")}
             <IonIcon icon={add}></IonIcon>
           </IonButton>
           <IonButton
@@ -77,7 +78,7 @@ const SommeilPage = (props) => {
             shape="round"
             onClick={() => setShowListModal(true)}
           >
-            Voir toute la liste
+            {translate.getText("SEE_LIST")}
           </IonButton>
         </IonRow>
       </IonFooter>

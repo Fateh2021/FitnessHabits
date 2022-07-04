@@ -2,11 +2,12 @@ import { IonButton, IonIcon, IonRow, IonText } from "@ionic/react";
 import { notifications } from "ionicons/icons";
 import React from "react";
 import "./Sommeil.css";
+import * as translate from "../../translate/Translator";
 
 function BoutonAlertes() {
   return (
     <IonRow className="notificationRow">
-      <IonText>Paramétrer les alertes: </IonText>
+      <IonText>{translate.getText("ALERTS_SETUP")}: </IonText>
       <IonButton color="medium" shape="circle">
         <IonIcon slot="icon-only" icon={notifications}></IonIcon>
       </IonButton>

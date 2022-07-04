@@ -15,6 +15,7 @@ import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import "./Sommeil.css";
 import { add } from "ionicons/icons";
+import * as translate from "../../translate/Translator";
 
 const userUID = localStorage.getItem("userUid");
 const db = firebase.database().ref("users/" + userUID + "/sleep/periods");
@@ -50,7 +51,9 @@ function AjoutPeriodeForm() {
       <IonGrid>
         <IonItem className="ajout-item">
           <IonCol>
-            <IonLabel className="ajout-label-nbrFois">Endormi le</IonLabel>
+            <IonLabel className="ajout-label-nbrFois">
+              {translate.getText("BED_DATE")}
+            </IonLabel>
             <IonDatetime
               presentation="date"
               value={startDate.toDateString()}
@@ -59,7 +62,9 @@ function AjoutPeriodeForm() {
           </IonCol>
           <IonCol></IonCol>
           <IonCol>
-            <IonLabel className="ajout-label-nbrFois">Endormi à</IonLabel>
+            <IonLabel className="ajout-label-nbrFois">
+              {translate.getText("BED_TIME")}
+            </IonLabel>
             <IonInput
               value={startTime}
               onIonChange={(e) => setStartTime(e.target.value)}
@@ -69,7 +74,9 @@ function AjoutPeriodeForm() {
         </IonItem>
         <IonItem className="ajout-item">
           <IonCol>
-            <IonLabel className="ajout-label-nbrFois">Réveillé le</IonLabel>
+            <IonLabel className="ajout-label-nbrFois">
+              {translate.getText("BED_DATE_END")}
+            </IonLabel>
             <IonDatetime
               presentation="date"
               value={endDate.toDateString()}
@@ -78,7 +85,9 @@ function AjoutPeriodeForm() {
           </IonCol>
           <IonCol></IonCol>
           <IonCol>
-            <IonLabel className="ajout-label-nbrFois">Réveillé à</IonLabel>
+            <IonLabel className="ajout-label-nbrFois">
+              {translate.getText("BED_TIME_END")}
+            </IonLabel>
             <IonInput
               value={endTime}
               onIonChange={(e) => setEndTime(e.target.value)}
@@ -89,8 +98,7 @@ function AjoutPeriodeForm() {
         <IonItem className="ajout-item">
           <IonCol>
             <IonLabel className="ajout-label-nbrFois">
-              Durant cette période,
-              <br /> je me suis réveillé
+              {translate.getText("I_WOKE_UP")}
             </IonLabel>
           </IonCol>
           <IonCol>
@@ -102,20 +110,20 @@ function AjoutPeriodeForm() {
             ></IonInput>
           </IonCol>
           <IonCol>
-            <IonLabel>fois</IonLabel>
+            <IonLabel>{translate.getText("TIMES")}</IonLabel>
           </IonCol>
         </IonItem>
         <IonItem className="ajout-item">
           <IonLabel className="ajout-label-nbrFois">
-            État d'esprit au réveil
+            {translate.getText("STATE_OF_MIND")}
           </IonLabel>
-          <IonSelect
-            value={mood}
-            onIonChange={(e) => setMood(e.target.value)}
-            placeholder="État d'esprit"
-          >
-            <IonSelectOption value="HAPPY">Heureux</IonSelectOption>
-            <IonSelectOption value="ANGRY">En colère</IonSelectOption>
+          <IonSelect value={mood} onIonChange={(e) => setMood(e.target.value)}>
+            <IonSelectOption value="HAPPY">
+              {translate.getText("HAPPY")}
+            </IonSelectOption>
+            <IonSelectOption value="ANGRY">
+              {translate.getText("ANGRY")}
+            </IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonRow className="ion-justify-content-center">
@@ -125,7 +133,7 @@ function AjoutPeriodeForm() {
             shape="round"
             onClick={() => addPeriod()}
           >
-            Ajouter
+            {translate.getText("ADD")}
             <IonIcon icon={add}></IonIcon>
           </IonButton>
         </IonRow>
