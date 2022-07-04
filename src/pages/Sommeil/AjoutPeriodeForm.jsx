@@ -20,7 +20,7 @@ import * as translate from "../../translate/Translator";
 const userUID = localStorage.getItem("userUid");
 const db = firebase.database().ref("users/" + userUID + "/sleep/periods");
 
-function AjoutPeriodeForm() {
+function AjoutPeriodeForm(props) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const yesterday = new Date(today);
@@ -43,6 +43,7 @@ function AjoutPeriodeForm() {
         mood: mood,
         nbAwoken: nbAwoken,
       };
+      props.closeFunction();
       console.log(doc);
       db.push(doc);
     }

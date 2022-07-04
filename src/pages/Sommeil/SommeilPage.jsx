@@ -42,7 +42,9 @@ const SommeilPage = (props) => {
       </IonModal>
 
       <IonModal isOpen={showAddModal} class="modal-sommeil">
-        <AjoutPeriodeForm></AjoutPeriodeForm>
+        <AjoutPeriodeForm
+          closeFunction={() => setShowAddModal(false)}
+        ></AjoutPeriodeForm>
       </IonModal>
 
       <IonHeader>
