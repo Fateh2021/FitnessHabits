@@ -90,7 +90,7 @@ export function getInitialWeight() {
 
 export function getPrefUnitWeight() {
   const profile = JSON.parse(localStorage.getItem("profile"));
-  return profile ? profile.preferencesPoids.unitePoids : null;
+  return profile ? profile.preferencesPoids?.unitePoids : null; //TODO: Fixed by adding ? after profile.preferencesPoids
 }
 
 export function getSize() {

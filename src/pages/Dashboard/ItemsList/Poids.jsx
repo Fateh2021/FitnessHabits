@@ -94,11 +94,12 @@ const Poids = (props) => {
       setTargetWeight(weightService.getTargetWeight);
       setTargetWeightDate(weightService.getTargetWeightDate);
 
-      let format = weightService.getPrefDate();
-      format = format.replace(/y/gi, 'Y');
-      format = format.replace(/L/gi, 'M');
-      format = format.replace(/d/gi, 'D');
-      setDateFormat(format);
+      //TODO: Crashes
+      // let format = weightService.getPrefDate();
+      // format = format.replace(/y/gi, 'Y');
+      // format = format.replace(/L/gi, 'M');
+      // format = format.replace(/d/gi, 'D');
+      // setDateFormat(format);
     }
   }, [props.sidebarCloseDetecter]);
 
