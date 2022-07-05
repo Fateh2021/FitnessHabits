@@ -333,25 +333,25 @@ const Dashboard = (props) => {
             //console.log("DB else ::::::::::::::"+JSON.stringify(localStorage));
           }
         });
-
-        firebase.database().ref("activity/" + userUID )
-            .once("value", (snapshot) => {
-                let activity = snapshot.val();
-                if (activity) {
-                    if (!(activity.practices)) {
-                        activity.practices = [];
-                    }
-                    if (!(activity.activities)) {
-                        activity.activities = [];
-                    }
-                }
-                else {
-                    activity = {practices: [], activities: []};
-                }
-                setActivities(activity.activities);
-                setPracticies(activity.practices);
-            });
-    }
+      }
+      firebase.database().ref("activity/" + userUID )
+          .once("value", (snapshot) => {
+              let activity = snapshot.val();
+              if (activity) {
+                  if (!(activity.practices)) {
+                      activity.practices = [];
+                  }
+                  if (!(activity.activities)) {
+                      activity.activities = [];
+                  }
+              }
+              else {
+                  activity = {practices: [], activities: []};
+              }
+              setActivities(activity.activities);
+              setPracticies(activity.practices);
+          });
+    }, [])
 
   const updateGlobalMacroNutrientConsumption = (sets) => {
     sets.food.globalMacroNutrientConsumption = {
