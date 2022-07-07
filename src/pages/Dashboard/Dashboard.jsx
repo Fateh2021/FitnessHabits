@@ -179,6 +179,9 @@ const Dashboard = (props) => {
       nbReveils: 0,
       etatReveil: null,
     },
+    supplement: {
+      listeMedSup: []
+    }
   });
 
   const [activities, setActivities] = useState([]);
@@ -286,6 +289,11 @@ const Dashboard = (props) => {
         heure: 0,
         minute: 0,
       };
+    }
+    if (!dashboard.supplement) {
+      dashboard.supplement = {
+          listeMedSup: []
+      }
     }
     return dashboard;
   };
@@ -500,6 +508,9 @@ const Dashboard = (props) => {
                 nbReveils: 0,
                 etatReveil: null,
               },
+              supplement: {
+                  listeMedSup: []
+              }
             });
           // .then(dt => {
           //   setFormatedCurrentDate(dt);
@@ -616,6 +627,9 @@ const Dashboard = (props) => {
                 nbReveils: 0,
                 etatReveil: null,
               },
+              supplement: {
+                listeMedSup: []
+              }
             });
           firebase
             .database()
