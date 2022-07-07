@@ -1,21 +1,19 @@
 import React, {useEffect, useRef, useState} from "react";
 import { IonContent, IonRow, IonIcon, IonLabel, IonModal, IonCol, IonButton} from '@ionic/react';
 import {create, trash} from 'ionicons/icons';
-import FormatDate from "../../../../DateUtils";
 import PratiqueUtil from "./Practice.js"
 import * as translate from "../../../../translate/Translator";
-import PracticeEditForm from "./PracticeEditForm";
+import ActivityEditForm from "./ActivityEditForm";
 
-const PracticeItem = (props) =>  {
-    const [practice, setPractice] = useState(props.practice)
+const ActivityItem = (props) =>  {
+    const [activity, setActivity] = useState(props.activity)
     const [showModify, setShowModify] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
-    const [formattedDate, setFormattedDate] = useState('')
     const isMounted = useRef(1)
 
-    const updatePractice = (Practice) => {
-        setPractice(Practice)
-        props.modifyPractice(Practice)
+    const updatePractice = (Activity) => {
+        setActivity(Activity)
+        props.modifyActivity(Activity)
     }
 
     useEffect(() => {
@@ -26,19 +24,13 @@ const PracticeItem = (props) =>  {
         }
     })
 
-    FormatDate(new Date(practice.date)).then(dt => {
-        if (isMounted.current) {
-            setFormattedDate(dt)
-        }
-    })
-
     return  (
-      <div className='activityItem' data-testid={'practiceItem' + practice.id} >
-        <IonLabel data-testid="practiceName"><b className='activityName'>{practice.name}</b></IonLabel>
+      <div className='activityItem' data-testid={'activityItem' + activity.id} >
+        <IonLabel data-testid="activityName"><b className='activityName'>{activity.name}</b></IonLabel>
         <IonRow>
-          <IonCol size='5' className="fontPractice" data-testid="practiceDate">{formattedDate} {translate.getText("AT")} {PratiqueUtil.formatHourMinute(practice.time)}</IonCol>
-          <IonCol size='2' className="fontPractice" data-testid="practiceDuration">{PratiqueUtil.formatHourMinute(practice.duration)}</IonCol>
-          <IonCol size='3' className="fontPractice" data-testid="practiceIntensity">{translate.getText(practice.intensity)}</IonCol>
+          <IonCol size='3' className="fontPractice" data-testid="activityTime">{PratiqueUtil.formatHourMinute(activity.time)}</IonCol>
+          <IonCol size='3' className="fontPractice" data-testid="activityDuration">{PratiqueUtil.formatHourMinute(activity.duration)}</IonCol>
+          <IonCol size='4' className="fontPractice" data-testid="activityIntensity">{translate.getText(activity.intensity)}</IonCol>
           <IonCol>
               <IonIcon icon={create} onClick={() =>  {
                   if (isMounted.current) {
@@ -55,7 +47,7 @@ const PracticeItem = (props) =>  {
           </IonCol>
         </IonRow>
 
-        <PracticeEditForm onSubmitAction={updatePractice} isOpen={showModify} onDidDismiss={setShowModify} practice={practice}/>
+        <ActivityEditForm onSubmitAction={updatePractice} isOpen={showModify} onDidDismiss={setShowModify} activity={activity}/>
 
         <IonModal className='activity-modal-xxsmall' isOpen={showDelete} onDidDismiss={() => {
             if (isMounted.current) {
@@ -63,21 +55,21 @@ const PracticeItem = (props) =>  {
             }
         }}>
           <IonContent className='activity-content'>
-            <IonLabel data-testid="deleteTitle"><h1 className='activityTitle' >{translate.getText("DELETE_ACTIVITY")}</h1></IonLabel>
+            <IonLabel data-testid="deleteTitle"><h1 className='activityTitle' >{translate.getText("DELETE_USUAL_ACTIVITY")}</h1></IonLabel>
             <p data-testid="deleteDescription">
-              {translate.getText("DELETE_ACTIVITY_DESCRIPTIION")}
+              {translate.getText("DELETE_USUAL_ACTIVITY_DESCRIPTIION")}
             </p>
             <IonButton color="tertiary" data-testid="deleteCancel" onClick={() => {
-              if (isMounted.current) {
-                setShowDelete(false)
-              }
+                if (isMounted.current) {
+                    setShowDelete(false)
+                }
             }}>
               {translate.getText("WEIGHT_PREF_CANCEL")}
             </IonButton>
             <IonButton color="primary" data-testid="deleteConfirm" onClick={() => {
-              if (isMounted.current) {
-                props.onRemovePractice(practice)
-              }
+                if (isMounted.current) {
+                    props.onRemoveActivity(activity)
+                }
             }}>
               {translate.getText("CONFIRM_DELETE")}
             </IonButton>
@@ -87,4 +79,4 @@ const PracticeItem = (props) =>  {
     )
 }
 
-export default PracticeItem
+export default ActivityItem

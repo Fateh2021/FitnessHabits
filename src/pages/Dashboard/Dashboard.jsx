@@ -341,27 +341,25 @@ const Dashboard = (props) => {
             //console.log("DB else ::::::::::::::"+JSON.stringify(localStorage));
           }
         });
-    }
-
-    firebase
-      .database()
-      .ref("dashboard/" + userUID + "/moduleActivity")
-      .once("value", (snapshot) => {
-        let moduleActivity = snapshot.val();
-        if (moduleActivity) {
-          if (!moduleActivity.practices) {
-            moduleActivity.practices = [];
-          }
-          if (!moduleActivity.activities) {
-            moduleActivity.activities = [];
-          }
-        } else {
-          moduleActivity = { practices: [], activities: [] };
-        }
-        setActivities(moduleActivity.activities);
-        setPracticies(moduleActivity.practices);
-      });
-  }, []);
+      }
+      firebase.database().ref("activity/" + userUID )
+          .once("value", (snapshot) => {
+              let activity = snapshot.val();
+              if (activity) {
+                  if (!(activity.practices)) {
+                      activity.practices = [];
+                  }
+                  if (!(activity.activities)) {
+                      activity.activities = [];
+                  }
+              }
+              else {
+                  activity = {practices: [], activities: []};
+              }
+              setActivities(activity.activities);
+              setPracticies(activity.practices);
+          });
+    }, [])
 
   const updateGlobalMacroNutrientConsumption = (sets) => {
     sets.food.globalMacroNutrientConsumption = {
@@ -837,12 +835,7 @@ const Dashboard = (props) => {
             toilettes={dashboard.toilettes}
             currentDate={currentDate}
           />
-          <PracticeList
-            key={practices.length}
-            activities={activities}
-            practices={practices}
-            currentDate={currentDate}
-          />
+          <PracticeList key={practices.length} activities={activities} practices={practices} />
           <Sommeil currentDate={currentDate} sommeil={dashboard.sommeil} />
           <AlcoolList
             alcoolService={AlcoolService}
