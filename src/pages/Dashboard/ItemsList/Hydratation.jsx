@@ -34,6 +34,10 @@ var test = 0;
 
 //TODO : Execute SonarQube to check the code quality
 const HydrateItem = (props) => {
+
+  var date;
+  var today = new Date();
+  date = today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
   // le header.. en gros ce qui apparait sur le dashboard
   const [itemDashHydrate, setItemDashHydrate] = useState({
     id: props.itemDashHydrate ? props.itemDashHydrate.id : uuid(),
@@ -45,7 +49,8 @@ const HydrateItem = (props) => {
     fibre: props.itemDashHydrate ? props.itemDashHydrate.fibre : 0,
     gras: props.itemDashHydrate ? props.itemDashHydrate.gras : 0,
     unit: props.itemDashHydrate ? props.itemDashHydrate.unit : '',
-    consumption: props.itemDashHydrate ? props.itemDashHydrate.consumption : 0
+    consumption: props.itemDashHydrate ? props.itemDashHydrate.consumption : 0,
+    date: props.itemDashHydrate ? props.itemDashHydrate.date : date
   });
 
   const handleChange = event => {
@@ -56,7 +61,6 @@ const HydrateItem = (props) => {
   const saveChanges = () => {
     props.save(itemDashHydrate);
   }
-
 
   const descPlaceholder = translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']);
 
@@ -82,6 +86,7 @@ const HydrateItem = (props) => {
           <IonInput className='divAddText' type='number' placeholder="0" name="qtte"
             value={itemDashHydrate.qtte} onIonChange={handleChange}></IonInput>
         </IonCol>
+        
         <select id="materialSelectAddHyd" name="unit" defaultValue={itemDashHydrate.unit}
           onChange={handleChange}>
           <option value="-1"></option>
@@ -186,6 +191,7 @@ const Hydratation = (props) => {
     setGlobalGr(props.grasConsumptionTot);
   }, [props.grasConsumptionTot])
 
+ 
   const DailyConsumptionIncrement = (item) => {
     var array = [...hydrates];
     const index = array.findIndex((event) => event.id === item.id);
@@ -324,6 +330,8 @@ const Hydratation = (props) => {
     return sumGr
   }
 
+
+
   const deleteItemHydrate = (item) => {
     var array = [...hydrates];
     var sum = 0;
@@ -368,6 +376,10 @@ const Hydratation = (props) => {
     localStorage.setItem('dashboard', JSON.stringify(dashboard));
     const userUID = localStorage.getItem('userUid');
     firebase.database().ref('dashboard/' + userUID + "/" + currentDate.startDate.getDate() + (currentDate.startDate.getMonth() + 1) + currentDate.startDate.getFullYear()).update(dashboard);
+  }
+
+  const showDate = (hydrates) => {
+    return hydrates.date;
   }
 
   const conversionQuantity = (hydrates) => {
@@ -511,7 +523,7 @@ const Hydratation = (props) => {
                           <IonToolbar>
                             <IonTitle size="small">{hydra.name}</IonTitle>
                             <ion-card-subtitle> {translate.getText("HYD_QUANT_BUE")} : {conversionQuantity(hydra)} </ion-card-subtitle>
-                            <ion-card-subtitle> {translate.getText("HYD_DATE")} : JJ/mm/AAAA à 00h00</ion-card-subtitle>
+                            <ion-card-subtitle> {translate.getText("HYD_DATE") } {showDate(hydra)} </ion-card-subtitle>
 
                           </IonToolbar>
                         </ion-col>
