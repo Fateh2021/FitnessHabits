@@ -1,0 +1,68 @@
+  .input {
+    height: 60%;
+    background-color: #e7dcdc;
+    border-radius: 5px;
+  }
+  
+  .supp-text-sm {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;  
+    color:#707070
+  }
+
+  .iconeSize{
+    cursor: pointer;
+    width: 40px !important;
+    height: 40px !important;
+    margin: auto;
+    
+  }
+  
+  .divIconeSupp {
+    width: 120px;
+    height: 120px;
+    float: right;
+    --padding-start: 10px;
+    border-bottom: 0px;
+    border-radius: 8px;
+    background-color: #BCB8B0;
+  }
+  
+  .divInfos {
+    background-color: #FFFFFF;
+    height: 100px;
+    width: 80%;
+    float: right;
+    border-bottom: 0px;
+    --padding-start: 10px;
+  
+  }
+
+  .titreSupp{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color:#707070
+  }
+
+
+  .rightInfos {
+      margin-inline: 20px;
+      align-content:right;
+        
+  }
+  .leftInfos{
+    --padding-top: 10px;
+  }
+
+    #banniereHeader {
+        --background:#24A788
+    }
+
+    #titreMenu {
+        color: white;
+    }
+
+    #iconeRetourMenu {
+        color: white;
+    }

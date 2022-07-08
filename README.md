@@ -1,4 +1,4 @@
-# Welcome to the FinessHabits project / Bienvenue au projet FitnessHabits
+npm # Welcome to the FinessHabits project / Bienvenue au projet FitnessHabits
 
 #### 1- Cloner le projet fitnesshabits:  
 ```

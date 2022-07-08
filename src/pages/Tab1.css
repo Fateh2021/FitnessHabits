@@ -1944,9 +1944,16 @@ h2{
 }
 
 .divTitre3 {
-  z-index: 3;
-  padding: 2px 0;
-  --ion-background-color: #3e554a;
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 120px;
+  --ion-background-color: #FFFFFFFF
+  ;
+  border-radius: 25px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
 }
 
 .divTitre4 {
@@ -2185,3 +2192,111 @@ h2{
   --ion-background-color:#eed996;
   border: #752222 solid;
 }
+
+/*Module activities*/
+
+.activity-modal-big {
+    --height: 80%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.activity-modal-small {
+    --height: 50%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.activity-modal-xsmall {
+    --height: 35%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.activity-modal-xxsmall {
+    --height: 30%;
+    --width: 90%;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.29);
+}
+
+.fontPractice {
+    font-size: 12px;
+}
+
+.activity-content {
+    --padding-bottom: 10px;
+    --padding-end: 10px;
+    --padding-start: 20px;
+    --padding-top: 20px;
+}
+
+.activityTitle {
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 34px;
+    color: #AA55D9;
+}
+
+.activityItem {
+    padding: 5px;
+    border-bottom-color: rgb(0, 0, 0, 0.1);
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+}
+
+.activityName {
+    color: rgb(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.activityOther {
+    color: rgb(0, 0, 0, 0.6);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.addButtonActivity {
+    font-size: xx-large;
+}
+
+.inputFormActivity {
+    height: 4vh;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid gray;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background-color: transparent;
+
+}
+
+hr.lineSeparatorActivity {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: lightgray;
+    height: 7px;
+    display: block;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+}
+
+.lineSeparatorActivity::before  {
+    background-color: #AA55D9;
+    width: 40%;
+    content: "";
+    display: block;
+    top: -10px;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 7px;
+}
+
+/*Module activities - END*/
