@@ -86,7 +86,7 @@ const HydrateItem = (props) => {
           <IonInput className='divAddText' type='number' placeholder="0" name="qtte"
             value={itemDashHydrate.qtte} onIonChange={handleChange}></IonInput>
         </IonCol>
-        
+
         <select id="materialSelectAddHyd" name="unit" defaultValue={itemDashHydrate.unit}
           onChange={handleChange}>
           <option value="-1"></option>
@@ -191,7 +191,7 @@ const Hydratation = (props) => {
     setGlobalGr(props.grasConsumptionTot);
   }, [props.grasConsumptionTot])
 
- 
+
   const DailyConsumptionIncrement = (item) => {
     var array = [...hydrates];
     const index = array.findIndex((event) => event.id === item.id);
@@ -421,6 +421,8 @@ const Hydratation = (props) => {
     setShowModal2(false);
   }
 
+  
+
   return (
     <React.Fragment>
       <div>
@@ -487,24 +489,29 @@ const Hydratation = (props) => {
                   color: '#707070',
                   float: 'right'
                 }}>{translate.getText("HYD_TITLE_TARGET")} 1.000 L</h3>
+
               </div>
 
             </ion-header>
             <ion-body>
               <br />
-              <IonCol>
-                <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")} : </h4>
-              </IonCol>
+              <br />
+              <div style={{ clear: 'both' }}>
+                <ion-row>
 
-              <IonCol>
-                <ion-item lines="none" size="large">
 
-                  <IonInput className='divAddTextNut nourTextInput' type='number' name=""
-                    value={globalQuant} onIonChange={totalQuant} />
-                  mL<br />
-                </ion-item>
-              </IonCol>
-
+                  <IonCol size='8'>
+                    <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}: </h4>
+                  </IonCol>
+                  <IonCol size='4'>
+                    <ion-item lines="none">
+                      <IonInput className='divtotalQuant' readonly type='number' name=""
+                        value={globalQuant} onIonChange={totalQuant} />
+                      <h4 style={{ color: '#707070', float: 'left' }}>mL</h4>
+                    </ion-item>
+                  </IonCol>
+                </ion-row>
+              </div>
 
               <div className='modaleBar' style={{ borderBottom: '0.5px solid silver' }}>
 
@@ -523,7 +530,7 @@ const Hydratation = (props) => {
                           <IonToolbar>
                             <IonTitle size="small">{hydra.name}</IonTitle>
                             <ion-card-subtitle> {translate.getText("HYD_QUANT_BUE")} : {conversionQuantity(hydra)} </ion-card-subtitle>
-                            <ion-card-subtitle> {translate.getText("HYD_DATE") } {showDate(hydra)} </ion-card-subtitle>
+                            <ion-card-subtitle> {translate.getText("HYD_DATE")} :  {showDate(hydra)} </ion-card-subtitle>
 
                           </IonToolbar>
                         </ion-col>
@@ -591,10 +598,10 @@ const Hydratation = (props) => {
           style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 0%  !important;"
           id="input-hydra-modal" >
           <div className='fenetreModale'>
-           <IonButton size="small"
-                        onClick={() => handleCloseModal2()}>
-                        <IonIcon icon={arrowBack} />
-           </IonButton>
+            <IonButton size="small"
+              onClick={() => handleCloseModal2()}>
+              <IonIcon icon={arrowBack} />
+            </IonButton>
             <ion-header>
               <ion-row>
                 <div style={{ clear: 'both' }}>
@@ -609,7 +616,7 @@ const Hydratation = (props) => {
                 </IonCol>
                 <IonCol size='4'>
                   <ion-item lines="none">
-                    <IonInput className='divAddTextNut nourTextInput' readonly type='number' name=""
+                    <IonInput className='divtotalQuant' readonly type='number' name=""
                       value={globalQuant} onIonChange={totalQuant} />
                     <h4 style={{ color: '#707070', float: 'left' }}>mL</h4>
                   </ion-item>
@@ -665,7 +672,7 @@ const Hydratation = (props) => {
 
 
             <ion-body>
-              <p style={{ color: '#707070' }}>&ensp;&ensp;{translate.getText("HYD_NOM")} &ensp; &ensp;{translate.getText("HYD_QUANT")}</p>
+              <p style={{ color: '#707070' }}>&ensp;&ensp;{translate.getText("HYD_NOM")} &ensp;&ensp; &ensp;{translate.getText("HYD_QUANT")} (ml)</p>
 
 
             </ion-body>
@@ -680,22 +687,27 @@ const Hydratation = (props) => {
 
                       <ion-row>
 
-                        <ion-col size='4'>
+                        <ion-col size='3'>
 
                           <IonTitle size="small">{hydra.name}</IonTitle>
 
                         </ion-col>
-                        <ion-col size='2'>
+                        <ion-col size='3'>
                           <ion-item lines="none">
-                          <IonSelect interface="popover" placeholder="pain">
-                              <IonSelectOption value="apples">Verre</IonSelectOption>
-                              <IonSelectOption value="oranges">Tasse</IonSelectOption>
-                              <IonSelectOption value="bananas">Bouteille</IonSelectOption>
-                            </IonSelect>
+
+                            <select type="dropdown">
+                              <option>250</option>
+                              <option>350</option>
+                              <option>500</option>
+                            </select>
 
                           </ion-item>
                         </ion-col>
 
+                       {/* 
+                       
+                       
+                       <IonIcon icon={cafe}></IonIcon>*/}
                         
 
 
@@ -709,7 +721,7 @@ const Hydratation = (props) => {
 
                         </ion-col>
                         <ion-col size='2'>
-                          <IonInput className='inputTextDashboard' value={hydra.consumption} disabled type='number'></IonInput>
+                          <IonTitle size="small">{hydra.consumption}</IonTitle>
                         </ion-col>
                         <ion-col size='2'>
                           <IonButton size="small"
@@ -722,38 +734,7 @@ const Hydratation = (props) => {
                     </ion-grid>
 
 
-                    {/*<ion-grid fixed>
-                      <ion-row justify-content-center align-items-center>
-                        <ion-col size="7">
-                          <IonToolbar>
-                            <IonTitle size="small">{hydra.name}</IonTitle>
-                            <ion-card-subtitle> Quantité bue: {conversionQuantity(hydra)} </ion-card-subtitle>
-                            <ion-card-subtitle> Date : i don't know yet </ion-card-subtitle>
-
-                          </IonToolbar>
-                        </ion-col>
-                        <ion-col size="5" >
-                          <IonToolbar>
-                            <ion-grid fixed>
-                              <ion-col size="6">
-                                <IonButton size="small" onClick={() => DailyConsumptionIncrement(index)}>
-                                  <IonIcon icon={addCircle} />
-                                </IonButton>
-                              </ion-col>
-
-                              <ion-col size="6">
-                                <IonButton size="small" onClick={() => deleteItemHydrate(index)}>
-                                  <IonIcon icon={trash} />
-                                </IonButton>
-                              </ion-col>
-                            </ion-grid>
-
-                          </IonToolbar>
-
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                    */}
+                    
                   </IonItem>
                 ))
                 }
