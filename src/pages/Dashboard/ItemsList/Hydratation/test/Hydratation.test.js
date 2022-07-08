@@ -22,7 +22,7 @@ test('Traduction du mot Breuvage en anglais', async() => {
     localStorage.setItem('userLanguage', 'en');
     act(() => { render(<Hydratation hydrate={dashboard.hydratation} hydrates={dashboard.hydratation.hydrates}
         globalConsumption={dashboard.hydratation.dailyTarget.globalConsumption}/>);
-        const mot = screen.getByText('+ Beverage');
+        const mot = screen.getByText('Hydration');
         expect(mot).toBeDefined();
     })
 });
@@ -31,7 +31,7 @@ test('Traduction du mot Breuvage en espagnol', async() => {
     localStorage.setItem('userLanguage', 'es');
     act(() => { render(<Hydratation hydrate={dashboard.hydratation} hydrates={dashboard.hydratation.hydrates}
         globalConsumption={dashboard.hydratation.dailyTarget.globalConsumption}/>);
-        const mot = screen.getByText('+ Bebida');
+        const mot = screen.getByText('Hidratación');
         expect(mot).toBeDefined();
     })
 });
@@ -40,7 +40,7 @@ test('Traduction du mot Breuvage en francais', async() => {
     localStorage.setItem('userLanguage', 'fr');
     act(() => { render(<Hydratation hydrate={dashboard.hydratation} hydrates={dashboard.hydratation.hydrates}
         globalConsumption={dashboard.hydratation.dailyTarget.globalConsumption}/>);
-        const mot = screen.getByText('+ Breuvage');
+        const mot = screen.getByText('Hydratation');
         expect(mot).toBeDefined();
     })
 });
