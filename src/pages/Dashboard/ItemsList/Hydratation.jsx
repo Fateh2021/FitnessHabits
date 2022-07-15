@@ -549,11 +549,11 @@ const Hydratation = (props) => {
                         <ion-col size="5">
                           <IonToolbar>
                             <ion-grid fixed>
-                              <ion-col size="6">
+                              <ion-col size="6">{/*
                                 <IonButton size="small"
                                   onClick={() => deleteItemHydrate(index)}>
                                   <IonIcon icon={trash} />
-                                </IonButton>
+                                </IonButton>*/}
                               </ion-col>
 
                               <ion-col size="6">
