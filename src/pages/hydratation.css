@@ -163,3 +163,13 @@ ion-item .item-inner {
   background: src="/assets/cup_water.png" no-repeat left;
   background-size: 20px;
 }
+
+.titleModal {
+  position: relative;
+  left: 14vw;
+  bottom: 11.5vw
+}
+
+.headerModal {
+   max-height : 55px;
+}

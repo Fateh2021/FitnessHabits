@@ -480,17 +480,17 @@ const Hydratation = (props) => {
         <IonModal isOpen={showModal}
           style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 0%  !important;"
           id="input-hydra-modal">
-          <div className='fenetreModale'>
-            <div style={{backgroundColor : '#EEF0F1', padding : '10px', borderRadius : '7px'}}>
-            <IonButton class="button" color = "medium"size="small" onClick={() => handleCloseModal()}>
+          <div >
+            <div  class="headerModal" style={{backgroundColor : '#3CADF3', padding : '10px'}}>
+            <IonButton class="button"  size="small" onClick={() => handleCloseModal()}>
               <IonIcon icon={arrowBack} />
             </IonButton>
+            <h3 class='titleModal' style={{ color: '#FFFFFF',  fontWeight : 'bold'}}>{translate.getText("HYDR_TITLE")} </h3>
             </div>
             
-            
-            <ion-header>
+            <div className='fenetreModale'>
+<ion-header>
               <div style={{ clear: 'both' }}>
-                <h3 style={{ color: '#70ACE8',  fontWeight : 'bold', float: 'left' }}>{translate.getText("HYDR_TITLE")} </h3>
                 <h3 style={{
                   backgroundColor: '#ebf7f4',
                   color: '#707070',
@@ -587,6 +587,10 @@ const Hydratation = (props) => {
 
               <IonIcon icon={settings} size="large" style={{ "margin-left": "85%" }}
                 onClick={() => openAddItemContainer()} />
+
+            </div>
+
+            
             </div>
           </div>
         </IonModal>
@@ -596,19 +600,16 @@ const Hydratation = (props) => {
         <IonModal isOpen={showModal2}
           style="background: rgba(0, 0, 0, 0.5) !important; padding: 0% 0%  !important;"
           id="input-hydra-modal" >
-          <div className='fenetreModale'>
-            <div style={{backgroundColor : '#CFEAFC', padding : '10px', borderRadius : '7px'}}>
+          <div >
+               <div  class="headerModal" style={{backgroundColor : '#3CADF3', padding : '10px'}}>
             <IonButton class="button" size="small" onClick={() => handleCloseModal2()}>
               <IonIcon icon={arrowBack} />
             </IonButton>
+            <h3 class='titleModal' style={{ color: '#FFFFFF',  fontWeight : 'bold'}}>{translate.getText("HYDR_TITLE")} </h3>
             </div>
-            <ion-header>
-              <ion-row>
-                <div style={{ clear: 'both' }}>
-                  <h3 style={{ color: '#70ACE8', float: 'left', fontWeight : 'bold'}}>{translate.getText("HYDR_TITLE")}</h3>
 
-                </div>
-              </ion-row>
+            <div className='fenetreModale'>
+            <ion-header>
               <ion-row>
                 <IonCol size='8'>
                   <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}: </h4>
@@ -738,6 +739,8 @@ const Hydratation = (props) => {
                 save={(itemDashHydrate) => saveItem(itemDashHydrate)} />}
             </div>
 
+            </div>
+      
           </div>
 
         </IonModal>
