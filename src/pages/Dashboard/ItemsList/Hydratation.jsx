@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IonList,
-  IonSelect,
-  IonSelectOption,
-  IonContent,
+
   IonItem,
   IonIcon,
-  IonLabel,
   IonInput,
   IonButton,
   IonCol,
-  IonRow,
-  IonFooter,
   IonModal,
   IonToolbar,
   IonTitle,
-  IonProgressBar
+  IonProgressBar,
+  IonAlert
 } from '@ionic/react';
 import { arrowDropdownCircle, star, trash, addCircle, removeCircle, settings, create, cafe, arrowBack } from 'ionicons/icons';
 import uuid from 'react-uuid';
@@ -43,13 +38,13 @@ const HydrateItem = (props) => {
     id: props.itemDashHydrate ? props.itemDashHydrate.id : uuid(),
     favoris: props.itemDashHydrate ? props.itemDashHydrate.favoris : false,
     name: props.itemDashHydrate ? props.itemDashHydrate.name : '', //c'est le nom du breuvage
-    qtte: props.itemDashHydrate ? props.itemDashHydrate.qtte : 0,  //c'est la quantité du breuvage
+    qtte: props.itemDashHydrate ? props.itemDashHydrate.qtte : 0,  //c'est la quantité du breuvage en ml
     proteine: props.itemDashHydrate ? props.itemDashHydrate.proteine : 0,
     glucide: props.itemDashHydrate ? props.itemDashHydrate.glucide : 0,
     fibre: props.itemDashHydrate ? props.itemDashHydrate.fibre : 0,
     gras: props.itemDashHydrate ? props.itemDashHydrate.gras : 0,
     unit: props.itemDashHydrate ? props.itemDashHydrate.unit : '',
-    consumption: props.itemDashHydrate ? props.itemDashHydrate.consumption : 0,
+    consumption: props.itemDashHydrate ? props.itemDashHydrate.consumption : 0, //c'est la quantité du breuvage en verres
     date: props.itemDashHydrate ? props.itemDashHydrate.date : date
   });
 
@@ -62,7 +57,7 @@ const HydrateItem = (props) => {
     props.save(itemDashHydrate);
   }
 
-  const descPlaceholder = translate.getText('FOOD_MODULE', ['functions', 'add_description', 'placeholder']);
+
 
   // Ca c'est pour ajouter un item .. le footer
   return (
@@ -80,7 +75,7 @@ const HydrateItem = (props) => {
         </IonCol>
         <IonCol size="3">
           <IonInput className='divAddText' placeholder="Nom" name="name" value={itemDashHydrate.name}
-            onIonChange={handleChange}></IonInput>
+            onIonChange={handleChange} ></IonInput>
         </IonCol>
         <IonCol size="2">
           <IonInput className='divAddText' type='number' placeholder="0" name="qtte"
@@ -137,6 +132,7 @@ const Hydratation = (props) => {
   const [fibreConsumptionTot, setGlobalFib] = useState(props.fibreConsumptionTot);
   const [grasConsumptionTot, setGlobalGr] = useState(props.grasConsumptionTot);
 
+  const [showAlert, setShowAlert] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -331,8 +327,6 @@ const Hydratation = (props) => {
     return sumGr
   }
 
-
-
   const deleteItemHydrate = (item) => {
     var array = [...hydrates];
     var sum = 0;
@@ -399,6 +393,8 @@ const Hydratation = (props) => {
     }
   }
 
+
+
   const closeItemContainer = () => {
     setHydrateToEdit(undefined);
     setItemContainerDisplayStatus(false);
@@ -421,13 +417,23 @@ const Hydratation = (props) => {
   const handleCloseModal2 = () => {
     setShowModal2(false);
   }
-  const handleCloseModal3 = () => {
+
+
+  const handleCloseModal3 = (id) => {
     setShowModal3(false);
+
   }
 
 
+
+
+
+
+
+
+
   return (
-    <React.Fragment>
+    <React.Fragment >
       <div>
 
         <div className="hydButton divHydra">
@@ -507,7 +513,7 @@ const Hydratation = (props) => {
                     <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}: </h4>
                   </IonCol>
                   <IonCol size='4'>
-                    <ion-item lines="none">
+                    <ion-item className="hydraPadding" lines="none">
                       <IonInput className='divtotalQuant' readonly type='number' name=""
                         value={globalQuant} onIonChange={totalQuant} />
                       <h4 style={{ color: '#707070', float: 'left' }}>mL</h4>
@@ -549,7 +555,7 @@ const Hydratation = (props) => {
 
                               <ion-col size="6">
                                 <IonButton size="small"
-                                 onClick={() => setShowModal3(true)}>
+                                  onClick={function (event) { setShowModal3(true); test = hydra.id; }}>
                                   <IonIcon icon={create} />
                                 </IonButton>
                               </ion-col>
@@ -610,7 +616,7 @@ const Hydratation = (props) => {
                   <h4 style={{ color: '#707070', float: 'left' }}>{translate.getText("HYD_TEXT_QUANT")}: </h4>
                 </IonCol>
                 <IonCol size='4'>
-                  <ion-item lines="none">
+                  <ion-item className="hydraPadding" lines="none">
                     <IonInput className='divtotalQuant' readonly type='number' name=""
                       value={globalQuant} onIonChange={totalQuant} />
                     <h4 style={{ color: '#707070', float: 'left' }}>mL</h4>
@@ -621,7 +627,7 @@ const Hydratation = (props) => {
                 <ion-grid class="ion-no-padding">
                   <ion-row class="ion-float-left">
                     <ion-col class="ion-no-margin">
-                      <ion-item lines="none">
+                      <ion-item className="hydraPadding" lines="none">
                         <div style={{ color: '#707070' }}>Gr :</div>
                         <IonInput placeholder='0.000' className='divAddTextNut nourTextInput'
                           disabled type='number' name="" value={grasConsumptionTot}
@@ -629,7 +635,7 @@ const Hydratation = (props) => {
                       </ion-item>
                     </ion-col>
                     <ion-col>
-                      <ion-item lines="none">
+                      <ion-item className="hydraPadding" lines="none">
                         <div style={{ color: '#707070' }}> Prot :</div>
                         <IonInput placeholder='0.000' className='divAddTextNut nourTextInput'
                           disabled type='number' name="" value={proteinConsumptionTot}
@@ -637,7 +643,7 @@ const Hydratation = (props) => {
                       </ion-item>
                     </ion-col>
                     <ion-col>
-                      <ion-item lines="none">
+                      <ion-item className="hydraPadding" lines="none">
                         <div style={{ color: '#707070' }}> F :</div>
                         <IonInput placeholder='0.000' className='divAddTextNut nourTextInput'
                           disabled type='number' name="" value={fibreConsumptionTot}
@@ -645,7 +651,7 @@ const Hydratation = (props) => {
                       </ion-item>
                     </ion-col>
                     <ion-col>
-                      <ion-item lines="none">
+                      <ion-item className="hydraPadding" lines="none">
                         <div style={{ color: '#707070' }}> Gl :</div>
                         <IonInput placeholder='0.000' className='divAddTextNut nourTextInput'
                           disabled type='number' name="" value={glucideConsumptionTot}
@@ -674,7 +680,7 @@ const Hydratation = (props) => {
 
                         </ion-col>
                         <ion-col size='3'>
-                          <ion-item lines="none">
+                          <ion-item className="hydraPadding" lines="none">
 
                             <select type="dropdown">
                               <option>250</option>
@@ -685,7 +691,7 @@ const Hydratation = (props) => {
                           </ion-item>
                         </ion-col>
 
-                       {/*
+                        {/*
                        <IonIcon icon={cafe}></IonIcon>*/}
 
                         <ion-col size='2'>
@@ -709,7 +715,7 @@ const Hydratation = (props) => {
                     </ion-grid>
 
 
-                    
+
                   </IonItem>
                 ))
                 }
@@ -739,58 +745,173 @@ const Hydratation = (props) => {
         </IonModal>
 
       </div>
+      {/*Modale3*/}
       <div>
-       <IonModal isOpen={showModal3} onDidDismiss={handleCloseModal3}
-                        style="background: rgba(0, 0, 0, 0.5) !important; padding:50% 20%  !important;"
-                        id="input-hydra-modal">
-                        <div className='fenetreModale'>
+        <IonModal isOpen={showModal3} onDidDismiss={handleCloseModal3}
+          style="background: rgba(0, 0, 0, 0.5) !important; padding:5% 5%  !important;"
+          id="input-hydra-modal">
+          <div className='fenetreModale'>
 
-                          <ion-header>
-                          </ion-header>
-                          <ion-body>
-                          {hydrates.map((hydra, index) => {
-                                if(index==1){
-                                   return(  <IonItem ngIf="index !=1" className="" key={hydra.id}>
-                                         <ion-grid class="ion-no-padding">
+            <ion-header>
+            </ion-header>
+            <ion-body>
+              {hydrates.map((hydra, index) => {
+                if (hydra.id == test) {
+                  return (<IonItem ngIf="index !=1" className="" key={hydra.id}>
+                    <ion-grid class="ion-no-padding">
 
 
-                                          <ion-row>
+                      <ion-row>
+                        <ion-item>
+                          <IonInput float-center className="divtotalEdit" placeholder="Nom" name="name" value={hydra.name}
+                            onIonChange={hydra.handleChange}></IonInput>
+                        </ion-item>
+                      </ion-row>
+                      <ion-row>
+                        <ion-item>
+                          <IonInput className="divtotalEdit" placeholder="Diminutif ou abréviation" name="abbrev"
+                            onIonChange={hydra.handleChange}></IonInput>
+                        </ion-item>
+                      </ion-row>
+                      <ion-row>
+                        <Ion-item></Ion-item>
+                      </ion-row>
+                      <h5 style={{ color: '#707070', float: 'center' }}>Macro-éléments </h5>
+                      <h7 style={{ color: '#707070', float: 'center' }}>Vous pouvez retrouver les informations des
+                        macro-éléments de votre breuvage sur sa boîte. </h7>
 
-                                          <ion-col size='3'>
+                      <ion-row >
+                        <ion-col size="10" className="hydraPadding" lines="none">
+                          <h4 style={{ color: '#707070', float: 'left' }}>Protéines (Prot) </h4>
 
-                                          <IonTitle size="small">{hydra.name}</IonTitle>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-item padding-right>
+                            <IonInput className='divtotalEdit' type='number' placeholder="0" name="proteine"
+                              value={hydra.proteine} onIonChange={hydra.handleChange}></IonInput>
+                          </ion-item>
+                        </ion-col>
+                      </ion-row>
 
-                                          </ion-col>
-                                          <ion-col size='3'>
-                                          <ion-item lines="none">
+                      <ion-row >
+                        <ion-col size="10" className="hydraPadding" lines="none">
+                          <h4 style={{ color: '#707070', float: 'left' }}>Glucides (Gl) </h4>
 
-                                           <select type="dropdown">
-                                                <option>250</option>
-                                                <option>350</option>
-                                                <option>500</option>
-                                            </select>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-item padding-right>
+                            <IonInput className='divtotalEdit' type='number' placeholder="0" name="glucide"
+                              value={hydra.glucide} onIonChange={hydra.handleChange}></IonInput>
+                          </ion-item>
+                        </ion-col>
+                      </ion-row>
 
-                                           </ion-item>
-                                           </ion-col>
-                                            <ion-col size='2'>
-                                             </ion-col>
-                                           </ion-row>
-                                        </ion-grid>
-                                 </IonItem>)
+                      <ion-row >
+                        <ion-col size="10" className="hydraPadding" lines="none">
+                          <h4 style={{ color: '#707070', float: 'left' }}>Fibres (F) </h4>
 
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-item padding-right>
+                            <IonInput className='divtotalEdit' type='number' placeholder="0" name="fibre"
+                              value={hydra.fibre} onIonChange={hydra.handleChange}></IonInput>
+                          </ion-item>
+                        </ion-col>
+                      </ion-row>
+
+
+                      <ion-row >
+                        <ion-col size="10" className="hydraPadding" lines="none">
+                          <h4 style={{ color: '#707070', float: 'left' }}>Gras (Gr) </h4>
+
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-item padding-right>
+                            <IonInput className='divtotalEdit' type='number' placeholder="0" name="gras"
+                              value={hydra.gras} onIonChange={hydra.handleChange}></IonInput>
+                          </ion-item>
+                        </ion-col>
+                      </ion-row>
+
+                      <ion-row >
+
+                        <h5 style={{ color: '#707070', float: 'center' }}>Mesures </h5>
+                      </ion-row>
+                      <ion-row >
+                        <ion-col className="hydraPadding" lines="none">
+
+                          <select type="dropdown">
+                            <option>250</option>
+                            <option>350</option>
+                            <option>500</option>
+                          </select>
+
+                        </ion-col>
+                        <ion-col>
+                          <IonButton className="buttonMod1">Ajouter la mesure +</IonButton>
+                          <br />
+                          <br />
+
+                        </ion-col>
+                      </ion-row>
+                      <ion-row >
+                        <ion-col size="10">
+                          <IonButton float-center className="buttonMod2" onClick={hydra.saveChanges}>Sauvegarder</IonButton>
+                        </ion-col>
+                        <ion-col size="2">
+
+                          <IonButton onClick={() => setShowAlert(true)}><IonIcon icon={trash} /></IonButton>
+                          <IonAlert
+                            isOpen={showAlert}
+                            onDidDismiss={() => setShowAlert(false)}
+                            header="Supression"
+                            subHeader="Voulez-vous vraiment supprimer ce breuvage?"
+                            
+                            buttons={[
+                              {
+                                text: 'Supprimer',
+                                handler: () => {
+                                  deleteItemHydrate(index);
+                              
+                                  handleCloseModal3();
+                                 
+                                 
+                               }
+                              }, {
+                                text: 'Annuler',                                                              
+                                handler: () => {
+                                   setShowAlert(false);
+                                  
                                 }
+                              }
+                            ]}
+                          />
 
-                           })
-                          }
+
+                        
 
 
-                          </ion-body>
-                        </div>
-              </IonModal>
+                      </ion-col>
+
+                    </ion-row>
+
+
+                  </ion-grid>
+                    </IonItem>)
+
+                  }
+
+                })
+                }
+
+
+          </ion-body>
       </div>
-    </React.Fragment>
+    </IonModal>
+        </div >
+      </React.Fragment >
 
 
-  );
-}
+    );
+  }
 export default Hydratation;
